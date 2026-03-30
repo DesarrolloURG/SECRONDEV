@@ -3,6 +3,7 @@ using SECRON.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SECRON.Views
@@ -10,53 +11,77 @@ namespace SECRON.Views
     public partial class Frm_Locations_Managment : Form
     {
         #region PropiedadesIniciales
+
         public Mdl_Security_UserInfo UserData { get; set; }
+
+        private readonly Dictionary<TextBox, string> _placeholders = new Dictionary<TextBox, string>();
 
         private List<Mdl_Locations> locationsList = new List<Mdl_Locations>();
         private Mdl_Locations _ubicacionSeleccionada = null;
         private bool _cargandoUbicacion = false;
 
+        private string _ultimoTextoBusqueda = "";
+        private string _ultimoTipoFiltro = "TODOS";
+        private bool? _ultimoIsActive = null;
+
+        // Variables de paginación
+        private int paginaActual = 1;
+        private int registrosPorPagina = 100;
+        private int totalRegistros = 0;
+        private int totalPaginas = 0;
+
+        // ToolStrip de paginación
+        private ToolStrip toolStripPaginacion;
+        private ToolStripButton btnAnterior;
+        private ToolStripButton btnSiguiente;
+
         public Frm_Locations_Managment()
         {
             InitializeComponent();
             this.Load += Frm_Locations_Managment_Load;
+
             CargarFiltrosBusqueda();
             ConfigurarPlaceHoldersTextbox();
             CargarLocationCategories();
-            //RefrescarListado();
         }
-        #endregion PropiedadesIniciales
 
-        private void CargarFiltrosBusqueda()
-        {
-            // FILTRO 1: Tipo de búsqueda
-            Filtro1.Items.Clear();
-            Filtro1.Items.Add("TODOS");
-            Filtro1.Items.Add("POR SEDE");
-            Filtro1.Items.Add("POR DEPARTAMENTO");
-            Filtro1.Items.Add("POR MUNICIPIO");
-            Filtro1.SelectedIndex = 0;
+        #endregion
 
-            // FILTRO 2: Estado
-            Filtro2.Items.Clear();
-            Filtro2.Items.Add("TODOS");
-            Filtro2.Items.Add("ACTIVOS");
-            Filtro2.Items.Add("INACTIVOS");
-            Filtro2.SelectedIndex = 0;
-        }
+        #region CargaInicial
 
         private void Frm_Locations_Managment_Load(object sender, EventArgs e)
         {
+            ConfigurarTabIndexYFocus();
             CargarCountries();
+            CrearToolStripPaginacion();
+            paginaActual = 1;
             RefrescarListado();
+            ActualizarInfoPaginacion();
+
+            if (Tabla.Rows.Count > 0)
+                Tabla.ClearSelection();
         }
+
+        #endregion
+
+        #region Tabla
 
         public void RefrescarListado()
         {
-            locationsList = Ctrl_Locations.MostrarUbicaciones();
+            locationsList = Ctrl_Locations.MostrarUbicaciones(paginaActual, registrosPorPagina);
+
             Tabla.DataSource = null;
             Tabla.DataSource = locationsList;
+
             ConfigurarTabla();
+
+            totalRegistros = Ctrl_Locations.ContarTotalUbicaciones(
+                textoBusqueda: _ultimoTextoBusqueda,
+                tipoFiltro: _ultimoTipoFiltro,
+                isActive: _ultimoIsActive
+            );
+
+            totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
         }
 
         public void ConfigurarTabla()
@@ -114,67 +139,62 @@ namespace SECRON.Views
 
                 _ubicacionSeleccionada = Ctrl_Locations.ObtenerUbicacionPorId(locationId);
 
-                if (_ubicacionSeleccionada != null)
+                if (_ubicacionSeleccionada == null)
+                    return;
+
+                AsignarTextoReal(Txt_Code, _ubicacionSeleccionada.LocationCode);
+                AsignarTextoReal(Txt_Name, _ubicacionSeleccionada.LocationName);
+                AsignarTextoReal(Txt_Address, _ubicacionSeleccionada.Address);
+                AsignarTextoReal(Txt_City, _ubicacionSeleccionada.City);
+
+                if (_ubicacionSeleccionada.LocationCategoryId.HasValue)
+                    ComboBox_LocationCategoryId.SelectedValue = _ubicacionSeleccionada.LocationCategoryId.Value;
+                else
+                    ComboBox_LocationCategoryId.SelectedIndex = 0;
+
+                int countryIndex = ComboBox_Country.FindStringExact(_ubicacionSeleccionada.CountryName ?? "");
+                ComboBox_Country.SelectedIndex = countryIndex >= 0 ? countryIndex : 0;
+
+                int countryId = ObtenerValorCombo(ComboBox_Country);
+                CargarDepartments(countryId);
+
+                int departmentIndex = ComboBox_Department.FindStringExact(_ubicacionSeleccionada.DepartmentName ?? "");
+                ComboBox_Department.SelectedIndex = departmentIndex >= 0 ? departmentIndex : 0;
+
+                int departmentId = ObtenerValorCombo(ComboBox_Department);
+                CargarMunicipalities(departmentId);
+
+                if (_ubicacionSeleccionada.MunicipalityId.HasValue)
                 {
-                    // TextBox principales
-                    Txt_Code.Text = _ubicacionSeleccionada.LocationCode ?? "";
-                    Txt_Name.Text = _ubicacionSeleccionada.LocationName ?? "";
-                    Txt_Address.Text = _ubicacionSeleccionada.Address ?? "";
-                    Txt_City.Text = _ubicacionSeleccionada.City ?? "";
-
-                    Txt_Code.ForeColor = Color.Black;
-                    Txt_Name.ForeColor = Color.Black;
-                    Txt_Address.ForeColor = Color.Black;
-                    Txt_City.ForeColor = Color.Black;
-
-                    // Category
-                    if (_ubicacionSeleccionada.LocationCategoryId.HasValue)
-                        ComboBox_LocationCategoryId.SelectedValue = _ubicacionSeleccionada.LocationCategoryId.Value;
-                    else
-                        ComboBox_LocationCategoryId.SelectedIndex = 0;
-
-                    // ===== COUNTRY =====
-                    int countryIndex = ComboBox_Country.FindStringExact(_ubicacionSeleccionada.CountryName ?? "");
-                    ComboBox_Country.SelectedIndex = countryIndex >= 0 ? countryIndex : 0;
-
-                    int countryId = 0;
-                    if (ComboBox_Country.SelectedValue != null)
-                        int.TryParse(ComboBox_Country.SelectedValue.ToString(), out countryId);
-
-                    // ===== DEPARTMENT =====
-                    CargarDepartments(countryId);
-
-                    int departmentIndex = ComboBox_Department.FindStringExact(_ubicacionSeleccionada.DepartmentName ?? "");
-                    ComboBox_Department.SelectedIndex = departmentIndex >= 0 ? departmentIndex : 0;
-
-                    int departmentId = 0;
-                    if (ComboBox_Department.SelectedValue != null)
-                        int.TryParse(ComboBox_Department.SelectedValue.ToString(), out departmentId);
-
-                    // ===== MUNICIPALITY =====
-                    CargarMunicipalities(departmentId);
-
-                    if (_ubicacionSeleccionada.MunicipalityId.HasValue)
-                        ComboBox_Municipality.SelectedValue = _ubicacionSeleccionada.MunicipalityId.Value;
-                    else
-                    {
-                        int municipalityIndex = ComboBox_Municipality.FindStringExact(_ubicacionSeleccionada.MunicipalityName ?? "");
-                        ComboBox_Municipality.SelectedIndex = municipalityIndex >= 0 ? municipalityIndex : 0;
-                    }
-
-                    Txt_City.Text = _ubicacionSeleccionada.City ?? "";
+                    ComboBox_Municipality.SelectedValue = _ubicacionSeleccionada.MunicipalityId.Value;
                 }
+                else
+                {
+                    int municipalityIndex = ComboBox_Municipality.FindStringExact(_ubicacionSeleccionada.MunicipalityName ?? "");
+                    ComboBox_Municipality.SelectedIndex = municipalityIndex >= 0 ? municipalityIndex : 0;
+                }
+
+                Txt_City.Text = _ubicacionSeleccionada.City ?? "";
+                Txt_City.ForeColor = Color.Black;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar datos de la sede: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"Error al cargar datos de la sede: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
             finally
             {
                 _cargandoUbicacion = false;
             }
         }
+
+        #endregion
+
+        #region ComboboxesGeograficos
 
         private void CargarCountries()
         {
@@ -214,7 +234,11 @@ namespace SECRON.Views
                 if (countryId > 0)
                     lista = Ctrl_Locations.ObtenerDepartmentsPorCountry(countryId);
 
-                lista.Insert(0, new Mdl_Department { DepartmentId = 0, DepartmentName = "SELECCIONE" });
+                lista.Insert(0, new Mdl_Department
+                {
+                    DepartmentId = 0,
+                    DepartmentName = "SELECCIONE"
+                });
 
                 ComboBox_Department.DataSource = null;
                 ComboBox_Department.DataSource = lista;
@@ -243,7 +267,11 @@ namespace SECRON.Views
                 if (departmentId > 0)
                     lista = Ctrl_Locations.ObtenerMunicipalitiesPorDepartment(departmentId);
 
-                lista.Insert(0, new Mdl_Municipality { MunicipalityId = 0, MunicipalityName = "SELECCIONE" });
+                lista.Insert(0, new Mdl_Municipality
+                {
+                    MunicipalityId = 0,
+                    MunicipalityName = "SELECCIONE"
+                });
 
                 ComboBox_Municipality.DataSource = null;
                 ComboBox_Municipality.DataSource = lista;
@@ -261,8 +289,8 @@ namespace SECRON.Views
 
         private void ComboBox_Country_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_cargandoUbicacion) return;
-            if (ComboBox_Country.SelectedValue == null) return;
+            if (_cargandoUbicacion || ComboBox_Country.SelectedValue == null)
+                return;
 
             int countryId;
             if (int.TryParse(ComboBox_Country.SelectedValue.ToString(), out countryId))
@@ -274,8 +302,8 @@ namespace SECRON.Views
 
         private void ComboBox_Department_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_cargandoUbicacion) return;
-            if (ComboBox_Department.SelectedValue == null) return;
+            if (_cargandoUbicacion || ComboBox_Department.SelectedValue == null)
+                return;
 
             int departmentId;
             if (int.TryParse(ComboBox_Department.SelectedValue.ToString(), out departmentId))
@@ -287,7 +315,8 @@ namespace SECRON.Views
 
         private void ComboBox_Municipality_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_cargandoUbicacion) return;
+            if (_cargandoUbicacion)
+                return;
 
             ActualizarTextoCity();
         }
@@ -310,7 +339,83 @@ namespace SECRON.Views
             }
         }
 
-        private readonly Dictionary<TextBox, string> _placeholders = new Dictionary<TextBox, string>();
+        private void CargarLocationCategories()
+        {
+            try
+            {
+                var lista = Ctrl_Locations.ObtenerLocationCategoriesActivas();
+                lista.Insert(0, new Mdl_LocationCategory
+                {
+                    LocationCategoryId = 0,
+                    CategoryCode = "",
+                    CategoryName = "SELECCIONE"
+                });
+
+                ComboBox_LocationCategoryId.DataSource = null;
+                ComboBox_LocationCategoryId.DataSource = lista;
+                ComboBox_LocationCategoryId.DisplayMember = "DisplayText";
+                ComboBox_LocationCategoryId.ValueMember = "LocationCategoryId";
+                ComboBox_LocationCategoryId.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al cargar categorías de sede: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        #endregion
+
+        #region Placeholders
+
+        private void ConfigurarTabIndexYFocus()
+        {
+            // ===== CONTROLES DE BÚSQUEDA =====
+            Txt_ValorBuscado.TabIndex = 0;
+            Filtro1.TabIndex = 1;
+            Filtro2.TabIndex = 2;
+            Btn_Search.TabIndex = 3;
+            Btn_CleanSearch.TabIndex = 4;
+
+            // ===== FORMULARIO DE SEDE =====
+            Txt_Code.TabIndex = 5;
+            Txt_Name.TabIndex = 6;
+            ComboBox_LocationCategoryId.TabIndex = 7;
+            ComboBox_PrimaryWarehouseId.TabIndex = 8;
+            ComboBox_Country.TabIndex = 9;
+            ComboBox_Department.TabIndex = 10;
+            ComboBox_Municipality.TabIndex = 11;
+            Txt_Address.TabIndex = 12;
+
+            // Txt_City normalmente no debería entrar al TAB porque es automático
+            Txt_City.TabStop = false;
+
+            // ===== BOTONES CRUD =====
+            Btn_Save.TabIndex = 13;
+            Btn_Update.TabIndex = 14;
+            Btn_Inactive.TabIndex = 15;
+            Btn_Clear.TabIndex = 16;
+
+            // ===== TABLA =====
+            Tabla.TabIndex = 17;
+
+            // Controles no navegables
+            Panel_Superior.TabStop = false;
+            Panel_Derecho.TabStop = false;
+            Panel_Izquierdo.TabStop = false;
+            PanelToolStrip.TabStop = false;
+            Panel_Busqueda.TabStop = false;
+            Panel_CRUD.TabStop = false;
+            Panel_Informacion.TabStop = false;
+            vScrollBar.TabStop = false;
+
+            // Foco inicial
+            Txt_ValorBuscado.Focus();
+        }
 
         private void ConfigurarPlaceHoldersTextbox()
         {
@@ -339,8 +444,9 @@ namespace SECRON.Views
         private void TextBox_EnterPlaceholder(object sender, EventArgs e)
         {
             TextBox txt = sender as TextBox;
-            if (txt == null) return;
-            if (!_placeholders.ContainsKey(txt)) return;
+
+            if (txt == null || !_placeholders.ContainsKey(txt))
+                return;
 
             string placeholder = _placeholders[txt];
 
@@ -354,15 +460,17 @@ namespace SECRON.Views
         private void TextBox_LeavePlaceholder(object sender, EventArgs e)
         {
             TextBox txt = sender as TextBox;
-            if (txt == null) return;
+
+            if (txt == null)
+                return;
 
             AplicarPlaceHolderSiVacio(txt);
         }
 
         private void AplicarPlaceHolderSiVacio(TextBox txt)
         {
-            if (txt == null) return;
-            if (!_placeholders.ContainsKey(txt)) return;
+            if (txt == null || !_placeholders.ContainsKey(txt))
+                return;
 
             string placeholder = _placeholders[txt];
 
@@ -382,6 +490,26 @@ namespace SECRON.Views
             return _placeholders.ContainsKey(txt) &&
                    txt.ForeColor == Color.Gray &&
                    txt.Text == _placeholders[txt];
+        }
+
+        #endregion
+
+        #region FiltrosBusqueda
+
+        private void CargarFiltrosBusqueda()
+        {
+            Filtro1.Items.Clear();
+            Filtro1.Items.Add("TODOS");
+            Filtro1.Items.Add("POR SEDE");
+            Filtro1.Items.Add("POR DEPARTAMENTO");
+            Filtro1.Items.Add("POR MUNICIPIO");
+            Filtro1.SelectedIndex = 0;
+
+            Filtro2.Items.Clear();
+            Filtro2.Items.Add("TODOS");
+            Filtro2.Items.Add("ACTIVOS");
+            Filtro2.Items.Add("INACTIVOS");
+            Filtro2.SelectedIndex = 0;
         }
 
         private void EjecutarBusqueda()
@@ -404,23 +532,46 @@ namespace SECRON.Views
                 else if (filtroEstado == "INACTIVOS")
                     isActive = false;
 
-                var resultados = Ctrl_Locations.BuscarUbicaciones(
+                _ultimoTextoBusqueda = valorBusqueda;
+                _ultimoTipoFiltro = tipoFiltro;
+                _ultimoIsActive = isActive;
+                paginaActual = 1;
+
+                locationsList = Ctrl_Locations.BuscarUbicaciones(
+                    textoBusqueda: valorBusqueda,
+                    tipoFiltro: tipoFiltro,
+                    isActive: isActive,
+                    pageNumber: paginaActual,
+                    pageSize: registrosPorPagina
+                );
+
+                Tabla.DataSource = null;
+                Tabla.DataSource = locationsList;
+                ConfigurarTabla();
+
+                totalRegistros = Ctrl_Locations.ContarTotalUbicaciones(
                     textoBusqueda: valorBusqueda,
                     tipoFiltro: tipoFiltro,
                     isActive: isActive
                 );
 
-                Tabla.DataSource = null;
-                Tabla.DataSource = resultados;
-                ConfigurarTabla();
+                totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+                ActualizarInfoPaginacion();
 
-                this.Cursor = Cursors.Default;
+                LimpiarSeleccionTabla();
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error en búsqueda: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+            finally
+            {
                 this.Cursor = Cursors.Default;
-                MessageBox.Show($"Error en búsqueda: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -447,6 +598,11 @@ namespace SECRON.Views
                 Txt_ValorBuscado.Text = "";
                 Filtro1.SelectedIndex = 0;
                 Filtro2.SelectedIndex = 0;
+
+                _ultimoTextoBusqueda = "";
+                _ultimoTipoFiltro = "TODOS";
+                _ultimoIsActive = null;
+                paginaActual = 1;
             }
             finally
             {
@@ -455,31 +611,13 @@ namespace SECRON.Views
 
             AplicarPlaceHolderSiVacio(Txt_ValorBuscado);
             RefrescarListado();
+            ActualizarInfoPaginacion();
+            LimpiarSeleccionTabla();
         }
 
-        private void CargarLocationCategories()
-        {
-            try
-            {
-                var lista = Ctrl_Locations.ObtenerLocationCategoriesActivas();
-                lista.Insert(0, new Mdl_LocationCategory
-                {
-                    LocationCategoryId = 0,
-                    CategoryCode = "",
-                    CategoryName = "SELECCIONE"
-                });
+        #endregion
 
-                ComboBox_LocationCategoryId.DataSource = null;
-                ComboBox_LocationCategoryId.DataSource = lista;
-                ComboBox_LocationCategoryId.DisplayMember = "DisplayText";
-                ComboBox_LocationCategoryId.ValueMember = "LocationCategoryId";
-                ComboBox_LocationCategoryId.SelectedIndex = 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar categorías de sede: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        #region CRUD
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
@@ -489,12 +627,15 @@ namespace SECRON.Views
                     return;
 
                 string codigoSede = TienePlaceholder(Txt_Code) ? "" : Txt_Code.Text.Trim();
+
                 if (Ctrl_Locations.ExisteCodigoUbicacion(codigoSede))
                 {
-                    MessageBox.Show("Ya existe una sede registrada con ese código. Ingrese un código diferente.",
+                    MessageBox.Show(
+                        "Ya existe una sede registrada con ese código. Ingrese un código diferente.",
                         "Código duplicado",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                        MessageBoxIcon.Warning
+                    );
                     Txt_Code.Focus();
                     return;
                 }
@@ -508,7 +649,6 @@ namespace SECRON.Views
 
                 if (confirmacion != DialogResult.Yes)
                     return;
-
 
                 var nuevaUbicacion = new Mdl_Locations
                 {
@@ -527,24 +667,194 @@ namespace SECRON.Views
 
                 if (resultado > 0)
                 {
-                    MessageBox.Show("Sede registrada exitosamente.", "Éxito",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(
+                        "Sede registrada exitosamente.",
+                        "Éxito",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
 
                     LimpiarFormularioLocations();
                     RefrescarListado();
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo registrar la sede.", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        "No se pudo registrar la sede.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al guardar la sede: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"Error al guardar la sede: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
+
+        private void Btn_Update_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_ubicacionSeleccionada == null || _ubicacionSeleccionada.LocationId == 0)
+                {
+                    MessageBox.Show(
+                        "Debe seleccionar una sede para actualizar.",
+                        "Validación",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
+                if (!ValidarCamposUbicacion())
+                    return;
+
+                string codigoSede = TienePlaceholder(Txt_Code) ? "" : Txt_Code.Text.Trim();
+
+                if (Ctrl_Locations.ExisteCodigoUbicacion(codigoSede, _ubicacionSeleccionada.LocationId))
+                {
+                    MessageBox.Show(
+                        "Ya existe otra sede registrada con ese código. Ingrese un código diferente.",
+                        "Código duplicado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    Txt_Code.Focus();
+                    return;
+                }
+
+                var confirmacion = MessageBox.Show(
+                    $"¿Está seguro que desea actualizar la sede {_ubicacionSeleccionada.LocationName}?",
+                    "Confirmar actualización",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (confirmacion != DialogResult.Yes)
+                    return;
+
+                _ubicacionSeleccionada.LocationCode = TienePlaceholder(Txt_Code) ? null : Txt_Code.Text.Trim();
+                _ubicacionSeleccionada.LocationName = TienePlaceholder(Txt_Name) ? null : Txt_Name.Text.Trim();
+                _ubicacionSeleccionada.Address = TienePlaceholder(Txt_Address) ? null : Txt_Address.Text.Trim();
+                _ubicacionSeleccionada.City = Txt_City.Text.Trim();
+                _ubicacionSeleccionada.MunicipalityId = ObtenerValorComboNullable(ComboBox_Municipality);
+                _ubicacionSeleccionada.LocationCategoryId = ObtenerValorComboNullable(ComboBox_LocationCategoryId);
+                _ubicacionSeleccionada.PrimaryWarehouseId = ObtenerValorComboNullable(ComboBox_PrimaryWarehouseId);
+                _ubicacionSeleccionada.ModifiedBy = UserData?.UserId ?? 1;
+
+                int resultado = Ctrl_Locations.ActualizarUbicacion(_ubicacionSeleccionada);
+
+                if (resultado > 0)
+                {
+                    MessageBox.Show(
+                        "Sede actualizada exitosamente.",
+                        "Éxito",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    LimpiarFormularioLocations();
+                    RefrescarListado();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No se pudo actualizar la sede.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al actualizar la sede: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private void Btn_Inactive_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_ubicacionSeleccionada == null || _ubicacionSeleccionada.LocationId == 0)
+                {
+                    MessageBox.Show(
+                        "Debe seleccionar una sede para inactivar.",
+                        "Validación",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return;
+                }
+
+                var confirmacion = MessageBox.Show(
+                    $"¿Está seguro que desea inactivar la sede {_ubicacionSeleccionada.LocationName}?",
+                    "Confirmar inactivación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (confirmacion != DialogResult.Yes)
+                    return;
+
+                int resultado = Ctrl_Locations.InactivarUbicacion(
+                    _ubicacionSeleccionada.LocationId,
+                    UserData?.UserId ?? 1
+                );
+
+                if (resultado > 0)
+                {
+                    MessageBox.Show(
+                        "Sede inactivada exitosamente.",
+                        "Éxito",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    LimpiarFormularioLocations();
+                    RefrescarListado();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No se pudo inactivar la sede.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al inactivar la sede: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private void Btn_Clear_Click(object sender, EventArgs e)
+        {
+            LimpiarFormularioLocations();
+        }
+
+        #endregion
+
+        #region ValidacionesYHelpers
 
         private int? ObtenerValorComboNullable(ComboBox combo)
         {
@@ -558,60 +868,97 @@ namespace SECRON.Views
             return null;
         }
 
+        private int ObtenerValorCombo(ComboBox combo)
+        {
+            if (combo.SelectedValue == null)
+                return 0;
+
+            int valor;
+            return int.TryParse(combo.SelectedValue.ToString(), out valor) ? valor : 0;
+        }
+
         private bool ValidarCamposUbicacion()
         {
             if (TienePlaceholder(Txt_Code) || string.IsNullOrWhiteSpace(Txt_Code.Text))
             {
-                MessageBox.Show("Debe ingresar el código de la sede.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe ingresar el código de la sede.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 Txt_Code.Focus();
                 return false;
             }
 
             if (TienePlaceholder(Txt_Name) || string.IsNullOrWhiteSpace(Txt_Name.Text))
             {
-                MessageBox.Show("Debe ingresar el nombre de la sede.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe ingresar el nombre de la sede.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 Txt_Name.Focus();
                 return false;
             }
 
             if (TienePlaceholder(Txt_Address) || string.IsNullOrWhiteSpace(Txt_Address.Text))
             {
-                MessageBox.Show("Debe ingresar la dirección de la sede.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe ingresar la dirección de la sede.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 Txt_Address.Focus();
                 return false;
             }
 
             if (ObtenerValorComboNullable(ComboBox_Country) == null)
             {
-                MessageBox.Show("Debe seleccionar un país.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe seleccionar un país.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 ComboBox_Country.Focus();
                 return false;
             }
 
             if (ObtenerValorComboNullable(ComboBox_Department) == null)
             {
-                MessageBox.Show("Debe seleccionar un departamento.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe seleccionar un departamento.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 ComboBox_Department.Focus();
                 return false;
             }
 
             if (ObtenerValorComboNullable(ComboBox_Municipality) == null)
             {
-                MessageBox.Show("Debe seleccionar un municipio.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe seleccionar un municipio.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 ComboBox_Municipality.Focus();
                 return false;
             }
 
             if (ObtenerValorComboNullable(ComboBox_LocationCategoryId) == null)
             {
-                MessageBox.Show("Debe seleccionar la categoría de la sede.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "Debe seleccionar la categoría de la sede.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 ComboBox_LocationCategoryId.Focus();
                 return false;
             }
@@ -641,9 +988,6 @@ namespace SECRON.Views
                 ComboBox_Municipality.DataSource = null;
                 ComboBox_LocationCategoryId.SelectedIndex = 0;
 
-                if (Tabla.Rows.Count > 0)
-                    Tabla.ClearSelection();
-
                 if (ComboBox_PrimaryWarehouseId.Items.Count > 0)
                     ComboBox_PrimaryWarehouseId.SelectedIndex = 0;
             }
@@ -651,126 +995,196 @@ namespace SECRON.Views
             {
                 _cargandoUbicacion = false;
             }
+
+            LimpiarSeleccionTabla();
         }
 
-        private void Btn_Update_Click(object sender, EventArgs e)
+        private void AsignarTextoReal(TextBox txt, string valor)
         {
-            try
+            txt.Text = valor ?? "";
+            txt.ForeColor = Color.Black;
+        }
+
+        private void LimpiarSeleccionTabla()
+        {
+            if (Tabla.Rows.Count > 0)
+                Tabla.ClearSelection();
+        }
+
+        #endregion
+
+        #region Paginacion
+
+        private void CrearToolStripPaginacion()
+        {
+            if (toolStripPaginacion != null)
+                return;
+
+            toolStripPaginacion = new ToolStrip
             {
-                if (_ubicacionSeleccionada == null || _ubicacionSeleccionada.LocationId == 0)
+                Dock = DockStyle.None,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                GripStyle = ToolStripGripStyle.Hidden,
+                BackColor = Color.FromArgb(248, 249, 250),
+                Height = 35,
+                AutoSize = true,
+                Location = new Point(PanelToolStrip.Width - 260, 5)
+            };
+
+            btnAnterior = new ToolStripButton
+            {
+                Text = "❮ Anterior",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(51, 140, 255),
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                Margin = new Padding(2),
+                Padding = new Padding(8, 4, 8, 4)
+            };
+            btnAnterior.Click += (s, e) => CambiarPagina(paginaActual - 1);
+
+            btnSiguiente = new ToolStripButton
+            {
+                Text = "Siguiente ❯",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(238, 143, 109),
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                Margin = new Padding(2),
+                Padding = new Padding(8, 4, 8, 4)
+            };
+            btnSiguiente.Click += (s, e) => CambiarPagina(paginaActual + 1);
+
+            toolStripPaginacion.Items.Add(btnAnterior);
+            toolStripPaginacion.Items.Add(btnSiguiente);
+
+            PanelToolStrip.Controls.Add(toolStripPaginacion);
+            toolStripPaginacion.BringToFront();
+
+            PanelToolStrip.Resize += (s, e) =>
+            {
+                if (toolStripPaginacion != null)
+                    toolStripPaginacion.Location = new Point(PanelToolStrip.Width - 260, 5);
+            };
+        }
+
+        private void ActualizarBotonesNumerados()
+        {
+            if (toolStripPaginacion == null)
+                return;
+
+            var itemsToRemove = toolStripPaginacion.Items
+                .Cast<ToolStripItem>()
+                .Where(item => item.Tag?.ToString() == "PageButton")
+                .ToList();
+
+            foreach (var item in itemsToRemove)
+                toolStripPaginacion.Items.Remove(item);
+
+            if (totalPaginas <= 1)
+                return;
+
+            int inicioRango = Math.Max(1, paginaActual - 1);
+            int finRango = Math.Min(totalPaginas, paginaActual + 1);
+            int posicionInsertar = toolStripPaginacion.Items.IndexOf(btnSiguiente);
+
+            for (int i = inicioRango; i <= finRango; i++)
+            {
+                ToolStripButton btnPagina = new ToolStripButton
                 {
-                    MessageBox.Show("Debe seleccionar una sede para actualizar.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                    Text = i.ToString(),
+                    Tag = "PageButton",
+                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                    Margin = new Padding(1),
+                    Padding = new Padding(6, 4, 6, 4)
+                };
 
-                if (!ValidarCamposUbicacion())
-                    return;
-
-                string codigoSede = TienePlaceholder(Txt_Code) ? "" : Txt_Code.Text.Trim();
-
-                if (Ctrl_Locations.ExisteCodigoUbicacion(codigoSede, _ubicacionSeleccionada.LocationId))
+                if (i == paginaActual)
                 {
-                    MessageBox.Show("Ya existe otra sede registrada con ese código. Ingrese un código diferente.",
-                        "Código duplicado",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    Txt_Code.Focus();
-                    return;
-                }
-
-                var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea actualizar la sede {_ubicacionSeleccionada.LocationName}?",
-                    "Confirmar actualización",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
-
-                if (confirmacion != DialogResult.Yes)
-                    return;
-
-                _ubicacionSeleccionada.LocationCode = TienePlaceholder(Txt_Code) ? null : Txt_Code.Text.Trim();
-                _ubicacionSeleccionada.LocationName = TienePlaceholder(Txt_Name) ? null : Txt_Name.Text.Trim();
-                _ubicacionSeleccionada.Address = TienePlaceholder(Txt_Address) ? null : Txt_Address.Text.Trim();
-                _ubicacionSeleccionada.City = Txt_City.Text.Trim();
-                _ubicacionSeleccionada.MunicipalityId = ObtenerValorComboNullable(ComboBox_Municipality);
-                _ubicacionSeleccionada.LocationCategoryId = ObtenerValorComboNullable(ComboBox_LocationCategoryId);
-                _ubicacionSeleccionada.PrimaryWarehouseId = ObtenerValorComboNullable(ComboBox_PrimaryWarehouseId);
-                _ubicacionSeleccionada.ModifiedBy = UserData?.UserId ?? 1;
-
-                int resultado = Ctrl_Locations.ActualizarUbicacion(_ubicacionSeleccionada);
-
-                if (resultado > 0)
-                {
-                    MessageBox.Show("Sede actualizada exitosamente.", "Éxito",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    LimpiarFormularioLocations();
-                    RefrescarListado();
+                    btnPagina.BackColor = Color.FromArgb(238, 143, 109);
+                    btnPagina.ForeColor = Color.White;
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo actualizar la sede.", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    btnPagina.BackColor = Color.FromArgb(240, 240, 240);
+                    btnPagina.ForeColor = Color.FromArgb(51, 140, 255);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al actualizar la sede: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                int numeroPagina = i;
+                btnPagina.Click += (s, e) => CambiarPagina(numeroPagina);
+
+                toolStripPaginacion.Items.Insert(posicionInsertar++, btnPagina);
             }
         }
 
-        private void Btn_Inactive_Click(object sender, EventArgs e)
+        private void CambiarPagina(int nuevaPagina)
         {
-            try
-            {
-                if (_ubicacionSeleccionada == null || _ubicacionSeleccionada.LocationId == 0)
-                {
-                    MessageBox.Show("Debe seleccionar una sede para inactivar.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+            if (nuevaPagina < 1 || nuevaPagina > totalPaginas)
+                return;
 
-                var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea inactivar la sede {_ubicacionSeleccionada.LocationName}?",
-                    "Confirmar inactivación",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
+            paginaActual = nuevaPagina;
+
+            if (!string.IsNullOrWhiteSpace(_ultimoTextoBusqueda) ||
+                _ultimoTipoFiltro != "TODOS" ||
+                _ultimoIsActive.HasValue)
+            {
+                locationsList = Ctrl_Locations.BuscarUbicaciones(
+                    textoBusqueda: _ultimoTextoBusqueda,
+                    tipoFiltro: _ultimoTipoFiltro,
+                    isActive: _ultimoIsActive,
+                    pageNumber: paginaActual,
+                    pageSize: registrosPorPagina
                 );
 
-                if (confirmacion != DialogResult.Yes)
-                    return;
+                Tabla.DataSource = null;
+                Tabla.DataSource = locationsList;
+                ConfigurarTabla();
 
-                int resultado = Ctrl_Locations.InactivarUbicacion(
-                    _ubicacionSeleccionada.LocationId,
-                    UserData?.UserId ?? 1
+                totalRegistros = Ctrl_Locations.ContarTotalUbicaciones(
+                    textoBusqueda: _ultimoTextoBusqueda,
+                    tipoFiltro: _ultimoTipoFiltro,
+                    isActive: _ultimoIsActive
                 );
-
-                if (resultado > 0)
-                {
-                    MessageBox.Show("Sede inactivada exitosamente.", "Éxito",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    LimpiarFormularioLocations();
-                    RefrescarListado();
-                }
-                else
-                {
-                    MessageBox.Show("No se pudo inactivar la sede.", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Error al inactivar la sede: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                RefrescarListado();
             }
+
+            totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+            ActualizarInfoPaginacion();
+            LimpiarSeleccionTabla();
         }
 
-        private void Btn_Clear_Click(object sender, EventArgs e)
+        private void ActualizarInfoPaginacion()
         {
-            LimpiarFormularioLocations();
+            if (totalRegistros == 0 &&
+                string.IsNullOrWhiteSpace(_ultimoTextoBusqueda) &&
+                _ultimoTipoFiltro == "TODOS" &&
+                !_ultimoIsActive.HasValue)
+            {
+                totalRegistros = Ctrl_Locations.ContarTotalUbicaciones();
+            }
+
+            totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+
+            if (btnAnterior != null)
+                btnAnterior.Enabled = paginaActual > 1;
+
+            if (btnSiguiente != null)
+                btnSiguiente.Enabled = paginaActual < totalPaginas;
+
+            ActualizarBotonesNumerados();
+
+            int inicioRango = totalRegistros == 0 ? 0 : ((paginaActual - 1) * registrosPorPagina) + 1;
+            int finRango = Math.Min(paginaActual * registrosPorPagina, totalRegistros);
+
+            if (totalRegistros == 0)
+                Lbl_Paginas.Text = "NO HAY SEDES PARA MOSTRAR";
+            else
+                Lbl_Paginas.Text = $"MOSTRANDO {inicioRango}-{finRango} DE {totalRegistros} SEDES";
         }
+
+        #endregion
     }
 }
