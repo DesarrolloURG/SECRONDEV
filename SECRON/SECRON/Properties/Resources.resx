@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ImportarExcelNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\ImportarExcelNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveVerde25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SaveVerde25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CheckNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\CheckNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AccountsNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\AccountsNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Visible 25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Visible 25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Clear25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Clear25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EmergenciaNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\EmergenciaNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Navidad2025" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Navidad2025.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Splash-CirculoBlanco" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Splash-CirculoBlanco.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SearchNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SearchNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Indice10x10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Indice10x10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlertaNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\AlertaNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TemplateBlack25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\TemplateBlack25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="URG-LOGO_BLANCO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\URG-LOGO_BLANCO.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SECRON-LogotipoAzul" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SECRON-LogotipoAzul.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CuentasNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\CuentasNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HomeNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\HomeNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExportarExcelNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\ExportarExcelNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LogoModificadoURG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\LogoModificadoURG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NotificationBlack25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\NotificationBlack25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KardexNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\KardexNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\PrintNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UsersNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\UsersNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BankNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\BankNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LocationNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\LocationNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DescripcionItemBlanco25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\DescripcionItemBlanco25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SupplierNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SupplierNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SECRON-Personaje SinFondo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SECRON-Personaje SinFondo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Indice15x15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Indice15x15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GraduacionNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\GraduacionNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeleccionarNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SeleccionarNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ArticleNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\ArticleNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UsersNegro25x251" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\UsersNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RightNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\RightNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CategoriesBlack50x50" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\CategoriesBlack50x50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AddNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\AddNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Indice25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Indice25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SECRON-Logotipo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SECRON-Logotipo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GastosNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\GastosNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MegafonoNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\MegafonoNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LogotipoHome2026" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\LogotipoHome2026.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UserPhotoNegro100x100" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\UserPhotoNegro100x100.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TransferNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\TransferNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LibrosContablesNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\LibrosContablesNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InfoNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\InfoNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ContactoNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\ContactoNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InformacionLaboralNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\InformacionLaboralNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Splash-CirculoCarga" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Splash-CirculoCarga.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EmployeesNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\EmployeesNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InactivarRojo25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\InactivarRojo25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CopyBlack25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\CopyBlack25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LeftNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\LeftNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProfileNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\ProfileNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FinanzasNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\FinanzasNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VisibleBlack 25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VisibleBlack 25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CategoriesBlack25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\CategoriesBlack25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MailNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\MailNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShopsNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\ShopsNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UpdateAzul25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\UpdateAzul25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MatchBlack25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\MatchBlack25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

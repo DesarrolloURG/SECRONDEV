@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{278C2313-41C1-4EE8-AC34-543B46BFB9CE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SECRON</RootNamespace>
+    <AssemblyName>SECRON</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SECRON-Logotipo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.Net-Next.4.0.3\lib\net48\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\DatabaseConfig.cs" />
+    <Compile Include="Configuration\NavegadorTabConfig .cs" />
+    <Compile Include="Configuration\TabConfig.cs" />
+    <Compile Include="Controllers\Ctrl_AccountingEntryChecks.cs" />
+    <Compile Include="Controllers\Ctrl_AccountingEntryDetails.cs" />
+    <Compile Include="Controllers\Ctrl_AccountingEntryMaster.cs" />
+    <Compile Include="Controllers\Ctrl_AccountingEntryStatus.cs" />
+    <Compile Include="Controllers\Ctrl_AccountingEntryTransfers.cs" />
+    <Compile Include="Controllers\Ctrl_Accounts.cs" />
+    <Compile Include="Controllers\Ctrl_Audit.cs" />
+    <Compile Include="Controllers\Ctrl_AudithLog_LoginResult.cs" />
+    <Compile Include="Controllers\Ctrl_Banks.cs" />
+    <Compile Include="Controllers\Ctrl_BanksAccountTypes.cs" />
+    <Compile Include="Controllers\Ctrl_Brands.cs" />
+    <Compile Include="Controllers\Ctrl_CheckControl.cs" />
+    <Compile Include="Controllers\Ctrl_Checks.cs" />
+    <Compile Include="Controllers\Ctrl_CheckStatus.cs" />
+    <Compile Include="Controllers\Ctrl_Departments.cs" />
+    <Compile Include="Controllers\Ctrl_EmployeeStatus.cs" />
+    <Compile Include="Controllers\Ctrl_ItemCategories.cs" />
+    <Compile Include="Controllers\Ctrl_ItemMovementDetails.cs" />
+    <Compile Include="Controllers\Ctrl_ItemMovementMaster.cs" />
+    <Compile Include="Controllers\Ctrl_Items.cs" />
+    <Compile Include="Controllers\Ctrl_ItemStockByLocation.cs" />
+    <Compile Include="Controllers\Ctrl_ItemStockTemplates.cs" />
+    <Compile Include="Controllers\Ctrl_LocationCategories.cs" />
+    <Compile Include="Controllers\Ctrl_Locations.cs" />
+    <Compile Include="Controllers\Ctrl_MeasurementUnits.cs" />
+    <Compile Include="Controllers\Ctrl_MovementTypes.cs" />
+    <Compile Include="Controllers\Ctrl_Permissions.cs" />
+    <Compile Include="Controllers\Ctrl_Positions.cs" />
+    <Compile Include="Controllers\Ctrl_PurchaseOrderDetails.cs" />
+    <Compile Include="Controllers\Ctrl_PurchaseOrderMaster.cs" />
+    <Compile Include="Controllers\Ctrl_PurchasePriority.cs" />
+    <Compile Include="Controllers\Ctrl_PurchaseRequestDetails.cs" />
+    <Compile Include="Controllers\Ctrl_PurchaseRequestMaster.cs" />
+    <Compile Include="Controllers\Ctrl_PurchaseRequestStatus.cs" />
+    <Compile Include="Controllers\Ctrl_PurchaseRequisitionDetails.cs" />
+    <Compile Include="Controllers\Ctrl_PurchaseRequisitionMaster.cs" />
+    <Compile Include="Controllers\Ctrl_RolePermissions.cs" />
+    <Compile Include="Controllers\Ctrl_Roles.cs" />
+    <Compile Include="Controllers\Ctrl_Security_Auth.cs" />
+    <Compile Include="Controllers\Ctrl_Employees.cs" />
+    <Compile Include="Controllers\Ctrl_Suppliers.cs" />
+    <Compile Include="Controllers\Ctrl_Teachers.cs" />
+    <Compile Include="Controllers\Ctrl_Transfers.cs" />
+    <Compile Include="Controllers\Ctrl_TransferStatus.cs" />
+    <Compile Include="Controllers\Ctrl_UserPermissions.cs" />
+    <Compile Include="Controllers\Ctrl_Users.cs" />
+    <Compile Include="Controllers\Ctrl_UserStatus.cs" />
+    <Compile Include="Models\Mdl_AccountingEntryChecks.cs" />
+    <Compile Include="Models\Mdl_AccountingEntryDetails.cs" />
+    <Compile Include="Models\Mdl_AccountingEntryMaster.cs" />
+    <Compile Include="Models\Mdl_AccountingEntryStatus.cs" />
+    <Compile Include="Models\Mdl_AccountingEntryTransfers.cs" />
+    <Compile Include="Models\Mdl_Accounts.cs" />
+    <Compile Include="Models\Mdl_Audit.cs" />
+    <Compile Include="Models\Mdl_Banks.cs" />
+    <Compile Include="Models\Mdl_BanksAccountTypes.cs" />
+    <Compile Include="Models\Mdl_Brands.cs" />
+    <Compile Include="Models\Mdl_CheckControl.cs" />
+    <Compile Include="Models\Mdl_Checks.cs" />
+    <Compile Include="Models\Mdl_CheckStatus.cs" />
+    <Compile Include="Models\Mdl_Country.cs" />
+    <Compile Include="Models\Mdl_Department.cs" />
+    <Compile Include="Models\Mdl_Departments.cs" />
+    <Compile Include="Models\Mdl_Employees.cs" />
+    <Compile Include="Models\Mdl_AudithLog_LoginResult.cs" />
+    <Compile Include="Models\Mdl_EmployeeStatus.cs" />
+    <Compile Include="Models\Mdl_ItemCategories.cs" />
+    <Compile Include="Models\Mdl_ItemMovementDetails.cs" />
+    <Compile Include="Models\Mdl_ItemMovementMaster.cs" />
+    <Compile Include="Models\Mdl_Items.cs" />
+    <Compile Include="Models\Mdl_ItemStockByLocation.cs" />
+    <Compile Include="Models\Mdl_ItemStockTemplates.cs" />
+    <Compile Include="Models\Mdl_LocationCategories.cs" />
+    <Compile Include="Models\Mdl_LocationCategory.cs" />
+    <Compile Include="Models\Mdl_Locations.cs" />
+    <Compile Include="Models\Mdl_MeasurementUnits.cs" />
+    <Compile Include="Models\Mdl_MovementTypes.cs" />
+    <Compile Include="Models\Mdl_Municipality.cs" />
+    <Compile Include="Models\Mdl_Permissions.cs" />
+    <Compile Include="Models\Mdl_Positions.cs" />
+    <Compile Include="Models\Mdl_PurchaseOrderDetails.cs" />
+    <Compile Include="Models\Mdl_PurchaseOrderMaster.cs" />
+    <Compile Include="Models\Mdl_PurchasePriority.cs" />
+    <Compile Include="Models\Mdl_PurchaseRequestDetails.cs" />
+    <Compile Include="Models\Mdl_PurchaseRequestMaster.cs" />
+    <Compile Include="Models\Mdl_PurchaseRequestStatus.cs" />
+    <Compile Include="Models\Mdl_PurchaseRequisitionDetails.cs" />
+    <Compile Include="Models\Mdl_PurchaseRequisitionMaster.cs" />
+    <Compile Include="Models\Mdl_RolePermissions.cs" />
+    <Compile Include="Models\Mdl_Roles.cs" />
+    <Compile Include="Models\Mdl_Security_LoginStatus.cs" />
+    <Compile Include="Models\Mdl_Security_SessionInfo.cs" />
+    <Compile Include="Models\Mdl_Security_UserInfo.cs" />
+    <Compile Include="Models\Mdl_Security_UserLoginResult.cs" />
+    <Compile Include="Models\Mdl_Suppliers.cs" />
+    <Compile Include="Models\Mdl_Teachers.cs" />
+    <Compile Include="Models\Mdl_Transfers.cs" />
+    <Compile Include="Models\Mdl_TransferStatus.cs" />
+    <Compile Include="Models\Mdl_UserPermissions.cs" />
+    <Compile Include="Models\Mdl_Users.cs" />
+    <Compile Include="Models\Mdl_UserStatus.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Accounts_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Accounts_Managment.Designer.cs">
+      <DependentUpon>Frm_Accounts_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Assignment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Assignment.Designer.cs">
+      <DependentUpon>Frm_Checks_Assignment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_ChangeCorrelative.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_ChangeCorrelative.Designer.cs">
+      <DependentUpon>Frm_Checks_ChangeCorrelative.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_ChangeState.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_ChangeState.Designer.cs">
+      <DependentUpon>Frm_Checks_ChangeState.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_FileControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_FileControl.Designer.cs">
+      <DependentUpon>Frm_Checks_FileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_FileControl_ReportConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_FileControl_ReportConfig.Designer.cs">
+      <DependentUpon>Frm_Checks_FileControl_ReportConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Managment.Designer.cs">
+      <DependentUpon>Frm_Checks_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Predeclarations.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Predeclarations.Designer.cs">
+      <DependentUpon>Frm_Checks_Predeclarations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Reports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Reports.Designer.cs">
+      <DependentUpon>Frm_Checks_Reports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_ReverseCancellation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_ReverseCancellation.Designer.cs">
+      <DependentUpon>Frm_Checks_ReverseCancellation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_SearchBeneficiario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_SearchBeneficiario.Designer.cs">
+      <DependentUpon>Frm_Checks_SearchBeneficiario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_SearchCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_SearchCuenta.Designer.cs">
+      <DependentUpon>Frm_Checks_SearchCuenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_ControlCenter_MDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_ControlCenter_MDI.Designer.cs">
+      <DependentUpon>Frm_ControlCenter_MDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Employees_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Employees_Managment.Designer.cs">
+      <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Home.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Home.Designer.cs">
+      <DependentUpon>Frm_Home.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories.Designer.cs">
+      <DependentUpon>Frm_KARDEX_CatalogLocationsCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Categories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Categories.Designer.cs">
+      <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Categories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.Designer.cs">
+      <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_ItemsManagment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_ItemsManagment.Designer.cs">
+      <DependentUpon>Frm_KARDEX_ItemsManagment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_LocationsInventary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_LocationsInventary.Designer.cs">
+      <DependentUpon>Frm_KARDEX_LocationsInventary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_LocationsInventary_Templates.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_LocationsInventary_Templates.Designer.cs">
+      <DependentUpon>Frm_KARDEX_LocationsInventary_Templates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_SearchCategory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_SearchCategory.Designer.cs">
+      <DependentUpon>Frm_KARDEX_SearchCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_SearchMeasurementUnits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_SearchMeasurementUnits.Designer.cs">
+      <DependentUpon>Frm_KARDEX_SearchMeasurementUnits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Locations_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Locations_Managment.Designer.cs">
+      <DependentUpon>Frm_Locations_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Security_ForgetPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Security_ForgetPassword.Designer.cs">
+      <DependentUpon>Frm_Security_ForgetPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Security_ResetPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Security_ResetPassword.Designer.cs">
+      <DependentUpon>Frm_Security_ResetPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Security_TemporalPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Security_TemporalPassword.Designer.cs">
+      <DependentUpon>Frm_Security_TemporalPassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Security_UnlockUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Security_UnlockUser.Designer.cs">
+      <DependentUpon>Frm_Security_UnlockUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Suppliers_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Suppliers_Managment.Designer.cs">
+      <DependentUpon>Frm_Suppliers_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_System_Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_System_Splash.Designer.cs">
+      <DependentUpon>Frm_System_Splash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Security_Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Security_Login.Designer.cs">
+      <DependentUpon>Frm_Security_Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Frm_Teachers_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Teachers_Managment.Designer.cs">
+      <DependentUpon>Frm_Teachers_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_Managment.Designer.cs">
+      <DependentUpon>Frm_Transfers_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_Reports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_Reports.Designer.cs">
+      <DependentUpon>Frm_Transfers_Reports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_SearchBeneficiario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_SearchBeneficiario.Designer.cs">
+      <DependentUpon>Frm_Transfers_SearchBeneficiario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_SearchCuenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Transfers_SearchCuenta.Designer.cs">
+      <DependentUpon>Frm_Transfers_SearchCuenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Users_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Users_Managment.Designer.cs">
+      <DependentUpon>Frm_Users_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Users_RolesPermissions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Users_RolesPermissions.Designer.cs">
+      <DependentUpon>Frm_Users_RolesPermissions.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Views\Frm_Accounts_Managment.resx">
+      <DependentUpon>Frm_Accounts_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_Assignment.resx">
+      <DependentUpon>Frm_Checks_Assignment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_ChangeCorrelative.resx">
+      <DependentUpon>Frm_Checks_ChangeCorrelative.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_ChangeState.resx">
+      <DependentUpon>Frm_Checks_ChangeState.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_FileControl.resx">
+      <DependentUpon>Frm_Checks_FileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_FileControl_ReportConfig.resx">
+      <DependentUpon>Frm_Checks_FileControl_ReportConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_Managment.resx">
+      <DependentUpon>Frm_Checks_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_Predeclarations.resx">
+      <DependentUpon>Frm_Checks_Predeclarations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_Reports.resx">
+      <DependentUpon>Frm_Checks_Reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_ReverseCancellation.resx">
+      <DependentUpon>Frm_Checks_ReverseCancellation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_SearchBeneficiario.resx">
+      <DependentUpon>Frm_Checks_SearchBeneficiario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_SearchCuenta.resx">
+      <DependentUpon>Frm_Checks_SearchCuenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_ControlCenter_MDI.resx">
+      <DependentUpon>Frm_ControlCenter_MDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Employees_Managment.resx">
+      <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Home.resx">
+      <DependentUpon>Frm_Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories.resx">
+      <DependentUpon>Frm_KARDEX_CatalogLocationsCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories_Categories.resx">
+      <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Categories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.resx">
+      <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_ItemsManagment.resx">
+      <DependentUpon>Frm_KARDEX_ItemsManagment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_LocationsInventary.resx">
+      <DependentUpon>Frm_KARDEX_LocationsInventary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_LocationsInventary_Templates.resx">
+      <DependentUpon>Frm_KARDEX_LocationsInventary_Templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_SearchCategory.resx">
+      <DependentUpon>Frm_KARDEX_SearchCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_SearchMeasurementUnits.resx">
+      <DependentUpon>Frm_KARDEX_SearchMeasurementUnits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Locations_Managment.resx">
+      <DependentUpon>Frm_Locations_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Security_ForgetPassword.resx">
+      <DependentUpon>Frm_Security_ForgetPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Security_ResetPassword.resx">
+      <DependentUpon>Frm_Security_ResetPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Security_TemporalPassword.resx">
+      <DependentUpon>Frm_Security_TemporalPassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Security_UnlockUser.resx">
+      <DependentUpon>Frm_Security_UnlockUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Suppliers_Managment.resx">
+      <DependentUpon>Frm_Suppliers_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_System_Splash.resx">
+      <DependentUpon>Frm_System_Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Security_Login.resx">
+      <DependentUpon>Frm_Security_Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Teachers_Managment.resx">
+      <DependentUpon>Frm_Teachers_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Transfers_Managment.resx">
+      <DependentUpon>Frm_Transfers_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Transfers_Reports.resx">
+      <DependentUpon>Frm_Transfers_Reports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Transfers_SearchBeneficiario.resx">
+      <DependentUpon>Frm_Transfers_SearchBeneficiario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Transfers_SearchCuenta.resx">
+      <DependentUpon>Frm_Transfers_SearchCuenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Users_Managment.resx">
+      <DependentUpon>Frm_Users_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Users_RolesPermissions.resx">
+      <DependentUpon>Frm_Users_RolesPermissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VisibleBlack 25x25.png" />
+    <None Include="Resources\Visible 25x25.png" />
+    <None Include="Img\URG-LOGO_BLANCO.png" />
+    <None Include="Img\SECRON-Personaje SinFondo.png" />
+    <None Include="Img\SECRON-Logotipo.png" />
+    <None Include="Img\SECRON-LogotipoAzul.png" />
+    <None Include="Img\Splash-CirculoBlanco.png" />
+    <None Include="Img\Splash-CirculoCarga.gif" />
+    <None Include="Img\LogoModificadoURG.png" />
+    <None Include="Img\Indice25x25.png" />
+    <None Include="Img\Indice10x10.png" />
+    <None Include="Img\Indice15x15.png" />
+    <None Include="Img\Home25x25.png" />
+    <None Include="Img\HomeNegro20x20.png" />
+    <None Include="Img\HomeNegro25x25.png" />
+    <None Include="Img\EmployeesNegro25x25.png" />
+    <None Include="Img\UsersNegro25x25.png" />
+    <None Include="Img\SupplierNegro25x25.png" />
+    <None Include="Img\AccountsNegro25x25.png" />
+    <None Include="Img\ShopsNegro25x25.png" />
+    <None Include="Img\KardexNegro25x25.png" />
+    <None Include="Img\GastosNegro25x25.png" />
+    <None Include="Img\CheckNegro25x25.png" />
+    <None Include="Img\BankNegro25x25.png" />
+    <None Include="Img\LibrosContablesNegro25x25.png" />
+    <None Include="Img\LocationNegro25x25.png" />
+    <None Include="Img\ArticleNegro25x25.png" />
+    <None Include="Img\ProfileNegro25x25.png" />
+    <None Include="Img\NotificationBlack25x25.png" />
+    <None Include="Img\UserPhotoNegro100x100.png" />
+    <None Include="Img\AddNegro25x25.png" />
+    <None Include="Img\ExportarExcelNegro25x25.png" />
+    <None Include="Img\ImportarExcelNegro25x25.png" />
+    <None Include="Img\EmergenciaNegro25x25.png" />
+    <None Include="Img\AlertaNegro25x25.png" />
+    <None Include="Img\DescripcionItemBlanco25x25.png" />
+    <None Include="Img\InformacionLaboralNegro25x25.png" />
+    <None Include="Img\ContactoNegro25x25.png" />
+    <None Include="Img\SaveVerde25x25.png" />
+    <None Include="Img\UpdateAzul25x25.png" />
+    <None Include="Img\InactivarRojo25x25.png" />
+    <None Include="Img\SearchNegro25x25.png" />
+    <None Include="Img\Clear25x25.png" />
+    <None Include="Img\CuentasNegro25x25.png" />
+    <None Include="Img\InfoNegro20x20.png" />
+    <None Include="Img\SeleccionarNegro20x20.png" />
+    <None Include="Img\FinanzasNegro20x20.png" />
+    <None Include="Img\PrintNegro20x20.png" />
+    <None Include="Img\MailNegro25x25.png" />
+    <None Include="Img\RightNegro25x25.png" />
+    <None Include="Img\LeftNegro25x25.png" />
+    <None Include="Img\MegafonoNegro20x20.png" />
+    <None Include="Img\GraduacionNegro25x25.png" />
+    <None Include="Img\Navidad2025.png" />
+    <None Include="Img\TransferNegro25x25.png" />
+    <None Include="Img\LogotipoHome2026.png" />
+    <None Include="Img\CopyBlack25x25.png" />
+    <None Include="Img\TemplateBlack25x25.png" />
+    <Content Include="Img\CategoriesBlack25x25.png" />
+    <None Include="Img\CategoriesBlack50x50.png" />
+    <None Include="Img\MatchBlack25x25.png" />
+    <Content Include="SECRON-Logotipo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 y x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

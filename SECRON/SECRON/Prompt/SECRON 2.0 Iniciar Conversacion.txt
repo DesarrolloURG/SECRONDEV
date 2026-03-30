@@ -1,0 +1,74 @@
+Proyecto SECRON 2.0 - Sistema contable en C# WinForms.
+Voy a subir archivos para que hagas modificaciones específicas.
+NO inventes código sino se te pide que lo hagas, SOLO trabaja con lo que está en los archivos.
+Dame código listo para copiar/pegar, las funciones de preferencia dámelas completas, si me indicas el número de línea no nos cuadra, muchas veces no coincidimos en la línea que tu visualizas y la de mi código, puedes dejar comentarios en el código, pero no dejes emojis, y comentarios claros de que hacen las funciones o procedimientos.
+Si necesitas un Controller, Model, una Tabla, lo que requieras pídemelo, ya todo eso existe igual los componentes visuales ya existen, únicamente los vamos a configurar. 
+Si tienes dudas pregúntame
+
+### **2. SUBE LOS ARCHIVOS RELEVANTES INMEDIATAMENTE**
+- Siempre adjunta los archivos `.cs` que vas a modificar
+- Si necesitas referencia de otro formulario, súbelo también
+- Esto evita que yo invente métodos o regiones que no existen
+
+### **3. SÉ ESPECÍFICO EN TUS PETICIONES**
+**❌ MAL:** "Necesito adaptar el panel de búsqueda"
+**✅ BIEN:** "Adaptame el panel de búsqueda de Frm_Checks_Reports a Frm_Checks_ChangeState. Te subo ambos archivos. Solo dame las modificaciones exactas."
+
+### **4. CORRÍGEME RÁPIDO SI ME DESVÍO**
+Como lo hiciste al inicio:
+> "SOLO QUIERO ADAPTAR X COSA, LEE EL CÓDIGO Y DEJA DE INVENTAR"
+
+Esto me reenfoca inmediatamente.
+
+### **5. USA ESTAS FRASES CLAVE:**
+- "Dame el método completo con las modificaciones"
+- "Solo las líneas que cambiar, nada más"
+- "Lee primero el archivo línea X a Y"
+- "Basándote SOLO en el código que te subí..."
+
+---
+
+## 📋 **PLANTILLA PARA INICIAR CHATS:**
+
+Copia esto al inicio de cada nuevo chat:
+```
+PROYECTO: SECRON 2.0 (C# WinForms)
+
+INSTRUCCIONES:
+1. Lee los archivos que subo ANTES de responder
+2. NO inventes código que no existe
+3. Dame modificaciones específicas y exactas
+4. Código listo para copiar/pegar
+5. Si no entiendes algo, pregunta en lugar de asumir
+
+TAREA DE HOY:
+[Describe aquí lo que necesitas]
+
+[ADJUNTA TUS ARCHIVOS]
+```
+
+---
+
+## 🔥 **TIPS ADICIONALES:**
+
+1. **Si empiezo a explicar mucho:** Dime "Solo el código"
+2. **Si invento métodos:** Dime "Ese método no existe, lee el archivo"
+3. **Si das un error de compilación:** Súbeme el mensaje de error completo
+4. **Para múltiples cambios:** Házlos paso por paso, no todos a la vez
+
+---
+
+## 💡 **EJEMPLO DE INICIO PERFECTO:**
+```
+SECRON 2.0 - Modificar formulario de cambio de estado
+
+Necesito:
+1. Eliminar el ListBox
+2. Agregar columna checkbox en la tabla
+3. Que funcione como Frm_Users_RolesPermissions
+
+Te subo 2 archivos:
+- Frm_Checks_ChangeState.cs (el que voy a modificar)
+- Frm_Users_RolesPermissions.cs (referencia de cómo debe quedar)
+
+Dame los cambios EXACTOS, línea por línea.

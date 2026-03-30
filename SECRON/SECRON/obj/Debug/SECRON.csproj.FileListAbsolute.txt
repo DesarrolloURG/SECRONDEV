@@ -1,0 +1,219 @@
+C:\Users\ORIGIN\Documents\SECRON\SECRON\bin\Debug\SECRON.exe.config
+C:\Users\ORIGIN\Documents\SECRON\SECRON\bin\Debug\SECRON.exe
+C:\Users\ORIGIN\Documents\SECRON\SECRON\bin\Debug\SECRON.pdb
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.exe
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.pdb
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.exe.config
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.Sys_UI_Config.resources
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+C:\Users\ORIGIN\Documents\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\SECRON.exe.config
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\SECRON.exe
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\SECRON.pdb
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.exe.config
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.Sys_UI_Config.resources
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.exe
+E:\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\SECRON.exe.config
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\SECRON.exe
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.exe.config
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.exe
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.Up2Date
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.exe.config
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.exe
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\SECRON.exe.config
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\SECRON.exe
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.Up2Date
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Buffers.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Memory.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Buffers.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Memory.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.exe.config
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.exe
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.pdb
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\SECRON.exe.config
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\SECRON.exe
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\SECRON.pdb
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\Newtonsoft.Json.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Buffers.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Memory.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\Newtonsoft.Json.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Buffers.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Memory.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\SECRON\obj\Debug\SECRON.csproj.Up2Date
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\SECRON.exe.config
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\SECRON.exe
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\SECRON.pdb
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\Newtonsoft.Json.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Buffers.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Memory.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\Newtonsoft.Json.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Buffers.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Memory.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.exe.config
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.csproj.Up2Date
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.exe
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Buffers.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Memory.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Buffers.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Memory.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_ControlCenter_MDI.resources
+E:\Documentos\Digital Point\PROYECTOS\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_ControlCenter_MDI.resources
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\SECRON.exe.config
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\SECRON.exe
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\SECRON.pdb
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.dll
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Buffers.dll
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Memory.dll
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.xml
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Buffers.xml
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Memory.xml
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.exe.config
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_ControlCenter_MDI.resources
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.csproj.Up2Date
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.exe
+C:\Users\ORIGIN\Desktop\SECRON\SECRON\obj\Debug\SECRON.pdb
+E:\Documentos\Digital Point\Proyectos\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Home.resources
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\SECRON.exe.config
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\SECRON.exe
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.dll
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Buffers.dll
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Memory.dll
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\BCrypt.Net-Next.xml
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Buffers.xml
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Memory.xml
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.csproj.AssemblyReference.cache
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.exe.config
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_ControlCenter_MDI.resources
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Home.resources
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.Frm_System_Splash.resources
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.Frm_Security_Login.resources
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.Properties.Resources.resources
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.csproj.GenerateResource.cache
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.csproj.CoreCompileInputs.cache
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.csproj.Up2Date
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.exe
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.pdb
+C:\Users\Jose_Torres\Downloads\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Employees_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Employees_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Home.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.csproj.ResolveComReference.cache
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_SearchCuenta.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_SearchBeneficiario.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Users_RolesPermissions.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Users_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Security_ResetPassword.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Security_TemporalPassword.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Suppliers_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Accounts_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Security_ForgetPassword.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Security_UnlockUser.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_Assignment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_Reports.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_ChangeStatus.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_ChangeCorrelative.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_Predeclarations.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_ReverseCancellation.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Teachers_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_SearchCategory.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_SearchMeasurementUnits.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_FileControl.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Transfers_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Transfers_Reports.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Transfers_SearchCuenta.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Transfers_SearchBeneficiario.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Checks_FileControl_ReportConfig.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_Locations_Managment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_ItemsManagment.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_CatalogLocationsCategories.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_LocationsInventary.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_CatalogLocationsCategories_Categories.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_CatalogLocationsCategories_Templates.resources
+C:\Users\Jose_Torres\Documents\SECRON\SECRON\obj\Debug\SECRON.Views.Frm_KARDEX_LocationsInventary_Templates.resources
