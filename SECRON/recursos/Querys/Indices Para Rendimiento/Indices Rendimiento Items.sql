@@ -1,0 +1,6 @@
+-- Indices Para Rendimiento
+CREATE INDEX IDX_ItemMovementMaster_MovementNumber ON ItemMovementMaster(MovementNumber);
+CREATE INDEX IDX_ItemMovementMaster_MovementDate ON ItemMovementMaster(MovementDate);
+CREATE INDEX IDX_ItemMovementMaster_LocationId ON ItemMovementMaster(LocationId);
+CREATE INDEX IDX_ItemMovementDetails_MovementMasterId ON ItemMovementDetails(MovementMasterId);
+CREATE INDEX IDX_ItemMovementDetails_ItemId ON ItemMovementDetails(ItemId);
