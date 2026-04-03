@@ -9,12 +9,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SECRON.Views
 {
-    public partial class Frm_KARDEX_CatalogLocationsCategories : Form
+    public partial class Frm_KARDEX_CatalogLocationsCategories : Frm_BaseWithPermissions
     {
         #region PropiedadesIniciales
-
-        // Datos del usuario autenticado
-        public Mdl_Security_UserInfo UserData { get; set; }
 
         // Filtros de búsqueda
         private string _ultimoTextoBusqueda = "";
@@ -48,7 +45,7 @@ namespace SECRON.Views
             };
         }
 
-        private void Frm_KARDEX_CatalogLocationsCategories_Load(object sender, EventArgs e)
+        private async void Frm_KARDEX_CatalogLocationsCategories_Load(object sender, EventArgs e)
         {
             try
             {
@@ -61,6 +58,9 @@ namespace SECRON.Views
                 ConfigurarFiltros();
                 CrearToolStripPaginacion();        // Primero el toolstrip
                 ConfigurarComboCategoria();        // Luego el combo que dispara la carga
+
+                // CARGAR PERMISOS DEL USUARIO
+                await InicializarPermisosAsync();
 
                 this.Cursor = Cursors.Default;
             }
@@ -907,6 +907,16 @@ namespace SECRON.Views
         }
 
         #endregion CRUD
+        #region SistemaDePermisos
+        protected override void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Update, "KARDEX_CATLOCATION_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Delete, "KARDEX_CATLOCATION_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Search, "KARDEX_CATLOCATION_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "KARDEX_CATLOCATION_EXPORT");
+        }
+        #endregion SistemaDePermisos
+
         #region ExportarExcel
 
         private void Btn_Export_Click(object sender, EventArgs e)
@@ -1028,6 +1038,8 @@ namespace SECRON.Views
 
         #endregion ExportarExcel
     }
+
+
     // CLASE AUXILIAR DE APOYO EN PROCEDIMIENTOS DE CATEGORÍAS
     // Permite almacenar el ID y nombre de la categoría para mostrar en el ComboBox
     internal class CategoriaItem
@@ -1043,4 +1055,6 @@ namespace SECRON.Views
 
         public override string ToString() => Nombre;
     }
+
+
 }

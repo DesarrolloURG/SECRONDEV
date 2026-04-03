@@ -9,12 +9,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SECRON.Views
 {
-    public partial class Frm_KARDEX_LocationsInventary : Form
+    public partial class Frm_KARDEX_LocationsInventary : Frm_BaseWithPermissions
     {
         #region PropiedadesIniciales
-
-        // Datos del usuario autenticado
-        public Mdl_Security_UserInfo UserData { get; set; }
 
         // Sede seleccionada para filtrar inventario
         private int? _sedeActivaId = null;
@@ -53,7 +50,7 @@ namespace SECRON.Views
             };
         }
 
-        private void Frm_KARDEX_LocationsInventary_Load(object sender, EventArgs e)
+        private async void Frm_KARDEX_LocationsInventary_Load(object sender, EventArgs e)
         {
             try
             {
@@ -68,6 +65,9 @@ namespace SECRON.Views
 
                 // La carga la dispara el combo de sedes
                 CargarComboSedes();
+
+                // CARGAR PERMISOS DEL USUARIO
+                await InicializarPermisosAsync();
 
                 this.Cursor = Cursors.Default;
             }
@@ -1002,5 +1002,14 @@ namespace SECRON.Views
         }
 
         #endregion ExportarExcel
+        #region SistemaDePermisos
+        protected override void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Update, "KARDEX_INVENTORY_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Delete, "KARDEX_INVENTORY_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Search, "KARDEX_INVENTORY_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "KARDEX_INVENTORY_EXPORT");
+        }
+        #endregion SistemaDePermisos
     }
 }

@@ -9,12 +9,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SECRON.Views
 {
-    public partial class Frm_KARDEX_ItemsManagment : Form
+    public partial class Frm_KARDEX_ItemsManagment : Frm_BaseWithPermissions
     {
         #region PropiedadesIniciales
-
-        // Datos del usuario autenticado
-        public Mdl_Security_UserInfo UserData { get; set; }
 
         // Filtros de búsqueda
         private string _ultimoTextoBusqueda = "";
@@ -54,7 +51,7 @@ namespace SECRON.Views
             };
         }
 
-        private void Frm_KARDEX_Managment_Load(object sender, EventArgs e)
+        private async void Frm_KARDEX_Managment_Load(object sender, EventArgs e)
         {
             try
             {
@@ -71,6 +68,9 @@ namespace SECRON.Views
                 CargarArticulos();
                 ActualizarInfoPaginacion();
                 CargarProximoCodigoItem();
+
+                // CARGAR PERMISOS DEL USUARIO
+                await InicializarPermisosAsync();
 
                 this.Cursor = Cursors.Default;
             }
@@ -1393,5 +1393,17 @@ namespace SECRON.Views
             }
         }
         #endregion ExportarExcel
+        #region SistemaDePermisos
+        protected override void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Save, "KARDEX_INVENTORY_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "KARDEX_INVENTORY_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Inactive, "KARDEX_INVENTORY_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "KARDEX_INVENTORY_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Import, "KARDEX_INVENTORY_IMPORT");
+            //AplicarEstadoBotonPorPermiso(Btn_Search, "KARDEX_INVENTORY_READ");
+
+        }
+        #endregion SistemaDePermisos
     }
 }
