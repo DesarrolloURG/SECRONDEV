@@ -198,9 +198,6 @@
     <Compile Include="Views\Frm_Accounts_Managment.Designer.cs">
       <DependentUpon>Frm_Accounts_Managment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Frm_BaseWithPermissions.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Views\Frm_Checks_Assignment.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -211,7 +211,6 @@
             this.Btn_Search.Text = "BUSCAR";
             this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Search.UseVisualStyleBackColor = true;
-            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
             // 
             // Filtro1
             // 
@@ -736,7 +735,7 @@
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "GESTIÓN DE ARTÍCULOS";
             // 
-            // Frm_KARDEX_ItemsManagment
+            // Frm_KARDEX_Managment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -745,7 +744,7 @@
             this.Controls.Add(this.Panel_Izquierdo);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Frm_KARDEX_ItemsManagment";
+            this.Name = "Frm_KARDEX_Managment";
             this.Text = "SECRON - GESTIÓN DE ARTÍCULOS";
             this.Load += new System.EventHandler(this.Frm_KARDEX_Managment_Load);
             this.Panel_Derecho.ResumeLayout(false);
