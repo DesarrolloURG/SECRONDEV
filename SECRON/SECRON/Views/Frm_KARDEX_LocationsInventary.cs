@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -53,7 +54,7 @@ namespace SECRON.Views
             };
         }
 
-        private void Frm_KARDEX_LocationsInventary_Load(object sender, EventArgs e)
+        private async void Frm_KARDEX_LocationsInventary_Load(object sender, EventArgs e)
         {
             try
             {
@@ -68,6 +69,13 @@ namespace SECRON.Views
 
                 // La carga la dispara el combo de sedes
                 CargarComboSedes();
+
+                // CARGAR PERMISOS DEL USUARIO
+                if (UserData != null)
+                {
+                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    ConfigurarControlesPorPermisos();
+                }
 
                 this.Cursor = Cursors.Default;
             }
@@ -1002,5 +1010,64 @@ namespace SECRON.Views
         }
 
         #endregion ExportarExcel
+        #region SistemaDePermisos
+        // ========== SISTEMA DE PERMISOS ==========
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                MessageBox.Show(
+                    $"ERROR AL CARGAR PERMISOS: {ex.Message}",
+                    "ERROR SECRON",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null)
+                return;
+
+            bool habilitado = TienePermiso(permissionCode);
+
+            boton.Enabled = habilitado;
+
+            if (!habilitado)
+            {
+                boton.BackColor = Color.FromArgb(200, 200, 200);
+                boton.ForeColor = Color.Gray;
+                boton.Cursor = Cursors.No;
+            }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Update, "KARDEX_INVENTORY_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Delete, "KARDEX_INVENTORY_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Search, "KARDEX_INVENTORY_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "KARDEX_INVENTORY_EXPORT");
+        }
+        #endregion SistemaDePermisos
     }
 }
