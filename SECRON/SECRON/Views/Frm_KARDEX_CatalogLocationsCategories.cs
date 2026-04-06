@@ -1043,6 +1043,7 @@ namespace SECRON.Views
         {
             try
             {
+                authController = new Ctrl_Security_Auth();
                 var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
 
                 permisosUsuario = permisos != null
