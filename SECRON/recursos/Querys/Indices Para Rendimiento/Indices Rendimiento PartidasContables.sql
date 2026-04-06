@@ -1,0 +1,5 @@
+-- ÍNDICES
+CREATE INDEX IDX_AccountingEntryMaster_CheckId ON AccountingEntryMaster(CheckId);
+CREATE INDEX IDX_AccountingEntryMaster_EntryDate ON AccountingEntryMaster(EntryDate);
+CREATE INDEX IDX_AccountingEntryDetails_EntryMasterId ON AccountingEntryDetails(EntryMasterId);
+CREATE INDEX IDX_AccountingEntryDetails_AccountId ON AccountingEntryDetails(AccountId);
