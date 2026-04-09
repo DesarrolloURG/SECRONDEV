@@ -652,10 +652,10 @@ namespace SECRON.Views
 
                 var nuevaUbicacion = new Mdl_Locations
                 {
-                    LocationCode = TienePlaceholder(Txt_Code) ? null : Txt_Code.Text.Trim(),
-                    LocationName = TienePlaceholder(Txt_Name) ? null : Txt_Name.Text.Trim(),
-                    Address = TienePlaceholder(Txt_Address) ? null : Txt_Address.Text.Trim(),
-                    City = Txt_City.Text.Trim(),
+                    LocationCode = TienePlaceholder(Txt_Code) ? null : Txt_Code.Text.Trim().ToUpper(),
+                    LocationName = TienePlaceholder(Txt_Name) ? null : Txt_Name.Text.Trim().ToUpper(),
+                    Address = TienePlaceholder(Txt_Address) ? null : Txt_Address.Text.Trim().ToUpper(),
+                    City = Txt_City.Text.Trim().ToUpper(),
                     MunicipalityId = ObtenerValorComboNullable(ComboBox_Municipality),
                     LocationCategoryId = ObtenerValorComboNullable(ComboBox_LocationCategoryId),
                     PrimaryWarehouseId = ObtenerValorComboNullable(ComboBox_PrimaryWarehouseId),
@@ -740,10 +740,10 @@ namespace SECRON.Views
                 if (confirmacion != DialogResult.Yes)
                     return;
 
-                _ubicacionSeleccionada.LocationCode = TienePlaceholder(Txt_Code) ? null : Txt_Code.Text.Trim();
-                _ubicacionSeleccionada.LocationName = TienePlaceholder(Txt_Name) ? null : Txt_Name.Text.Trim();
-                _ubicacionSeleccionada.Address = TienePlaceholder(Txt_Address) ? null : Txt_Address.Text.Trim();
-                _ubicacionSeleccionada.City = Txt_City.Text.Trim();
+                _ubicacionSeleccionada.LocationCode = TienePlaceholder(Txt_Code) ? null : Txt_Code.Text.Trim().ToUpper();
+                _ubicacionSeleccionada.LocationName = TienePlaceholder(Txt_Name) ? null : Txt_Name.Text.Trim().ToUpper();
+                _ubicacionSeleccionada.Address = TienePlaceholder(Txt_Address) ? null : Txt_Address.Text.Trim().ToUpper();
+                _ubicacionSeleccionada.City = Txt_City.Text.Trim().ToUpper();
                 _ubicacionSeleccionada.MunicipalityId = ObtenerValorComboNullable(ComboBox_Municipality);
                 _ubicacionSeleccionada.LocationCategoryId = ObtenerValorComboNullable(ComboBox_LocationCategoryId);
                 _ubicacionSeleccionada.PrimaryWarehouseId = ObtenerValorComboNullable(ComboBox_PrimaryWarehouseId);

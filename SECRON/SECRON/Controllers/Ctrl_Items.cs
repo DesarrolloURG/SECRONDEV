@@ -91,10 +91,12 @@ namespace SECRON.Controllers
 
         // MÉTODO PRINCIPAL: Búsqueda con filtros
         public static List<Mdl_Items> BuscarArticulos(
-            string textoBusqueda = "",
-            int? categoryId = null,
-            int pageNumber = 1,
-            int pageSize = 100)
+    string textoBusqueda = "",
+    int? categoryId = null,
+    string filtro1 = "TODOS",
+    string filtro3 = "TODOS",
+    int pageNumber = 1,
+    int pageSize = 100)
         {
             List<Mdl_Items> lista = new List<Mdl_Items>();
             try
@@ -102,12 +104,27 @@ namespace SECRON.Controllers
                 int offset = (pageNumber - 1) * pageSize;
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT * FROM Items WHERE IsActive = 1";
+                    string query = "SELECT * FROM Items WHERE 1=1";
                     List<SqlParameter> parametros = new List<SqlParameter>();
 
+                    // Filtro3: estado
+                    if (filtro3 == "SOLO ACTIVOS")
+                        query += " AND IsActive = 1";
+                    else if (filtro3 == "SOLO INACTIVOS")
+                        query += " AND IsActive = 0";
+
+                    // Filtro1: campo de búsqueda
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
-                        query += " AND (ItemCode LIKE @texto OR ItemName LIKE @texto OR Description LIKE @texto)";
+                        if (filtro1 == "POR CÓDIGO")
+                            query += " AND ItemCode LIKE @texto";
+                        else if (filtro1 == "POR NOMBRE")
+                            query += " AND ItemName LIKE @texto";
+                        else if (filtro1 == "POR DESCRIPCIÓN")
+                            query += " AND Description LIKE @texto";
+                        else
+                            query += " AND (ItemCode LIKE @texto OR ItemName LIKE @texto OR Description LIKE @texto)";
+
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 
@@ -127,9 +144,7 @@ namespace SECRON.Controllers
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
-                            {
                                 lista.Add(MapearArticulo(reader));
-                            }
                         }
                     }
                 }

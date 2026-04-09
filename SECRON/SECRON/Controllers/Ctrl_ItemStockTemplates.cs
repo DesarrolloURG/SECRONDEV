@@ -97,8 +97,10 @@ namespace SECRON.Controllers
         public static List<Mdl_ItemStockTemplates> BuscarPlantillas(
             int locationCategoryId,
             string textoBusqueda = "",
+            string filtro1 = "TODOS",
             int pageNumber = 1,
-            int pageSize = 100)
+            int pageSize = 100
+            )
         {
             List<Mdl_ItemStockTemplates> lista = new List<Mdl_ItemStockTemplates>();
             try
@@ -120,7 +122,13 @@ namespace SECRON.Controllers
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
-                        query += " AND (i.ItemCode LIKE @texto OR i.ItemName LIKE @texto)";
+                        if (filtro1 == "POR CÓDIGO")
+                            query += " AND i.ItemCode LIKE @texto";
+                        else if (filtro1 == "POR NOMBRE")
+                            query += " AND i.ItemName LIKE @texto";
+                        else
+                            query += " AND (i.ItemCode LIKE @texto OR i.ItemName LIKE @texto)";
+
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 

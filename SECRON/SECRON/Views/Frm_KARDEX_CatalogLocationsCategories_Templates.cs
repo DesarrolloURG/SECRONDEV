@@ -349,7 +349,7 @@ namespace SECRON.Views
                 }
                 if (Tabla2.Columns.Contains("ReorderPoint"))
                 {
-                    Tabla2.Columns["ReorderPoint"].HeaderText = "PUNTO REORDEN";
+                    Tabla2.Columns["ReorderPoint"].HeaderText = "ALERTA DE PEDIDO";
                     Tabla2.Columns["ReorderPoint"].ReadOnly = true;
                     Tabla2.Columns["ReorderPoint"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     Tabla2.Columns["ReorderPoint"].FillWeight = 14;
@@ -525,7 +525,7 @@ namespace SECRON.Views
             }
             if (Tabla.Columns.Contains("ReorderPoint"))
             {
-                Tabla.Columns["ReorderPoint"].HeaderText = "PUNTO REORDEN";
+                Tabla.Columns["ReorderPoint"].HeaderText = "ALERTA DE PEDIDO";
                 Tabla.Columns["ReorderPoint"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 Tabla.Columns["ReorderPoint"].FillWeight = 14;
             }
@@ -565,7 +565,7 @@ namespace SECRON.Views
             }
             if (Tabla2.Columns.Contains("ReorderPoint"))
             {
-                Tabla2.Columns["ReorderPoint"].HeaderText = "PUNTO REORDEN";
+                Tabla2.Columns["ReorderPoint"].HeaderText = "ALERTA DE PEDIDO";
                 Tabla2.Columns["ReorderPoint"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 Tabla2.Columns["ReorderPoint"].FillWeight = 14;
             }
@@ -758,6 +758,9 @@ namespace SECRON.Views
                     int itemId = (int)fila.Cells["ItemId"].Value;
                     string itemCode = fila.Cells["ItemCode"].Value?.ToString() ?? "";
                     string itemName = fila.Cells["ItemName"].Value?.ToString() ?? "";
+                    decimal minimumStock = decimal.TryParse(fila.Cells["MinimumStock"].Value?.ToString(), out decimal rminimumStock) ? rminimumStock : 0;
+                    decimal maximumStock = decimal.TryParse(fila.Cells["MaximumStock"].Value?.ToString(), out decimal rmaximumStock) ? rmaximumStock : 0;
+                    decimal reorderPoint = decimal.TryParse(fila.Cells["ReorderPoint"].Value?.ToString(), out decimal rreorderPoint) ? rreorderPoint : 0;
 
                     bool yaEnPlantilla = _articulosEnPlantilla?.Any(p => p.ItemId == itemId) ?? false;
                     bool yaPendiente = _plantillasPendientesAgregar.Any(p => p.ItemId == itemId);
@@ -771,9 +774,9 @@ namespace SECRON.Views
                             ItemId = itemId,
                             ItemCode = itemCode,
                             ItemName = itemName,
-                            MinimumStock = 0,
-                            MaximumStock = 0,
-                            ReorderPoint = null,
+                            MinimumStock = minimumStock,
+                            MaximumStock = maximumStock,
+                            ReorderPoint = reorderPoint,
                             IsActive = true,
                             CreatedBy = UserData?.UserId
                         });
@@ -824,6 +827,10 @@ namespace SECRON.Views
                     string itemCode = fila.Cells["ItemCode"].Value?.ToString() ?? "";
                     string itemName = fila.Cells["ItemName"].Value?.ToString() ?? "";
 
+                    decimal minimumStock = decimal.TryParse(fila.Cells["MinimumStock"].Value?.ToString(), out decimal rminimumStock) ? rminimumStock : 0;
+                    decimal maximumStock = decimal.TryParse(fila.Cells["MaximumStock"].Value?.ToString(), out decimal rmaximumStock) ? rmaximumStock : 0;
+                    decimal reorderPoint = decimal.TryParse(fila.Cells["ReorderPoint"].Value?.ToString(), out decimal rreorderPoint) ? rreorderPoint : 0;
+
                     bool yaEnPlantilla = _articulosEnPlantilla?.Any(p => p.ItemId == itemId) ?? false;
                     bool yaPendiente = _plantillasPendientesAgregar.Any(p => p.ItemId == itemId);
 
@@ -836,9 +843,9 @@ namespace SECRON.Views
                             ItemId = itemId,
                             ItemCode = itemCode,
                             ItemName = itemName,
-                            MinimumStock = 0,
-                            MaximumStock = 0,
-                            ReorderPoint = null,
+                            MinimumStock = minimumStock,
+                            MaximumStock = maximumStock,
+                            ReorderPoint = reorderPoint,
                             IsActive = true,
                             CreatedBy = UserData?.UserId
                         });

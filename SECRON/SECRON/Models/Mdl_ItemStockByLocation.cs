@@ -25,6 +25,9 @@ namespace SECRON.Models
         public string ItemCode { get; set; }
         public string ItemName { get; set; }
 
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+
         public Mdl_ItemStockByLocation()
         {
             IsActive = true;
