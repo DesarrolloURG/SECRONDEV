@@ -385,7 +385,7 @@ namespace SECRON.Views
                 {
                     CategoryCode = Ctrl_ItemCategories.ObtenerProximoCodigoCategoria(),
                     CategoryName = Txt_UnitName.Text.Trim().ToUpper(),
-                    Description = Txt_Description.Text.Trim(),
+                    Description = Txt_Description.Text.Trim().ToUpper(),
                     IsActive = true,
                     CreatedBy = null   // Si luego expones UserData, aquí lo asignas
                 };
@@ -440,7 +440,7 @@ namespace SECRON.Views
                     CategoryId = SelectedCategoryId.Value,
                     CategoryCode = SelectedCategoryCode ?? "",
                     CategoryName = Txt_UnitName.Text.Trim().ToUpper(),
-                    Description = Txt_Description.Text.Trim(),
+                    Description = Txt_Description.Text.Trim().ToUpper(),
                     IsActive = true
                 };
 

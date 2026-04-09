@@ -321,13 +321,15 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"SELECT s.ItemStockLocationId, s.ItemId, s.LocationId,
-                s.CurrentStock, s.ReservedStock, s.AvailableStock,
-                s.MinimumStock, s.MaximumStock, s.LastMovementDate, s.IsActive,
-                i.ItemCode, i.ItemName
-                FROM ItemStockByLocation s
-                INNER JOIN Items i ON s.ItemId = i.ItemId
-                WHERE s.LocationId = @LocationId AND s.IsActive = 1
-                ORDER BY i.ItemName";
+                    s.CurrentStock, s.ReservedStock, s.AvailableStock,
+                    s.MinimumStock, s.MaximumStock, s.LastMovementDate, s.IsActive,
+                    i.ItemCode, i.ItemName,
+                    c.CategoryId, c.CategoryName
+                    FROM ItemStockByLocation s
+                    INNER JOIN Items i ON s.ItemId = i.ItemId
+                    INNER JOIN ItemCategories c ON i.CategoryId = c.CategoryId
+                    WHERE s.LocationId = @LocationId AND s.IsActive = 1
+                    ORDER BY i.ItemName";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -440,18 +442,20 @@ namespace SECRON.Controllers
         {
             var stock = new Mdl_ItemStockByLocation
             {
-                ItemStockLocationId = reader.GetInt32(0),
-                ItemId = reader.GetInt32(1),
-                LocationId = reader.GetInt32(2),
-                CurrentStock = reader.GetDecimal(3),
-                ReservedStock = reader.GetDecimal(4),
-                AvailableStock = reader.GetDecimal(5),
-                MinimumStock = reader.GetDecimal(6),
-                MaximumStock = reader[7] == DBNull.Value ? 0 : reader.GetDecimal(7),
-                LastMovementDate = reader[8] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(8),
-                IsActive = reader.GetBoolean(9),
-                ItemCode = reader[10].ToString(),
-                ItemName = reader[11].ToString()
+                ItemStockLocationId = Convert.ToInt32(reader["ItemStockLocationId"]),
+                ItemId = Convert.ToInt32(reader["ItemId"]),
+                LocationId = Convert.ToInt32(reader["LocationId"]),
+                CurrentStock = Convert.ToDecimal(reader["CurrentStock"]),
+                ReservedStock = Convert.ToDecimal(reader["ReservedStock"]),
+                AvailableStock = Convert.ToDecimal(reader["AvailableStock"]),
+                MinimumStock = Convert.ToDecimal(reader["MinimumStock"]),
+                MaximumStock = reader["MaximumStock"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["MaximumStock"]),
+                LastMovementDate = reader["LastMovementDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["LastMovementDate"]),
+                IsActive = Convert.ToBoolean(reader["IsActive"]),
+                ItemCode = reader["ItemCode"]?.ToString() ?? "",
+                ItemName = reader["ItemName"]?.ToString() ?? "",
+                CategoryId = reader["CategoryId"] != DBNull.Value ? Convert.ToInt32(reader["CategoryId"]) : 0,
+                CategoryName = reader["CategoryName"]?.ToString() ?? ""
             };
             return stock;
         }

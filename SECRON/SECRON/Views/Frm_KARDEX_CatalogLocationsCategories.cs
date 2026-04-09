@@ -45,7 +45,7 @@ namespace SECRON.Views
             this.Resize += (s, e) =>
             {
                 if (toolStripPaginacion != null)
-                    toolStripPaginacion.Location = new Point(this.Width - 400, 225);
+                    toolStripPaginacion.Location = new Point(this.Width - 225, 225);
             };
         }
 
@@ -54,7 +54,7 @@ namespace SECRON.Views
             try
             {
                 this.Cursor = Cursors.WaitCursor;
-
+                
                 ConfigurarTabIndexYFocus();
                 ConfigurarMaxLengthTextBox();
                 ConfigurarComponentesDeshabilitados();
@@ -106,7 +106,12 @@ namespace SECRON.Views
             Txt_Descripcion.Enabled = false;
             Txt_Category.Enabled = false;
             Txt_MeasurementUnits.Enabled = false;
-            ComboBox_HasExpiryDate.Enabled = false;
+
+            Txt_MinimumStock.Enabled = false;
+            Txt_MaximumStock.Enabled = false;
+            Txt_UnitCost.Enabled = false;
+            Txt_LastPurchasePrice.Enabled = false;
+            Txt_ReorderPoint.Enabled = false;
 
             // Todo deshabilitado hasta que haya categoría seleccionada
             DeshabilitarTodo();
@@ -148,6 +153,7 @@ namespace SECRON.Views
             // Update y Delete solo se habilitan al seleccionar fila
             Btn_Update.Enabled = false;
             Btn_Delete.Enabled = false;
+            ConfigurarControlesPorPermisos();
         }
 
         private void ConfigurarPlaceHoldersTextbox()
@@ -300,6 +306,8 @@ namespace SECRON.Views
                     if (respuesta == DialogResult.Yes)
                         AbrirFormularioPlantillas();
                 }
+
+                ConfigurarControlesPorPermisos();
             }
             catch (Exception ex)
             {
@@ -313,6 +321,7 @@ namespace SECRON.Views
 
         private void Btn_Categories_Click(object sender, EventArgs e)
         {
+            if (!Btn_Categories.Enabled) return;
             try
             {
                 AbrirFormularioCategorias();
@@ -362,6 +371,7 @@ namespace SECRON.Views
 
         private void Btn_Template_Click(object sender, EventArgs e)
         {
+            if (!Btn_Template.Enabled) return;
             // Abrir gestión de plantillas de stock por categoría
             try
             {
@@ -398,10 +408,11 @@ namespace SECRON.Views
             }
 
             _plantillasList = Ctrl_ItemStockTemplates.BuscarPlantillas(
-                locationCategoryId: _categoriaActivaId.Value,
-                textoBusqueda: _ultimoTextoBusqueda,
-                pageNumber: paginaActual,
-                pageSize: registrosPorPagina);
+            locationCategoryId: _categoriaActivaId.Value,
+            textoBusqueda: _ultimoTextoBusqueda,
+            filtro1: _ultimoFiltro1,
+            pageNumber: paginaActual,
+            pageSize: registrosPorPagina);
 
             AsignarDataSource();
         }
@@ -444,7 +455,7 @@ namespace SECRON.Views
                 if (Tabla.Columns.Contains("MaximumStock"))
                     Tabla.Columns["MaximumStock"].HeaderText = "STOCK MÁXIMO";
                 if (Tabla.Columns.Contains("ReorderPoint"))
-                    Tabla.Columns["ReorderPoint"].HeaderText = "PUNTO REORDEN";
+                    Tabla.Columns["ReorderPoint"].HeaderText = "ALERTA DE PEDIDO";
             }
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -506,6 +517,7 @@ namespace SECRON.Views
                 MessageBox.Show($"Error al seleccionar artículo: {ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            ConfigurarControlesPorPermisos();
         }
 
         private void CargarDatosEnFormulario()
@@ -548,7 +560,7 @@ namespace SECRON.Views
             toolStripPaginacion.BackColor = Color.FromArgb(248, 249, 250);
             toolStripPaginacion.Height = 40;
             toolStripPaginacion.AutoSize = true;
-            toolStripPaginacion.Location = new Point(this.Width - 400, 225);
+            toolStripPaginacion.Location = new Point(this.Width - 225, 225);
 
             btnAnterior = new ToolStripButton();
             btnAnterior.Text = "❮ Anterior";
@@ -666,6 +678,7 @@ namespace SECRON.Views
 
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            if (!Btn_Search.Enabled) return;
             try
             {
                 if (!_categoriaActivaId.HasValue) return;
@@ -705,6 +718,7 @@ namespace SECRON.Views
 
         private void Btn_CleanSearch_Click(object sender, EventArgs e)
         {
+            if (!Btn_CleanSearch.Enabled) return;
             Txt_ValorBuscado.Text = "BUSCAR POR CÓDIGO, NOMBRE O DESCRIPCIÓN...";
             Txt_ValorBuscado.ForeColor = Color.Gray;
             Filtro1.SelectedIndex = 0;
@@ -795,6 +809,7 @@ namespace SECRON.Views
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
             try
             {
                 if (_itemSeleccionado == null)
@@ -815,7 +830,7 @@ namespace SECRON.Views
                 _itemSeleccionado.MaximumStock = ObtenerDecimalDesdeTextBox(Txt_MaximumStock, "0.00", "STOCK MÁXIMO");
                 _itemSeleccionado.ReorderPoint = TienePlaceholder(Txt_ReorderPoint, "0.00")
                     ? (decimal?)null
-                    : ObtenerDecimalDesdeTextBox(Txt_ReorderPoint, "0.00", "PUNTO REORDEN");
+                    : ObtenerDecimalDesdeTextBox(Txt_ReorderPoint, "0.00", "ALERTA DE PEDIDO");
                 _itemSeleccionado.ModifiedBy = UserData?.UserId;
 
                 int resultado = Ctrl_ItemStockTemplates.ActualizarPlantilla(_itemSeleccionado);
@@ -846,6 +861,7 @@ namespace SECRON.Views
 
         private void Btn_Delete_Click(object sender, EventArgs e)
         {
+            if (!Btn_Delete.Enabled) return;
             try
             {
                 if (_itemSeleccionado == null)
@@ -891,6 +907,7 @@ namespace SECRON.Views
 
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
+            if (!Btn_Clear.Enabled) return;
             LimpiarFormulario();
         }
 
@@ -919,6 +936,7 @@ namespace SECRON.Views
 
         private void Btn_Export_Click(object sender, EventArgs e)
         {
+            if (!Btn_Export.Enabled) return;
             try
             {
                 if (!_categoriaActivaId.HasValue)
@@ -1079,7 +1097,13 @@ namespace SECRON.Views
 
             boton.Enabled = habilitado;
 
-            if (!habilitado)
+            if (habilitado)
+            {
+                boton.UseVisualStyleBackColor = true;
+                boton.ForeColor = Color.Black;
+                boton.Cursor = Cursors.Default;
+            }
+            else
             {
                 boton.BackColor = Color.FromArgb(200, 200, 200);
                 boton.ForeColor = Color.Gray;
