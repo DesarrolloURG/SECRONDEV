@@ -38,3 +38,22 @@ CREATE TABLE Employees (
 );
 
 SELECT * FROM Employees order by EmployeeCode
+
+--Script de modificación de Base de Datos para el cambio
+--de calculo de salario para empleados.
+ALTER TABLE Employees
+ADD
+    nominal_salary   DECIMAL(18,2) NULL,
+    base_salary      DECIMAL(18,2) NULL,
+    additional_bonus DECIMAL(18,2) NULL,
+    legal_bonus      DECIMAL(18,2) NULL,
+    IGSS             DECIMAL(18,2) NULL,
+    ISR              DECIMAL(18,2) NULL,
+    net_salary       DECIMAL(18,2) NULL;
+ 
+ALTER TABLE Employees
+DROP COLUMN Salary;
+ 
+ALTER TABLE Employees
+ADD
+    IGSS_MANUAL   BIT NULL;
