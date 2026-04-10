@@ -112,6 +112,10 @@ namespace SECRON.Views
             Txt_UnitCost.Enabled = false;
             Txt_LastPurchasePrice.Enabled = false;
             Txt_ReorderPoint.Enabled = false;
+            Txt_UnitCost.Enabled = false;
+            Txt_LastPurchasePrice.Enabled = false;
+            Txt_HasLotControl.Enabled = false;
+            ComboBox_HasExpiryDate.Enabled = false;
 
             // Todo deshabilitado hasta que haya categoría seleccionada
             DeshabilitarTodo();
@@ -133,6 +137,10 @@ namespace SECRON.Views
             Btn_Delete.Enabled = false;
             Btn_Clear.Enabled = false;
             Btn_Export.Enabled = false;
+            Txt_UnitCost.Enabled = false;
+            Txt_LastPurchasePrice.Enabled = false;
+            Txt_HasLotControl.Enabled = false;
+            ComboBox_HasExpiryDate.Enabled = false;
         }
 
         private void HabilitarTodo()
@@ -146,8 +154,6 @@ namespace SECRON.Views
             Txt_MinimumStock.Enabled = true;
             Txt_MaximumStock.Enabled = true;
             Txt_ReorderPoint.Enabled = true;
-            Txt_UnitCost.Enabled = true;
-            Txt_LastPurchasePrice.Enabled = true;
             Btn_Clear.Enabled = true;
             Btn_Export.Enabled = true;
             // Update y Delete solo se habilitan al seleccionar fila
