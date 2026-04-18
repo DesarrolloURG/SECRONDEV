@@ -396,6 +396,11 @@ namespace SECRON.Views
         // Evento Click del botón Buscar
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            ejecutarBusqueda();
+        }
+
+        private void ejecutarBusqueda()
+        {
             try
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -569,7 +574,7 @@ namespace SECRON.Views
             Filtro2.SelectedIndex = 0;
             Filtro3.SelectedIndex = 0;
 
-            // ⭐ LIMPIAR FILTROS GUARDADOS
+            //LIMPIAR FILTROS GUARDADOS
             _ultimoTextoBusqueda = "";
             _ultimoDepartmentId = null;
             _ultimoPositionId = null;
@@ -580,11 +585,8 @@ namespace SECRON.Views
 
             // Recargar todos los empleados
             paginaActual = 1;
-            RefrescarListado();
-            ConfigurarTabla();
-            ReferenciasLlavesForaneas();
-            AjustarColumnas();
-            ActualizarInfoPaginacion();
+
+            ejecutarBusqueda();
         }
         #endregion Search
         #region vScrollBar

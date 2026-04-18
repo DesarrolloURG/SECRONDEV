@@ -222,6 +222,12 @@
     <Compile Include="Views\Frm_Checks_FileControl.Designer.cs">
       <DependentUpon>Frm_Checks_FileControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_Checks_Reports_Filters_Date.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Checks_Reports_Filters_Date.Designer.cs">
+      <DependentUpon>Frm_Checks_Reports_Filters_Date.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_Checks_FileControl_ReportConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -437,6 +443,9 @@
     <EmbeddedResource Include="Views\Frm_Checks_FileControl.resx">
       <DependentUpon>Frm_Checks_FileControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Checks_Reports_Filters_Date.resx">
+      <DependentUpon>Frm_Checks_Reports_Filters_Date.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Checks_FileControl_ReportConfig.resx">
       <DependentUpon>Frm_Checks_FileControl_ReportConfig.cs</DependentUpon>
     </EmbeddedResource>
@@ -646,6 +655,7 @@
     <Content Include="Img\CategoriesBlack25x25.png" />
     <None Include="Img\CategoriesBlack50x50.png" />
     <None Include="Img\MatchBlack25x25.png" />
+    <None Include="Img\Filtrar.png" />
     <Content Include="SECRON-Logotipo.ico" />
   </ItemGroup>
   <ItemGroup>

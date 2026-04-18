@@ -202,9 +202,10 @@
             this.PanelEmployees.Controls.Add(this.BtnEmployeesSalary);
             this.PanelEmployees.Controls.Add(this.BtnEmployeesInformation);
             this.PanelEmployees.Controls.Add(this.BtnEmployeesManagment);
-            this.PanelEmployees.Location = new System.Drawing.Point(200, 1);
+            this.PanelEmployees.Location = new System.Drawing.Point(267, 1);
+            this.PanelEmployees.Margin = new System.Windows.Forms.Padding(4);
             this.PanelEmployees.Name = "PanelEmployees";
-            this.PanelEmployees.Size = new System.Drawing.Size(300, 280);
+            this.PanelEmployees.Size = new System.Drawing.Size(400, 345);
             this.PanelEmployees.TabIndex = 3;
             this.PanelEmployees.Visible = false;
             // 
@@ -218,10 +219,10 @@
             this.BtnEmployeesHistory.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnEmployeesHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnEmployeesHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesHistory.Location = new System.Drawing.Point(0, 210);
+            this.BtnEmployeesHistory.Location = new System.Drawing.Point(0, 258);
             this.BtnEmployeesHistory.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployeesHistory.Name = "BtnEmployeesHistory";
-            this.BtnEmployeesHistory.Size = new System.Drawing.Size(300, 35);
+            this.BtnEmployeesHistory.Size = new System.Drawing.Size(400, 43);
             this.BtnEmployeesHistory.TabIndex = 50;
             this.BtnEmployeesHistory.Text = "HISTORIAL Y AUDITORÍA";
             this.BtnEmployeesHistory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -238,10 +239,10 @@
             this.BtnEmployeesDocencia.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnEmployeesDocencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnEmployeesDocencia.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesDocencia.Location = new System.Drawing.Point(0, 175);
+            this.BtnEmployeesDocencia.Location = new System.Drawing.Point(0, 215);
             this.BtnEmployeesDocencia.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployeesDocencia.Name = "BtnEmployeesDocencia";
-            this.BtnEmployeesDocencia.Size = new System.Drawing.Size(300, 35);
+            this.BtnEmployeesDocencia.Size = new System.Drawing.Size(400, 43);
             this.BtnEmployeesDocencia.TabIndex = 49;
             this.BtnEmployeesDocencia.Text = "DOCENCIA";
             this.BtnEmployeesDocencia.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -258,10 +259,10 @@
             this.BtnEmployeesDepartments.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnEmployeesDepartments.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnEmployeesDepartments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesDepartments.Location = new System.Drawing.Point(0, 140);
+            this.BtnEmployeesDepartments.Location = new System.Drawing.Point(0, 172);
             this.BtnEmployeesDepartments.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployeesDepartments.Name = "BtnEmployeesDepartments";
-            this.BtnEmployeesDepartments.Size = new System.Drawing.Size(300, 35);
+            this.BtnEmployeesDepartments.Size = new System.Drawing.Size(400, 43);
             this.BtnEmployeesDepartments.TabIndex = 48;
             this.BtnEmployeesDepartments.Text = "ASIGNACIÓN DE ÁREAS ACADÉMICAS";
             this.BtnEmployeesDepartments.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -278,10 +279,10 @@
             this.BtnEmployeesNomina.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnEmployeesNomina.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnEmployeesNomina.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesNomina.Location = new System.Drawing.Point(0, 105);
+            this.BtnEmployeesNomina.Location = new System.Drawing.Point(0, 129);
             this.BtnEmployeesNomina.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployeesNomina.Name = "BtnEmployeesNomina";
-            this.BtnEmployeesNomina.Size = new System.Drawing.Size(300, 35);
+            this.BtnEmployeesNomina.Size = new System.Drawing.Size(400, 43);
             this.BtnEmployeesNomina.TabIndex = 47;
             this.BtnEmployeesNomina.Text = "REPORTES DE NÓMINA";
             this.BtnEmployeesNomina.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -298,10 +299,10 @@
             this.BtnEmployeesSalary.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnEmployeesSalary.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnEmployeesSalary.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesSalary.Location = new System.Drawing.Point(0, 70);
+            this.BtnEmployeesSalary.Location = new System.Drawing.Point(0, 86);
             this.BtnEmployeesSalary.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployeesSalary.Name = "BtnEmployeesSalary";
-            this.BtnEmployeesSalary.Size = new System.Drawing.Size(300, 35);
+            this.BtnEmployeesSalary.Size = new System.Drawing.Size(400, 43);
             this.BtnEmployeesSalary.TabIndex = 46;
             this.BtnEmployeesSalary.Text = "CONFIGURACIÓN SALARIAL";
             this.BtnEmployeesSalary.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -318,10 +319,10 @@
             this.BtnEmployeesInformation.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnEmployeesInformation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnEmployeesInformation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesInformation.Location = new System.Drawing.Point(0, 35);
+            this.BtnEmployeesInformation.Location = new System.Drawing.Point(0, 43);
             this.BtnEmployeesInformation.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployeesInformation.Name = "BtnEmployeesInformation";
-            this.BtnEmployeesInformation.Size = new System.Drawing.Size(300, 35);
+            this.BtnEmployeesInformation.Size = new System.Drawing.Size(400, 43);
             this.BtnEmployeesInformation.TabIndex = 45;
             this.BtnEmployeesInformation.Text = "INFORMACIÓN LABORAL";
             this.BtnEmployeesInformation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -341,7 +342,7 @@
             this.BtnEmployeesManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnEmployeesManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployeesManagment.Name = "BtnEmployeesManagment";
-            this.BtnEmployeesManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnEmployeesManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnEmployeesManagment.TabIndex = 44;
             this.BtnEmployeesManagment.Text = "GESTIÓN DE COLABORADORES";
             this.BtnEmployeesManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -355,9 +356,10 @@
             this.PanelUsers.Controls.Add(this.BtnUsersSecurityAccess);
             this.PanelUsers.Controls.Add(this.BtnUsersRolesPermisos);
             this.PanelUsers.Controls.Add(this.BtnUsersManagment);
-            this.PanelUsers.Location = new System.Drawing.Point(200, 1);
+            this.PanelUsers.Location = new System.Drawing.Point(267, 1);
+            this.PanelUsers.Margin = new System.Windows.Forms.Padding(4);
             this.PanelUsers.Name = "PanelUsers";
-            this.PanelUsers.Size = new System.Drawing.Size(300, 160);
+            this.PanelUsers.Size = new System.Drawing.Size(400, 197);
             this.PanelUsers.TabIndex = 4;
             this.PanelUsers.Visible = false;
             // 
@@ -371,10 +373,10 @@
             this.BtnUsersConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnUsersConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnUsersConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsersConfiguration.Location = new System.Drawing.Point(0, 105);
+            this.BtnUsersConfiguration.Location = new System.Drawing.Point(0, 129);
             this.BtnUsersConfiguration.Margin = new System.Windows.Forms.Padding(0);
             this.BtnUsersConfiguration.Name = "BtnUsersConfiguration";
-            this.BtnUsersConfiguration.Size = new System.Drawing.Size(300, 35);
+            this.BtnUsersConfiguration.Size = new System.Drawing.Size(400, 43);
             this.BtnUsersConfiguration.TabIndex = 48;
             this.BtnUsersConfiguration.Text = "ADMINISTRADOR DE CONFIGURACIÓN";
             this.BtnUsersConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -391,10 +393,10 @@
             this.BtnUsersSecurityAccess.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnUsersSecurityAccess.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnUsersSecurityAccess.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsersSecurityAccess.Location = new System.Drawing.Point(0, 70);
+            this.BtnUsersSecurityAccess.Location = new System.Drawing.Point(0, 86);
             this.BtnUsersSecurityAccess.Margin = new System.Windows.Forms.Padding(0);
             this.BtnUsersSecurityAccess.Name = "BtnUsersSecurityAccess";
-            this.BtnUsersSecurityAccess.Size = new System.Drawing.Size(300, 35);
+            this.BtnUsersSecurityAccess.Size = new System.Drawing.Size(400, 43);
             this.BtnUsersSecurityAccess.TabIndex = 47;
             this.BtnUsersSecurityAccess.Text = "SEGURIDAD Y ACCESOS";
             this.BtnUsersSecurityAccess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -411,10 +413,10 @@
             this.BtnUsersRolesPermisos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnUsersRolesPermisos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnUsersRolesPermisos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsersRolesPermisos.Location = new System.Drawing.Point(0, 35);
+            this.BtnUsersRolesPermisos.Location = new System.Drawing.Point(0, 43);
             this.BtnUsersRolesPermisos.Margin = new System.Windows.Forms.Padding(0);
             this.BtnUsersRolesPermisos.Name = "BtnUsersRolesPermisos";
-            this.BtnUsersRolesPermisos.Size = new System.Drawing.Size(300, 35);
+            this.BtnUsersRolesPermisos.Size = new System.Drawing.Size(400, 43);
             this.BtnUsersRolesPermisos.TabIndex = 46;
             this.BtnUsersRolesPermisos.Text = "ROLES Y PERMISOS";
             this.BtnUsersRolesPermisos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -434,7 +436,7 @@
             this.BtnUsersManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnUsersManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnUsersManagment.Name = "BtnUsersManagment";
-            this.BtnUsersManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnUsersManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnUsersManagment.TabIndex = 45;
             this.BtnUsersManagment.Text = "GESTIÓN DE USUARIOS";
             this.BtnUsersManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -445,9 +447,10 @@
             // 
             this.PanelSuppliers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
             this.PanelSuppliers.Controls.Add(this.BtnSuppliersManagment);
-            this.PanelSuppliers.Location = new System.Drawing.Point(195, 2);
+            this.PanelSuppliers.Location = new System.Drawing.Point(260, 2);
+            this.PanelSuppliers.Margin = new System.Windows.Forms.Padding(4);
             this.PanelSuppliers.Name = "PanelSuppliers";
-            this.PanelSuppliers.Size = new System.Drawing.Size(300, 41);
+            this.PanelSuppliers.Size = new System.Drawing.Size(400, 50);
             this.PanelSuppliers.TabIndex = 5;
             this.PanelSuppliers.Visible = false;
             // 
@@ -464,7 +467,7 @@
             this.BtnSuppliersManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnSuppliersManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnSuppliersManagment.Name = "BtnSuppliersManagment";
-            this.BtnSuppliersManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnSuppliersManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnSuppliersManagment.TabIndex = 44;
             this.BtnSuppliersManagment.Text = "GESTIÓN DE PROVEEDORES";
             this.BtnSuppliersManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -475,9 +478,10 @@
             // 
             this.PanelCounts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
             this.PanelCounts.Controls.Add(this.BtnCountsManagment);
-            this.PanelCounts.Location = new System.Drawing.Point(200, 3);
+            this.PanelCounts.Location = new System.Drawing.Point(267, 4);
+            this.PanelCounts.Margin = new System.Windows.Forms.Padding(4);
             this.PanelCounts.Name = "PanelCounts";
-            this.PanelCounts.Size = new System.Drawing.Size(300, 41);
+            this.PanelCounts.Size = new System.Drawing.Size(400, 50);
             this.PanelCounts.TabIndex = 6;
             this.PanelCounts.Visible = false;
             // 
@@ -494,7 +498,7 @@
             this.BtnCountsManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnCountsManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnCountsManagment.Name = "BtnCountsManagment";
-            this.BtnCountsManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnCountsManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnCountsManagment.TabIndex = 44;
             this.BtnCountsManagment.Text = "GESTIÓN DE CUENTAS";
             this.BtnCountsManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -507,9 +511,10 @@
             this.PanelOrders.Controls.Add(this.BtnOrdersManagment);
             this.PanelOrders.Controls.Add(this.BtnOrdersRequisicionManagment);
             this.PanelOrders.Controls.Add(this.BtnOrdersSolicitud);
-            this.PanelOrders.Location = new System.Drawing.Point(200, 4);
+            this.PanelOrders.Location = new System.Drawing.Point(267, 5);
+            this.PanelOrders.Margin = new System.Windows.Forms.Padding(4);
             this.PanelOrders.Name = "PanelOrders";
-            this.PanelOrders.Size = new System.Drawing.Size(300, 120);
+            this.PanelOrders.Size = new System.Drawing.Size(400, 148);
             this.PanelOrders.TabIndex = 7;
             this.PanelOrders.Visible = false;
             // 
@@ -523,10 +528,10 @@
             this.BtnOrdersManagment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnOrdersManagment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnOrdersManagment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnOrdersManagment.Location = new System.Drawing.Point(0, 70);
+            this.BtnOrdersManagment.Location = new System.Drawing.Point(0, 86);
             this.BtnOrdersManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnOrdersManagment.Name = "BtnOrdersManagment";
-            this.BtnOrdersManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnOrdersManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnOrdersManagment.TabIndex = 46;
             this.BtnOrdersManagment.Text = "GESTIÓN DE ORDENES DE COMPRAS";
             this.BtnOrdersManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -543,10 +548,10 @@
             this.BtnOrdersRequisicionManagment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnOrdersRequisicionManagment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnOrdersRequisicionManagment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnOrdersRequisicionManagment.Location = new System.Drawing.Point(0, 35);
+            this.BtnOrdersRequisicionManagment.Location = new System.Drawing.Point(0, 43);
             this.BtnOrdersRequisicionManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnOrdersRequisicionManagment.Name = "BtnOrdersRequisicionManagment";
-            this.BtnOrdersRequisicionManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnOrdersRequisicionManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnOrdersRequisicionManagment.TabIndex = 45;
             this.BtnOrdersRequisicionManagment.Text = "GESTIÓN DE REQUISICIONES";
             this.BtnOrdersRequisicionManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -566,7 +571,7 @@
             this.BtnOrdersSolicitud.Location = new System.Drawing.Point(0, 0);
             this.BtnOrdersSolicitud.Margin = new System.Windows.Forms.Padding(0);
             this.BtnOrdersSolicitud.Name = "BtnOrdersSolicitud";
-            this.BtnOrdersSolicitud.Size = new System.Drawing.Size(300, 35);
+            this.BtnOrdersSolicitud.Size = new System.Drawing.Size(400, 43);
             this.BtnOrdersSolicitud.TabIndex = 44;
             this.BtnOrdersSolicitud.Text = "SOLICITUDES DE COMPRAS";
             this.BtnOrdersSolicitud.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -581,9 +586,10 @@
             this.PanelKardex.Controls.Add(this.BtnKardexValorizacion);
             this.PanelKardex.Controls.Add(this.BtnKardexInventory);
             this.PanelKardex.Controls.Add(this.BtnKardexCatalogo);
-            this.PanelKardex.Location = new System.Drawing.Point(200, 5);
+            this.PanelKardex.Location = new System.Drawing.Point(267, 6);
+            this.PanelKardex.Margin = new System.Windows.Forms.Padding(4);
             this.PanelKardex.Name = "PanelKardex";
-            this.PanelKardex.Size = new System.Drawing.Size(300, 200);
+            this.PanelKardex.Size = new System.Drawing.Size(400, 246);
             this.PanelKardex.TabIndex = 8;
             this.PanelKardex.Visible = false;
             // 
@@ -597,10 +603,10 @@
             this.BtnKardexInventoryReport.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnKardexInventoryReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnKardexInventoryReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexInventoryReport.Location = new System.Drawing.Point(0, 140);
+            this.BtnKardexInventoryReport.Location = new System.Drawing.Point(0, 172);
             this.BtnKardexInventoryReport.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKardexInventoryReport.Name = "BtnKardexInventoryReport";
-            this.BtnKardexInventoryReport.Size = new System.Drawing.Size(300, 35);
+            this.BtnKardexInventoryReport.Size = new System.Drawing.Size(400, 43);
             this.BtnKardexInventoryReport.TabIndex = 48;
             this.BtnKardexInventoryReport.Text = "REPORTES DE INVENTARIO";
             this.BtnKardexInventoryReport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -617,10 +623,10 @@
             this.BtnKardexInsumosSedes.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnKardexInsumosSedes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnKardexInsumosSedes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexInsumosSedes.Location = new System.Drawing.Point(0, 105);
+            this.BtnKardexInsumosSedes.Location = new System.Drawing.Point(0, 129);
             this.BtnKardexInsumosSedes.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKardexInsumosSedes.Name = "BtnKardexInsumosSedes";
-            this.BtnKardexInsumosSedes.Size = new System.Drawing.Size(300, 35);
+            this.BtnKardexInsumosSedes.Size = new System.Drawing.Size(400, 43);
             this.BtnKardexInsumosSedes.TabIndex = 47;
             this.BtnKardexInsumosSedes.Text = "CONTROL DE INSUMOS EN SEDES";
             this.BtnKardexInsumosSedes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -637,10 +643,10 @@
             this.BtnKardexValorizacion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnKardexValorizacion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnKardexValorizacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexValorizacion.Location = new System.Drawing.Point(0, 70);
+            this.BtnKardexValorizacion.Location = new System.Drawing.Point(0, 86);
             this.BtnKardexValorizacion.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKardexValorizacion.Name = "BtnKardexValorizacion";
-            this.BtnKardexValorizacion.Size = new System.Drawing.Size(300, 35);
+            this.BtnKardexValorizacion.Size = new System.Drawing.Size(400, 43);
             this.BtnKardexValorizacion.TabIndex = 46;
             this.BtnKardexValorizacion.Text = "VALORIZACIÓN Y COSTOS";
             this.BtnKardexValorizacion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -657,10 +663,10 @@
             this.BtnKardexInventory.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnKardexInventory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnKardexInventory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexInventory.Location = new System.Drawing.Point(0, 35);
+            this.BtnKardexInventory.Location = new System.Drawing.Point(0, 43);
             this.BtnKardexInventory.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKardexInventory.Name = "BtnKardexInventory";
-            this.BtnKardexInventory.Size = new System.Drawing.Size(300, 35);
+            this.BtnKardexInventory.Size = new System.Drawing.Size(400, 43);
             this.BtnKardexInventory.TabIndex = 45;
             this.BtnKardexInventory.Text = "CONTROL DE INVENTARIOS";
             this.BtnKardexInventory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -680,7 +686,7 @@
             this.BtnKardexCatalogo.Location = new System.Drawing.Point(0, 0);
             this.BtnKardexCatalogo.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKardexCatalogo.Name = "BtnKardexCatalogo";
-            this.BtnKardexCatalogo.Size = new System.Drawing.Size(300, 35);
+            this.BtnKardexCatalogo.Size = new System.Drawing.Size(400, 43);
             this.BtnKardexCatalogo.TabIndex = 44;
             this.BtnKardexCatalogo.Text = "GESTIÓN DE ARTÍCULOS";
             this.BtnKardexCatalogo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -696,9 +702,10 @@
             this.PanelBills.Controls.Add(this.BtnBillsAuthorization);
             this.PanelBills.Controls.Add(this.BtnBillsCategorias);
             this.PanelBills.Controls.Add(this.BtnBillsManagment);
-            this.PanelBills.Location = new System.Drawing.Point(200, 5);
+            this.PanelBills.Location = new System.Drawing.Point(267, 6);
+            this.PanelBills.Margin = new System.Windows.Forms.Padding(4);
             this.PanelBills.Name = "PanelBills";
-            this.PanelBills.Size = new System.Drawing.Size(300, 240);
+            this.PanelBills.Size = new System.Drawing.Size(400, 295);
             this.PanelBills.TabIndex = 9;
             this.PanelBills.Visible = false;
             // 
@@ -712,10 +719,10 @@
             this.BtnBillsCatalog.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBillsCatalog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBillsCatalog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBillsCatalog.Location = new System.Drawing.Point(0, 175);
+            this.BtnBillsCatalog.Location = new System.Drawing.Point(0, 215);
             this.BtnBillsCatalog.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBillsCatalog.Name = "BtnBillsCatalog";
-            this.BtnBillsCatalog.Size = new System.Drawing.Size(300, 35);
+            this.BtnBillsCatalog.Size = new System.Drawing.Size(400, 43);
             this.BtnBillsCatalog.TabIndex = 49;
             this.BtnBillsCatalog.Text = "CATALOGOS DE GASTOS";
             this.BtnBillsCatalog.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -732,10 +739,10 @@
             this.BtnBillsReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBillsReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBillsReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBillsReports.Location = new System.Drawing.Point(0, 140);
+            this.BtnBillsReports.Location = new System.Drawing.Point(0, 172);
             this.BtnBillsReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBillsReports.Name = "BtnBillsReports";
-            this.BtnBillsReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnBillsReports.Size = new System.Drawing.Size(400, 43);
             this.BtnBillsReports.TabIndex = 48;
             this.BtnBillsReports.Text = "REPORTES DE GASTOS";
             this.BtnBillsReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -752,10 +759,10 @@
             this.BtnBillsBudgetControl.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBillsBudgetControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBillsBudgetControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBillsBudgetControl.Location = new System.Drawing.Point(0, 105);
+            this.BtnBillsBudgetControl.Location = new System.Drawing.Point(0, 129);
             this.BtnBillsBudgetControl.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBillsBudgetControl.Name = "BtnBillsBudgetControl";
-            this.BtnBillsBudgetControl.Size = new System.Drawing.Size(300, 35);
+            this.BtnBillsBudgetControl.Size = new System.Drawing.Size(400, 43);
             this.BtnBillsBudgetControl.TabIndex = 47;
             this.BtnBillsBudgetControl.Text = "CONTROL PRESUPUESTARIO";
             this.BtnBillsBudgetControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -772,10 +779,10 @@
             this.BtnBillsAuthorization.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBillsAuthorization.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBillsAuthorization.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBillsAuthorization.Location = new System.Drawing.Point(0, 70);
+            this.BtnBillsAuthorization.Location = new System.Drawing.Point(0, 86);
             this.BtnBillsAuthorization.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBillsAuthorization.Name = "BtnBillsAuthorization";
-            this.BtnBillsAuthorization.Size = new System.Drawing.Size(300, 35);
+            this.BtnBillsAuthorization.Size = new System.Drawing.Size(400, 43);
             this.BtnBillsAuthorization.TabIndex = 46;
             this.BtnBillsAuthorization.Text = "AUTORIZACIÓN Y FLUJOS";
             this.BtnBillsAuthorization.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -792,10 +799,10 @@
             this.BtnBillsCategorias.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBillsCategorias.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBillsCategorias.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBillsCategorias.Location = new System.Drawing.Point(0, 35);
+            this.BtnBillsCategorias.Location = new System.Drawing.Point(0, 43);
             this.BtnBillsCategorias.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBillsCategorias.Name = "BtnBillsCategorias";
-            this.BtnBillsCategorias.Size = new System.Drawing.Size(300, 35);
+            this.BtnBillsCategorias.Size = new System.Drawing.Size(400, 43);
             this.BtnBillsCategorias.TabIndex = 45;
             this.BtnBillsCategorias.Text = "CATEGORÍAS Y CONTABILIZACIÓN";
             this.BtnBillsCategorias.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -815,7 +822,7 @@
             this.BtnBillsManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnBillsManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBillsManagment.Name = "BtnBillsManagment";
-            this.BtnBillsManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnBillsManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnBillsManagment.TabIndex = 44;
             this.BtnBillsManagment.Text = "GESTIÓN DE GASTOS";
             this.BtnBillsManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -830,9 +837,10 @@
             this.PanelChecks.Controls.Add(this.BtnChecksReports);
             this.PanelChecks.Controls.Add(this.BtnChecksCheckbooks);
             this.PanelChecks.Controls.Add(this.BtnChecksManagment);
-            this.PanelChecks.Location = new System.Drawing.Point(200, 6);
+            this.PanelChecks.Location = new System.Drawing.Point(267, 7);
+            this.PanelChecks.Margin = new System.Windows.Forms.Padding(4);
             this.PanelChecks.Name = "PanelChecks";
-            this.PanelChecks.Size = new System.Drawing.Size(300, 200);
+            this.PanelChecks.Size = new System.Drawing.Size(400, 246);
             this.PanelChecks.TabIndex = 10;
             this.PanelChecks.Visible = false;
             // 
@@ -846,10 +854,10 @@
             this.BtnChecksFileControl.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnChecksFileControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecksFileControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksFileControl.Location = new System.Drawing.Point(0, 140);
+            this.BtnChecksFileControl.Location = new System.Drawing.Point(0, 172);
             this.BtnChecksFileControl.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksFileControl.Name = "BtnChecksFileControl";
-            this.BtnChecksFileControl.Size = new System.Drawing.Size(300, 35);
+            this.BtnChecksFileControl.Size = new System.Drawing.Size(400, 43);
             this.BtnChecksFileControl.TabIndex = 51;
             this.BtnChecksFileControl.Text = "CONTROL DE ARCHIVO DE CHEQUES";
             this.BtnChecksFileControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -866,10 +874,10 @@
             this.BtnChecksConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnChecksConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecksConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksConfiguration.Location = new System.Drawing.Point(0, 105);
+            this.BtnChecksConfiguration.Location = new System.Drawing.Point(0, 129);
             this.BtnChecksConfiguration.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksConfiguration.Name = "BtnChecksConfiguration";
-            this.BtnChecksConfiguration.Size = new System.Drawing.Size(300, 35);
+            this.BtnChecksConfiguration.Size = new System.Drawing.Size(400, 43);
             this.BtnChecksConfiguration.TabIndex = 50;
             this.BtnChecksConfiguration.Text = "CONFIGURAR FORMATO DE CHEQUES";
             this.BtnChecksConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -886,10 +894,10 @@
             this.BtnChecksReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnChecksReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecksReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksReports.Location = new System.Drawing.Point(0, 70);
+            this.BtnChecksReports.Location = new System.Drawing.Point(0, 86);
             this.BtnChecksReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksReports.Name = "BtnChecksReports";
-            this.BtnChecksReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnChecksReports.Size = new System.Drawing.Size(400, 43);
             this.BtnChecksReports.TabIndex = 49;
             this.BtnChecksReports.Text = "REPORTES DE CHEQUES";
             this.BtnChecksReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -906,10 +914,10 @@
             this.BtnChecksCheckbooks.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnChecksCheckbooks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecksCheckbooks.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksCheckbooks.Location = new System.Drawing.Point(0, 35);
+            this.BtnChecksCheckbooks.Location = new System.Drawing.Point(0, 43);
             this.BtnChecksCheckbooks.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksCheckbooks.Name = "BtnChecksCheckbooks";
-            this.BtnChecksCheckbooks.Size = new System.Drawing.Size(300, 35);
+            this.BtnChecksCheckbooks.Size = new System.Drawing.Size(400, 43);
             this.BtnChecksCheckbooks.TabIndex = 46;
             this.BtnChecksCheckbooks.Text = "CONTROL DE CHEQUERAS";
             this.BtnChecksCheckbooks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -929,7 +937,7 @@
             this.BtnChecksManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnChecksManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksManagment.Name = "BtnChecksManagment";
-            this.BtnChecksManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnChecksManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnChecksManagment.TabIndex = 45;
             this.BtnChecksManagment.Text = "GESTIÓN DE CHEQUES";
             this.BtnChecksManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -945,9 +953,10 @@
             this.PanelBanks.Controls.Add(this.BtnBanksConciliacion);
             this.PanelBanks.Controls.Add(this.BtnBanksMovements);
             this.PanelBanks.Controls.Add(this.BtnBanksAccounts);
-            this.PanelBanks.Location = new System.Drawing.Point(200, 6);
+            this.PanelBanks.Location = new System.Drawing.Point(267, 7);
+            this.PanelBanks.Margin = new System.Windows.Forms.Padding(4);
             this.PanelBanks.Name = "PanelBanks";
-            this.PanelBanks.Size = new System.Drawing.Size(300, 240);
+            this.PanelBanks.Size = new System.Drawing.Size(400, 295);
             this.PanelBanks.TabIndex = 11;
             this.PanelBanks.Visible = false;
             // 
@@ -961,10 +970,10 @@
             this.BtnBanksConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBanksConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBanksConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBanksConfiguration.Location = new System.Drawing.Point(0, 175);
+            this.BtnBanksConfiguration.Location = new System.Drawing.Point(0, 215);
             this.BtnBanksConfiguration.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBanksConfiguration.Name = "BtnBanksConfiguration";
-            this.BtnBanksConfiguration.Size = new System.Drawing.Size(300, 35);
+            this.BtnBanksConfiguration.Size = new System.Drawing.Size(400, 43);
             this.BtnBanksConfiguration.TabIndex = 49;
             this.BtnBanksConfiguration.Text = "CONFIGURACIÓN BANCARIA";
             this.BtnBanksConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -981,10 +990,10 @@
             this.BtnBanksReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBanksReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBanksReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBanksReports.Location = new System.Drawing.Point(0, 140);
+            this.BtnBanksReports.Location = new System.Drawing.Point(0, 172);
             this.BtnBanksReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBanksReports.Name = "BtnBanksReports";
-            this.BtnBanksReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnBanksReports.Size = new System.Drawing.Size(400, 43);
             this.BtnBanksReports.TabIndex = 48;
             this.BtnBanksReports.Text = "REPORTES BANCARIOS";
             this.BtnBanksReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1001,10 +1010,10 @@
             this.BtnBanksCashControl.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBanksCashControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBanksCashControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBanksCashControl.Location = new System.Drawing.Point(0, 105);
+            this.BtnBanksCashControl.Location = new System.Drawing.Point(0, 129);
             this.BtnBanksCashControl.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBanksCashControl.Name = "BtnBanksCashControl";
-            this.BtnBanksCashControl.Size = new System.Drawing.Size(300, 35);
+            this.BtnBanksCashControl.Size = new System.Drawing.Size(400, 43);
             this.BtnBanksCashControl.TabIndex = 47;
             this.BtnBanksCashControl.Text = "CONTROL DE EFECTIVO";
             this.BtnBanksCashControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1021,10 +1030,10 @@
             this.BtnBanksConciliacion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBanksConciliacion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBanksConciliacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBanksConciliacion.Location = new System.Drawing.Point(0, 70);
+            this.BtnBanksConciliacion.Location = new System.Drawing.Point(0, 86);
             this.BtnBanksConciliacion.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBanksConciliacion.Name = "BtnBanksConciliacion";
-            this.BtnBanksConciliacion.Size = new System.Drawing.Size(300, 35);
+            this.BtnBanksConciliacion.Size = new System.Drawing.Size(400, 43);
             this.BtnBanksConciliacion.TabIndex = 46;
             this.BtnBanksConciliacion.Text = "CONCILIACIÓN BANCARIA";
             this.BtnBanksConciliacion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1041,10 +1050,10 @@
             this.BtnBanksMovements.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnBanksMovements.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBanksMovements.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBanksMovements.Location = new System.Drawing.Point(0, 35);
+            this.BtnBanksMovements.Location = new System.Drawing.Point(0, 43);
             this.BtnBanksMovements.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBanksMovements.Name = "BtnBanksMovements";
-            this.BtnBanksMovements.Size = new System.Drawing.Size(300, 35);
+            this.BtnBanksMovements.Size = new System.Drawing.Size(400, 43);
             this.BtnBanksMovements.TabIndex = 45;
             this.BtnBanksMovements.Text = "MOVIMIENTOS BANCARIOS";
             this.BtnBanksMovements.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1064,7 +1073,7 @@
             this.BtnBanksAccounts.Location = new System.Drawing.Point(0, 0);
             this.BtnBanksAccounts.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBanksAccounts.Name = "BtnBanksAccounts";
-            this.BtnBanksAccounts.Size = new System.Drawing.Size(300, 35);
+            this.BtnBanksAccounts.Size = new System.Drawing.Size(400, 43);
             this.BtnBanksAccounts.TabIndex = 44;
             this.BtnBanksAccounts.Text = "CUENTAS BANCARIAS";
             this.BtnBanksAccounts.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1080,9 +1089,10 @@
             this.PanelAccountingBooks.Controls.Add(this.BtnAccountingBooksFinancialStatemants);
             this.PanelAccountingBooks.Controls.Add(this.BtnAccountingBooksMayor);
             this.PanelAccountingBooks.Controls.Add(this.BtnAccountingBooksDiario);
-            this.PanelAccountingBooks.Location = new System.Drawing.Point(200, 7);
+            this.PanelAccountingBooks.Location = new System.Drawing.Point(267, 9);
+            this.PanelAccountingBooks.Margin = new System.Windows.Forms.Padding(4);
             this.PanelAccountingBooks.Name = "PanelAccountingBooks";
-            this.PanelAccountingBooks.Size = new System.Drawing.Size(300, 240);
+            this.PanelAccountingBooks.Size = new System.Drawing.Size(400, 295);
             this.PanelAccountingBooks.TabIndex = 12;
             this.PanelAccountingBooks.Visible = false;
             // 
@@ -1096,10 +1106,10 @@
             this.BtnAccountingBooksCatalog.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnAccountingBooksCatalog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnAccountingBooksCatalog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAccountingBooksCatalog.Location = new System.Drawing.Point(0, 175);
+            this.BtnAccountingBooksCatalog.Location = new System.Drawing.Point(0, 215);
             this.BtnAccountingBooksCatalog.Margin = new System.Windows.Forms.Padding(0);
             this.BtnAccountingBooksCatalog.Name = "BtnAccountingBooksCatalog";
-            this.BtnAccountingBooksCatalog.Size = new System.Drawing.Size(300, 35);
+            this.BtnAccountingBooksCatalog.Size = new System.Drawing.Size(400, 43);
             this.BtnAccountingBooksCatalog.TabIndex = 49;
             this.BtnAccountingBooksCatalog.Text = "CATÁLOGO DE CUENTAS";
             this.BtnAccountingBooksCatalog.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1116,10 +1126,10 @@
             this.BtnAccountingBooksReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnAccountingBooksReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnAccountingBooksReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAccountingBooksReports.Location = new System.Drawing.Point(0, 140);
+            this.BtnAccountingBooksReports.Location = new System.Drawing.Point(0, 172);
             this.BtnAccountingBooksReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnAccountingBooksReports.Name = "BtnAccountingBooksReports";
-            this.BtnAccountingBooksReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnAccountingBooksReports.Size = new System.Drawing.Size(400, 43);
             this.BtnAccountingBooksReports.TabIndex = 48;
             this.BtnAccountingBooksReports.Text = "REPORTES CONTABLES";
             this.BtnAccountingBooksReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1136,10 +1146,10 @@
             this.BtnAccountingBooksClosing.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnAccountingBooksClosing.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnAccountingBooksClosing.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAccountingBooksClosing.Location = new System.Drawing.Point(0, 105);
+            this.BtnAccountingBooksClosing.Location = new System.Drawing.Point(0, 129);
             this.BtnAccountingBooksClosing.Margin = new System.Windows.Forms.Padding(0);
             this.BtnAccountingBooksClosing.Name = "BtnAccountingBooksClosing";
-            this.BtnAccountingBooksClosing.Size = new System.Drawing.Size(300, 35);
+            this.BtnAccountingBooksClosing.Size = new System.Drawing.Size(400, 43);
             this.BtnAccountingBooksClosing.TabIndex = 47;
             this.BtnAccountingBooksClosing.Text = "CIERRE CONTABLE";
             this.BtnAccountingBooksClosing.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1156,10 +1166,10 @@
             this.BtnAccountingBooksFinancialStatemants.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnAccountingBooksFinancialStatemants.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnAccountingBooksFinancialStatemants.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAccountingBooksFinancialStatemants.Location = new System.Drawing.Point(0, 70);
+            this.BtnAccountingBooksFinancialStatemants.Location = new System.Drawing.Point(0, 86);
             this.BtnAccountingBooksFinancialStatemants.Margin = new System.Windows.Forms.Padding(0);
             this.BtnAccountingBooksFinancialStatemants.Name = "BtnAccountingBooksFinancialStatemants";
-            this.BtnAccountingBooksFinancialStatemants.Size = new System.Drawing.Size(300, 35);
+            this.BtnAccountingBooksFinancialStatemants.Size = new System.Drawing.Size(400, 43);
             this.BtnAccountingBooksFinancialStatemants.TabIndex = 46;
             this.BtnAccountingBooksFinancialStatemants.Text = "ESTADOS FINANCIEROS";
             this.BtnAccountingBooksFinancialStatemants.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1176,10 +1186,10 @@
             this.BtnAccountingBooksMayor.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnAccountingBooksMayor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnAccountingBooksMayor.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAccountingBooksMayor.Location = new System.Drawing.Point(0, 35);
+            this.BtnAccountingBooksMayor.Location = new System.Drawing.Point(0, 43);
             this.BtnAccountingBooksMayor.Margin = new System.Windows.Forms.Padding(0);
             this.BtnAccountingBooksMayor.Name = "BtnAccountingBooksMayor";
-            this.BtnAccountingBooksMayor.Size = new System.Drawing.Size(300, 35);
+            this.BtnAccountingBooksMayor.Size = new System.Drawing.Size(400, 43);
             this.BtnAccountingBooksMayor.TabIndex = 45;
             this.BtnAccountingBooksMayor.Text = "LIBRO MAYOR";
             this.BtnAccountingBooksMayor.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1199,7 +1209,7 @@
             this.BtnAccountingBooksDiario.Location = new System.Drawing.Point(0, 0);
             this.BtnAccountingBooksDiario.Margin = new System.Windows.Forms.Padding(0);
             this.BtnAccountingBooksDiario.Name = "BtnAccountingBooksDiario";
-            this.BtnAccountingBooksDiario.Size = new System.Drawing.Size(300, 35);
+            this.BtnAccountingBooksDiario.Size = new System.Drawing.Size(400, 43);
             this.BtnAccountingBooksDiario.TabIndex = 44;
             this.BtnAccountingBooksDiario.Text = "LIBRO DIARIO";
             this.BtnAccountingBooksDiario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1214,9 +1224,10 @@
             this.PanelLocations.Controls.Add(this.BtnLocationsFinancialControl);
             this.PanelLocations.Controls.Add(this.BtnLocationsConfiguration);
             this.PanelLocations.Controls.Add(this.BtnLocationsManagment);
-            this.PanelLocations.Location = new System.Drawing.Point(200, 7);
+            this.PanelLocations.Location = new System.Drawing.Point(267, 9);
+            this.PanelLocations.Margin = new System.Windows.Forms.Padding(4);
             this.PanelLocations.Name = "PanelLocations";
-            this.PanelLocations.Size = new System.Drawing.Size(300, 200);
+            this.PanelLocations.Size = new System.Drawing.Size(400, 246);
             this.PanelLocations.TabIndex = 13;
             this.PanelLocations.Visible = false;
             // 
@@ -1230,10 +1241,10 @@
             this.BtnLocationsStaff.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnLocationsStaff.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnLocationsStaff.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLocationsStaff.Location = new System.Drawing.Point(0, 140);
+            this.BtnLocationsStaff.Location = new System.Drawing.Point(0, 172);
             this.BtnLocationsStaff.Margin = new System.Windows.Forms.Padding(0);
             this.BtnLocationsStaff.Name = "BtnLocationsStaff";
-            this.BtnLocationsStaff.Size = new System.Drawing.Size(300, 35);
+            this.BtnLocationsStaff.Size = new System.Drawing.Size(400, 43);
             this.BtnLocationsStaff.TabIndex = 48;
             this.BtnLocationsStaff.Text = "PERSONAL POR SEDE";
             this.BtnLocationsStaff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1250,10 +1261,10 @@
             this.BtnLocationsDepartments.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnLocationsDepartments.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnLocationsDepartments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLocationsDepartments.Location = new System.Drawing.Point(0, 105);
+            this.BtnLocationsDepartments.Location = new System.Drawing.Point(0, 129);
             this.BtnLocationsDepartments.Margin = new System.Windows.Forms.Padding(0);
             this.BtnLocationsDepartments.Name = "BtnLocationsDepartments";
-            this.BtnLocationsDepartments.Size = new System.Drawing.Size(300, 35);
+            this.BtnLocationsDepartments.Size = new System.Drawing.Size(400, 43);
             this.BtnLocationsDepartments.TabIndex = 47;
             this.BtnLocationsDepartments.Text = "GESTIÓN DE ÁREAS ACADÉMICAS";
             this.BtnLocationsDepartments.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1270,10 +1281,10 @@
             this.BtnLocationsFinancialControl.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnLocationsFinancialControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnLocationsFinancialControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLocationsFinancialControl.Location = new System.Drawing.Point(0, 70);
+            this.BtnLocationsFinancialControl.Location = new System.Drawing.Point(0, 86);
             this.BtnLocationsFinancialControl.Margin = new System.Windows.Forms.Padding(0);
             this.BtnLocationsFinancialControl.Name = "BtnLocationsFinancialControl";
-            this.BtnLocationsFinancialControl.Size = new System.Drawing.Size(300, 35);
+            this.BtnLocationsFinancialControl.Size = new System.Drawing.Size(400, 43);
             this.BtnLocationsFinancialControl.TabIndex = 46;
             this.BtnLocationsFinancialControl.Text = "CONTROL FINANCIERO POR SEDE";
             this.BtnLocationsFinancialControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1290,10 +1301,10 @@
             this.BtnLocationsConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnLocationsConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnLocationsConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLocationsConfiguration.Location = new System.Drawing.Point(0, 35);
+            this.BtnLocationsConfiguration.Location = new System.Drawing.Point(0, 43);
             this.BtnLocationsConfiguration.Margin = new System.Windows.Forms.Padding(0);
             this.BtnLocationsConfiguration.Name = "BtnLocationsConfiguration";
-            this.BtnLocationsConfiguration.Size = new System.Drawing.Size(300, 35);
+            this.BtnLocationsConfiguration.Size = new System.Drawing.Size(400, 43);
             this.BtnLocationsConfiguration.TabIndex = 45;
             this.BtnLocationsConfiguration.Text = "CONFIGURACIÓN OPERATIVA";
             this.BtnLocationsConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1313,7 +1324,7 @@
             this.BtnLocationsManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnLocationsManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnLocationsManagment.Name = "BtnLocationsManagment";
-            this.BtnLocationsManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnLocationsManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnLocationsManagment.TabIndex = 44;
             this.BtnLocationsManagment.Text = "GESTIÓN DE SEDES";
             this.BtnLocationsManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1330,9 +1341,10 @@
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsMovementsController);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsResponsabilityLetter);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsManagment);
-            this.PanelStaticItems.Location = new System.Drawing.Point(200, 8);
+            this.PanelStaticItems.Location = new System.Drawing.Point(267, 10);
+            this.PanelStaticItems.Margin = new System.Windows.Forms.Padding(4);
             this.PanelStaticItems.Name = "PanelStaticItems";
-            this.PanelStaticItems.Size = new System.Drawing.Size(300, 280);
+            this.PanelStaticItems.Size = new System.Drawing.Size(400, 345);
             this.PanelStaticItems.TabIndex = 14;
             this.PanelStaticItems.Visible = false;
             // 
@@ -1346,10 +1358,10 @@
             this.BtnStaticItemsConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnStaticItemsConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnStaticItemsConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsConfiguration.Location = new System.Drawing.Point(0, 210);
+            this.BtnStaticItemsConfiguration.Location = new System.Drawing.Point(0, 258);
             this.BtnStaticItemsConfiguration.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItemsConfiguration.Name = "BtnStaticItemsConfiguration";
-            this.BtnStaticItemsConfiguration.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsConfiguration.Size = new System.Drawing.Size(400, 43);
             this.BtnStaticItemsConfiguration.TabIndex = 50;
             this.BtnStaticItemsConfiguration.Text = "CONFIGURACIÓN DE ACTIVOS";
             this.BtnStaticItemsConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1366,10 +1378,10 @@
             this.BtnStaticItemsReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnStaticItemsReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnStaticItemsReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsReports.Location = new System.Drawing.Point(0, 175);
+            this.BtnStaticItemsReports.Location = new System.Drawing.Point(0, 215);
             this.BtnStaticItemsReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItemsReports.Name = "BtnStaticItemsReports";
-            this.BtnStaticItemsReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsReports.Size = new System.Drawing.Size(400, 43);
             this.BtnStaticItemsReports.TabIndex = 49;
             this.BtnStaticItemsReports.Text = "REPORTES DE ACTIVOS";
             this.BtnStaticItemsReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1386,10 +1398,10 @@
             this.BtnStaticItemsDepreciation.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnStaticItemsDepreciation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnStaticItemsDepreciation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsDepreciation.Location = new System.Drawing.Point(0, 140);
+            this.BtnStaticItemsDepreciation.Location = new System.Drawing.Point(0, 172);
             this.BtnStaticItemsDepreciation.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItemsDepreciation.Name = "BtnStaticItemsDepreciation";
-            this.BtnStaticItemsDepreciation.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsDepreciation.Size = new System.Drawing.Size(400, 43);
             this.BtnStaticItemsDepreciation.TabIndex = 48;
             this.BtnStaticItemsDepreciation.Text = "DEPRECIACIÓN Y VALUACIÓN";
             this.BtnStaticItemsDepreciation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1406,10 +1418,10 @@
             this.BtnStaticItemsMaintenance.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnStaticItemsMaintenance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnStaticItemsMaintenance.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsMaintenance.Location = new System.Drawing.Point(0, 105);
+            this.BtnStaticItemsMaintenance.Location = new System.Drawing.Point(0, 129);
             this.BtnStaticItemsMaintenance.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItemsMaintenance.Name = "BtnStaticItemsMaintenance";
-            this.BtnStaticItemsMaintenance.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsMaintenance.Size = new System.Drawing.Size(400, 43);
             this.BtnStaticItemsMaintenance.TabIndex = 47;
             this.BtnStaticItemsMaintenance.Text = "MANTENIMIENTO Y SOPORTE";
             this.BtnStaticItemsMaintenance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1426,10 +1438,10 @@
             this.BtnStaticItemsMovementsController.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnStaticItemsMovementsController.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnStaticItemsMovementsController.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsMovementsController.Location = new System.Drawing.Point(0, 70);
+            this.BtnStaticItemsMovementsController.Location = new System.Drawing.Point(0, 86);
             this.BtnStaticItemsMovementsController.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItemsMovementsController.Name = "BtnStaticItemsMovementsController";
-            this.BtnStaticItemsMovementsController.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsMovementsController.Size = new System.Drawing.Size(400, 43);
             this.BtnStaticItemsMovementsController.TabIndex = 46;
             this.BtnStaticItemsMovementsController.Text = "CONTROL DE MOVIMIENTOS";
             this.BtnStaticItemsMovementsController.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1446,10 +1458,10 @@
             this.BtnStaticItemsResponsabilityLetter.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnStaticItemsResponsabilityLetter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnStaticItemsResponsabilityLetter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsResponsabilityLetter.Location = new System.Drawing.Point(0, 35);
+            this.BtnStaticItemsResponsabilityLetter.Location = new System.Drawing.Point(0, 43);
             this.BtnStaticItemsResponsabilityLetter.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItemsResponsabilityLetter.Name = "BtnStaticItemsResponsabilityLetter";
-            this.BtnStaticItemsResponsabilityLetter.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsResponsabilityLetter.Size = new System.Drawing.Size(400, 43);
             this.BtnStaticItemsResponsabilityLetter.TabIndex = 45;
             this.BtnStaticItemsResponsabilityLetter.Text = "CARTAS DE RESPONSABILIDAD";
             this.BtnStaticItemsResponsabilityLetter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1469,7 +1481,7 @@
             this.BtnStaticItemsManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnStaticItemsManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItemsManagment.Name = "BtnStaticItemsManagment";
-            this.BtnStaticItemsManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnStaticItemsManagment.TabIndex = 44;
             this.BtnStaticItemsManagment.Text = "GESTIÓN DE ACTIVOS";
             this.BtnStaticItemsManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1482,9 +1494,10 @@
             this.PanelProfile.Controls.Add(this.LblRol);
             this.PanelProfile.Controls.Add(this.LblUser);
             this.PanelProfile.Controls.Add(this.panel2);
-            this.PanelProfile.Location = new System.Drawing.Point(955, 55);
+            this.PanelProfile.Location = new System.Drawing.Point(1273, 68);
+            this.PanelProfile.Margin = new System.Windows.Forms.Padding(4);
             this.PanelProfile.Name = "PanelProfile";
-            this.PanelProfile.Size = new System.Drawing.Size(400, 200);
+            this.PanelProfile.Size = new System.Drawing.Size(533, 246);
             this.PanelProfile.TabIndex = 15;
             this.PanelProfile.Visible = false;
             // 
@@ -1494,7 +1507,8 @@
             this.LblRol.Dock = System.Windows.Forms.DockStyle.Top;
             this.LblRol.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.LblRol.ForeColor = System.Drawing.Color.Black;
-            this.LblRol.Location = new System.Drawing.Point(204, 20);
+            this.LblRol.Location = new System.Drawing.Point(272, 20);
+            this.LblRol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LblRol.Name = "LblRol";
             this.LblRol.Size = new System.Drawing.Size(38, 20);
             this.LblRol.TabIndex = 2;
@@ -1506,7 +1520,8 @@
             this.LblUser.Dock = System.Windows.Forms.DockStyle.Top;
             this.LblUser.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.LblUser.ForeColor = System.Drawing.Color.Black;
-            this.LblUser.Location = new System.Drawing.Point(204, 0);
+            this.LblUser.Location = new System.Drawing.Point(272, 0);
+            this.LblUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LblUser.Name = "LblUser";
             this.LblUser.Size = new System.Drawing.Size(46, 20);
             this.LblUser.TabIndex = 1;
@@ -1517,8 +1532,9 @@
             this.panel2.Controls.Add(this.button1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(204, 200);
+            this.panel2.Size = new System.Drawing.Size(272, 246);
             this.panel2.TabIndex = 0;
             // 
             // button1
@@ -1533,7 +1549,7 @@
             this.button1.Location = new System.Drawing.Point(0, 0);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(204, 200);
+            this.button1.Size = new System.Drawing.Size(272, 246);
             this.button1.TabIndex = 48;
             this.button1.Text = "PERFIL";
             this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -1543,17 +1559,19 @@
             // 
             this.PanelBordeSuperior.Dock = System.Windows.Forms.DockStyle.Top;
             this.PanelBordeSuperior.Location = new System.Drawing.Point(0, 0);
+            this.PanelBordeSuperior.Margin = new System.Windows.Forms.Padding(4);
             this.PanelBordeSuperior.Name = "PanelBordeSuperior";
-            this.PanelBordeSuperior.Size = new System.Drawing.Size(1384, 1);
+            this.PanelBordeSuperior.Size = new System.Drawing.Size(1845, 1);
             this.PanelBordeSuperior.TabIndex = 16;
             // 
             // PanelHeader
             // 
             this.PanelHeader.Controls.Add(this.PanelConfiguration);
             this.PanelHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.PanelHeader.Location = new System.Drawing.Point(200, 1);
+            this.PanelHeader.Location = new System.Drawing.Point(267, 1);
+            this.PanelHeader.Margin = new System.Windows.Forms.Padding(4);
             this.PanelHeader.Name = "PanelHeader";
-            this.PanelHeader.Size = new System.Drawing.Size(1184, 55);
+            this.PanelHeader.Size = new System.Drawing.Size(1578, 68);
             this.PanelHeader.TabIndex = 18;
             // 
             // PanelConfiguration
@@ -1564,9 +1582,10 @@
             this.PanelConfiguration.Controls.Add(this.panel3);
             this.PanelConfiguration.Controls.Add(this.PanelPadding1);
             this.PanelConfiguration.Dock = System.Windows.Forms.DockStyle.Right;
-            this.PanelConfiguration.Location = new System.Drawing.Point(541, 0);
+            this.PanelConfiguration.Location = new System.Drawing.Point(721, 0);
+            this.PanelConfiguration.Margin = new System.Windows.Forms.Padding(4);
             this.PanelConfiguration.Name = "PanelConfiguration";
-            this.PanelConfiguration.Size = new System.Drawing.Size(643, 55);
+            this.PanelConfiguration.Size = new System.Drawing.Size(857, 68);
             this.PanelConfiguration.TabIndex = 0;
             // 
             // LblUsername
@@ -1575,7 +1594,8 @@
             this.LblUsername.Dock = System.Windows.Forms.DockStyle.Right;
             this.LblUsername.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.LblUsername.ForeColor = System.Drawing.Color.Black;
-            this.LblUsername.Location = new System.Drawing.Point(458, 30);
+            this.LblUsername.Location = new System.Drawing.Point(642, 37);
+            this.LblUsername.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LblUsername.Name = "LblUsername";
             this.LblUsername.Size = new System.Drawing.Size(95, 20);
             this.LblUsername.TabIndex = 49;
@@ -1590,10 +1610,10 @@
             this.BtnNotification.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnNotification.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnNotification.Image = global::SECRON.Properties.Resources.NotificationBlack25x25;
-            this.BtnNotification.Location = new System.Drawing.Point(553, 30);
+            this.BtnNotification.Location = new System.Drawing.Point(737, 37);
             this.BtnNotification.Margin = new System.Windows.Forms.Padding(0);
             this.BtnNotification.Name = "BtnNotification";
-            this.BtnNotification.Size = new System.Drawing.Size(30, 25);
+            this.BtnNotification.Size = new System.Drawing.Size(40, 31);
             this.BtnNotification.TabIndex = 48;
             this.BtnNotification.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.BtnNotification.UseVisualStyleBackColor = false;
@@ -1607,10 +1627,10 @@
             this.BtnProfile.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnProfile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnProfile.Image = global::SECRON.Properties.Resources.ProfileNegro25x25;
-            this.BtnProfile.Location = new System.Drawing.Point(583, 30);
+            this.BtnProfile.Location = new System.Drawing.Point(777, 37);
             this.BtnProfile.Margin = new System.Windows.Forms.Padding(0);
             this.BtnProfile.Name = "BtnProfile";
-            this.BtnProfile.Size = new System.Drawing.Size(30, 25);
+            this.BtnProfile.Size = new System.Drawing.Size(40, 31);
             this.BtnProfile.TabIndex = 47;
             this.BtnProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.BtnProfile.UseVisualStyleBackColor = false;
@@ -1620,16 +1640,18 @@
             // 
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(613, 30);
+            this.panel3.Size = new System.Drawing.Size(817, 37);
             this.panel3.TabIndex = 1;
             // 
             // PanelPadding1
             // 
             this.PanelPadding1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.PanelPadding1.Location = new System.Drawing.Point(613, 0);
+            this.PanelPadding1.Location = new System.Drawing.Point(817, 0);
+            this.PanelPadding1.Margin = new System.Windows.Forms.Padding(4);
             this.PanelPadding1.Name = "PanelPadding1";
-            this.PanelPadding1.Size = new System.Drawing.Size(30, 55);
+            this.PanelPadding1.Size = new System.Drawing.Size(40, 68);
             this.PanelPadding1.TabIndex = 0;
             // 
             // PanelNavegacion
@@ -1652,8 +1674,9 @@
             this.PanelNavegacion.Controls.Add(this.PicLogo);
             this.PanelNavegacion.Dock = System.Windows.Forms.DockStyle.Left;
             this.PanelNavegacion.Location = new System.Drawing.Point(0, 1);
+            this.PanelNavegacion.Margin = new System.Windows.Forms.Padding(4);
             this.PanelNavegacion.Name = "PanelNavegacion";
-            this.PanelNavegacion.Size = new System.Drawing.Size(200, 735);
+            this.PanelNavegacion.Size = new System.Drawing.Size(267, 905);
             this.PanelNavegacion.TabIndex = 17;
             // 
             // Btn_Transfers
@@ -1667,10 +1690,10 @@
             this.Btn_Transfers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Btn_Transfers.Image = global::SECRON.Properties.Resources.TransferNegro25x25;
             this.Btn_Transfers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Transfers.Location = new System.Drawing.Point(0, 590);
+            this.Btn_Transfers.Location = new System.Drawing.Point(0, 725);
             this.Btn_Transfers.Margin = new System.Windows.Forms.Padding(0);
             this.Btn_Transfers.Name = "Btn_Transfers";
-            this.Btn_Transfers.Size = new System.Drawing.Size(200, 35);
+            this.Btn_Transfers.Size = new System.Drawing.Size(267, 43);
             this.Btn_Transfers.TabIndex = 56;
             this.Btn_Transfers.Text = "TRANSFERENCIAS";
             this.Btn_Transfers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1690,10 +1713,10 @@
             this.Btn_Teachers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Btn_Teachers.Image = global::SECRON.Properties.Resources.GraduacionNegro25x25;
             this.Btn_Teachers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Teachers.Location = new System.Drawing.Point(0, 555);
+            this.Btn_Teachers.Location = new System.Drawing.Point(0, 682);
             this.Btn_Teachers.Margin = new System.Windows.Forms.Padding(0);
             this.Btn_Teachers.Name = "Btn_Teachers";
-            this.Btn_Teachers.Size = new System.Drawing.Size(200, 35);
+            this.Btn_Teachers.Size = new System.Drawing.Size(267, 43);
             this.Btn_Teachers.TabIndex = 55;
             this.Btn_Teachers.Text = "DOCENCIA";
             this.Btn_Teachers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1713,10 +1736,10 @@
             this.BtnStaticItems.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnStaticItems.Image = global::SECRON.Properties.Resources.ArticleNegro25x25;
             this.BtnStaticItems.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItems.Location = new System.Drawing.Point(0, 520);
+            this.BtnStaticItems.Location = new System.Drawing.Point(0, 639);
             this.BtnStaticItems.Margin = new System.Windows.Forms.Padding(0);
             this.BtnStaticItems.Name = "BtnStaticItems";
-            this.BtnStaticItems.Size = new System.Drawing.Size(200, 35);
+            this.BtnStaticItems.Size = new System.Drawing.Size(267, 43);
             this.BtnStaticItems.TabIndex = 54;
             this.BtnStaticItems.Text = "ACTIVOS FIJOS";
             this.BtnStaticItems.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1736,10 +1759,10 @@
             this.BtnLocations.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnLocations.Image = global::SECRON.Properties.Resources.LocationNegro25x25;
             this.BtnLocations.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLocations.Location = new System.Drawing.Point(0, 485);
+            this.BtnLocations.Location = new System.Drawing.Point(0, 596);
             this.BtnLocations.Margin = new System.Windows.Forms.Padding(0);
             this.BtnLocations.Name = "BtnLocations";
-            this.BtnLocations.Size = new System.Drawing.Size(200, 35);
+            this.BtnLocations.Size = new System.Drawing.Size(267, 43);
             this.BtnLocations.TabIndex = 53;
             this.BtnLocations.Text = "SEDES";
             this.BtnLocations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1759,10 +1782,10 @@
             this.BtnAccountingBooks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnAccountingBooks.Image = ((System.Drawing.Image)(resources.GetObject("BtnAccountingBooks.Image")));
             this.BtnAccountingBooks.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAccountingBooks.Location = new System.Drawing.Point(0, 450);
+            this.BtnAccountingBooks.Location = new System.Drawing.Point(0, 553);
             this.BtnAccountingBooks.Margin = new System.Windows.Forms.Padding(0);
             this.BtnAccountingBooks.Name = "BtnAccountingBooks";
-            this.BtnAccountingBooks.Size = new System.Drawing.Size(200, 35);
+            this.BtnAccountingBooks.Size = new System.Drawing.Size(267, 43);
             this.BtnAccountingBooks.TabIndex = 52;
             this.BtnAccountingBooks.Text = "LIBROS CONTABLES";
             this.BtnAccountingBooks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1782,10 +1805,10 @@
             this.BtnBanks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBanks.Image = ((System.Drawing.Image)(resources.GetObject("BtnBanks.Image")));
             this.BtnBanks.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBanks.Location = new System.Drawing.Point(0, 415);
+            this.BtnBanks.Location = new System.Drawing.Point(0, 510);
             this.BtnBanks.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBanks.Name = "BtnBanks";
-            this.BtnBanks.Size = new System.Drawing.Size(200, 35);
+            this.BtnBanks.Size = new System.Drawing.Size(267, 43);
             this.BtnBanks.TabIndex = 51;
             this.BtnBanks.Text = "BANCOS";
             this.BtnBanks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1805,10 +1828,10 @@
             this.BtnChecks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecks.Image = global::SECRON.Properties.Resources.CheckNegro25x25;
             this.BtnChecks.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecks.Location = new System.Drawing.Point(0, 380);
+            this.BtnChecks.Location = new System.Drawing.Point(0, 467);
             this.BtnChecks.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecks.Name = "BtnChecks";
-            this.BtnChecks.Size = new System.Drawing.Size(200, 35);
+            this.BtnChecks.Size = new System.Drawing.Size(267, 43);
             this.BtnChecks.TabIndex = 50;
             this.BtnChecks.Text = "CHEQUES";
             this.BtnChecks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1828,10 +1851,10 @@
             this.BtnBills.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnBills.Image = global::SECRON.Properties.Resources.GastosNegro25x25;
             this.BtnBills.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnBills.Location = new System.Drawing.Point(0, 345);
+            this.BtnBills.Location = new System.Drawing.Point(0, 424);
             this.BtnBills.Margin = new System.Windows.Forms.Padding(0);
             this.BtnBills.Name = "BtnBills";
-            this.BtnBills.Size = new System.Drawing.Size(200, 35);
+            this.BtnBills.Size = new System.Drawing.Size(267, 43);
             this.BtnBills.TabIndex = 49;
             this.BtnBills.Text = "GASTOS";
             this.BtnBills.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1851,12 +1874,12 @@
             this.BtnKardex.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnKardex.Image = global::SECRON.Properties.Resources.KardexNegro25x25;
             this.BtnKardex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardex.Location = new System.Drawing.Point(0, 310);
+            this.BtnKardex.Location = new System.Drawing.Point(0, 381);
             this.BtnKardex.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKardex.Name = "BtnKardex";
-            this.BtnKardex.Size = new System.Drawing.Size(200, 35);
+            this.BtnKardex.Size = new System.Drawing.Size(267, 43);
             this.BtnKardex.TabIndex = 48;
-            this.BtnKardex.Text = "KARDEX";
+            this.BtnKardex.Text = "INVENTARIO";
             this.BtnKardex.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnKardex.UseVisualStyleBackColor = false;
             this.BtnKardex.Visible = false;
@@ -1874,10 +1897,10 @@
             this.BtnOrders.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnOrders.Image = global::SECRON.Properties.Resources.ShopsNegro25x25;
             this.BtnOrders.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnOrders.Location = new System.Drawing.Point(0, 275);
+            this.BtnOrders.Location = new System.Drawing.Point(0, 338);
             this.BtnOrders.Margin = new System.Windows.Forms.Padding(0);
             this.BtnOrders.Name = "BtnOrders";
-            this.BtnOrders.Size = new System.Drawing.Size(200, 35);
+            this.BtnOrders.Size = new System.Drawing.Size(267, 43);
             this.BtnOrders.TabIndex = 47;
             this.BtnOrders.Text = "COMPRAS";
             this.BtnOrders.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1897,10 +1920,10 @@
             this.BtnCounts.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnCounts.Image = global::SECRON.Properties.Resources.AccountsNegro25x25;
             this.BtnCounts.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCounts.Location = new System.Drawing.Point(0, 240);
+            this.BtnCounts.Location = new System.Drawing.Point(0, 295);
             this.BtnCounts.Margin = new System.Windows.Forms.Padding(0);
             this.BtnCounts.Name = "BtnCounts";
-            this.BtnCounts.Size = new System.Drawing.Size(200, 35);
+            this.BtnCounts.Size = new System.Drawing.Size(267, 43);
             this.BtnCounts.TabIndex = 46;
             this.BtnCounts.Text = "CUENTAS";
             this.BtnCounts.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1920,10 +1943,10 @@
             this.BtnSuppliers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnSuppliers.Image = global::SECRON.Properties.Resources.SupplierNegro25x25;
             this.BtnSuppliers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSuppliers.Location = new System.Drawing.Point(0, 205);
+            this.BtnSuppliers.Location = new System.Drawing.Point(0, 252);
             this.BtnSuppliers.Margin = new System.Windows.Forms.Padding(0);
             this.BtnSuppliers.Name = "BtnSuppliers";
-            this.BtnSuppliers.Size = new System.Drawing.Size(200, 35);
+            this.BtnSuppliers.Size = new System.Drawing.Size(267, 43);
             this.BtnSuppliers.TabIndex = 45;
             this.BtnSuppliers.Text = "PROVEEDORES";
             this.BtnSuppliers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1943,10 +1966,10 @@
             this.BtnUsers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnUsers.Image = global::SECRON.Properties.Resources.UsersNegro25x25;
             this.BtnUsers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsers.Location = new System.Drawing.Point(0, 170);
+            this.BtnUsers.Location = new System.Drawing.Point(0, 209);
             this.BtnUsers.Margin = new System.Windows.Forms.Padding(0);
             this.BtnUsers.Name = "BtnUsers";
-            this.BtnUsers.Size = new System.Drawing.Size(200, 35);
+            this.BtnUsers.Size = new System.Drawing.Size(267, 43);
             this.BtnUsers.TabIndex = 44;
             this.BtnUsers.Text = "USUARIOS";
             this.BtnUsers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1966,10 +1989,10 @@
             this.BtnEmployees.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnEmployees.Image = ((System.Drawing.Image)(resources.GetObject("BtnEmployees.Image")));
             this.BtnEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployees.Location = new System.Drawing.Point(0, 135);
+            this.BtnEmployees.Location = new System.Drawing.Point(0, 166);
             this.BtnEmployees.Margin = new System.Windows.Forms.Padding(0);
             this.BtnEmployees.Name = "BtnEmployees";
-            this.BtnEmployees.Size = new System.Drawing.Size(200, 35);
+            this.BtnEmployees.Size = new System.Drawing.Size(267, 43);
             this.BtnEmployees.TabIndex = 43;
             this.BtnEmployees.Text = "COLABORADORES";
             this.BtnEmployees.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1989,10 +2012,10 @@
             this.BtnHome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnHome.Image = ((System.Drawing.Image)(resources.GetObject("BtnHome.Image")));
             this.BtnHome.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnHome.Location = new System.Drawing.Point(0, 100);
+            this.BtnHome.Location = new System.Drawing.Point(0, 123);
             this.BtnHome.Margin = new System.Windows.Forms.Padding(0);
             this.BtnHome.Name = "BtnHome";
-            this.BtnHome.Size = new System.Drawing.Size(200, 35);
+            this.BtnHome.Size = new System.Drawing.Size(267, 43);
             this.BtnHome.TabIndex = 42;
             this.BtnHome.Text = "INICIO";
             this.BtnHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2005,8 +2028,9 @@
             this.PicLogo.Dock = System.Windows.Forms.DockStyle.Top;
             this.PicLogo.Image = ((System.Drawing.Image)(resources.GetObject("PicLogo.Image")));
             this.PicLogo.Location = new System.Drawing.Point(0, 0);
+            this.PicLogo.Margin = new System.Windows.Forms.Padding(4);
             this.PicLogo.Name = "PicLogo";
-            this.PicLogo.Size = new System.Drawing.Size(200, 100);
+            this.PicLogo.Size = new System.Drawing.Size(267, 123);
             this.PicLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PicLogo.TabIndex = 41;
             this.PicLogo.TabStop = false;
@@ -2014,9 +2038,10 @@
             // PanelContenedor
             // 
             this.PanelContenedor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelContenedor.Location = new System.Drawing.Point(200, 56);
+            this.PanelContenedor.Location = new System.Drawing.Point(267, 69);
+            this.PanelContenedor.Margin = new System.Windows.Forms.Padding(4);
             this.PanelContenedor.Name = "PanelContenedor";
-            this.PanelContenedor.Size = new System.Drawing.Size(1184, 680);
+            this.PanelContenedor.Size = new System.Drawing.Size(1578, 837);
             this.PanelContenedor.TabIndex = 19;
             // 
             // PanelTeachers
@@ -2027,9 +2052,10 @@
             this.PanelTeachers.Controls.Add(this.BtnTeachersSections);
             this.PanelTeachers.Controls.Add(this.BtnTeachersPersonal);
             this.PanelTeachers.Controls.Add(this.BtnTeachersAcademicConfiguration);
-            this.PanelTeachers.Location = new System.Drawing.Point(200, 1);
+            this.PanelTeachers.Location = new System.Drawing.Point(267, 1);
+            this.PanelTeachers.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTeachers.Name = "PanelTeachers";
-            this.PanelTeachers.Size = new System.Drawing.Size(300, 200);
+            this.PanelTeachers.Size = new System.Drawing.Size(400, 246);
             this.PanelTeachers.TabIndex = 20;
             this.PanelTeachers.Visible = false;
             // 
@@ -2043,10 +2069,10 @@
             this.BtnTeachersReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachersReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachersReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersReports.Location = new System.Drawing.Point(0, 140);
+            this.BtnTeachersReports.Location = new System.Drawing.Point(0, 172);
             this.BtnTeachersReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachersReports.Name = "BtnTeachersReports";
-            this.BtnTeachersReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachersReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachersReports.TabIndex = 48;
             this.BtnTeachersReports.Text = "REPORTES ACADÉMICOS";
             this.BtnTeachersReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2063,10 +2089,10 @@
             this.BtnTeachersSchedules.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachersSchedules.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachersSchedules.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersSchedules.Location = new System.Drawing.Point(0, 105);
+            this.BtnTeachersSchedules.Location = new System.Drawing.Point(0, 129);
             this.BtnTeachersSchedules.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachersSchedules.Name = "BtnTeachersSchedules";
-            this.BtnTeachersSchedules.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachersSchedules.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachersSchedules.TabIndex = 47;
             this.BtnTeachersSchedules.Text = "HORARIOS";
             this.BtnTeachersSchedules.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2083,10 +2109,10 @@
             this.BtnTeachersSections.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachersSections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachersSections.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersSections.Location = new System.Drawing.Point(0, 70);
+            this.BtnTeachersSections.Location = new System.Drawing.Point(0, 86);
             this.BtnTeachersSections.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachersSections.Name = "BtnTeachersSections";
-            this.BtnTeachersSections.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachersSections.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachersSections.TabIndex = 46;
             this.BtnTeachersSections.Text = "GESTIÓN DE SECCIONES";
             this.BtnTeachersSections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2103,10 +2129,10 @@
             this.BtnTeachersPersonal.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachersPersonal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachersPersonal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersPersonal.Location = new System.Drawing.Point(0, 35);
+            this.BtnTeachersPersonal.Location = new System.Drawing.Point(0, 43);
             this.BtnTeachersPersonal.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachersPersonal.Name = "BtnTeachersPersonal";
-            this.BtnTeachersPersonal.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachersPersonal.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachersPersonal.TabIndex = 45;
             this.BtnTeachersPersonal.Text = "PERSONAL ACADÉMICO";
             this.BtnTeachersPersonal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2126,7 +2152,7 @@
             this.BtnTeachersAcademicConfiguration.Location = new System.Drawing.Point(0, 0);
             this.BtnTeachersAcademicConfiguration.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachersAcademicConfiguration.Name = "BtnTeachersAcademicConfiguration";
-            this.BtnTeachersAcademicConfiguration.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachersAcademicConfiguration.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachersAcademicConfiguration.TabIndex = 44;
             this.BtnTeachersAcademicConfiguration.Text = "CONFIGURACIÓN ACADÉMICA";
             this.BtnTeachersAcademicConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2140,9 +2166,10 @@
             this.PanelTeachers_1.Controls.Add(this.BtnTeachers_Courses);
             this.PanelTeachers_1.Controls.Add(this.BtnTeachers_Carrers);
             this.PanelTeachers_1.Controls.Add(this.BtnTeachers_Schedules);
-            this.PanelTeachers_1.Location = new System.Drawing.Point(500, 1);
+            this.PanelTeachers_1.Location = new System.Drawing.Point(667, 1);
+            this.PanelTeachers_1.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTeachers_1.Name = "PanelTeachers_1";
-            this.PanelTeachers_1.Size = new System.Drawing.Size(300, 175);
+            this.PanelTeachers_1.Size = new System.Drawing.Size(400, 215);
             this.PanelTeachers_1.TabIndex = 21;
             this.PanelTeachers_1.Visible = false;
             // 
@@ -2156,10 +2183,10 @@
             this.BtnTeachers_Pensum.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_Pensum.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_Pensum.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Pensum.Location = new System.Drawing.Point(0, 105);
+            this.BtnTeachers_Pensum.Location = new System.Drawing.Point(0, 129);
             this.BtnTeachers_Pensum.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Pensum.Name = "BtnTeachers_Pensum";
-            this.BtnTeachers_Pensum.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Pensum.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Pensum.TabIndex = 47;
             this.BtnTeachers_Pensum.Text = "PENSUM CARRERAS";
             this.BtnTeachers_Pensum.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2176,10 +2203,10 @@
             this.BtnTeachers_Courses.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_Courses.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_Courses.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Courses.Location = new System.Drawing.Point(0, 70);
+            this.BtnTeachers_Courses.Location = new System.Drawing.Point(0, 86);
             this.BtnTeachers_Courses.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Courses.Name = "BtnTeachers_Courses";
-            this.BtnTeachers_Courses.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Courses.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Courses.TabIndex = 46;
             this.BtnTeachers_Courses.Text = "CATÁLOGO DE CURSOS";
             this.BtnTeachers_Courses.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2196,10 +2223,10 @@
             this.BtnTeachers_Carrers.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_Carrers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_Carrers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Carrers.Location = new System.Drawing.Point(0, 35);
+            this.BtnTeachers_Carrers.Location = new System.Drawing.Point(0, 43);
             this.BtnTeachers_Carrers.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Carrers.Name = "BtnTeachers_Carrers";
-            this.BtnTeachers_Carrers.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Carrers.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Carrers.TabIndex = 45;
             this.BtnTeachers_Carrers.Text = "CARRERAS UNIVERSITARIAS";
             this.BtnTeachers_Carrers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2219,7 +2246,7 @@
             this.BtnTeachers_Schedules.Location = new System.Drawing.Point(0, 0);
             this.BtnTeachers_Schedules.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Schedules.Name = "BtnTeachers_Schedules";
-            this.BtnTeachers_Schedules.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Schedules.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Schedules.TabIndex = 44;
             this.BtnTeachers_Schedules.Text = "CONFIGURACIÓN ACADÉMICA";
             this.BtnTeachers_Schedules.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2232,9 +2259,10 @@
             this.PanelTeachers_2.Controls.Add(this.BtnTeachers_Assignment);
             this.PanelTeachers_2.Controls.Add(this.BtnTeachers_Teachers);
             this.PanelTeachers_2.Controls.Add(this.BtnTeachers_Coordinators);
-            this.PanelTeachers_2.Location = new System.Drawing.Point(500, 1);
+            this.PanelTeachers_2.Location = new System.Drawing.Point(667, 1);
+            this.PanelTeachers_2.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTeachers_2.Name = "PanelTeachers_2";
-            this.PanelTeachers_2.Size = new System.Drawing.Size(300, 135);
+            this.PanelTeachers_2.Size = new System.Drawing.Size(400, 166);
             this.PanelTeachers_2.TabIndex = 22;
             this.PanelTeachers_2.Visible = false;
             // 
@@ -2248,10 +2276,10 @@
             this.BtnTeachers_Assignment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_Assignment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_Assignment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Assignment.Location = new System.Drawing.Point(0, 70);
+            this.BtnTeachers_Assignment.Location = new System.Drawing.Point(0, 86);
             this.BtnTeachers_Assignment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Assignment.Name = "BtnTeachers_Assignment";
-            this.BtnTeachers_Assignment.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Assignment.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Assignment.TabIndex = 46;
             this.BtnTeachers_Assignment.Text = "ASIGNACIÓN DE CURSOS A DOCENTES";
             this.BtnTeachers_Assignment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2268,10 +2296,10 @@
             this.BtnTeachers_Teachers.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_Teachers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_Teachers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Teachers.Location = new System.Drawing.Point(0, 35);
+            this.BtnTeachers_Teachers.Location = new System.Drawing.Point(0, 43);
             this.BtnTeachers_Teachers.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Teachers.Name = "BtnTeachers_Teachers";
-            this.BtnTeachers_Teachers.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Teachers.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Teachers.TabIndex = 45;
             this.BtnTeachers_Teachers.Text = "DOCENTES";
             this.BtnTeachers_Teachers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2291,7 +2319,7 @@
             this.BtnTeachers_Coordinators.Location = new System.Drawing.Point(0, 0);
             this.BtnTeachers_Coordinators.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Coordinators.Name = "BtnTeachers_Coordinators";
-            this.BtnTeachers_Coordinators.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Coordinators.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Coordinators.TabIndex = 44;
             this.BtnTeachers_Coordinators.Text = "COORDINADORES";
             this.BtnTeachers_Coordinators.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2303,9 +2331,10 @@
             this.PanelTeachers_3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
             this.PanelTeachers_3.Controls.Add(this.BtnTeachers_CoursesSection);
             this.PanelTeachers_3.Controls.Add(this.BtnTeachers_Sections);
-            this.PanelTeachers_3.Location = new System.Drawing.Point(500, 1);
+            this.PanelTeachers_3.Location = new System.Drawing.Point(667, 1);
+            this.PanelTeachers_3.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTeachers_3.Name = "PanelTeachers_3";
-            this.PanelTeachers_3.Size = new System.Drawing.Size(300, 100);
+            this.PanelTeachers_3.Size = new System.Drawing.Size(400, 123);
             this.PanelTeachers_3.TabIndex = 23;
             this.PanelTeachers_3.Visible = false;
             // 
@@ -2319,10 +2348,10 @@
             this.BtnTeachers_CoursesSection.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_CoursesSection.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_CoursesSection.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoursesSection.Location = new System.Drawing.Point(0, 35);
+            this.BtnTeachers_CoursesSection.Location = new System.Drawing.Point(0, 43);
             this.BtnTeachers_CoursesSection.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_CoursesSection.Name = "BtnTeachers_CoursesSection";
-            this.BtnTeachers_CoursesSection.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_CoursesSection.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_CoursesSection.TabIndex = 45;
             this.BtnTeachers_CoursesSection.Text = "CURSOS POR SECCIÓN";
             this.BtnTeachers_CoursesSection.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2342,7 +2371,7 @@
             this.BtnTeachers_Sections.Location = new System.Drawing.Point(0, 0);
             this.BtnTeachers_Sections.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_Sections.Name = "BtnTeachers_Sections";
-            this.BtnTeachers_Sections.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_Sections.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_Sections.TabIndex = 44;
             this.BtnTeachers_Sections.Text = "SECCIONES";
             this.BtnTeachers_Sections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2355,9 +2384,10 @@
             this.PanelTeachers_4.Controls.Add(this.BtnTeachers_ScheduleReport);
             this.PanelTeachers_4.Controls.Add(this.BtnTeachers_TeachProgram);
             this.PanelTeachers_4.Controls.Add(this.BtnTeachers_SchedulesManagment);
-            this.PanelTeachers_4.Location = new System.Drawing.Point(500, 1);
+            this.PanelTeachers_4.Location = new System.Drawing.Point(667, 1);
+            this.PanelTeachers_4.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTeachers_4.Name = "PanelTeachers_4";
-            this.PanelTeachers_4.Size = new System.Drawing.Size(300, 135);
+            this.PanelTeachers_4.Size = new System.Drawing.Size(400, 166);
             this.PanelTeachers_4.TabIndex = 24;
             this.PanelTeachers_4.Visible = false;
             // 
@@ -2371,10 +2401,10 @@
             this.BtnTeachers_ScheduleReport.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_ScheduleReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_ScheduleReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_ScheduleReport.Location = new System.Drawing.Point(0, 70);
+            this.BtnTeachers_ScheduleReport.Location = new System.Drawing.Point(0, 86);
             this.BtnTeachers_ScheduleReport.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_ScheduleReport.Name = "BtnTeachers_ScheduleReport";
-            this.BtnTeachers_ScheduleReport.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_ScheduleReport.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_ScheduleReport.TabIndex = 46;
             this.BtnTeachers_ScheduleReport.Text = "ASIGNACIÓN DE CURSOS A DOCENTES";
             this.BtnTeachers_ScheduleReport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2391,10 +2421,10 @@
             this.BtnTeachers_TeachProgram.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_TeachProgram.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_TeachProgram.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_TeachProgram.Location = new System.Drawing.Point(0, 35);
+            this.BtnTeachers_TeachProgram.Location = new System.Drawing.Point(0, 43);
             this.BtnTeachers_TeachProgram.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_TeachProgram.Name = "BtnTeachers_TeachProgram";
-            this.BtnTeachers_TeachProgram.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_TeachProgram.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_TeachProgram.TabIndex = 45;
             this.BtnTeachers_TeachProgram.Text = "PROGRAMAR CLASES";
             this.BtnTeachers_TeachProgram.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2414,7 +2444,7 @@
             this.BtnTeachers_SchedulesManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnTeachers_SchedulesManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_SchedulesManagment.Name = "BtnTeachers_SchedulesManagment";
-            this.BtnTeachers_SchedulesManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_SchedulesManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_SchedulesManagment.TabIndex = 44;
             this.BtnTeachers_SchedulesManagment.Text = "GESTIÓN DE HORARIOS";
             this.BtnTeachers_SchedulesManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2431,9 +2461,10 @@
             this.PanelTeachers_5.Controls.Add(this.BtnTeachers_SectionsReports);
             this.PanelTeachers_5.Controls.Add(this.BtnTeachers_CoordinatorsReports);
             this.PanelTeachers_5.Controls.Add(this.BtnTeachers_TeachersReports);
-            this.PanelTeachers_5.Location = new System.Drawing.Point(500, 1);
+            this.PanelTeachers_5.Location = new System.Drawing.Point(667, 1);
+            this.PanelTeachers_5.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTeachers_5.Name = "PanelTeachers_5";
-            this.PanelTeachers_5.Size = new System.Drawing.Size(300, 275);
+            this.PanelTeachers_5.Size = new System.Drawing.Size(400, 338);
             this.PanelTeachers_5.TabIndex = 25;
             this.PanelTeachers_5.Visible = false;
             // 
@@ -2447,10 +2478,10 @@
             this.BtnTeachers_CoursesReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_CoursesReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_CoursesReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoursesReports.Location = new System.Drawing.Point(0, 210);
+            this.BtnTeachers_CoursesReports.Location = new System.Drawing.Point(0, 258);
             this.BtnTeachers_CoursesReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_CoursesReports.Name = "BtnTeachers_CoursesReports";
-            this.BtnTeachers_CoursesReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_CoursesReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_CoursesReports.TabIndex = 50;
             this.BtnTeachers_CoursesReports.Text = "REPORTERÍA DE CURSOS";
             this.BtnTeachers_CoursesReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2467,10 +2498,10 @@
             this.BtnTeachers_PensumReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_PensumReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_PensumReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_PensumReports.Location = new System.Drawing.Point(0, 175);
+            this.BtnTeachers_PensumReports.Location = new System.Drawing.Point(0, 215);
             this.BtnTeachers_PensumReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_PensumReports.Name = "BtnTeachers_PensumReports";
-            this.BtnTeachers_PensumReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_PensumReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_PensumReports.TabIndex = 49;
             this.BtnTeachers_PensumReports.Text = "REPORTERÍA PENSUM POR CARRERAS";
             this.BtnTeachers_PensumReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2487,10 +2518,10 @@
             this.BtnTeachers_ConflictReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_ConflictReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_ConflictReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_ConflictReports.Location = new System.Drawing.Point(0, 140);
+            this.BtnTeachers_ConflictReports.Location = new System.Drawing.Point(0, 172);
             this.BtnTeachers_ConflictReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_ConflictReports.Name = "BtnTeachers_ConflictReports";
-            this.BtnTeachers_ConflictReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_ConflictReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_ConflictReports.TabIndex = 48;
             this.BtnTeachers_ConflictReports.Text = "REPORTES CONFLICTOS DE HORARIOS";
             this.BtnTeachers_ConflictReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2507,10 +2538,10 @@
             this.BtnTeachers_AcademicReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_AcademicReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_AcademicReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_AcademicReports.Location = new System.Drawing.Point(0, 105);
+            this.BtnTeachers_AcademicReports.Location = new System.Drawing.Point(0, 129);
             this.BtnTeachers_AcademicReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_AcademicReports.Name = "BtnTeachers_AcademicReports";
-            this.BtnTeachers_AcademicReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_AcademicReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_AcademicReports.TabIndex = 47;
             this.BtnTeachers_AcademicReports.Text = "REPORTERÍA DE CARGA ACADÉMICA";
             this.BtnTeachers_AcademicReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2527,10 +2558,10 @@
             this.BtnTeachers_SectionsReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_SectionsReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_SectionsReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_SectionsReports.Location = new System.Drawing.Point(0, 70);
+            this.BtnTeachers_SectionsReports.Location = new System.Drawing.Point(0, 86);
             this.BtnTeachers_SectionsReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_SectionsReports.Name = "BtnTeachers_SectionsReports";
-            this.BtnTeachers_SectionsReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_SectionsReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_SectionsReports.TabIndex = 46;
             this.BtnTeachers_SectionsReports.Text = "REPORTERÍA SECCIONES";
             this.BtnTeachers_SectionsReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2547,10 +2578,10 @@
             this.BtnTeachers_CoordinatorsReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTeachers_CoordinatorsReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTeachers_CoordinatorsReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoordinatorsReports.Location = new System.Drawing.Point(0, 35);
+            this.BtnTeachers_CoordinatorsReports.Location = new System.Drawing.Point(0, 43);
             this.BtnTeachers_CoordinatorsReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_CoordinatorsReports.Name = "BtnTeachers_CoordinatorsReports";
-            this.BtnTeachers_CoordinatorsReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_CoordinatorsReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_CoordinatorsReports.TabIndex = 45;
             this.BtnTeachers_CoordinatorsReports.Text = "REPORTERÍA COORDINADORES";
             this.BtnTeachers_CoordinatorsReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2570,7 +2601,7 @@
             this.BtnTeachers_TeachersReports.Location = new System.Drawing.Point(0, 0);
             this.BtnTeachers_TeachersReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTeachers_TeachersReports.Name = "BtnTeachers_TeachersReports";
-            this.BtnTeachers_TeachersReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTeachers_TeachersReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTeachers_TeachersReports.TabIndex = 44;
             this.BtnTeachers_TeachersReports.Text = "REPORTERÍA DOCENTES";
             this.BtnTeachers_TeachersReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2582,9 +2613,10 @@
             this.PanelTransfers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
             this.PanelTransfers.Controls.Add(this.BtnTransfersReports);
             this.PanelTransfers.Controls.Add(this.BtnTransfersManagment);
-            this.PanelTransfers.Location = new System.Drawing.Point(200, 1);
+            this.PanelTransfers.Location = new System.Drawing.Point(267, 1);
+            this.PanelTransfers.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTransfers.Name = "PanelTransfers";
-            this.PanelTransfers.Size = new System.Drawing.Size(300, 80);
+            this.PanelTransfers.Size = new System.Drawing.Size(400, 98);
             this.PanelTransfers.TabIndex = 26;
             this.PanelTransfers.Visible = false;
             // 
@@ -2598,10 +2630,10 @@
             this.BtnTransfersReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnTransfersReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnTransfersReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTransfersReports.Location = new System.Drawing.Point(0, 35);
+            this.BtnTransfersReports.Location = new System.Drawing.Point(0, 43);
             this.BtnTransfersReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTransfersReports.Name = "BtnTransfersReports";
-            this.BtnTransfersReports.Size = new System.Drawing.Size(300, 35);
+            this.BtnTransfersReports.Size = new System.Drawing.Size(400, 43);
             this.BtnTransfersReports.TabIndex = 45;
             this.BtnTransfersReports.Text = "REPORTES DE TRANSFERENCIAS";
             this.BtnTransfersReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2621,7 +2653,7 @@
             this.BtnTransfersManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnTransfersManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnTransfersManagment.Name = "BtnTransfersManagment";
-            this.BtnTransfersManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnTransfersManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnTransfersManagment.TabIndex = 44;
             this.BtnTransfersManagment.Text = "GESTIÓN DE TRANSFERENCIAS";
             this.BtnTransfersManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2633,9 +2665,10 @@
             this.PanelKARDEX_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
             this.PanelKARDEX_1.Controls.Add(this.BtnKARDEX_CatalogLocationsCategories);
             this.PanelKARDEX_1.Controls.Add(this.BtnKARDEX_ItemsManagment);
-            this.PanelKARDEX_1.Location = new System.Drawing.Point(500, 1);
+            this.PanelKARDEX_1.Location = new System.Drawing.Point(667, 1);
+            this.PanelKARDEX_1.Margin = new System.Windows.Forms.Padding(4);
             this.PanelKARDEX_1.Name = "PanelKARDEX_1";
-            this.PanelKARDEX_1.Size = new System.Drawing.Size(300, 80);
+            this.PanelKARDEX_1.Size = new System.Drawing.Size(400, 98);
             this.PanelKARDEX_1.TabIndex = 27;
             this.PanelKARDEX_1.Visible = false;
             // 
@@ -2649,10 +2682,10 @@
             this.BtnKARDEX_CatalogLocationsCategories.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnKARDEX_CatalogLocationsCategories.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnKARDEX_CatalogLocationsCategories.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKARDEX_CatalogLocationsCategories.Location = new System.Drawing.Point(0, 35);
+            this.BtnKARDEX_CatalogLocationsCategories.Location = new System.Drawing.Point(0, 43);
             this.BtnKARDEX_CatalogLocationsCategories.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKARDEX_CatalogLocationsCategories.Name = "BtnKARDEX_CatalogLocationsCategories";
-            this.BtnKARDEX_CatalogLocationsCategories.Size = new System.Drawing.Size(300, 35);
+            this.BtnKARDEX_CatalogLocationsCategories.Size = new System.Drawing.Size(400, 43);
             this.BtnKARDEX_CatalogLocationsCategories.TabIndex = 45;
             this.BtnKARDEX_CatalogLocationsCategories.Text = "CATÁLOGO POR CATEGORÍAS";
             this.BtnKARDEX_CatalogLocationsCategories.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2672,7 +2705,7 @@
             this.BtnKARDEX_ItemsManagment.Location = new System.Drawing.Point(0, 0);
             this.BtnKARDEX_ItemsManagment.Margin = new System.Windows.Forms.Padding(0);
             this.BtnKARDEX_ItemsManagment.Name = "BtnKARDEX_ItemsManagment";
-            this.BtnKARDEX_ItemsManagment.Size = new System.Drawing.Size(300, 35);
+            this.BtnKARDEX_ItemsManagment.Size = new System.Drawing.Size(400, 43);
             this.BtnKARDEX_ItemsManagment.TabIndex = 44;
             this.BtnKARDEX_ItemsManagment.Text = "CATÁLOGO GENERAL DE ARTÍCULOS";
             this.BtnKARDEX_ItemsManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2681,10 +2714,10 @@
             // 
             // Frm_ControlCenter_MDI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1384, 736);
+            this.ClientSize = new System.Drawing.Size(1845, 906);
             this.Controls.Add(this.PanelKARDEX_1);
             this.Controls.Add(this.PanelTransfers);
             this.Controls.Add(this.PanelTeachers_5);
@@ -2711,7 +2744,8 @@
             this.Controls.Add(this.PanelNavegacion);
             this.Controls.Add(this.PanelBordeSuperior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1198, 683);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(1592, 832);
             this.Name = "Frm_ControlCenter_MDI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON";
