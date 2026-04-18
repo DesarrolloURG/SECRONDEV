@@ -59,6 +59,11 @@ namespace SECRON.Views
                 CargarCheques();
                 ActualizarInfoPaginacion();
                 ConfigurarSplitter();
+                Btn_FiltrosFechas.Click += Btn_FiltrosFechas_Click;
+                Txt_ResumenFiltroFecha.ReadOnly = true;
+                ActualizarResumenFiltroFecha();
+                DTP_FechaInicio.ValueChanged += DTP_FechaInicio_Principal_ValueChanged;
+                DTP_FechaFin.ValueChanged += DTP_FechaFin_Principal_ValueChanged;
 
                 //CARGAR PERMISOS DEL USUARIO
                 if (UserData != null)
@@ -232,12 +237,14 @@ namespace SECRON.Views
 
             DTP_FechaInicio.Enabled = false;
             DTP_FechaFin.Enabled = false;
+            Btn_FiltrosFechas.Enabled = false;
         }
 
         private void CheckBox_FiltroFechas_CheckedChanged(object sender, EventArgs e)
         {
             DTP_FechaInicio.Enabled = CheckBox_FiltroFechas.Checked;
             DTP_FechaFin.Enabled = CheckBox_FiltroFechas.Checked;
+            Btn_FiltrosFechas.Enabled = CheckBox_FiltroFechas.Checked;
         }
         #endregion ConfigurarDateTimePickers
         #region ConfigurarRangoCheques
@@ -571,6 +578,191 @@ namespace SECRON.Views
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        #region filtros de fechas
+
+        private List<DateTime> _mesesExcluidos = new List<DateTime>();
+        private List<DateTime> _fechasExcluidas = new List<DateTime>();
+
+        private void Btn_FiltrosFechas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Frm_Checks_Reports_Filters_Date frm = new Frm_Checks_Reports_Filters_Date
+                {
+                    FechaInicioInicial = DTP_FechaInicio.Value.Date,
+                    FechaFinInicial = DTP_FechaFin.Value.Date,
+                    MesesExcluidosIniciales = new List<DateTime>(_mesesExcluidos),
+                    FechasExcluidasIniciales = new List<DateTime>(_fechasExcluidas),
+                    StartPosition = FormStartPosition.CenterParent
+                };
+
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    DTP_FechaInicio.Value = frm.FechaInicioSeleccionada;
+                    DTP_FechaFin.Value = frm.FechaFinSeleccionada;
+
+                    _mesesExcluidos = frm.MesesExcluidosSeleccionados;
+                    _fechasExcluidas = frm.FechasExcluidasSeleccionadas;
+
+                    ActualizarResumenFiltroFecha();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al abrir filtros de fechas: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private void ActualizarResumenFiltroFecha()
+        {
+            try
+            {
+                List<string> partes = new List<string>();
+
+                partes.Add($"Rango: {DTP_FechaInicio.Value:dd/MM/yyyy} - {DTP_FechaFin.Value:dd/MM/yyyy}");
+
+                if (_mesesExcluidos != null && _mesesExcluidos.Count > 0)
+                {
+                    var cultura = new System.Globalization.CultureInfo("es-GT");
+
+                    string meses = string.Join(", ",
+                        _mesesExcluidos
+                            .OrderBy(x => x)
+                            .Select(x => cultura.TextInfo.ToTitleCase(x.ToString("MMMM yyyy", cultura)))
+                    );
+
+                    partes.Add($"Meses excluidos: {meses}");
+                }
+
+                if (_fechasExcluidas != null && _fechasExcluidas.Count > 0)
+                {
+                    string fechas = string.Join(", ",
+                        _fechasExcluidas
+                            .OrderBy(x => x)
+                            .Select(x => x.ToString("dd/MM/yyyy"))
+                    );
+
+                    partes.Add($"Fechas excluidas: {fechas}");
+                }
+
+                if ((_mesesExcluidos == null || _mesesExcluidos.Count == 0) &&
+                    (_fechasExcluidas == null || _fechasExcluidas.Count == 0))
+                {
+                    partes.Add("Sin exclusiones.");
+                }
+
+                Txt_ResumenFiltroFecha.Text = string.Join(Environment.NewLine, partes);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al actualizar resumen del filtro de fechas: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private bool TieneExclusionesFecha()
+        {
+            return (_mesesExcluidos != null && _mesesExcluidos.Count > 0) ||
+                   (_fechasExcluidas != null && _fechasExcluidas.Count > 0);
+        }
+
+        private bool FechaEstaExcluida(DateTime fecha)
+        {
+            DateTime fechaEvaluar = fecha.Date;
+
+            bool mesExcluido = _mesesExcluidos != null &&
+                               _mesesExcluidos.Any(m => m.Year == fechaEvaluar.Year && m.Month == fechaEvaluar.Month);
+
+            if (mesExcluido)
+                return true;
+
+            bool fechaExcluida = _fechasExcluidas != null &&
+                                 _fechasExcluidas.Any(f => f.Date == fechaEvaluar);
+
+            return fechaExcluida;
+        }
+
+        private List<Mdl_Checks> AplicarExclusionesFecha(List<Mdl_Checks> lista)
+        {
+            if (lista == null)
+                return new List<Mdl_Checks>();
+
+            if (!CheckBox_FiltroFechas.Checked)
+                return lista;
+
+            if (!TieneExclusionesFecha())
+                return lista;
+
+            return lista
+                .Where(c => !FechaEstaExcluida(c.IssueDate))
+                .ToList();
+        }
+
+        private bool HayFiltrosActivos()
+        {
+            return !string.IsNullOrEmpty(_ultimoTextoBusqueda) ||
+                   !string.IsNullOrEmpty(_ultimoPeriodo) ||
+                   _ultimoLocationId.HasValue ||
+                   _ultimoStatusId.HasValue ||
+                   _ultimaFechaInicio.HasValue ||
+                   _ultimaFechaFin.HasValue ||
+                   !string.IsNullOrEmpty(_ultimoRangoInicio) ||
+                   !string.IsNullOrEmpty(_ultimoRangoFin);
+        }
+
+        private void AplicarPaginacionLocalCheques()
+        {
+            if (_listaCompletaFiltrada == null)
+            {
+                chequesList = new List<Mdl_Checks>();
+            }
+            else
+            {
+                int skip = (paginaActual - 1) * registrosPorPagina;
+
+                chequesList = _listaCompletaFiltrada
+                    .Skip(skip)
+                    .Take(registrosPorPagina)
+                    .ToList();
+            }
+
+            MostrarChequesEnTabla();
+
+            totalRegistros = _listaCompletaFiltrada?.Count ?? 0;
+            totalPaginas = totalRegistros == 0
+                ? 0
+                : (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+        }
+
+        private void ReiniciarExclusionesFechaPrincipal()
+        {
+            _mesesExcluidos = new List<DateTime>();
+            _fechasExcluidas = new List<DateTime>();
+            ActualizarResumenFiltroFecha();
+        }
+
+        private void DTP_FechaInicio_Principal_ValueChanged(object sender, EventArgs e)
+        {
+            ReiniciarExclusionesFechaPrincipal();
+        }
+
+        private void DTP_FechaFin_Principal_ValueChanged(object sender, EventArgs e)
+        {
+            ReiniciarExclusionesFechaPrincipal();
+        }
+
+        #endregion filtros de fechas
+
         #endregion CargarDatos
         #region Busqueda
         private void Btn_Search_Click(object sender, EventArgs e)
@@ -580,10 +772,12 @@ namespace SECRON.Views
                 this.Cursor = Cursors.WaitCursor;
 
                 string textoBusqueda = Txt_ValorBuscado.Text == "BUSCAR POR NO.CHEQUE, BENEFICIARIO, CONCEPTO..."
-                    ? "" : Txt_ValorBuscado.Text.Trim();
+                    ? ""
+                    : Txt_ValorBuscado.Text.Trim();
 
                 string periodo = Filtro1.SelectedItem?.ToString() == "TODOS"
-                    ? "" : Filtro1.SelectedItem?.ToString();
+                    ? ""
+                    : Filtro1.SelectedItem?.ToString();
 
                 int? locationId = null;
                 if (Filtro2.SelectedIndex > 0)
@@ -599,16 +793,14 @@ namespace SECRON.Views
                     statusId = selectedItem.Key;
                 }
 
-                DateTime? fechaInicio = CheckBox_FiltroFechas.Checked ? (DateTime?)DTP_FechaInicio.Value : null;
-                DateTime? fechaFin = CheckBox_FiltroFechas.Checked ? (DateTime?)DTP_FechaFin.Value : null;
+                DateTime? fechaInicio = CheckBox_FiltroFechas.Checked ? (DateTime?)DTP_FechaInicio.Value.Date : null;
+                DateTime? fechaFin = CheckBox_FiltroFechas.Checked ? (DateTime?)DTP_FechaFin.Value.Date : null;
 
-                // ⭐⭐⭐ NUEVO: Obtener valores del rango de cheques
                 string rangoInicio = null;
                 string rangoFin = null;
 
                 if (CheckBox_Rango.Checked)
                 {
-                    // Obtener valor de Txt_Li
                     if (!string.IsNullOrWhiteSpace(Txt_Li.Text) &&
                         Txt_Li.Text != "DESDE (NO. CHEQUE)" &&
                         Txt_Li.ForeColor != Color.Gray)
@@ -616,7 +808,6 @@ namespace SECRON.Views
                         rangoInicio = Txt_Li.Text.Trim();
                     }
 
-                    // Obtener valor de Txt_Fin
                     if (!string.IsNullOrWhiteSpace(Txt_Fin.Text) &&
                         Txt_Fin.Text != "HASTA (NO. CHEQUE)" &&
                         Txt_Fin.ForeColor != Color.Gray)
@@ -624,7 +815,6 @@ namespace SECRON.Views
                         rangoFin = Txt_Fin.Text.Trim();
                     }
 
-                    // Validar que el rango sea válido (inicio <= fin) si ambos son numéricos
                     if (rangoInicio != null && rangoFin != null)
                     {
                         bool inicioEsNumerico = long.TryParse(rangoInicio, out long numInicio);
@@ -636,7 +826,8 @@ namespace SECRON.Views
                                 "EL RANGO INICIAL NO PUEDE SER MAYOR QUE EL RANGO FINAL",
                                 "VALIDACIÓN",
                                 MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                                MessageBoxIcon.Warning
+                            );
 
                             this.Cursor = Cursors.Default;
                             return;
@@ -644,61 +835,37 @@ namespace SECRON.Views
                     }
                 }
 
-                // ⭐ GUARDAR FILTROS
                 _ultimoTextoBusqueda = textoBusqueda;
                 _ultimoPeriodo = periodo;
                 _ultimoLocationId = locationId;
                 _ultimoStatusId = statusId;
                 _ultimaFechaInicio = fechaInicio;
                 _ultimaFechaFin = fechaFin;
-                _ultimoRangoInicio = rangoInicio;  // ⭐ NUEVO
-                _ultimoRangoFin = rangoFin;        // ⭐ NUEVO
+                _ultimoRangoInicio = rangoInicio;
+                _ultimoRangoFin = rangoFin;
 
                 paginaActual = 1;
 
-                chequesList = Ctrl_Checks.BuscarCheques(
-                        _ultimoTextoBusqueda,
-                        _ultimoPeriodo,
-                        _ultimoLocationId,
-                        _ultimoStatusId,
-                        _ultimaFechaInicio,
-                        _ultimaFechaFin,
-                        _ultimoRangoInicio,     // ⭐ AGREGAR ESTA LÍNEA
-                        _ultimoRangoFin,        // ⭐ AGREGAR ESTA LÍNEA
-                        paginaActual,
-                        registrosPorPagina
-                );
-
-                MostrarChequesEnTabla();
-
-                totalRegistros = Ctrl_Checks.ContarChequesFiltrados(
-                    textoBusqueda,
-                    periodo,
-                    locationId,
-                    statusId,
-                    fechaInicio,
-                    fechaFin,
-                    rangoInicio,        // ⭐ NUEVO PARÁMETRO
-                    rangoFin            // ⭐ NUEVO PARÁMETRO
-                );
-
-                // ⭐ Guardar lista completa filtrada para exportar
-                _listaCompletaFiltrada = Ctrl_Checks.BuscarCheques(
-                    textoBusqueda,
-                    periodo,
-                    locationId,
-                    statusId,
-                    fechaInicio,
-                    fechaFin,
-                    rangoInicio,        // ⭐ NUEVO PARÁMETRO
-                    rangoFin,           // ⭐ NUEVO PARÁMETRO
+                var resultadosFiltrados = Ctrl_Checks.BuscarCheques(
+                    _ultimoTextoBusqueda,
+                    _ultimoPeriodo,
+                    _ultimoLocationId,
+                    _ultimoStatusId,
+                    _ultimaFechaInicio,
+                    _ultimaFechaFin,
+                    _ultimoRangoInicio,
+                    _ultimoRangoFin,
                     1,
                     int.MaxValue
                 );
 
-                totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+                resultadosFiltrados = AplicarExclusionesFecha(resultadosFiltrados);
 
+                _listaCompletaFiltrada = resultadosFiltrados;
+
+                AplicarPaginacionLocalCheques();
                 ActualizarInfoPaginacion();
+
                 this.Cursor = Cursors.Default;
             }
             catch (Exception ex)
@@ -717,7 +884,6 @@ namespace SECRON.Views
             Filtro3.SelectedIndex = 0;
             CheckBox_FiltroFechas.Checked = false;
 
-            // ⭐⭐⭐ NUEVO: Limpiar filtro de rango
             CheckBox_Rango.Checked = false;
             Txt_Li.Text = "DESDE (NO. CHEQUE)";
             Txt_Li.ForeColor = Color.Gray;
@@ -730,13 +896,17 @@ namespace SECRON.Views
             _ultimoStatusId = null;
             _ultimaFechaInicio = null;
             _ultimaFechaFin = null;
-            _ultimoRangoInicio = null;      // ⭐ NUEVO
-            _ultimoRangoFin = null;         // ⭐ NUEVO
+            _ultimoRangoInicio = null;
+            _ultimoRangoFin = null;
             _listaCompletaFiltrada = null;
 
             paginaActual = 1;
             CargarCheques();
             ActualizarInfoPaginacion();
+
+            _mesesExcluidos = new List<DateTime>();
+            _fechasExcluidas = new List<DateTime>();
+            ActualizarResumenFiltroFecha();
         }
         private void Txt_ValorBuscado_KeyDown(object sender, KeyEventArgs e)
         {
@@ -789,38 +959,32 @@ namespace SECRON.Views
 
         private void CambiarPagina(int nuevaPagina)
         {
-            if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas)
+            if (nuevaPagina < 1)
+                return;
+
+            if (HayFiltrosActivos())
             {
+                if (_listaCompletaFiltrada == null)
+                    return;
+
+                int totalPaginasCalculadas = _listaCompletaFiltrada.Count == 0
+                    ? 0
+                    : (int)Math.Ceiling((double)_listaCompletaFiltrada.Count / registrosPorPagina);
+
+                if (nuevaPagina > totalPaginasCalculadas)
+                    return;
+
                 paginaActual = nuevaPagina;
+                AplicarPaginacionLocalCheques();
+                ActualizarInfoPaginacion();
+            }
+            else
+            {
+                if (nuevaPagina > totalPaginas)
+                    return;
 
-                if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) ||
-                    !string.IsNullOrEmpty(_ultimoPeriodo) ||
-                    _ultimoLocationId.HasValue ||
-                    _ultimoStatusId.HasValue ||
-                    _ultimaFechaInicio.HasValue ||
-                    _ultimaFechaFin.HasValue ||
-                    !string.IsNullOrEmpty(_ultimoRangoInicio) ||
-                    !string.IsNullOrEmpty(_ultimoRangoFin))
-                {
-                    chequesList = Ctrl_Checks.BuscarCheques(
-                        _ultimoTextoBusqueda,
-                        _ultimoPeriodo,
-                        _ultimoLocationId,
-                        _ultimoStatusId,
-                        _ultimaFechaInicio,
-                        _ultimaFechaFin,
-                        _ultimoRangoInicio,
-                        _ultimoRangoFin,
-                        paginaActual,
-                        registrosPorPagina
-                    );
-                    MostrarChequesEnTabla();
-                }
-                else
-                {
-                    CargarCheques();
-                }
-
+                paginaActual = nuevaPagina;
+                CargarCheques();
                 ActualizarInfoPaginacion();
             }
         }
@@ -872,27 +1036,9 @@ namespace SECRON.Views
 
                 List<Mdl_Checks> todosLosCheques;
 
-                if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) ||
-                    !string.IsNullOrEmpty(_ultimoPeriodo) ||
-                    _ultimoLocationId.HasValue ||
-                    _ultimoStatusId.HasValue ||
-                    _ultimaFechaInicio.HasValue ||
-                    _ultimaFechaFin.HasValue ||
-                    !string.IsNullOrEmpty(_ultimoRangoInicio) ||
-                    !string.IsNullOrEmpty(_ultimoRangoFin))
+                if (HayFiltrosActivos())
                 {
-                    todosLosCheques = Ctrl_Checks.BuscarCheques(
-                        _ultimoTextoBusqueda,
-                        _ultimoPeriodo,
-                        _ultimoLocationId,
-                        _ultimoStatusId,
-                        _ultimaFechaInicio,
-                        _ultimaFechaFin,
-                        _ultimoRangoInicio,
-                        _ultimoRangoFin,
-                        1,
-                        int.MaxValue
-                    );
+                    todosLosCheques = _listaCompletaFiltrada ?? new List<Mdl_Checks>();
                 }
                 else
                 {
@@ -1080,27 +1226,9 @@ namespace SECRON.Views
                 List<Mdl_Checks> todosLosCheques;
 
                 // Obtener cheques con filtros o todos
-                if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) ||
-                    !string.IsNullOrEmpty(_ultimoPeriodo) ||
-                    _ultimoLocationId.HasValue ||
-                    _ultimoStatusId.HasValue ||
-                    _ultimaFechaInicio.HasValue ||
-                    _ultimaFechaFin.HasValue ||
-                    !string.IsNullOrEmpty(_ultimoRangoInicio) ||   // ⭐ AGREGAR
-                    !string.IsNullOrEmpty(_ultimoRangoFin))        // ⭐ AGREGAR
+                if (HayFiltrosActivos())
                 {
-                    todosLosCheques = Ctrl_Checks.BuscarCheques(
-                        _ultimoTextoBusqueda,
-                        _ultimoPeriodo,
-                        _ultimoLocationId,
-                        _ultimoStatusId,
-                        _ultimaFechaInicio,
-                        _ultimaFechaFin,
-                        _ultimoRangoInicio,
-                        _ultimoRangoFin,
-                        1,
-                        int.MaxValue
-                    );
+                    todosLosCheques = _listaCompletaFiltrada ?? new List<Mdl_Checks>();
                 }
                 else
                 {
