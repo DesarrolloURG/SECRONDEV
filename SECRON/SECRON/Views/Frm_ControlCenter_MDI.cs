@@ -140,13 +140,12 @@ namespace SECRON.Views
             ConfigurarBotonNavegacion(BtnSuppliers);
             ConfigurarBotonNavegacion(BtnCounts);
             ConfigurarBotonNavegacion(BtnOrders);
-            ConfigurarBotonNavegacion(BtnKardex);
+            ConfigurarBotonNavegacion(Btn_Inventory);
             ConfigurarBotonNavegacion(BtnBills);
             ConfigurarBotonNavegacion(BtnChecks);
             ConfigurarBotonNavegacion(BtnBanks);
             ConfigurarBotonNavegacion(BtnAccountingBooks); 
             ConfigurarBotonNavegacion(BtnLocations);
-            ConfigurarBotonNavegacion(BtnStaticItems);
             ConfigurarBotonNavegacion(Btn_Teachers);
             ConfigurarBotonNavegacion(Btn_Transfers);
         }
@@ -191,12 +190,10 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnOrdersManagment);
             ConfigurarBotonSubmenuNavegacion(BtnOrdersRequisicionManagment);
             ConfigurarBotonSubmenuNavegacion(BtnOrdersSolicitud);
-            // Panel de Navegación Submenú Kardex
-            ConfigurarBotonSubmenuNavegacion(BtnKardexCatalogo);
-            ConfigurarBotonSubmenuNavegacion(BtnKardexInventory);
-            ConfigurarBotonSubmenuNavegacion(BtnKardexInsumosSedes);
-            ConfigurarBotonSubmenuNavegacion(BtnKardexInventoryReport);
-            ConfigurarBotonSubmenuNavegacion(BtnKardexValorizacion);
+            // Panel de Navegación Submenú Inventario (opciones principales)
+            ConfigurarBotonSubmenuNavegacion(BtnInvKardex);
+            ConfigurarBotonSubmenuNavegacion(BtnInvStaticItems);
+            ConfigurarBotonSubmenuNavegacion(BtnInvWarehouse);
             // Panel de Navegación Submenú Gastos
             ConfigurarBotonSubmenuNavegacion(BtnBillsAuthorization);
             ConfigurarBotonSubmenuNavegacion(BtnBillsBudgetControl);
@@ -269,8 +266,21 @@ namespace SECRON.Views
         private void ConfigurarSubSubmenuNavegacion()
         {
             // Panel de Navegación SubSubmenú KARDEX - Gestión de Artículos
-            ConfigurarBotonSubSubmenuNavegacion(BtnKARDEX_CatalogLocationsCategories);
-            ConfigurarBotonSubSubmenuNavegacion(BtnKARDEX_ItemsManagment);
+            ConfigurarBotonSubSubmenuNavegacion(BtnKardex_CatalogLocationsCategories);
+            ConfigurarBotonSubSubmenuNavegacion(BtnKardex_ItemsManagment);
+            ConfigurarBotonSubSubmenuNavegacion(BtnKardexInventory);
+            ConfigurarBotonSubSubmenuNavegacion(BtnKardexInsumosSedes);
+            ConfigurarBotonSubSubmenuNavegacion(BtnKardexInventoryReport);
+            ConfigurarBotonSubSubmenuNavegacion(BtnKardexValorizacion);
+
+            // Panel de Navegación SubSubmenú ACTIVOS FIJOS
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsManagment);
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsConfiguration);
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsDepreciation);
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsMaintenance);
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsMovementsController);
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsReports);
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsResponsabilityLetter);
 
             // Panel de Navegación SubSubmenú Teachers - Academic Configuration
             ConfigurarBotonSubSubmenuNavegacion(BtnTeachers_Schedules);
@@ -504,7 +514,7 @@ namespace SECRON.Views
             ConfigurarBordesRedondeadosPanel(PanelSuppliers, 15);
             ConfigurarBordesRedondeadosPanel(PanelCounts, 15);
             ConfigurarBordesRedondeadosPanel(PanelOrders, 15);
-            ConfigurarBordesRedondeadosPanel(PanelKardex, 15);
+            ConfigurarBordesRedondeadosPanel(PanelInventory, 15);
             ConfigurarBordesRedondeadosPanel(PanelBills, 15);
             ConfigurarBordesRedondeadosPanel(PanelChecks, 15);
             ConfigurarBordesRedondeadosPanel(PanelBanks, 15);
@@ -513,7 +523,7 @@ namespace SECRON.Views
             ConfigurarBordesRedondeadosPanel(PanelStaticItems, 15);
             ConfigurarBordesRedondeadosPanel(PanelTeachers, 15);
             ConfigurarBordesRedondeadosPanel(PanelTransfers, 15);
-            ConfigurarBordesRedondeadosPanel(PanelKARDEX_1, 15);
+            ConfigurarBordesRedondeadosPanel(PanelInventory_1, 15);
             ConfigurarBordesRedondeadosPanel(PanelTeachers_1, 15);
             ConfigurarBordesRedondeadosPanel(PanelTeachers_2, 15);
             ConfigurarBordesRedondeadosPanel(PanelTeachers_3, 15);
@@ -803,13 +813,12 @@ namespace SECRON.Views
             BtnSuppliers.Visible = false;
             BtnCounts.Visible = false;
             BtnOrders.Visible = false;
-            BtnKardex.Visible = false;
+            Btn_Inventory.Visible = false;
             BtnBills.Visible = false;
             BtnChecks.Visible = false;
             BtnBanks.Visible = false;
             BtnAccountingBooks.Visible = false;
             BtnLocations.Visible = false;
-            BtnStaticItems.Visible = false;
             Btn_Teachers.Visible = false;
 
             // Luego hacerlos visibles en ORDEN INVERSO
@@ -818,9 +827,6 @@ namespace SECRON.Views
 
             if (TienePermiso("TEACHERS_TAB"))
                 Btn_Teachers.Visible = true;
-
-            if (TienePermiso("STATICITEMS_TAB"))
-                BtnStaticItems.Visible = true;
 
             if (TienePermiso("LOCATIONS_TAB"))
                 BtnLocations.Visible = true;
@@ -837,8 +843,8 @@ namespace SECRON.Views
             if (TienePermiso("BILLS_TAB"))
                 BtnBills.Visible = true;
 
-            if (TienePermiso("KARDEX_TAB"))
-                BtnKardex.Visible = true;
+            if (TienePermiso("INVENTORY_TAB"))
+                Btn_Inventory.Visible = true;
 
             if (TienePermiso("PURCHASEORDERS_TAB"))
                 BtnOrders.Visible = true;
@@ -887,12 +893,19 @@ namespace SECRON.Views
             BtnOrdersRequisicionManagment.Visible = TienePermiso("PURCHASEORDERS_REQUISITION");
             BtnOrdersSolicitud.Visible = TienePermiso("PURCHASEORDERS_REQUEST");
 
+            // ========== INVENTARIO ==========
+            BtnInvKardex.Visible = TienePermiso("KARDEX_TAB");
+            BtnInvStaticItems.Visible = TienePermiso("STATICITEMS_TAB");
+            BtnInvWarehouse.Visible = TienePermiso("WAREHOUSE_TAB");
+
             // ========== KARDEX ==========
-            BtnKardexCatalogo.Visible = TienePermiso("KARDEX_CATALOG");
+            BtnKardex_CatalogLocationsCategories.Visible = TienePermiso("KARDEX_CATALOG");
+            BtnKardex_ItemsManagment.Visible = TienePermiso("KARDEX_CATALOG");
             BtnKardexInventory.Visible = TienePermiso("KARDEX_INVENTORY");
             BtnKardexInsumosSedes.Visible = TienePermiso("KARDEX_INPUTCONTROL");
             BtnKardexInventoryReport.Visible = TienePermiso("KARDEX_REPORTS");
             BtnKardexValorizacion.Visible = TienePermiso("KARDEX_COSTVALUATION");
+
 
             // ========== GASTOS ==========
             BtnBillsAuthorization.Visible = TienePermiso("BILLS_AUTHORIZATION");
@@ -999,13 +1012,13 @@ namespace SECRON.Views
                 (PanelSuppliers, BtnSuppliers),
                 (PanelCounts, BtnCounts),
                 (PanelOrders, BtnOrders),
-                (PanelKardex, BtnKardex),
+                (PanelInventory, Btn_Inventory),
                 (PanelBills, BtnBills),
                 (PanelChecks, BtnChecks),
                 (PanelBanks, BtnBanks),
                 (PanelAccountingBooks, BtnAccountingBooks),
                 (PanelLocations, BtnLocations),
-                (PanelStaticItems, BtnStaticItems),
+                (PanelStaticItems, Btn_Inventory),
                 (PanelTeachers, Btn_Teachers),
                 (PanelTransfers, Btn_Transfers)
             };
@@ -1024,7 +1037,9 @@ namespace SECRON.Views
             var subpanelesYBotones = new (Panel subpanel, Button subboton)[]
             {
                 //KARDEX
-                (PanelKARDEX_1, BtnKardex),
+                (PanelInventory_1, Btn_Inventory),
+                //ACTIVOS FIJOS
+                (PanelStaticItems, Btn_Inventory),
                 //TEACHERS
                 (PanelTeachers_1, Btn_Teachers),
                 (PanelTeachers_2, Btn_Teachers),
@@ -1055,13 +1070,12 @@ namespace SECRON.Views
                 { BtnSuppliers, (PanelSuppliers, new Size(300, 41)) },
                 { BtnCounts, (PanelCounts, new Size(300, 41)) },
                 { BtnOrders, (PanelOrders, new Size(300, 120)) },
-                { BtnKardex, (PanelKardex, new Size(300, 200)) },
+                { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
                 { BtnBills, (PanelBills, new Size(300, 240)) },
                 { BtnChecks, (PanelChecks, new Size(300, 200)) },
                 { BtnBanks, (PanelBanks, new Size(300, 240)) },
                 { BtnAccountingBooks, (PanelAccountingBooks, new Size(300, 240)) },
                 { BtnLocations, (PanelLocations, new Size(300, 200)) },
-                { BtnStaticItems, (PanelStaticItems, new Size(300, 280)) },
                 { Btn_Teachers, (PanelTeachers, new Size(300, 200)) },
                 { Btn_Transfers, (PanelTransfers, new Size(300, 80)) }
             };
@@ -1103,8 +1117,11 @@ namespace SECRON.Views
         {
             var configuracionSubPaneles = new Dictionary<Button, (Panel panel, Size tamaño)>
             {
-                //KARDEX
-                { BtnKardexCatalogo, (PanelKARDEX_1, new Size(300, 80)) },
+                //INVENTORY
+                { BtnInvKardex, (PanelInventory_1, new Size(300, 240)) },
+                { BtnInvStaticItems, (PanelStaticItems, new Size(300, 280)) },
+                // Aquí ira el BtnInvWareHouse aún no existe
+
                 //TEACHERS
                 { BtnTeachersAcademicConfiguration, (PanelTeachers_1, new Size(300, 160)) },
                 { BtnTeachersPersonal, (PanelTeachers_2, new Size(300, 120)) },
@@ -1150,8 +1167,10 @@ namespace SECRON.Views
             var mapeoBotonPanel = new Dictionary<Button, Panel>
             {
                 // KARDEX
-                { BtnKardexCatalogo, PanelKardex },
-        
+                { BtnInvKardex, PanelInventory },
+                { BtnInvStaticItems, PanelInventory },
+                { BtnInvWarehouse, PanelInventory },
+
                 // TEACHERS
                 { BtnTeachersAcademicConfiguration, PanelTeachers },
                 { BtnTeachersPersonal, PanelTeachers },
@@ -1165,8 +1184,10 @@ namespace SECRON.Views
         // Oculta todos los subpaneles de todos los paneles principales (Kardex, Teachers, etc.)
         private void OcultarTodosLosSubPaneles()
         {
-            // KARDEX
-            OcultarSubPanel(PanelKARDEX_1);
+            // INVENTORY
+            OcultarSubPanel(PanelInventory_1);
+            OcultarSubPanel(PanelStaticItems);
+            // OcultarSubPanel(PanelWireHouse);
 
             // TEACHERS
             OcultarSubPanel(PanelTeachers_1);
@@ -1209,13 +1230,13 @@ namespace SECRON.Views
                 { BtnSuppliers, (PanelSuppliers, new Size(300, 41)) },
                 { BtnCounts, (PanelCounts, new Size(300, 41)) },
                 { BtnOrders, (PanelOrders, new Size(300, 120)) },
-                { BtnKardex, (PanelKardex, new Size(300, 200)) },
+                { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
                 { BtnBills, (PanelBills, new Size(300, 240)) },
                 { BtnChecks, (PanelChecks, new Size(300, 200)) },
                 { BtnBanks, (PanelBanks, new Size(300, 240)) },
                 { BtnAccountingBooks, (PanelAccountingBooks, new Size(300, 240)) },
                 { BtnLocations, (PanelLocations, new Size(300, 200)) },
-                { BtnStaticItems, (PanelStaticItems, new Size(300, 280)) },
+                { BtnInvStaticItems, (PanelStaticItems, new Size(300, 280)) },
                 { Btn_Teachers, (PanelTeachers, new Size(300, 200)) },
                 { Btn_Transfers, (PanelTransfers, new Size(300, 80)) }
             };
@@ -1246,7 +1267,7 @@ namespace SECRON.Views
             var paneles = new Panel[]
             {
                 PanelEmployees, PanelUsers, PanelSuppliers, PanelCounts,
-                PanelOrders, PanelKardex, PanelBills, PanelChecks,
+                PanelOrders, PanelInventory, PanelBills, PanelChecks,
                 PanelBanks, PanelAccountingBooks, PanelLocations, PanelStaticItems,
                 PanelTeachers, PanelTransfers
             };
@@ -1338,9 +1359,9 @@ namespace SECRON.Views
         {
             ConfigurarPanelesVisibles(BtnOrders);
         }
-        private void BtnKardex_Click(object sender, EventArgs e)
+        private void Btn_Inventory_Click(object sender, EventArgs e)
         {
-            ConfigurarPanelesVisibles(BtnKardex);
+            ConfigurarPanelesVisibles(Btn_Inventory);
         }
         private void BtnBills_Click(object sender, EventArgs e)
         {
@@ -1361,10 +1382,6 @@ namespace SECRON.Views
         private void BtnLocations_Click(object sender, EventArgs e)
         {
             ConfigurarPanelesVisibles(BtnLocations);
-        }
-        private void BtnStaticItems_Click(object sender, EventArgs e)
-        {
-            ConfigurarPanelesVisibles(BtnStaticItems);
         }
         private void Btn_Teachers_Click(object sender, EventArgs e)
         {
@@ -1407,7 +1424,7 @@ namespace SECRON.Views
 
         private void BtnKardex_MouseEnter(object sender, EventArgs e)
         {
-            ConfigurarPanelesMouseEnter(BtnKardex);
+            ConfigurarPanelesMouseEnter(Btn_Inventory);
         }
 
         private void BtnBills_MouseEnter(object sender, EventArgs e)
@@ -1433,11 +1450,6 @@ namespace SECRON.Views
         private void BtnLocations_MouseEnter(object sender, EventArgs e)
         {
             ConfigurarPanelesMouseEnter(BtnLocations);
-        }
-
-        private void BtnStaticItems_MouseEnter(object sender, EventArgs e)
-        {
-            ConfigurarPanelesMouseEnter(BtnStaticItems);
         }
         private void Btn_Teachers_MouseEnter(object sender, EventArgs e)
         {
@@ -1799,55 +1811,19 @@ namespace SECRON.Views
             AbrirFormularioConPestana(frm, "Gestión de Cuentas", "CountsManagment");
         }
 
-        private void BtnKardexCatalogo_Click(object sender, EventArgs e)
+        private void BtnInvKardex_Click(object sender, EventArgs e)
         {
-            ConfigurarSubPanelesVisibles(BtnKardexCatalogo);
+            ConfigurarSubPanelesVisibles(BtnInvKardex);
         }
 
-        private void BtnKardexInsumosSedes_Click(object sender, EventArgs e)
+        private void BtnInvStaticItems_Click(object seder, EventArgs e)
         {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Control de Insumos en Sedes";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Control de Insumos en Sedes", "KardexInsumosSedes");
+            ConfigurarSubPanelesVisibles(BtnInvStaticItems);
         }
 
-        private void BtnKardexInventory_Click(object sender, EventArgs e)
+        private void BtnInvWarehouse_Click(object sender, EventArgs e)
         {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_KARDEX_LocationsInventary frm = new Frm_KARDEX_LocationsInventary();
-            frm.Text = "Control de Inventarios";
-            frm.BackColor = Color.White;
-            //Pasamos los datos del usuario
-            frm.UserData = this.UserData;
-
-            AbrirFormularioConPestana(frm, "Control de Inventarios", "KardexInventory");
-        }
-
-        private void BtnKardexInventoryReport_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Reportes de Inventarios";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Reportes de Inventarios", "KardexInventoryReport");
-        }
-
-        private void BtnKardexValorizacion_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Valorización y Costos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Valorización y Costos", "KardexValorizacion");
+            ConfigurarSubPanelesVisibles(BtnInvWarehouse);
         }
 
         private void BtnLocationsConfiguration_Click(object sender, EventArgs e)
@@ -1938,83 +1914,6 @@ namespace SECRON.Views
             frm.BackColor = Color.White;
 
             AbrirFormularioConPestana(frm, "Solicitudes de Compras", "OrdersSolicitud");
-        }
-
-        private void BtnStaticItemsConfiguration_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Configuración de Activos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Configuración de Activos", "StaticItemsConfiguration");
-        }
-
-        private void BtnStaticItemsDepreciation_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Depreciación y Valuación";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Depreciación y Valuación", "StaticItemsDepreciation");
-        }
-
-        private void BtnStaticItemsMaintenance_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Mantenimiento y Soporte";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Mantenimiento y Soporte", "StaticItemsMaintenance");
-        }
-
-        private void BtnStaticItemsManagment_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Gestión de Activos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Gestión de Activos", "StaticItemsManagment");
-        }
-
-        private void BtnStaticItemsMovementsController_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Control de Movimientos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Control de Movimientos", "StaticItemsMovementsController");
-        }
-
-        private void BtnStaticItemsReports_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Reportes de Activos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Reportes de Activos", "StaticItemsReports");
-        }
-
-        private void BtnStaticItemsResponsabilityLetter_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Cartas de Responsabilidad";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Cartas de Responsabilidad", "StaticItemsResponsabilityLetter");
         }
 
         private void BtnSuppliersManagment_Click(object sender, EventArgs e)
@@ -2130,6 +2029,128 @@ namespace SECRON.Views
         }
         #endregion EventosClickSubmenuNavegacion
         #region EventosClickSubSubmenuNavegacion
+        private void BtnKardexInsumosSedes_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Control de Insumos en Sedes";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Control de Insumos en Sedes", "KardexInsumosSedes");
+        }
+
+        private void BtnKardexInventory_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_KARDEX_LocationsInventary frm = new Frm_KARDEX_LocationsInventary();
+            frm.Text = "Control de Inventarios";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Control de Inventarios", "KardexInventory");
+        }
+
+        private void BtnKardexInventoryReport_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Reportes de Inventarios";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Reportes de Inventarios", "KardexInventoryReport");
+        }
+
+        private void BtnKardexValorizacion_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Valorización y Costos";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Valorización y Costos", "KardexValorizacion");
+        }
+
+        private void BtnStaticItemsConfiguration_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Configuración de Activos";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Configuración de Activos", "StaticItemsConfiguration");
+        }
+
+        private void BtnStaticItemsDepreciation_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Depreciación y Valuación";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Depreciación y Valuación", "StaticItemsDepreciation");
+        }
+
+        private void BtnStaticItemsMaintenance_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Mantenimiento y Soporte";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Mantenimiento y Soporte", "StaticItemsMaintenance");
+        }
+
+        private void BtnStaticItemsManagment_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Gestión de Activos";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Gestión de Activos", "StaticItemsManagment");
+        }
+
+        private void BtnStaticItemsMovementsController_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Control de Movimientos";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Control de Movimientos", "StaticItemsMovementsController");
+        }
+
+        private void BtnStaticItemsReports_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Reportes de Activos";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Reportes de Activos", "StaticItemsReports");
+        }
+
+        private void BtnStaticItemsResponsabilityLetter_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Cartas de Responsabilidad";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Cartas de Responsabilidad", "StaticItemsResponsabilityLetter");
+        }
         private void BtnKARDEX_ItemsManagment_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
