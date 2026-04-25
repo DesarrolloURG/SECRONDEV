@@ -88,6 +88,7 @@
             this.Lbl_NoCheque = new System.Windows.Forms.Label();
             this.Lbl_Subtitulo2 = new System.Windows.Forms.Label();
             this.Panel_Superior = new System.Windows.Forms.Panel();
+            this.Btn_ExportList = new System.Windows.Forms.Button();
             this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
             this.Splitter = new System.Windows.Forms.Splitter();
@@ -99,6 +100,8 @@
             this.ComboBox_FileState = new System.Windows.Forms.ComboBox();
             this.Lbl_Paginas = new System.Windows.Forms.Label();
             this.Panel_Busqueda = new System.Windows.Forms.Panel();
+            this.Btn_FiltrosFechas = new System.Windows.Forms.Button();
+            this.Lbl_ResumenExclusiones = new System.Windows.Forms.Label();
             this.CheckBox_Rango = new System.Windows.Forms.CheckBox();
             this.Lbl_fin = new System.Windows.Forms.Label();
             this.Txt_Fin = new System.Windows.Forms.TextBox();
@@ -115,7 +118,6 @@
             this.Btn_Search = new System.Windows.Forms.Button();
             this.Filtro1 = new System.Windows.Forms.ComboBox();
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
-            this.Btn_ExportList = new System.Windows.Forms.Button();
             this.Panel_Izquierdo.SuspendLayout();
             this.Panel_3.SuspendLayout();
             this.Panel_2.SuspendLayout();
@@ -792,8 +794,24 @@
             this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Superior.Location = new System.Drawing.Point(0, 0);
             this.Panel_Superior.Name = "Panel_Superior";
-            this.Panel_Superior.Size = new System.Drawing.Size(1184, 55);
+            this.Panel_Superior.Size = new System.Drawing.Size(1297, 55);
             this.Panel_Superior.TabIndex = 8;
+            // 
+            // Btn_ExportList
+            // 
+            this.Btn_ExportList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_ExportList.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_ExportList.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
+            this.Btn_ExportList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ExportList.Location = new System.Drawing.Point(961, 12);
+            this.Btn_ExportList.Name = "Btn_ExportList";
+            this.Btn_ExportList.Size = new System.Drawing.Size(124, 30);
+            this.Btn_ExportList.TabIndex = 56;
+            this.Btn_ExportList.Text = "EXPORTAR";
+            this.Btn_ExportList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_ExportList.UseVisualStyleBackColor = true;
+            this.Btn_ExportList.Click += new System.EventHandler(this.Btn_ExportList_Click);
             // 
             // Btn_Export
             // 
@@ -802,7 +820,7 @@
             this.Btn_Export.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_Export.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
             this.Btn_Export.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Export.Location = new System.Drawing.Point(978, 12);
+            this.Btn_Export.Location = new System.Drawing.Point(1091, 12);
             this.Btn_Export.Name = "Btn_Export";
             this.Btn_Export.Size = new System.Drawing.Size(184, 30);
             this.Btn_Export.TabIndex = 55;
@@ -842,7 +860,7 @@
             this.Panel_Derecho.ForeColor = System.Drawing.Color.Black;
             this.Panel_Derecho.Location = new System.Drawing.Point(477, 55);
             this.Panel_Derecho.Name = "Panel_Derecho";
-            this.Panel_Derecho.Size = new System.Drawing.Size(707, 806);
+            this.Panel_Derecho.Size = new System.Drawing.Size(820, 806);
             this.Panel_Derecho.TabIndex = 10;
             // 
             // PanelTabla
@@ -854,7 +872,7 @@
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(22, 253);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(663, 534);
+            this.PanelTabla.Size = new System.Drawing.Size(776, 534);
             this.PanelTabla.TabIndex = 75;
             // 
             // Tabla
@@ -863,7 +881,7 @@
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(663, 534);
+            this.Tabla.Size = new System.Drawing.Size(776, 534);
             this.Tabla.TabIndex = 1;
             // 
             // PanelToolStrip
@@ -876,7 +894,7 @@
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(22, 169);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(663, 78);
+            this.PanelToolStrip.Size = new System.Drawing.Size(776, 78);
             this.PanelToolStrip.TabIndex = 74;
             // 
             // Btn_Update
@@ -912,7 +930,7 @@
             this.Lbl_Paginas.AutoSize = true;
             this.Lbl_Paginas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Paginas.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Paginas.Location = new System.Drawing.Point(323, 44);
+            this.Lbl_Paginas.Location = new System.Drawing.Point(436, 44);
             this.Lbl_Paginas.Name = "Lbl_Paginas";
             this.Lbl_Paginas.Size = new System.Drawing.Size(267, 20);
             this.Lbl_Paginas.TabIndex = 51;
@@ -923,6 +941,8 @@
             this.Panel_Busqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_Busqueda.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Busqueda.Controls.Add(this.Btn_FiltrosFechas);
+            this.Panel_Busqueda.Controls.Add(this.Lbl_ResumenExclusiones);
             this.Panel_Busqueda.Controls.Add(this.CheckBox_Rango);
             this.Panel_Busqueda.Controls.Add(this.Lbl_fin);
             this.Panel_Busqueda.Controls.Add(this.Txt_Fin);
@@ -941,8 +961,32 @@
             this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
             this.Panel_Busqueda.Location = new System.Drawing.Point(22, 6);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(663, 157);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(776, 157);
             this.Panel_Busqueda.TabIndex = 73;
+            // 
+            // Btn_FiltrosFechas
+            // 
+            this.Btn_FiltrosFechas.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.Btn_FiltrosFechas.Image = global::SECRON.Properties.Resources.AddNegro25x25;
+            this.Btn_FiltrosFechas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_FiltrosFechas.Location = new System.Drawing.Point(593, 92);
+            this.Btn_FiltrosFechas.Name = "Btn_FiltrosFechas";
+            this.Btn_FiltrosFechas.Size = new System.Drawing.Size(88, 31);
+            this.Btn_FiltrosFechas.TabIndex = 0;
+            this.Btn_FiltrosFechas.Text = "EXCLUIR";
+            this.Btn_FiltrosFechas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_FiltrosFechas.UseVisualStyleBackColor = true;
+            this.Btn_FiltrosFechas.Click += new System.EventHandler(this.Btn_FiltrosFechas_Click);
+            // 
+            // Lbl_ResumenExclusiones
+            // 
+            this.Lbl_ResumenExclusiones.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Italic);
+            this.Lbl_ResumenExclusiones.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(60)))), ((int)(((byte)(29)))));
+            this.Lbl_ResumenExclusiones.Location = new System.Drawing.Point(584, 123);
+            this.Lbl_ResumenExclusiones.Name = "Lbl_ResumenExclusiones";
+            this.Lbl_ResumenExclusiones.Size = new System.Drawing.Size(190, 27);
+            this.Lbl_ResumenExclusiones.TabIndex = 1;
+            this.Lbl_ResumenExclusiones.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // CheckBox_Rango
             // 
@@ -950,7 +994,7 @@
             this.CheckBox_Rango.Checked = true;
             this.CheckBox_Rango.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckBox_Rango.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.CheckBox_Rango.Location = new System.Drawing.Point(414, 80);
+            this.CheckBox_Rango.Location = new System.Drawing.Point(16, 80);
             this.CheckBox_Rango.Name = "CheckBox_Rango";
             this.CheckBox_Rango.Size = new System.Drawing.Size(161, 23);
             this.CheckBox_Rango.TabIndex = 83;
@@ -963,7 +1007,7 @@
             this.Lbl_fin.AutoSize = true;
             this.Lbl_fin.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_fin.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_fin.Location = new System.Drawing.Point(533, 102);
+            this.Lbl_fin.Location = new System.Drawing.Point(135, 103);
             this.Lbl_fin.Name = "Lbl_fin";
             this.Lbl_fin.Size = new System.Drawing.Size(106, 20);
             this.Lbl_fin.TabIndex = 82;
@@ -972,10 +1016,10 @@
             // Txt_Fin
             // 
             this.Txt_Fin.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Fin.Location = new System.Drawing.Point(537, 124);
+            this.Txt_Fin.Location = new System.Drawing.Point(141, 123);
             this.Txt_Fin.MaxLength = 15;
             this.Txt_Fin.Name = "Txt_Fin";
-            this.Txt_Fin.Size = new System.Drawing.Size(113, 27);
+            this.Txt_Fin.Size = new System.Drawing.Size(100, 27);
             this.Txt_Fin.TabIndex = 81;
             // 
             // Lbl_Li
@@ -983,7 +1027,7 @@
             this.Lbl_Li.AutoSize = true;
             this.Lbl_Li.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Li.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Li.Location = new System.Drawing.Point(410, 102);
+            this.Lbl_Li.Location = new System.Drawing.Point(12, 104);
             this.Lbl_Li.Name = "Lbl_Li";
             this.Lbl_Li.Size = new System.Drawing.Size(117, 20);
             this.Lbl_Li.TabIndex = 80;
@@ -992,10 +1036,10 @@
             // Txt_Li
             // 
             this.Txt_Li.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Li.Location = new System.Drawing.Point(414, 123);
+            this.Txt_Li.Location = new System.Drawing.Point(16, 123);
             this.Txt_Li.MaxLength = 15;
             this.Txt_Li.Name = "Txt_Li";
-            this.Txt_Li.Size = new System.Drawing.Size(113, 27);
+            this.Txt_Li.Size = new System.Drawing.Size(100, 27);
             this.Txt_Li.TabIndex = 79;
             // 
             // CheckBox_FiltroFechas
@@ -1004,7 +1048,7 @@
             this.CheckBox_FiltroFechas.Checked = true;
             this.CheckBox_FiltroFechas.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckBox_FiltroFechas.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.CheckBox_FiltroFechas.Location = new System.Drawing.Point(16, 77);
+            this.CheckBox_FiltroFechas.Location = new System.Drawing.Point(274, 77);
             this.CheckBox_FiltroFechas.Name = "CheckBox_FiltroFechas";
             this.CheckBox_FiltroFechas.Size = new System.Drawing.Size(162, 23);
             this.CheckBox_FiltroFechas.TabIndex = 74;
@@ -1014,9 +1058,9 @@
             // 
             // DTP_FechaFin
             // 
-            this.DTP_FechaFin.Location = new System.Drawing.Point(190, 124);
+            this.DTP_FechaFin.Location = new System.Drawing.Point(430, 124);
             this.DTP_FechaFin.Name = "DTP_FechaFin";
-            this.DTP_FechaFin.Size = new System.Drawing.Size(162, 27);
+            this.DTP_FechaFin.Size = new System.Drawing.Size(148, 27);
             this.DTP_FechaFin.TabIndex = 73;
             // 
             // Lbl_DTPFin
@@ -1024,7 +1068,7 @@
             this.Lbl_DTPFin.AutoSize = true;
             this.Lbl_DTPFin.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_DTPFin.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_DTPFin.Location = new System.Drawing.Point(186, 101);
+            this.Lbl_DTPFin.Location = new System.Drawing.Point(430, 101);
             this.Lbl_DTPFin.Name = "Lbl_DTPFin";
             this.Lbl_DTPFin.Size = new System.Drawing.Size(157, 20);
             this.Lbl_DTPFin.TabIndex = 72;
@@ -1035,7 +1079,7 @@
             this.Lbl_DTPInicio.AutoSize = true;
             this.Lbl_DTPInicio.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_DTPInicio.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_DTPInicio.Location = new System.Drawing.Point(12, 101);
+            this.Lbl_DTPInicio.Location = new System.Drawing.Point(274, 101);
             this.Lbl_DTPInicio.Name = "Lbl_DTPInicio";
             this.Lbl_DTPInicio.Size = new System.Drawing.Size(168, 20);
             this.Lbl_DTPInicio.TabIndex = 14;
@@ -1043,9 +1087,9 @@
             // 
             // DTP_FechaInicio
             // 
-            this.DTP_FechaInicio.Location = new System.Drawing.Point(16, 125);
+            this.DTP_FechaInicio.Location = new System.Drawing.Point(274, 124);
             this.DTP_FechaInicio.Name = "DTP_FechaInicio";
-            this.DTP_FechaInicio.Size = new System.Drawing.Size(162, 27);
+            this.DTP_FechaInicio.Size = new System.Drawing.Size(148, 27);
             this.DTP_FechaInicio.TabIndex = 14;
             // 
             // Btn_CleanSearch
@@ -1054,7 +1098,7 @@
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(620, 7);
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(733, 7);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(30, 31);
             this.Btn_CleanSearch.TabIndex = 71;
@@ -1084,7 +1128,7 @@
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(513, 7);
+            this.Btn_Search.Location = new System.Drawing.Point(626, 7);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(101, 31);
             this.Btn_Search.TabIndex = 54;
@@ -1109,31 +1153,15 @@
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(16, 10);
             this.Txt_ValorBuscado.MaxLength = 15;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(491, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(604, 27);
             this.Txt_ValorBuscado.TabIndex = 59;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
-            // 
-            // Btn_ExportList
-            // 
-            this.Btn_ExportList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_ExportList.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_ExportList.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
-            this.Btn_ExportList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_ExportList.Location = new System.Drawing.Point(848, 12);
-            this.Btn_ExportList.Name = "Btn_ExportList";
-            this.Btn_ExportList.Size = new System.Drawing.Size(124, 30);
-            this.Btn_ExportList.TabIndex = 56;
-            this.Btn_ExportList.Text = "EXPORTAR";
-            this.Btn_ExportList.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_ExportList.UseVisualStyleBackColor = true;
-            this.Btn_ExportList.Click += new System.EventHandler(this.Btn_ExportList_Click);
             // 
             // Frm_Checks_FileControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 861);
+            this.ClientSize = new System.Drawing.Size(1297, 861);
             this.Controls.Add(this.Splitter);
             this.Controls.Add(this.Panel_Derecho);
             this.Controls.Add(this.Panel_Izquierdo);
@@ -1251,5 +1279,7 @@
         private System.Windows.Forms.ComboBox ComboBox_FileState;
         private System.Windows.Forms.Button Btn_Update;
         private System.Windows.Forms.Button Btn_ExportList;
+        private System.Windows.Forms.Button Btn_FiltrosFechas;
+        private System.Windows.Forms.Label Lbl_ResumenExclusiones;
     }
 }
