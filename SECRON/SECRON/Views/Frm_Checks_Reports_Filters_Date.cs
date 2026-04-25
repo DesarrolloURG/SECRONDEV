@@ -250,7 +250,7 @@ namespace SECRON.Views
                 if (!enRango)
                     Pintar(btn, ColorFueraRango, ColorFueraRangoTexto, ColorFueraRango, false);
                 else if (mesExcluido)
-                    Pintar(btn, ColorMesExcluido, ColorMesExcluidoTexto, Color.FromArgb(240, 153, 123), false);
+                    Pintar(btn, ColorMesExcluido, ColorMesExcluidoTexto, Color.FromArgb(240, 153, 123), true);
                 else if (_diasExcluidos.Contains(DayKey(fecha)))
                     Pintar(btn, ColorDiaExcluido, ColorDiaExcluidoTexto, Color.FromArgb(239, 159, 39), true);
                 else if (fecha.Date == DateTime.Today)
@@ -277,11 +277,52 @@ namespace SECRON.Views
         {
             if (!(sender is Button btn) || !(btn.Tag is DateTime fecha)) return;
 
+            string mk = MonthKey(fecha);
             string dk = DayKey(fecha);
-            if (_diasExcluidos.Contains(dk))
-                _diasExcluidos.Remove(dk);
+
+            if (_mesesExcluidos.Contains(mk))
+            {
+                // Mes excluido: convertir a exclusión por días individuales, excepto el día clickeado
+                _mesesExcluidos.Remove(mk);
+
+                DateTime inicio = DTP_FechaInicio.Value.Date;
+                DateTime fin = DTP_FechaFin.Value.Date;
+                int diasEnMes = DateTime.DaysInMonth(fecha.Year, fecha.Month);
+
+                for (int d = 1; d <= diasEnMes; d++)
+                {
+                    var diaActual = new DateTime(fecha.Year, fecha.Month, d);
+                    if (diaActual >= inicio && diaActual <= fin && diaActual.Date != fecha.Date)
+                        _diasExcluidos.Add(DayKey(diaActual));
+                }
+            }
             else
-                _diasExcluidos.Add(dk);
+            {
+                // Comportamiento normal: toggle del día
+                if (_diasExcluidos.Contains(dk))
+                    _diasExcluidos.Remove(dk);
+                else
+                    _diasExcluidos.Add(dk);
+
+                // Si ahora todos los días del mes en rango están excluidos → convertir a mes excluido
+                DateTime ini = DTP_FechaInicio.Value.Date;
+                DateTime fn = DTP_FechaFin.Value.Date;
+                int total = DateTime.DaysInMonth(fecha.Year, fecha.Month);
+                bool todosExcluidos = true;
+
+                for (int d = 1; d <= total; d++)
+                {
+                    var diaActual = new DateTime(fecha.Year, fecha.Month, d);
+                    if (diaActual < ini || diaActual > fn) continue;
+                    if (!_diasExcluidos.Contains(DayKey(diaActual))) { todosExcluidos = false; break; }
+                }
+
+                if (todosExcluidos)
+                {
+                    _mesesExcluidos.Add(mk);
+                    _diasExcluidos.RemoveWhere(x => x.StartsWith($"{fecha.Year:D4}-{fecha.Month:D2}"));
+                }
+            }
 
             RenderizarCalendario();
             ActualizarChips();
