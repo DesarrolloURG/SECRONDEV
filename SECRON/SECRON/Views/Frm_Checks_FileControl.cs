@@ -32,6 +32,8 @@ namespace SECRON.Views
         private List<Mdl_Checks> _listaCompletaFiltrada = null;
         private string _ultimoRangoInicio = null;
         private string _ultimoRangoFin = null;
+        private List<DateTime> _mesesExcluidos = new List<DateTime>();
+        private List<DateTime> _fechasExcluidas = new List<DateTime>();
 
         public Mdl_Security_UserInfo UserData { get; set; }
         private List<Mdl_Checks> chequesList;
@@ -122,7 +124,7 @@ namespace SECRON.Views
 
         private void ConfigurarBotonesPorPermisos()
         {
-            // ⭐ CHECKS_REPORTS_EXPORT - Exportar (CHK_021)
+            //CHECKS_REPORTS_EXPORT - Exportar (CHK_021)
             Btn_Export.Enabled = TienePermiso("CHECKS_FILECONTROL_EXPORT");
             if (!Btn_Export.Enabled)
             {
@@ -139,7 +141,7 @@ namespace SECRON.Views
             Filtro2.DropDownStyle = ComboBoxStyle.DropDownList;
             Filtro3.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // ⭐ FILTRO 1 - PERIODOS
+            // FILTRO 1 - PERIODOS
             Filtro1.Items.Clear();
             Filtro1.Items.Add("TODOS");
             Filtro1.Items.Add("ENERO");
@@ -156,7 +158,7 @@ namespace SECRON.Views
             Filtro1.Items.Add("DICIEMBRE");
             Filtro1.SelectedIndex = 0;
 
-            // ⭐ FILTRO 2 - LOCATIONS (SEDES)
+            // FILTRO 2 - LOCATIONS (SEDES)
             var locations = Ctrl_Locations.ObtenerLocationsActivas();
             Filtro2.Items.Clear();
             Filtro2.Items.Add(new KeyValuePair<int, string>(0, "TODAS LAS SEDES"));
@@ -168,7 +170,7 @@ namespace SECRON.Views
             Filtro2.ValueMember = "Key";
             Filtro2.SelectedIndex = 0;
 
-            // ⭐ FILTRO 3 - ESTADO EN ARCHIVO (FILECONTROL)
+            // FILTRO 3 - ESTADO EN ARCHIVO (FILECONTROL)
             Filtro3.Items.Clear();
             Filtro3.Items.Add("TODOS");
             Filtro3.Items.Add("PENDIENTE");
@@ -213,6 +215,7 @@ namespace SECRON.Views
         {
             DTP_FechaInicio.Enabled = CheckBox_FiltroFechas.Checked;
             DTP_FechaFin.Enabled = CheckBox_FiltroFechas.Checked;
+            Btn_FiltrosFechas.Enabled = CheckBox_FiltroFechas.Checked;
         }
         #endregion ConfigurarDateTimePickers
         #region ConfigurarRangoCheques
@@ -388,7 +391,7 @@ namespace SECRON.Views
             Tabla.Columns.Add("Period", "PERIODO");
             Tabla.Columns.Add("Location", "SEDE");
             Tabla.Columns.Add("Status", "ESTADO");
-            Tabla.Columns.Add("FileControl", "CONTROL ARCHIVO"); 
+            Tabla.Columns.Add("FileControl", "CONTROL ARCHIVO");
             Tabla.Columns.Add("CreatedBy", "EMITIDO POR");
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -425,7 +428,7 @@ namespace SECRON.Views
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
 
-            // ⭐ Para que el checkbox confirme el cambio al hacer clic
+            // Para que el checkbox confirme el cambio al hacer clic
             Tabla.CellContentClick -= Tabla_CellContentClick;
             Tabla.CellContentClick += Tabla_CellContentClick;
         }
@@ -552,7 +555,7 @@ namespace SECRON.Views
                     DTP_Emision.Value = _chequeSeleccionado.IssueDate;
                     Txt_Periodo.Text = _chequeSeleccionado.Period;
 
-                    // ⭐ MOSTRAR NOMBRE DEL ESTADO
+                    // MOSTRAR NOMBRE DEL ESTADO
                     Txt_State.Text = Ctrl_CheckStatus.ObtenerNombreEstado(_chequeSeleccionado.StatusId);
 
                     Txt_Beneficiario.Text = _chequeSeleccionado.BeneficiaryName;
@@ -604,6 +607,11 @@ namespace SECRON.Views
         }
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            ejecutaConsulta();
+        }
+
+        private void ejecutaConsulta()
+        {
             try
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -621,13 +629,13 @@ namespace SECRON.Views
                     locationId = selectedItem.Key;
                 }
 
-                // ⭐ Filtro de estado de cheque (StatusId) ya NO se usa aquí.
+                // Filtro de estado de cheque (StatusId) ya NO se usa aquí.
                 int? statusId = null;
 
                 DateTime? fechaInicio = CheckBox_FiltroFechas.Checked ? (DateTime?)DTP_FechaInicio.Value : null;
                 DateTime? fechaFin = CheckBox_FiltroFechas.Checked ? (DateTime?)DTP_FechaFin.Value : null;
 
-                // ⭐⭐⭐ Rango de cheques
+                // Rango de cheques
                 string rangoInicio = null;
                 string rangoFin = null;
 
@@ -666,10 +674,10 @@ namespace SECRON.Views
                     }
                 }
 
-                // ⭐⭐⭐ Filtro por CONTROL ARCHIVO (FileControl) - AHORA SE ENVÍA AL CONTROLADOR
+                // Filtro por CONTROL ARCHIVO (FileControl) - AHORA SE ENVÍA AL CONTROLADOR
                 string filtroFileControl = ObtenerFiltroFileControl();
 
-                // ⭐ GUARDAR FILTROS
+                // GUARDAR FILTROS
                 _ultimoTextoBusqueda = textoBusqueda;
                 _ultimoPeriodo = periodo;
                 _ultimoLocationId = locationId;
@@ -681,7 +689,7 @@ namespace SECRON.Views
 
                 paginaActual = 1;
 
-                // 1️⃣ Obtener página actual desde BD CON FILTRO FILECONTROL
+                // 1️Obtener página actual desde BD CON FILTRO FILECONTROL
                 chequesList = Ctrl_Checks.BuscarCheques(
                     _ultimoTextoBusqueda,
                     _ultimoPeriodo,
@@ -693,12 +701,13 @@ namespace SECRON.Views
                     _ultimoRangoFin,
                     paginaActual,
                     registrosPorPagina,
-                    filtroFileControl  // ⭐⭐⭐ AHORA SE ENVÍA AQUÍ
+                    filtroFileControl  // AHORA SE ENVÍA AQUÍ
                 );
+                chequesList = AplicarExclusiones(chequesList);
 
                 MostrarChequesEnTabla();
 
-                // 2️⃣ Obtener lista COMPLETA filtrada (para total y exportar)
+                // 2️Obtener lista COMPLETA filtrada (para total y exportar)
                 _listaCompletaFiltrada = Ctrl_Checks.BuscarCheques(
                     textoBusqueda,
                     periodo,
@@ -710,10 +719,11 @@ namespace SECRON.Views
                     rangoFin,
                     1,
                     int.MaxValue,
-                    filtroFileControl  // ⭐⭐⭐ AHORA SE ENVÍA AQUÍ
+                    filtroFileControl  //AHORA SE ENVÍA AQUÍ
                 );
+                _listaCompletaFiltrada = AplicarExclusiones(_listaCompletaFiltrada);
 
-                // 3️⃣ El total de registros YA viene filtrado desde la BD
+                // 3️El total de registros YA viene filtrado desde la BD
                 totalRegistros = _listaCompletaFiltrada?.Count ?? 0;
                 totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
 
@@ -727,6 +737,75 @@ namespace SECRON.Views
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private List<Mdl_Checks> AplicarExclusiones(List<Mdl_Checks> lista)
+        {
+            if (lista == null) return lista;
+            if (_mesesExcluidos.Count == 0 && _fechasExcluidas.Count == 0) return lista;
+
+            return lista.Where(c =>
+            {
+                DateTime fecha = c.IssueDate.Date;
+
+                bool mesExcluido = _mesesExcluidos.Any(m =>
+                    m.Year == fecha.Year && m.Month == fecha.Month);
+                if (mesExcluido) return false;
+
+                bool diaExcluido = _fechasExcluidas.Any(f => f.Date == fecha);
+                if (diaExcluido) return false;
+
+                return true;
+            }).ToList();
+        }
+        private void Btn_FiltrosFechas_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var frm = new Frm_Checks_Reports_Filters_Date
+                {
+                    FechaInicioInicial = DTP_FechaInicio.Value.Date,
+                    FechaFinInicial = DTP_FechaFin.Value.Date,
+                    MesesExcluidosIniciales = new List<DateTime>(_mesesExcluidos),
+                    FechasExcluidasIniciales = new List<DateTime>(_fechasExcluidas),
+                    StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
+                };
+
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    DTP_FechaInicio.Value = frm.FechaInicioSeleccionada;
+                    DTP_FechaFin.Value = frm.FechaFinSeleccionada;
+                    _mesesExcluidos = frm.MesesExcluidosSeleccionados;
+                    _fechasExcluidas = frm.FechasExcluidasSeleccionadas;
+                    ActualizarResumenFiltroFecha();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al abrir filtros de fechas: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ActualizarResumenFiltroFecha()
+        {
+            int totalExclusiones = _mesesExcluidos.Count + _fechasExcluidas.Count;
+            if (totalExclusiones == 0)
+            {
+                Lbl_ResumenExclusiones.Text = "";
+                Lbl_ResumenExclusiones.Visible = false;
+                return;
+            }
+
+            var partes = new List<string>();
+            if (_mesesExcluidos.Count > 0)
+                partes.Add($"{_mesesExcluidos.Count} mes(es)");
+            if (_fechasExcluidas.Count > 0)
+                partes.Add($"{_fechasExcluidas.Count} día(s)");
+
+            Lbl_ResumenExclusiones.Text = $"Excluidos: {string.Join(" + ", partes)}";
+            Lbl_ResumenExclusiones.Visible = true;
+        }
+
         private void Btn_CleanSearch_Click(object sender, EventArgs e)
         {
             Txt_ValorBuscado.Text = "BUSCAR POR NO.CHEQUE, BENEFICIARIO, CONCEPTO...";
@@ -736,7 +815,7 @@ namespace SECRON.Views
             Filtro3.SelectedIndex = 0;
             CheckBox_FiltroFechas.Checked = false;
 
-            // ⭐⭐⭐ NUEVO: Limpiar filtro de rango
+            // NUEVO: Limpiar filtro de rango
             CheckBox_Rango.Checked = false;
             Txt_Li.Text = "DESDE (NO. CHEQUE)";
             Txt_Li.ForeColor = Color.Gray;
@@ -749,11 +828,15 @@ namespace SECRON.Views
             _ultimoStatusId = null;
             _ultimaFechaInicio = null;
             _ultimaFechaFin = null;
-            _ultimoRangoInicio = null;      
-            _ultimoRangoFin = null;         
+            _ultimoRangoInicio = null;
+            _ultimoRangoFin = null;
             _listaCompletaFiltrada = null;
-
             paginaActual = 1;
+
+            _mesesExcluidos.Clear();
+            _fechasExcluidas.Clear();
+            ActualizarResumenFiltroFecha();
+
             CargarCheques();
             ActualizarInfoPaginacion();
         }
@@ -822,7 +905,7 @@ namespace SECRON.Views
                     !string.IsNullOrEmpty(_ultimoRangoInicio) ||
                     !string.IsNullOrEmpty(_ultimoRangoFin))
                 {
-                    // ⭐ Obtener el filtro FileControl actual
+                    // Obtener el filtro FileControl actual
                     string filtroFileControl = ObtenerFiltroFileControl();
 
                     chequesList = Ctrl_Checks.BuscarCheques(
@@ -836,7 +919,7 @@ namespace SECRON.Views
                         _ultimoRangoFin,
                         paginaActual,
                         registrosPorPagina,
-                        filtroFileControl  // ⭐⭐⭐ ENVIAR FILECONTROL
+                        filtroFileControl  // ENVIAR FILECONTROL
                     );
                     MostrarChequesEnTabla();
                 }
@@ -894,7 +977,7 @@ namespace SECRON.Views
                     return;
                 }
 
-                // 1️⃣ Obtener lista completa de cheques según filtros activos
+                // 1️ Obtener lista completa de cheques según filtros activos
                 List<Mdl_Checks> todosLosCheques;
 
                 if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) ||
@@ -906,7 +989,7 @@ namespace SECRON.Views
                     !string.IsNullOrEmpty(_ultimoRangoInicio) ||
                     !string.IsNullOrEmpty(_ultimoRangoFin))
                 {
-                    // ⭐ Obtener el filtro FileControl actual
+                    // Obtener el filtro FileControl actual
                     string filtroFileControl = ObtenerFiltroFileControl();
 
                     todosLosCheques = Ctrl_Checks.BuscarCheques(
@@ -920,12 +1003,14 @@ namespace SECRON.Views
                         _ultimoRangoFin,
                         1,
                         int.MaxValue,
-                        filtroFileControl  // ⭐⭐⭐ ENVIAR FILECONTROL
+                        filtroFileControl  // ENVIAR FILECONTROL
                     );
+                    todosLosCheques = AplicarExclusiones(todosLosCheques);
                 }
                 else
                 {
                     todosLosCheques = Ctrl_Checks.MostrarCheques(1, int.MaxValue);
+                    todosLosCheques = AplicarExclusiones(todosLosCheques);
                 }
 
                 if (todosLosCheques == null || todosLosCheques.Count == 0)
@@ -935,7 +1020,7 @@ namespace SECRON.Views
                     return;
                 }
 
-                // 2️⃣ Abrir formulario de configuración
+                // 2️ Abrir formulario de configuración
                 Frm_Checks_FileControl_ReportConfig frmConfig =
                     new Frm_Checks_FileControl_ReportConfig(todosLosCheques);
 
@@ -947,10 +1032,10 @@ namespace SECRON.Views
                     return;
                 }
 
-                // 3️⃣ Obtener configuración seleccionada
+                // 3 Obtener configuración seleccionada
                 var config = frmConfig.ConfiguracionSeleccionada;
 
-                // 4️⃣ Diálogo para guardar archivo
+                // 4️ Diálogo para guardar archivo
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
                     Filter = "Excel Files|*.xlsx",
@@ -963,7 +1048,7 @@ namespace SECRON.Views
 
                 this.Cursor = Cursors.WaitCursor;
 
-                // 5️⃣ Generar reporte con configuración personalizada
+                // 5️ Generar reporte con configuración personalizada
                 GenerarReporteExcel(todosLosCheques, config, saveFileDialog.FileName);
 
                 this.Cursor = Cursors.Default;
@@ -1009,7 +1094,7 @@ namespace SECRON.Views
                     !string.IsNullOrEmpty(_ultimoRangoInicio) ||
                     !string.IsNullOrEmpty(_ultimoRangoFin))
                 {
-                    // ⭐⭐⭐ OBTENER FILTRO FILECONTROL ACTUAL
+                    // OBTENER FILTRO FILECONTROL ACTUAL
                     string filtroFileControl = ObtenerFiltroFileControl();
 
                     todosLosCheques = Ctrl_Checks.BuscarCheques(
@@ -1023,12 +1108,14 @@ namespace SECRON.Views
                         _ultimoRangoFin,
                         1,
                         int.MaxValue,
-                        filtroFileControl  // ⭐⭐⭐ ENVIAR FILTRO FILECONTROL
+                        filtroFileControl  // ENVIAR FILTRO FILECONTROL
                     );
+                    todosLosCheques = AplicarExclusiones(todosLosCheques);
                 }
                 else
                 {
                     todosLosCheques = Ctrl_Checks.MostrarCheques(1, int.MaxValue);
+                    todosLosCheques = AplicarExclusiones(todosLosCheques);
                 }
 
                 if (todosLosCheques == null || todosLosCheques.Count == 0)
@@ -1318,7 +1405,7 @@ namespace SECRON.Views
 
                 int totalEmitidos = grupo.Count();
 
-                // ⭐⭐⭐ LÓGICA CORREGIDA DE ESTADOS
+                // LÓGICA CORREGIDA DE ESTADOS
                 // PENDIENTE: Solo cuenta cuando está exactamente en estado PENDIENTE (no suma los demás)
                 int pendientes = grupo.Count(c =>
                     string.IsNullOrWhiteSpace(c.FileControl) ||
@@ -1348,7 +1435,7 @@ namespace SECRON.Views
                 // Nombre del mes
                 string nombreMes = ObtenerNombreMes(grupo.Key.Month);
 
-                // ⭐⭐⭐ LLENAR FILA SEGÚN CONFIGURACIÓN EN EL ORDEN CORRECTO
+                // LLENAR FILA SEGÚN CONFIGURACIÓN EN EL ORDEN CORRECTO
                 if (config.IncluirMes)
                 {
                     worksheet.Cells[row, col] = nombreMes;
@@ -1779,7 +1866,7 @@ namespace SECRON.Views
 
                 string nuevoEstado = ComboBox_FileState.SelectedItem.ToString();
 
-                // ⭐⭐⭐ VALIDAR PERMISOS SEGÚN ESTADO SELECCIONADO
+                // VALIDAR PERMISOS SEGÚN ESTADO SELECCIONADO
                 if (!TienePermisoParaCambiarEstado(nuevoEstado))
                 {
                     this.Cursor = Cursors.Default;
@@ -1908,7 +1995,7 @@ namespace SECRON.Views
                     !string.IsNullOrEmpty(_ultimoRangoInicio) ||
                     !string.IsNullOrEmpty(_ultimoRangoFin))
                 {
-                    // ⭐ Obtener el filtro FileControl actual
+                    // Obtener el filtro FileControl actual
                     string filtroFileControl = ObtenerFiltroFileControl();
 
                     chequesList = Ctrl_Checks.BuscarCheques(
@@ -1922,8 +2009,9 @@ namespace SECRON.Views
                         _ultimoRangoFin,
                         paginaActual,
                         registrosPorPagina,
-                        filtroFileControl  // ⭐⭐⭐ ENVIAR FILECONTROL
+                        filtroFileControl  //  ENVIAR FILECONTROL
                     );
+                    chequesList = AplicarExclusiones(chequesList);
                     MostrarChequesEnTabla();
                 }
                 else
@@ -1940,11 +2028,11 @@ namespace SECRON.Views
         }
         private bool TienePermisoParaCambiarEstado(string estado)
         {
-            // ⭐ CHK_036 = ACCESO TOTAL (puede cambiar a cualquier estado)
+            //CHK_036 = ACCESO TOTAL (puede cambiar a cualquier estado)
             if (TienePermiso("CHECKS_FILECONTROL_PROCESOTOTAL"))
                 return true;
 
-            // ⭐ Validar permiso específico según estado
+            //Validar permiso específico según estado
             switch (estado.ToUpper())
             {
                 case "PENDIENTE":
@@ -1963,8 +2051,8 @@ namespace SECRON.Views
                     return false;
             }
         }
+
         #endregion ActualizarFileControl
 
-        
     }
 }
