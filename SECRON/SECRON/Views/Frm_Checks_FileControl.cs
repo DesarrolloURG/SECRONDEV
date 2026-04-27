@@ -1928,11 +1928,11 @@ namespace SECRON.Views
                     return;
                 }
 
-                if (chequesSeleccionados.Count > 50)
+                if (chequesSeleccionados.Count > 500)
                 {
                     this.Cursor = Cursors.Default;
                     MessageBox.Show(
-                        "NO SE PUEDEN ACTUALIZAR MÁS DE 50 CHEQUES A LA VEZ.\n\n" +
+                        "NO SE PUEDEN ACTUALIZAR MÁS DE 500 CHEQUES A LA VEZ.\n\n" +
                         $"CHEQUES SELECCIONADOS: {chequesSeleccionados.Count}\n" +
                         "LÍMITE MÁXIMO SUPERADO",
                         "VALIDACIÓN",

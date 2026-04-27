@@ -63,11 +63,11 @@
             // Lbl_Formulario
             // 
             this.Lbl_Formulario.AutoSize = true;
-            this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Formulario.ForeColor = System.Drawing.Color.White;
+            this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
             this.Lbl_Formulario.Location = new System.Drawing.Point(14, 13);
             this.Lbl_Formulario.Name = "Lbl_Formulario";
-            this.Lbl_Formulario.Size = new System.Drawing.Size(211, 25);
+            this.Lbl_Formulario.Size = new System.Drawing.Size(221, 25);
             this.Lbl_Formulario.TabIndex = 0;
             this.Lbl_Formulario.Text = "EXCLUSIÓN DE FECHAS";
             // 
@@ -307,7 +307,7 @@
             this.Btn_CleanSelect.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_CleanSelect.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
             this.Btn_CleanSelect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Btn_CleanSelect.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.Btn_CleanSelect.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSelect.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSelect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_CleanSelect.Location = new System.Drawing.Point(8, 7);
@@ -325,7 +325,7 @@
             this.Btn_No.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_No.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
             this.Btn_No.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Btn_No.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Btn_No.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_No.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
             this.Btn_No.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_No.Location = new System.Drawing.Point(412, 7);
@@ -344,7 +344,7 @@
             this.Btn_Yes.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_Yes.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
             this.Btn_Yes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Btn_Yes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Btn_Yes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Yes.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_Yes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Yes.Location = new System.Drawing.Point(550, 7);
