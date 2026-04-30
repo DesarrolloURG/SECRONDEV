@@ -34,42 +34,42 @@
             this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
             this.Panel_Busqueda = new System.Windows.Forms.Panel();
+            this.Btn_Search = new System.Windows.Forms.Button();
+            this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Btn_Clear = new System.Windows.Forms.Button();
             this.Btn_Inactive = new System.Windows.Forms.Button();
             this.Btn_Update = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
-            this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
-            this.Btn_Search = new System.Windows.Forms.Button();
             this.Panel_Derecho = new System.Windows.Forms.Panel();
             this.PanelTabla = new System.Windows.Forms.Panel();
             this.Tabla = new System.Windows.Forms.DataGridView();
             this.Panel_Izquierdo = new System.Windows.Forms.Panel();
+            this.Panel_Informacion = new System.Windows.Forms.Panel();
+            this.Txt_CurrencyName = new System.Windows.Forms.TextBox();
+            this.Lbl_CurrencyName = new System.Windows.Forms.Label();
+            this.Txt_CheckNumber = new System.Windows.Forms.TextBox();
+            this.ComboBox_Currency = new System.Windows.Forms.ComboBox();
+            this.Lbl_Currency = new System.Windows.Forms.Label();
+            this.Lbl_CheckNumber = new System.Windows.Forms.Label();
+            this.ComboBox_BankAccountType = new System.Windows.Forms.ComboBox();
+            this.Lbl_BankAccountType = new System.Windows.Forms.Label();
+            this.ComboBox_BankName = new System.Windows.Forms.ComboBox();
+            this.Lbl_BankName = new System.Windows.Forms.Label();
+            this.ComboBox_Sign = new System.Windows.Forms.ComboBox();
+            this.Lbl_Sign = new System.Windows.Forms.Label();
+            this.ComboBox_Level = new System.Windows.Forms.ComboBox();
+            this.Lbl_Level = new System.Windows.Forms.Label();
             this.ComboBox_Type = new System.Windows.Forms.ComboBox();
             this.Txt_Balance = new System.Windows.Forms.TextBox();
-            this.Lbl_Type = new System.Windows.Forms.Label();
-            this.Lbl_Balance = new System.Windows.Forms.Label();
-            this.Panel_Informacion = new System.Windows.Forms.Panel();
             this.Txt_Name = new System.Windows.Forms.TextBox();
             this.Txt_ParentAccountCode = new System.Windows.Forms.TextBox();
+            this.Lbl_Balance = new System.Windows.Forms.Label();
             this.Txt_Code = new System.Windows.Forms.TextBox();
+            this.Lbl_Type = new System.Windows.Forms.Label();
             this.Lbl_Name = new System.Windows.Forms.Label();
             this.Lbl_ParentAccountCode = new System.Windows.Forms.Label();
             this.Lbl_Code = new System.Windows.Forms.Label();
             this.Lbl_Subtitulo1 = new System.Windows.Forms.Label();
-            this.ComboBox_Level = new System.Windows.Forms.ComboBox();
-            this.Lbl_Level = new System.Windows.Forms.Label();
-            this.ComboBox_Sign = new System.Windows.Forms.ComboBox();
-            this.Lbl_Sign = new System.Windows.Forms.Label();
-            this.ComboBox_BankName = new System.Windows.Forms.ComboBox();
-            this.Lbl_BankName = new System.Windows.Forms.Label();
-            this.ComboBox_BankAccountType = new System.Windows.Forms.ComboBox();
-            this.Lbl_BankAccountType = new System.Windows.Forms.Label();
-            this.ComboBox_Currency = new System.Windows.Forms.ComboBox();
-            this.Lbl_Currency = new System.Windows.Forms.Label();
-            this.Lbl_CheckNumber = new System.Windows.Forms.Label();
-            this.Txt_CheckNumber = new System.Windows.Forms.TextBox();
-            this.Txt_CurrencyName = new System.Windows.Forms.TextBox();
-            this.Lbl_CurrencyName = new System.Windows.Forms.Label();
             this.Panel_Superior.SuspendLayout();
             this.Panel_Busqueda.SuspendLayout();
             this.Panel_Derecho.SuspendLayout();
@@ -105,6 +105,7 @@
             this.Btn_Import.Text = "IMPORTAR";
             this.Btn_Import.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Import.UseVisualStyleBackColor = true;
+            this.Btn_Import.Click += new System.EventHandler(this.Btn_Import_Click);
             // 
             // Btn_Export
             // 
@@ -120,6 +121,7 @@
             this.Btn_Export.Text = "EXPORTAR";
             this.Btn_Export.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Export.UseVisualStyleBackColor = true;
+            this.Btn_Export.Click += new System.EventHandler(this.Btn_Export_Click);
             // 
             // Lbl_Formulario
             // 
@@ -149,6 +151,31 @@
             this.Panel_Busqueda.Size = new System.Drawing.Size(1184, 47);
             this.Panel_Busqueda.TabIndex = 76;
             // 
+            // Btn_Search
+            // 
+            this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Search.Location = new System.Drawing.Point(13, 6);
+            this.Btn_Search.Name = "Btn_Search";
+            this.Btn_Search.Size = new System.Drawing.Size(34, 31);
+            this.Btn_Search.TabIndex = 59;
+            this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Search.UseVisualStyleBackColor = true;
+            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
+            // 
+            // Txt_ValorBuscado
+            // 
+            this.Txt_ValorBuscado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_ValorBuscado.Location = new System.Drawing.Point(53, 9);
+            this.Txt_ValorBuscado.MaxLength = 15;
+            this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(729, 27);
+            this.Txt_ValorBuscado.TabIndex = 58;
+            this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
+            // 
             // Btn_Clear
             // 
             this.Btn_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -161,6 +188,7 @@
             this.Btn_Clear.TabIndex = 57;
             this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Clear.UseVisualStyleBackColor = true;
+            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
             // 
             // Btn_Inactive
             // 
@@ -175,6 +203,7 @@
             this.Btn_Inactive.Text = "INACTIVAR";
             this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Inactive.UseVisualStyleBackColor = true;
+            this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
             // 
             // Btn_Update
             // 
@@ -189,6 +218,7 @@
             this.Btn_Update.Text = "EDITAR";
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Update.UseVisualStyleBackColor = true;
+            this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
             // 
             // Btn_Save
             // 
@@ -203,29 +233,7 @@
             this.Btn_Save.Text = "GUARDAR";
             this.Btn_Save.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Save.UseVisualStyleBackColor = true;
-            // 
-            // Txt_ValorBuscado
-            // 
-            this.Txt_ValorBuscado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_ValorBuscado.Location = new System.Drawing.Point(53, 9);
-            this.Txt_ValorBuscado.MaxLength = 15;
-            this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(729, 27);
-            this.Txt_ValorBuscado.TabIndex = 58;
-            // 
-            // Btn_Search
-            // 
-            this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
-            this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(13, 6);
-            this.Btn_Search.Name = "Btn_Search";
-            this.Btn_Search.Size = new System.Drawing.Size(34, 31);
-            this.Btn_Search.TabIndex = 59;
-            this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Search.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
             // 
             // Panel_Derecho
             // 
@@ -258,6 +266,8 @@
             this.Tabla.Name = "Tabla";
             this.Tabla.Size = new System.Drawing.Size(741, 741);
             this.Tabla.TabIndex = 1;
+            this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
+            this.Tabla.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.Tabla_CellFormatting);
             // 
             // Panel_Izquierdo
             // 
@@ -270,46 +280,6 @@
             this.Panel_Izquierdo.Name = "Panel_Izquierdo";
             this.Panel_Izquierdo.Size = new System.Drawing.Size(415, 759);
             this.Panel_Izquierdo.TabIndex = 77;
-            // 
-            // ComboBox_Type
-            // 
-            this.ComboBox_Type.FormattingEnabled = true;
-            this.ComboBox_Type.Location = new System.Drawing.Point(14, 203);
-            this.ComboBox_Type.Name = "ComboBox_Type";
-            this.ComboBox_Type.Size = new System.Drawing.Size(351, 28);
-            this.ComboBox_Type.TabIndex = 66;
-            // 
-            // Txt_Balance
-            // 
-            this.Txt_Balance.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Balance.Location = new System.Drawing.Point(14, 337);
-            this.Txt_Balance.MaxLength = 15;
-            this.Txt_Balance.Name = "Txt_Balance";
-            this.Txt_Balance.Size = new System.Drawing.Size(352, 27);
-            this.Txt_Balance.TabIndex = 12;
-            this.Txt_Balance.Text = "0.00";
-            // 
-            // Lbl_Type
-            // 
-            this.Lbl_Type.AutoSize = true;
-            this.Lbl_Type.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Type.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Type.Location = new System.Drawing.Point(10, 181);
-            this.Lbl_Type.Name = "Lbl_Type";
-            this.Lbl_Type.Size = new System.Drawing.Size(54, 20);
-            this.Lbl_Type.TabIndex = 56;
-            this.Lbl_Type.Text = "TIPO *";
-            // 
-            // Lbl_Balance
-            // 
-            this.Lbl_Balance.AutoSize = true;
-            this.Lbl_Balance.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Balance.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Balance.Location = new System.Drawing.Point(10, 314);
-            this.Lbl_Balance.Name = "Lbl_Balance";
-            this.Lbl_Balance.Size = new System.Drawing.Size(145, 20);
-            this.Lbl_Balance.TabIndex = 12;
-            this.Lbl_Balance.Text = "SALDO EN CUENTA";
             // 
             // Panel_Informacion
             // 
@@ -344,6 +314,160 @@
             this.Panel_Informacion.Size = new System.Drawing.Size(383, 741);
             this.Panel_Informacion.TabIndex = 52;
             // 
+            // Txt_CurrencyName
+            // 
+            this.Txt_CurrencyName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_CurrencyName.Location = new System.Drawing.Point(14, 585);
+            this.Txt_CurrencyName.MaxLength = 15;
+            this.Txt_CurrencyName.Name = "Txt_CurrencyName";
+            this.Txt_CurrencyName.Size = new System.Drawing.Size(351, 27);
+            this.Txt_CurrencyName.TabIndex = 80;
+            // 
+            // Lbl_CurrencyName
+            // 
+            this.Lbl_CurrencyName.AutoSize = true;
+            this.Lbl_CurrencyName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_CurrencyName.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_CurrencyName.Location = new System.Drawing.Point(10, 562);
+            this.Lbl_CurrencyName.Name = "Lbl_CurrencyName";
+            this.Lbl_CurrencyName.Size = new System.Drawing.Size(156, 20);
+            this.Lbl_CurrencyName.TabIndex = 81;
+            this.Lbl_CurrencyName.Text = "NOMBRE MONEDA *";
+            // 
+            // Txt_CheckNumber
+            // 
+            this.Txt_CheckNumber.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_CheckNumber.Location = new System.Drawing.Point(14, 525);
+            this.Txt_CheckNumber.MaxLength = 15;
+            this.Txt_CheckNumber.Name = "Txt_CheckNumber";
+            this.Txt_CheckNumber.Size = new System.Drawing.Size(170, 27);
+            this.Txt_CheckNumber.TabIndex = 79;
+            this.Txt_CheckNumber.Text = "0.00";
+            // 
+            // ComboBox_Currency
+            // 
+            this.ComboBox_Currency.FormattingEnabled = true;
+            this.ComboBox_Currency.Location = new System.Drawing.Point(200, 524);
+            this.ComboBox_Currency.Name = "ComboBox_Currency";
+            this.ComboBox_Currency.Size = new System.Drawing.Size(165, 28);
+            this.ComboBox_Currency.TabIndex = 78;
+            // 
+            // Lbl_Currency
+            // 
+            this.Lbl_Currency.AutoSize = true;
+            this.Lbl_Currency.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Currency.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Currency.Location = new System.Drawing.Point(196, 502);
+            this.Lbl_Currency.Name = "Lbl_Currency";
+            this.Lbl_Currency.Size = new System.Drawing.Size(87, 20);
+            this.Lbl_Currency.TabIndex = 77;
+            this.Lbl_Currency.Text = "MONEDA *";
+            // 
+            // Lbl_CheckNumber
+            // 
+            this.Lbl_CheckNumber.AutoSize = true;
+            this.Lbl_CheckNumber.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_CheckNumber.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_CheckNumber.Location = new System.Drawing.Point(10, 502);
+            this.Lbl_CheckNumber.Name = "Lbl_CheckNumber";
+            this.Lbl_CheckNumber.Size = new System.Drawing.Size(171, 20);
+            this.Lbl_CheckNumber.TabIndex = 75;
+            this.Lbl_CheckNumber.Text = "NUMERO DE CHEQUE *";
+            // 
+            // ComboBox_BankAccountType
+            // 
+            this.ComboBox_BankAccountType.FormattingEnabled = true;
+            this.ComboBox_BankAccountType.Location = new System.Drawing.Point(14, 462);
+            this.ComboBox_BankAccountType.Name = "ComboBox_BankAccountType";
+            this.ComboBox_BankAccountType.Size = new System.Drawing.Size(351, 28);
+            this.ComboBox_BankAccountType.TabIndex = 74;
+            // 
+            // Lbl_BankAccountType
+            // 
+            this.Lbl_BankAccountType.AutoSize = true;
+            this.Lbl_BankAccountType.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_BankAccountType.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_BankAccountType.Location = new System.Drawing.Point(10, 440);
+            this.Lbl_BankAccountType.Name = "Lbl_BankAccountType";
+            this.Lbl_BankAccountType.Size = new System.Drawing.Size(140, 20);
+            this.Lbl_BankAccountType.TabIndex = 73;
+            this.Lbl_BankAccountType.Text = "TIPO DE CUENTA *";
+            // 
+            // ComboBox_BankName
+            // 
+            this.ComboBox_BankName.FormattingEnabled = true;
+            this.ComboBox_BankName.Location = new System.Drawing.Point(14, 403);
+            this.ComboBox_BankName.Name = "ComboBox_BankName";
+            this.ComboBox_BankName.Size = new System.Drawing.Size(351, 28);
+            this.ComboBox_BankName.TabIndex = 72;
+            // 
+            // Lbl_BankName
+            // 
+            this.Lbl_BankName.AutoSize = true;
+            this.Lbl_BankName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_BankName.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_BankName.Location = new System.Drawing.Point(10, 381);
+            this.Lbl_BankName.Name = "Lbl_BankName";
+            this.Lbl_BankName.Size = new System.Drawing.Size(73, 20);
+            this.Lbl_BankName.TabIndex = 71;
+            this.Lbl_BankName.Text = "BANCO *";
+            // 
+            // ComboBox_Sign
+            // 
+            this.ComboBox_Sign.FormattingEnabled = true;
+            this.ComboBox_Sign.Location = new System.Drawing.Point(200, 267);
+            this.ComboBox_Sign.Name = "ComboBox_Sign";
+            this.ComboBox_Sign.Size = new System.Drawing.Size(165, 28);
+            this.ComboBox_Sign.TabIndex = 70;
+            // 
+            // Lbl_Sign
+            // 
+            this.Lbl_Sign.AutoSize = true;
+            this.Lbl_Sign.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Sign.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Sign.Location = new System.Drawing.Point(196, 245);
+            this.Lbl_Sign.Name = "Lbl_Sign";
+            this.Lbl_Sign.Size = new System.Drawing.Size(67, 20);
+            this.Lbl_Sign.TabIndex = 69;
+            this.Lbl_Sign.Text = "SIGNO *";
+            // 
+            // ComboBox_Level
+            // 
+            this.ComboBox_Level.FormattingEnabled = true;
+            this.ComboBox_Level.Location = new System.Drawing.Point(14, 267);
+            this.ComboBox_Level.Name = "ComboBox_Level";
+            this.ComboBox_Level.Size = new System.Drawing.Size(170, 28);
+            this.ComboBox_Level.TabIndex = 68;
+            // 
+            // Lbl_Level
+            // 
+            this.Lbl_Level.AutoSize = true;
+            this.Lbl_Level.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Level.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Level.Location = new System.Drawing.Point(10, 245);
+            this.Lbl_Level.Name = "Lbl_Level";
+            this.Lbl_Level.Size = new System.Drawing.Size(63, 20);
+            this.Lbl_Level.TabIndex = 67;
+            this.Lbl_Level.Text = "NIVEL *";
+            // 
+            // ComboBox_Type
+            // 
+            this.ComboBox_Type.FormattingEnabled = true;
+            this.ComboBox_Type.Location = new System.Drawing.Point(14, 203);
+            this.ComboBox_Type.Name = "ComboBox_Type";
+            this.ComboBox_Type.Size = new System.Drawing.Size(351, 28);
+            this.ComboBox_Type.TabIndex = 66;
+            // 
+            // Txt_Balance
+            // 
+            this.Txt_Balance.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_Balance.Location = new System.Drawing.Point(14, 337);
+            this.Txt_Balance.MaxLength = 15;
+            this.Txt_Balance.Name = "Txt_Balance";
+            this.Txt_Balance.Size = new System.Drawing.Size(352, 27);
+            this.Txt_Balance.TabIndex = 12;
+            this.Txt_Balance.Text = "0.00";
+            // 
             // Txt_Name
             // 
             this.Txt_Name.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
@@ -362,6 +486,17 @@
             this.Txt_ParentAccountCode.Size = new System.Drawing.Size(170, 27);
             this.Txt_ParentAccountCode.TabIndex = 2;
             // 
+            // Lbl_Balance
+            // 
+            this.Lbl_Balance.AutoSize = true;
+            this.Lbl_Balance.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Balance.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Balance.Location = new System.Drawing.Point(10, 314);
+            this.Lbl_Balance.Name = "Lbl_Balance";
+            this.Lbl_Balance.Size = new System.Drawing.Size(145, 20);
+            this.Lbl_Balance.TabIndex = 12;
+            this.Lbl_Balance.Text = "SALDO EN CUENTA";
+            // 
             // Txt_Code
             // 
             this.Txt_Code.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
@@ -370,6 +505,17 @@
             this.Txt_Code.Name = "Txt_Code";
             this.Txt_Code.Size = new System.Drawing.Size(170, 27);
             this.Txt_Code.TabIndex = 1;
+            // 
+            // Lbl_Type
+            // 
+            this.Lbl_Type.AutoSize = true;
+            this.Lbl_Type.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Type.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Type.Location = new System.Drawing.Point(10, 181);
+            this.Lbl_Type.Name = "Lbl_Type";
+            this.Lbl_Type.Size = new System.Drawing.Size(54, 20);
+            this.Lbl_Type.TabIndex = 56;
+            this.Lbl_Type.Text = "TIPO *";
             // 
             // Lbl_Name
             // 
@@ -418,142 +564,6 @@
             this.Lbl_Subtitulo1.Text = "      INFORMACIÓN DE LA CUENTA";
             this.Lbl_Subtitulo1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // ComboBox_Level
-            // 
-            this.ComboBox_Level.FormattingEnabled = true;
-            this.ComboBox_Level.Location = new System.Drawing.Point(14, 267);
-            this.ComboBox_Level.Name = "ComboBox_Level";
-            this.ComboBox_Level.Size = new System.Drawing.Size(170, 28);
-            this.ComboBox_Level.TabIndex = 68;
-            // 
-            // Lbl_Level
-            // 
-            this.Lbl_Level.AutoSize = true;
-            this.Lbl_Level.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Level.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Level.Location = new System.Drawing.Point(10, 245);
-            this.Lbl_Level.Name = "Lbl_Level";
-            this.Lbl_Level.Size = new System.Drawing.Size(63, 20);
-            this.Lbl_Level.TabIndex = 67;
-            this.Lbl_Level.Text = "NIVEL *";
-            // 
-            // ComboBox_Sign
-            // 
-            this.ComboBox_Sign.FormattingEnabled = true;
-            this.ComboBox_Sign.Location = new System.Drawing.Point(200, 267);
-            this.ComboBox_Sign.Name = "ComboBox_Sign";
-            this.ComboBox_Sign.Size = new System.Drawing.Size(165, 28);
-            this.ComboBox_Sign.TabIndex = 70;
-            // 
-            // Lbl_Sign
-            // 
-            this.Lbl_Sign.AutoSize = true;
-            this.Lbl_Sign.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Sign.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Sign.Location = new System.Drawing.Point(196, 245);
-            this.Lbl_Sign.Name = "Lbl_Sign";
-            this.Lbl_Sign.Size = new System.Drawing.Size(67, 20);
-            this.Lbl_Sign.TabIndex = 69;
-            this.Lbl_Sign.Text = "SIGNO *";
-            // 
-            // ComboBox_BankName
-            // 
-            this.ComboBox_BankName.FormattingEnabled = true;
-            this.ComboBox_BankName.Location = new System.Drawing.Point(14, 403);
-            this.ComboBox_BankName.Name = "ComboBox_BankName";
-            this.ComboBox_BankName.Size = new System.Drawing.Size(351, 28);
-            this.ComboBox_BankName.TabIndex = 72;
-            // 
-            // Lbl_BankName
-            // 
-            this.Lbl_BankName.AutoSize = true;
-            this.Lbl_BankName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_BankName.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_BankName.Location = new System.Drawing.Point(10, 381);
-            this.Lbl_BankName.Name = "Lbl_BankName";
-            this.Lbl_BankName.Size = new System.Drawing.Size(73, 20);
-            this.Lbl_BankName.TabIndex = 71;
-            this.Lbl_BankName.Text = "BANCO *";
-            // 
-            // ComboBox_BankAccountType
-            // 
-            this.ComboBox_BankAccountType.FormattingEnabled = true;
-            this.ComboBox_BankAccountType.Location = new System.Drawing.Point(14, 462);
-            this.ComboBox_BankAccountType.Name = "ComboBox_BankAccountType";
-            this.ComboBox_BankAccountType.Size = new System.Drawing.Size(351, 28);
-            this.ComboBox_BankAccountType.TabIndex = 74;
-            // 
-            // Lbl_BankAccountType
-            // 
-            this.Lbl_BankAccountType.AutoSize = true;
-            this.Lbl_BankAccountType.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_BankAccountType.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_BankAccountType.Location = new System.Drawing.Point(10, 440);
-            this.Lbl_BankAccountType.Name = "Lbl_BankAccountType";
-            this.Lbl_BankAccountType.Size = new System.Drawing.Size(140, 20);
-            this.Lbl_BankAccountType.TabIndex = 73;
-            this.Lbl_BankAccountType.Text = "TIPO DE CUENTA *";
-            // 
-            // ComboBox_Currency
-            // 
-            this.ComboBox_Currency.FormattingEnabled = true;
-            this.ComboBox_Currency.Location = new System.Drawing.Point(200, 524);
-            this.ComboBox_Currency.Name = "ComboBox_Currency";
-            this.ComboBox_Currency.Size = new System.Drawing.Size(165, 28);
-            this.ComboBox_Currency.TabIndex = 78;
-            // 
-            // Lbl_Currency
-            // 
-            this.Lbl_Currency.AutoSize = true;
-            this.Lbl_Currency.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Currency.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Currency.Location = new System.Drawing.Point(196, 502);
-            this.Lbl_Currency.Name = "Lbl_Currency";
-            this.Lbl_Currency.Size = new System.Drawing.Size(87, 20);
-            this.Lbl_Currency.TabIndex = 77;
-            this.Lbl_Currency.Text = "MONEDA *";
-            // 
-            // Lbl_CheckNumber
-            // 
-            this.Lbl_CheckNumber.AutoSize = true;
-            this.Lbl_CheckNumber.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_CheckNumber.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_CheckNumber.Location = new System.Drawing.Point(10, 502);
-            this.Lbl_CheckNumber.Name = "Lbl_CheckNumber";
-            this.Lbl_CheckNumber.Size = new System.Drawing.Size(171, 20);
-            this.Lbl_CheckNumber.TabIndex = 75;
-            this.Lbl_CheckNumber.Text = "NUMERO DE CHEQUE *";
-            // 
-            // Txt_CheckNumber
-            // 
-            this.Txt_CheckNumber.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_CheckNumber.Location = new System.Drawing.Point(14, 525);
-            this.Txt_CheckNumber.MaxLength = 15;
-            this.Txt_CheckNumber.Name = "Txt_CheckNumber";
-            this.Txt_CheckNumber.Size = new System.Drawing.Size(170, 27);
-            this.Txt_CheckNumber.TabIndex = 79;
-            this.Txt_CheckNumber.Text = "0.00";
-            // 
-            // Txt_CurrencyName
-            // 
-            this.Txt_CurrencyName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_CurrencyName.Location = new System.Drawing.Point(14, 585);
-            this.Txt_CurrencyName.MaxLength = 15;
-            this.Txt_CurrencyName.Name = "Txt_CurrencyName";
-            this.Txt_CurrencyName.Size = new System.Drawing.Size(351, 27);
-            this.Txt_CurrencyName.TabIndex = 80;
-            // 
-            // Lbl_CurrencyName
-            // 
-            this.Lbl_CurrencyName.AutoSize = true;
-            this.Lbl_CurrencyName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_CurrencyName.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_CurrencyName.Location = new System.Drawing.Point(10, 562);
-            this.Lbl_CurrencyName.Name = "Lbl_CurrencyName";
-            this.Lbl_CurrencyName.Size = new System.Drawing.Size(148, 20);
-            this.Lbl_CurrencyName.TabIndex = 81;
-            this.Lbl_CurrencyName.Text = "NOMBRE CUENTA *";
-            // 
             // Frm_Accounts_Managment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -566,6 +576,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_Accounts_Managment";
             this.Text = "SECRON - GESTIÓN DE CUENTAS CONTABLES";
+            this.Load += new System.EventHandler(this.Frm_Accounts_Managment_Load);
+            this.TextChanged += new System.EventHandler(this.Txt_ValorBuscado_TextChanged);
+            this.Resize += new System.EventHandler(this.Frm_Accounts_Managment_Resize);
             this.Panel_Superior.ResumeLayout(false);
             this.Panel_Superior.PerformLayout();
             this.Panel_Busqueda.ResumeLayout(false);
