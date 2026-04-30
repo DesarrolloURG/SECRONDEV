@@ -155,5 +155,34 @@ namespace SECRON.Controllers
             }
             return lista;
         }
+
+        // MÉTODO PARA BUSCAR ID DE BANCO POR NOMBRE
+
+        // MÉTODO: Obtener BankId por nombre de banco
+        public static int? ObtenerIdPorNombreBanco(string bankName)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT BankId FROM Banks WHERE BankName = @BankName";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@BankName", bankName ?? "");
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                                return reader.GetInt32(0);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener ID de banco: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
     }
 }

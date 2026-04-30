@@ -358,7 +358,7 @@ namespace SECRON.Views
                 Sign = ComboBox_Sign.SelectedItem?.ToString() ?? "+",
                 Balance = decimal.TryParse(Txt_Balance.Text, out decimal bal) ? bal : 0,
                 BankName = ComboBox_BankName.SelectedItem?.ToString() ?? "N/A",
-                BankCode = 0,
+                BankCode = Ctrl_Banks.ObtenerIdPorNombreBanco(ComboBox_BankName.SelectedItem?.ToString()) ?? 0,
                 BankAccountType = ComboBox_BankAccountType.SelectedItem?.ToString() ?? "",
                 CheckNumber = int.TryParse(Txt_CheckNumber.Text, out int chk) ? chk : 0,
                 Currency = ComboBox_Currency.SelectedItem?.ToString() ?? "",
@@ -515,6 +515,8 @@ namespace SECRON.Views
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
             LimpiarFormulario();
+            Txt_ValorBuscado.Clear();
+            RefrescarTabla();
             BloquearCampos();
             ConfigurarEstadoInicialBotones();
         }
