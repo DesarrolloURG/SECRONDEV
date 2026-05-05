@@ -73,7 +73,6 @@ namespace SECRON.Views
 
                 // Cargar todos los usuarios y colaboradores
                 CargarUsuarios();
-                CargarColaboradores();
 
                 // Actualizar información de paginación
                 ActualizarInfoPaginacionUsuarios();
@@ -102,10 +101,6 @@ namespace SECRON.Views
 
             // Configurar TabIndex y Focus inicial
             ConfigurarTabIndexYFocus();
-
-            //Configurar ScrollBar del Panel_Derecho
-            InicializarScrollPanelDerecho();
-            ConfigurarEventosScrollPanelDerecho();
             AplicarEstilosBotones();
         }
 
@@ -115,10 +110,6 @@ namespace SECRON.Views
             if (Tabla1 != null && Tabla1.DataSource != null)
             {
                 Tabla1.Refresh();
-            }
-            if (Tabla2 != null && Tabla2.DataSource != null)
-            {
-                Tabla2.Refresh();
             }
         }
 
@@ -153,7 +144,6 @@ namespace SECRON.Views
         private void ConfigurarPlaceHoldersTextbox()
         {
             ConfigurarPlaceHolder(Txt_ValorBuscado1, "BUSCAR USUARIO POR NOMBRE, USERNAME, EMAIL...");
-            ConfigurarPlaceHolder(Txt_ValorBuscado2, "BUSCAR POR NOMBRE, DEPARTAMENTO, DPI...");
             ConfigurarPlaceHolder(Txt_Usuario, "NOMBRE DE USUARIO");
             ConfigurarPlaceHolder(Txt_Password, "CONTRASEÑA");
             ConfigurarPlaceHolder(Txt_Colaborador, "SELECCIONE UN COLABORADOR DE LA TABLA");
@@ -198,9 +188,6 @@ namespace SECRON.Views
             FiltroU1.DropDownStyle = ComboBoxStyle.DropDownList;
             FiltroU2.DropDownStyle = ComboBoxStyle.DropDownList;
             FiltroU3.DropDownStyle = ComboBoxStyle.DropDownList;
-            FiltroC1.DropDownStyle = ComboBoxStyle.DropDownList;
-            FiltroC2.DropDownStyle = ComboBoxStyle.DropDownList;
-            FiltroC3.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // Cargar datos
             CargarRoles();
@@ -309,40 +296,6 @@ namespace SECRON.Views
                 "NO BLOQUEADOS"
             });
             FiltroU3.SelectedIndex = 0;
-
-            // FILTROS DE COLABORADORES (Tabla2)
-
-            // FiltroC1 - Tipo de búsqueda
-            FiltroC1.Items.AddRange(new object[]
-            {
-                "TODOS",
-                "POR NOMBRE",
-                "POR DEPARTAMENTO",
-                "POR PUESTO"
-            });
-            FiltroC1.SelectedIndex = 0;
-
-            // FiltroC2 - Estado del empleado
-            var estadosEmpleado = Ctrl_Employees.ObtenerEstadosEmpleado();
-            var listaEstadosEmp = new List<KeyValuePair<int, string>>
-            {
-                new KeyValuePair<int, string>(0, "TODOS")
-            };
-            listaEstadosEmp.AddRange(estadosEmpleado);
-
-            FiltroC2.DataSource = new BindingSource(listaEstadosEmp, null);
-            FiltroC2.DisplayMember = "Value";
-            FiltroC2.ValueMember = "Key";
-            FiltroC2.SelectedIndex = 0;
-
-            // FiltroC3 - Con/Sin usuario asignado
-            FiltroC3.Items.AddRange(new object[]
-            {
-                "TODOS",
-                "CON USUARIO",
-                "SIN USUARIO"
-            });
-            FiltroC3.SelectedIndex = 0;
         }
         #endregion Filtros
         #region SearchUsers
@@ -432,140 +385,6 @@ namespace SECRON.Views
             ActualizarInfoPaginacionUsuarios();
         }
         #endregion SearchUsers
-        #region SearchEmployees
-        // Evento Click del botón Buscar Colaboradores
-        private void Btn_SearchEmployees_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                this.Cursor = Cursors.WaitCursor;
-
-                // Obtener valor de búsqueda
-                string valorBusqueda = "";
-                if (Txt_ValorBuscado2.Text != "BUSCAR POR NOMBRE, DEPARTAMENTO, DPI..." &&
-                    !string.IsNullOrWhiteSpace(Txt_ValorBuscado2.Text))
-                {
-                    valorBusqueda = Txt_ValorBuscado2.Text.Trim();
-                }
-
-                // Obtener filtro 1 - Tipo de búsqueda
-                string tipoFiltro = FiltroC1.SelectedItem?.ToString() ?? "TODOS";
-
-                // Obtener filtro 2 - Estado del empleado
-                int? estadoId = null;
-                if (FiltroC2.SelectedValue != null && (int)FiltroC2.SelectedValue > 0)
-                {
-                    estadoId = (int)FiltroC2.SelectedValue;
-                }
-
-                // Obtener filtro 3 - Con/Sin Usuario
-                string filtroUsuario = FiltroC3.SelectedItem?.ToString() ?? "TODOS";
-
-                // Variables para el método de búsqueda
-                int? departmentId = null;
-                int? positionId = null;
-                string textoBusqueda = "";
-
-                // LÓGICA SEGÚN FILTRO 1
-                switch (tipoFiltro)
-                {
-                    case "TODOS":
-                        textoBusqueda = valorBusqueda;
-                        break;
-
-                    case "POR NOMBRE":
-                        textoBusqueda = valorBusqueda;
-                        break;
-
-                    case "POR DEPARTAMENTO":
-                        var departamentos = Ctrl_Employees.ObtenerDepartamentos();
-                        var dept = departamentos.FirstOrDefault(d =>
-                            d.Value.ToUpper().Contains(valorBusqueda.ToUpper()));
-                        if (dept.Key > 0)
-                            departmentId = dept.Key;
-                        break;
-
-                    case "POR PUESTO":
-                        var puestos = Ctrl_Employees.ObtenerPuestos();
-                        var puesto = puestos.FirstOrDefault(p =>
-                            p.Value.ToUpper().Contains(valorBusqueda.ToUpper()));
-                        if (puesto.Key > 0)
-                            positionId = puesto.Key;
-                        break;
-                }
-
-                // Realizar búsqueda
-                List<Mdl_Employees> resultados = Ctrl_Employees.BuscarEmpleados(
-                    textoBusqueda: textoBusqueda,
-                    departmentId: departmentId,
-                    positionId: positionId,
-                    employeeStatusId: estadoId,
-                    pageNumber: paginaActualColaboradores,
-                    pageSize: registrosPorPaginaColaboradores
-                );
-
-                // APLICAR FILTRO 3 - Con/Sin Usuario (en memoria)
-                if (filtroUsuario == "CON USUARIO")
-                {
-                    // Filtrar solo empleados que YA tienen usuario asignado
-                    var empleadosConUsuario = Ctrl_Users.ObtenerEmpleadosConUsuario();
-                    resultados = resultados.Where(emp =>
-                        empleadosConUsuario.Contains(emp.EmployeeId)).ToList();
-                }
-                else if (filtroUsuario == "SIN USUARIO")
-                {
-                    // Filtrar solo empleados SIN usuario asignado
-                    var empleadosConUsuario = Ctrl_Users.ObtenerEmpleadosConUsuario();
-                    resultados = resultados.Where(emp =>
-                        !empleadosConUsuario.Contains(emp.EmployeeId)).ToList();
-                }
-
-                // Mostrar resultados
-                colaboradoresList = resultados;
-                Tabla2.DataSource = colaboradoresList;
-                ConfigurarTabla2();
-                AjustarColumnasTabla2();
-
-                this.Cursor = Cursors.Default;
-            }
-            catch (Exception ex)
-            {
-                this.Cursor = Cursors.Default;
-                MessageBox.Show($"Error al buscar: {ex.Message}", "Error",
-                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Evento Enter del TextBox de búsqueda de colaboradores
-        private void Txt_ValorBuscado2_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                Btn_SearchEmployees_Click(sender, e);
-            }
-        }
-
-        // Evento Click del botón Limpiar Búsqueda Colaboradores
-        private void Btn_ClearEmployees_Click(object sender, EventArgs e)
-        {
-            // Limpiar búsqueda
-            Txt_ValorBuscado2.Text = "BUSCAR POR NOMBRE, DEPARTAMENTO, DPI...";
-            Txt_ValorBuscado2.ForeColor = Color.Gray;
-
-            // Resetear filtros
-            FiltroC1.SelectedIndex = 0;
-            FiltroC2.SelectedIndex = 0;
-            FiltroC3.SelectedIndex = 0;
-
-            // Recargar todos los colaboradores
-            paginaActualColaboradores = 1;
-            RefrescarListadoColaboradores();
-            ConfigurarTabla2();
-            AjustarColumnasTabla2();
-            ActualizarInfoPaginacionColaboradores();
-        }
-        #endregion SearchEmployees
         #region ConfiguracionesTabla1_Usuarios
         // Método para cargar usuarios desde el controlador
         private void CargarUsuarios()
@@ -728,166 +547,6 @@ namespace SECRON.Views
             }
         }
         #endregion ConfiguracionesTabla1_Usuarios
-        #region ConfiguracionesTabla2_Colaboradores
-        // Método para cargar colaboradores desde el controlador
-        private void CargarColaboradores()
-        {
-            try
-            {
-                RefrescarListadoColaboradores();
-                ConfigurarTabla2();
-                AjustarColumnasTabla2();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar colaboradores: {ex.Message}");
-            }
-        }
-
-        // Método para refrescar la tabla de colaboradores
-        public void RefrescarListadoColaboradores()
-        {
-            colaboradoresList = Ctrl_Employees.MostrarEmpleados(paginaActualColaboradores, registrosPorPaginaColaboradores);
-            Tabla2.DataSource = colaboradoresList;
-        }
-
-        // Método para configurar la tabla de colaboradores
-        public void ConfigurarTabla2()
-        {
-            if (Tabla2.Columns.Count > 0)
-            {
-                void Ocultar(string nombreColumna)
-                {
-                    if (Tabla2.Columns.Contains(nombreColumna))
-                        Tabla2.Columns[nombreColumna].Visible = false;
-                }
-
-                void Encabezado(string nombreColumna, string texto)
-                {
-                    if (Tabla2.Columns.Contains(nombreColumna))
-                        Tabla2.Columns[nombreColumna].HeaderText = texto;
-                }
-
-                // Configurar títulos de columnas
-                Encabezado("EmployeeCode", "CÓDIGO");
-                Encabezado("FullName", "NOMBRE COMPLETO");
-                Encabezado("IdentificationNumber", "DPI");
-                Encabezado("InstitutionalEmail", "EMAIL");
-                Encabezado("Phone", "TELÉFONO");
-
-                // Ocultar columnas no necesarias
-                Ocultar("EmployeeId");
-                Ocultar("FirstName");
-                Ocultar("LastName");
-                Ocultar("Email");
-                Ocultar("MobilePhone");
-                Ocultar("Address");
-                Ocultar("BirthDate");
-                Ocultar("HireDate");
-                Ocultar("TerminationDate");
-                Ocultar("DepartmentId");
-                Ocultar("PositionId");
-                Ocultar("DirectSupervisorId");
-                Ocultar("EmployeeStatusId");
-                Ocultar("EmergencyContactName");
-                Ocultar("EmergencyContactPhone");
-                Ocultar("EmergencyContactRelation");
-
-                // Campos salariales viejos y nuevos
-                Ocultar("NominalSalary");
-                Ocultar("BaseSalary");
-                Ocultar("AdditionalBonus");
-                Ocultar("LegalBonus");
-                Ocultar("IGSS");
-                Ocultar("ISR");
-                Ocultar("NetSalary");
-                Ocultar("IGSSManual");
-
-                // Otros campos internos
-                Ocultar("IsActive");
-                Ocultar("CreatedDate");
-                Ocultar("CreatedBy");
-                Ocultar("ModifiedDate");
-                Ocultar("ModifiedBy");
-                Ocultar("LocationId");
-                Ocultar("TipoContratacion");
-            }
-
-            // Configuración de selección y formato
-            Tabla2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            Tabla2.MultiSelect = false;
-            Tabla2.ReadOnly = true;
-            Tabla2.AllowUserToResizeRows = false;
-            Tabla2.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 11F, FontStyle.Bold);
-
-            // Agregar evento de selección
-            Tabla2.SelectionChanged -= Tabla2_SelectionChanged;
-            Tabla2.SelectionChanged += Tabla2_SelectionChanged;
-        }
-
-        // Método para asignar colaborador seleccionado al usuario
-        private void AsignarColaboradorSeleccionado()
-        {
-            try
-            {
-                if (Tabla2.SelectedRows.Count == 0) return;
-
-                DataGridViewRow fila = Tabla2.SelectedRows[0];
-                int employeeId = Convert.ToInt32(fila.Cells["EmployeeId"].Value);
-
-                _colaboradorSeleccionado = Ctrl_Employees.ObtenerEmpleadoPorId(employeeId);
-
-                if (_colaboradorSeleccionado != null)
-                {
-                    // Mostrar nombre en TextBox
-                    Txt_Colaborador.Text = _colaboradorSeleccionado.FullName;
-                    Txt_Colaborador.ForeColor = Color.Black;
-
-                    // ⭐ SIEMPRE copiar el correo institucional del colaborador seleccionado
-                    if (!string.IsNullOrWhiteSpace(_colaboradorSeleccionado.InstitutionalEmail))
-                    {
-                        Txt_CorreoInstitucional.Text = _colaboradorSeleccionado.InstitutionalEmail;
-                        Txt_CorreoInstitucional.ForeColor = Color.Black;
-                    }
-                    else
-                    {
-                        // Si el colaborador no tiene correo, limpiar el campo
-                        Txt_CorreoInstitucional.Text = "CORREO INSTITUCIONAL";
-                        Txt_CorreoInstitucional.ForeColor = Color.Gray;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al asignar colaborador: {ex.Message}", "Error",
-                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Método para ajustar columnas de Tabla2
-        public void AjustarColumnasTabla2()
-        {
-            if (Tabla2.Columns.Contains("EmployeeCode"))
-                Tabla2.Columns["EmployeeCode"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            if (Tabla2.Columns.Contains("FullName"))
-                Tabla2.Columns["FullName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            if (Tabla2.Columns.Contains("IdentificationNumber"))
-                Tabla2.Columns["IdentificationNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            if (Tabla2.Columns.Contains("InstitutionalEmail"))
-                Tabla2.Columns["InstitutionalEmail"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            if (Tabla2.Columns.Contains("Phone"))
-                Tabla2.Columns["Phone"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        }
-
-        // Evento al cambiar selección en Tabla2
-        private void Tabla2_SelectionChanged(object sender, EventArgs e)
-        {
-            if (Tabla2.SelectedRows.Count > 0)
-            {
-                AsignarColaboradorSeleccionado();
-            }
-        }
-        #endregion ConfiguracionesTabla2_Colaboradores
         #region ToolStripPaginacionUsuarios
         // Método para crear ToolStrip de paginación de Usuarios
         private void CrearToolStripPaginacionUsuarios()
@@ -1034,9 +693,6 @@ namespace SECRON.Views
             btnSiguienteColaboradores.Click += (s, e) => CambiarPaginaColaboradores(paginaActualColaboradores + 1);
 
             toolStripPaginacionColaboradores.Items.Add(btnSiguienteColaboradores);
-
-            // ⭐ AGREGAR AL PANEL
-            PanelToolStrip2.Controls.Add(toolStripPaginacionColaboradores);
             toolStripPaginacionColaboradores.BringToFront();
         }
 
@@ -1088,9 +744,6 @@ namespace SECRON.Views
             if (nuevaPagina >= 1 && nuevaPagina <= totalPaginasColaboradores)
             {
                 paginaActualColaboradores = nuevaPagina;
-                RefrescarListadoColaboradores();
-                ConfigurarTabla2();
-                AjustarColumnasTabla2();
                 ActualizarInfoPaginacionColaboradores();
             }
         }
@@ -1241,7 +894,7 @@ namespace SECRON.Views
                 var nuevoUsuario = new Mdl_Users
                 {
                     Username = Txt_Usuario.Text.Trim().ToUpper(),
-                    FullName = _colaboradorSeleccionado?.FullName?.ToUpper() ?? Txt_Usuario.Text.Trim().ToUpper(),
+                    FullName = Txt_Colaborador.Text.Trim().ToUpper(),
                     RoleId = (int)ComboBox_Rol.SelectedValue,
                     StatusId = (int)ComboBox_UserStatus.SelectedValue,
                     IsLocked = (int)ComboBox_Bloqueado.SelectedValue == 1,
@@ -1353,6 +1006,10 @@ namespace SECRON.Views
             CheckBox_PasswordTemp.Checked = true;
 
             Txt_Usuario.Focus();
+        }
+        private void Btn_ClearInformacion_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
         }
         #endregion Limpieza
         #region EnviarCorreo
@@ -1599,121 +1256,6 @@ namespace SECRON.Views
             }
         }
         #endregion ExportarExcel
-        #region vScrollBar
-        private void Panel_Derecho_MouseEnter(object sender, EventArgs e)
-        {
-            Panel_Derecho.Focus();
-        }
-
-        // Manejar evento Scroll del vScrollBar
-        private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            int scrollPosition = vScrollBar.Value;
-
-            foreach (Control ctrl in Panel_Derecho.Controls)
-            {
-                // Obtener posición original guardada en Tag
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-
-                string[] parts = ctrl.Tag.ToString().Split(':');
-                int originalY = int.Parse(parts[1]);
-
-                // Aplicar scroll: posición original menos desplazamiento
-                ctrl.Top = originalY - scrollPosition;
-            }
-
-            Panel_Derecho.Invalidate();
-        }
-
-        // Manejar evento MouseWheel para Panel_Derecho
-        private void Panel_Derecho_MouseWheel(object sender, MouseEventArgs e)
-        {
-            if (!vScrollBar.Visible) return;
-
-            int delta = e.Delta / 120;
-            int newValue = vScrollBar.Value - (delta * 30); // 30 píxeles por scroll
-
-            if (newValue < 0) newValue = 0;
-            if (newValue > vScrollBar.Maximum) newValue = vScrollBar.Maximum;
-
-            vScrollBar.Value = newValue;
-
-            // Mover el contenido manualmente
-            MoverContenidoPanelDerecho(newValue);
-        }
-
-        // Método para mover contenido del Panel_Derecho
-        private void MoverContenidoPanelDerecho(int scrollPosition)
-        {
-            foreach (Control ctrl in Panel_Derecho.Controls)
-            {
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-                string[] parts = ctrl.Tag.ToString().Split(':');
-                int originalY = int.Parse(parts[1]);
-                ctrl.Top = originalY - scrollPosition;
-            }
-            Panel_Derecho.Invalidate();
-        }
-
-        // Configurar eventos MouseWheel para Panel_Derecho y sus controles hijos
-        private void ConfigurarEventosScrollPanelDerecho()
-        {
-            Panel_Derecho.TabStop = true;
-            Panel_Derecho.MouseWheel += Panel_Derecho_MouseWheel;
-            Panel_Derecho.MouseEnter += Panel_Derecho_MouseEnter;
-
-            foreach (Control ctrl in Panel_Derecho.Controls)
-            {
-                ctrl.MouseWheel += Panel_Derecho_MouseWheel;
-            }
-        }
-
-        // Inicializar configuración del vScrollBar
-        private void InicializarScrollPanelDerecho()
-        {
-            // Primero guardar posiciones originales
-            foreach (Control ctrl in Panel_Derecho.Controls)
-            {
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-            }
-
-            // Calcular altura total del contenido
-            int maxBottom = 0;
-            foreach (Control ctrl in Panel_Derecho.Controls)
-            {
-                maxBottom = Math.Max(maxBottom, ctrl.Bottom);
-            }
-
-            int totalContentHeight = maxBottom + (Panel_Derecho.Height / 3); // Dinámico
-
-            // Si no necesita scroll, ocultar scrollbar
-            if (totalContentHeight <= Panel_Derecho.Height)
-            {
-                vScrollBar.Visible = false;
-                return;
-            }
-
-            // Configurar scrollbar
-            vScrollBar.Visible = true;
-            vScrollBar.Minimum = 0;
-            vScrollBar.Maximum = totalContentHeight - Panel_Derecho.Height;
-            vScrollBar.SmallChange = 30;
-            vScrollBar.LargeChange = Panel_Derecho.Height / 4;
-
-            vScrollBar.Scroll -= vScrollBar_Scroll;
-            vScrollBar.Scroll += vScrollBar_Scroll;
-            vScrollBar.Value = 0;
-        }
-        #endregion vScrollBar
         #region EstiloBotones
         private void AplicarEstiloBotonAgregar(Button boton)
         {
