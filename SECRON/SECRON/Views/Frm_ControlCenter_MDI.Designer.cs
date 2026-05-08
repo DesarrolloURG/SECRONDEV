@@ -30,16 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ControlCenter_MDI));
             this.PanelEmployees = new System.Windows.Forms.Panel();
-            this.BtnEmployeesHistory = new System.Windows.Forms.Button();
-            this.BtnEmployeesDocencia = new System.Windows.Forms.Button();
-            this.BtnEmployeesDepartments = new System.Windows.Forms.Button();
-            this.BtnEmployeesNomina = new System.Windows.Forms.Button();
-            this.BtnEmployeesSalary = new System.Windows.Forms.Button();
             this.BtnEmployeesInformation = new System.Windows.Forms.Button();
             this.BtnEmployeesManagment = new System.Windows.Forms.Button();
             this.PanelUsers = new System.Windows.Forms.Panel();
-            this.BtnUsersConfiguration = new System.Windows.Forms.Button();
-            this.BtnUsersSecurityAccess = new System.Windows.Forms.Button();
             this.BtnUsersRolesPermisos = new System.Windows.Forms.Button();
             this.BtnUsersManagment = new System.Windows.Forms.Button();
             this.PanelSuppliers = new System.Windows.Forms.Panel();
@@ -65,7 +58,6 @@
             this.BtnChecksFileControl = new System.Windows.Forms.Button();
             this.BtnChecksConfiguration = new System.Windows.Forms.Button();
             this.BtnChecksReports = new System.Windows.Forms.Button();
-            this.BtnChecksCheckbooks = new System.Windows.Forms.Button();
             this.BtnChecksManagment = new System.Windows.Forms.Button();
             this.PanelBanks = new System.Windows.Forms.Panel();
             this.BtnBanksConfiguration = new System.Windows.Forms.Button();
@@ -88,7 +80,6 @@
             this.BtnLocationsConfiguration = new System.Windows.Forms.Button();
             this.BtnLocationsManagment = new System.Windows.Forms.Button();
             this.PanelStaticItems = new System.Windows.Forms.Panel();
-            this.BtnStaticItemsConfiguration = new System.Windows.Forms.Button();
             this.BtnStaticItemsReports = new System.Windows.Forms.Button();
             this.BtnStaticItemsDepreciation = new System.Windows.Forms.Button();
             this.BtnStaticItemsMaintenance = new System.Windows.Forms.Button();
@@ -159,8 +150,7 @@
             this.BtnTransfersReports = new System.Windows.Forms.Button();
             this.BtnTransfersManagment = new System.Windows.Forms.Button();
             this.PanelInventory_1 = new System.Windows.Forms.Panel();
-            this.BtnKardexInsumosSedes = new System.Windows.Forms.Button();
-            this.BtnKardexValorizacion = new System.Windows.Forms.Button();
+            this.BtnKardexInputControl = new System.Windows.Forms.Button();
             this.BtnKardexInventory = new System.Windows.Forms.Button();
             this.BtnKardexInventoryReport = new System.Windows.Forms.Button();
             this.BtnKardex_CatalogLocationsCategories = new System.Windows.Forms.Button();
@@ -196,118 +186,13 @@
             // PanelEmployees
             // 
             this.PanelEmployees.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelEmployees.Controls.Add(this.BtnEmployeesHistory);
-            this.PanelEmployees.Controls.Add(this.BtnEmployeesDocencia);
-            this.PanelEmployees.Controls.Add(this.BtnEmployeesDepartments);
-            this.PanelEmployees.Controls.Add(this.BtnEmployeesNomina);
-            this.PanelEmployees.Controls.Add(this.BtnEmployeesSalary);
             this.PanelEmployees.Controls.Add(this.BtnEmployeesInformation);
             this.PanelEmployees.Controls.Add(this.BtnEmployeesManagment);
             this.PanelEmployees.Location = new System.Drawing.Point(200, 1);
             this.PanelEmployees.Name = "PanelEmployees";
-            this.PanelEmployees.Size = new System.Drawing.Size(300, 280);
+            this.PanelEmployees.Size = new System.Drawing.Size(300, 80);
             this.PanelEmployees.TabIndex = 3;
             this.PanelEmployees.Visible = false;
-            // 
-            // BtnEmployeesHistory
-            // 
-            this.BtnEmployeesHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnEmployeesHistory.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployeesHistory.FlatAppearance.BorderSize = 0;
-            this.BtnEmployeesHistory.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployeesHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployeesHistory.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployeesHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployeesHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesHistory.Location = new System.Drawing.Point(0, 210);
-            this.BtnEmployeesHistory.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployeesHistory.Name = "BtnEmployeesHistory";
-            this.BtnEmployeesHistory.Size = new System.Drawing.Size(300, 35);
-            this.BtnEmployeesHistory.TabIndex = 50;
-            this.BtnEmployeesHistory.Text = "HISTORIAL Y AUDITORÍA";
-            this.BtnEmployeesHistory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesHistory.UseVisualStyleBackColor = false;
-            this.BtnEmployeesHistory.Click += new System.EventHandler(this.BtnEmployeesHistory_Click);
-            // 
-            // BtnEmployeesDocencia
-            // 
-            this.BtnEmployeesDocencia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnEmployeesDocencia.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployeesDocencia.FlatAppearance.BorderSize = 0;
-            this.BtnEmployeesDocencia.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployeesDocencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployeesDocencia.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployeesDocencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployeesDocencia.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesDocencia.Location = new System.Drawing.Point(0, 175);
-            this.BtnEmployeesDocencia.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployeesDocencia.Name = "BtnEmployeesDocencia";
-            this.BtnEmployeesDocencia.Size = new System.Drawing.Size(300, 35);
-            this.BtnEmployeesDocencia.TabIndex = 49;
-            this.BtnEmployeesDocencia.Text = "DOCENCIA";
-            this.BtnEmployeesDocencia.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesDocencia.UseVisualStyleBackColor = false;
-            this.BtnEmployeesDocencia.Click += new System.EventHandler(this.BtnEmployeesDocencia_Click);
-            // 
-            // BtnEmployeesDepartments
-            // 
-            this.BtnEmployeesDepartments.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnEmployeesDepartments.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployeesDepartments.FlatAppearance.BorderSize = 0;
-            this.BtnEmployeesDepartments.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployeesDepartments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployeesDepartments.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployeesDepartments.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployeesDepartments.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesDepartments.Location = new System.Drawing.Point(0, 140);
-            this.BtnEmployeesDepartments.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployeesDepartments.Name = "BtnEmployeesDepartments";
-            this.BtnEmployeesDepartments.Size = new System.Drawing.Size(300, 35);
-            this.BtnEmployeesDepartments.TabIndex = 48;
-            this.BtnEmployeesDepartments.Text = "ASIGNACIÓN DE ÁREAS ACADÉMICAS";
-            this.BtnEmployeesDepartments.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesDepartments.UseVisualStyleBackColor = false;
-            this.BtnEmployeesDepartments.Click += new System.EventHandler(this.BtnEmployeesDepartments_Click);
-            // 
-            // BtnEmployeesNomina
-            // 
-            this.BtnEmployeesNomina.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnEmployeesNomina.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployeesNomina.FlatAppearance.BorderSize = 0;
-            this.BtnEmployeesNomina.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployeesNomina.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployeesNomina.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployeesNomina.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployeesNomina.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesNomina.Location = new System.Drawing.Point(0, 105);
-            this.BtnEmployeesNomina.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployeesNomina.Name = "BtnEmployeesNomina";
-            this.BtnEmployeesNomina.Size = new System.Drawing.Size(300, 35);
-            this.BtnEmployeesNomina.TabIndex = 47;
-            this.BtnEmployeesNomina.Text = "REPORTES DE NÓMINA";
-            this.BtnEmployeesNomina.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesNomina.UseVisualStyleBackColor = false;
-            this.BtnEmployeesNomina.Click += new System.EventHandler(this.BtnEmployeesNomina_Click);
-            // 
-            // BtnEmployeesSalary
-            // 
-            this.BtnEmployeesSalary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnEmployeesSalary.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployeesSalary.FlatAppearance.BorderSize = 0;
-            this.BtnEmployeesSalary.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployeesSalary.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployeesSalary.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployeesSalary.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployeesSalary.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesSalary.Location = new System.Drawing.Point(0, 70);
-            this.BtnEmployeesSalary.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployeesSalary.Name = "BtnEmployeesSalary";
-            this.BtnEmployeesSalary.Size = new System.Drawing.Size(300, 35);
-            this.BtnEmployeesSalary.TabIndex = 46;
-            this.BtnEmployeesSalary.Text = "CONFIGURACIÓN SALARIAL";
-            this.BtnEmployeesSalary.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesSalary.UseVisualStyleBackColor = false;
-            this.BtnEmployeesSalary.Click += new System.EventHandler(this.BtnEmployeesSalary_Click);
             // 
             // BtnEmployeesInformation
             // 
@@ -324,7 +209,7 @@
             this.BtnEmployeesInformation.Name = "BtnEmployeesInformation";
             this.BtnEmployeesInformation.Size = new System.Drawing.Size(300, 35);
             this.BtnEmployeesInformation.TabIndex = 45;
-            this.BtnEmployeesInformation.Text = "INFORMACIÓN LABORAL";
+            this.BtnEmployeesInformation.Text = "MI PERFIL DE TRABAJO";
             this.BtnEmployeesInformation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnEmployeesInformation.UseVisualStyleBackColor = false;
             this.BtnEmployeesInformation.Click += new System.EventHandler(this.BtnEmployeesInformation_Click);
@@ -344,7 +229,7 @@
             this.BtnEmployeesManagment.Name = "BtnEmployeesManagment";
             this.BtnEmployeesManagment.Size = new System.Drawing.Size(300, 35);
             this.BtnEmployeesManagment.TabIndex = 44;
-            this.BtnEmployeesManagment.Text = "GESTIÓN DE COLABORADORES";
+            this.BtnEmployeesManagment.Text = "FICHA DEL TRABAJADOR";
             this.BtnEmployeesManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnEmployeesManagment.UseVisualStyleBackColor = false;
             this.BtnEmployeesManagment.Click += new System.EventHandler(this.BtnEmployeesManagment_Click);
@@ -352,55 +237,13 @@
             // PanelUsers
             // 
             this.PanelUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelUsers.Controls.Add(this.BtnUsersConfiguration);
-            this.PanelUsers.Controls.Add(this.BtnUsersSecurityAccess);
             this.PanelUsers.Controls.Add(this.BtnUsersRolesPermisos);
             this.PanelUsers.Controls.Add(this.BtnUsersManagment);
             this.PanelUsers.Location = new System.Drawing.Point(200, 1);
             this.PanelUsers.Name = "PanelUsers";
-            this.PanelUsers.Size = new System.Drawing.Size(300, 160);
+            this.PanelUsers.Size = new System.Drawing.Size(300, 80);
             this.PanelUsers.TabIndex = 4;
             this.PanelUsers.Visible = false;
-            // 
-            // BtnUsersConfiguration
-            // 
-            this.BtnUsersConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnUsersConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnUsersConfiguration.FlatAppearance.BorderSize = 0;
-            this.BtnUsersConfiguration.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnUsersConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnUsersConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnUsersConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnUsersConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsersConfiguration.Location = new System.Drawing.Point(0, 105);
-            this.BtnUsersConfiguration.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnUsersConfiguration.Name = "BtnUsersConfiguration";
-            this.BtnUsersConfiguration.Size = new System.Drawing.Size(300, 35);
-            this.BtnUsersConfiguration.TabIndex = 48;
-            this.BtnUsersConfiguration.Text = "ADMINISTRADOR DE CONFIGURACIÓN";
-            this.BtnUsersConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsersConfiguration.UseVisualStyleBackColor = false;
-            this.BtnUsersConfiguration.Click += new System.EventHandler(this.BtnUsersConfiguration_Click);
-            // 
-            // BtnUsersSecurityAccess
-            // 
-            this.BtnUsersSecurityAccess.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnUsersSecurityAccess.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnUsersSecurityAccess.FlatAppearance.BorderSize = 0;
-            this.BtnUsersSecurityAccess.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnUsersSecurityAccess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnUsersSecurityAccess.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnUsersSecurityAccess.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnUsersSecurityAccess.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsersSecurityAccess.Location = new System.Drawing.Point(0, 70);
-            this.BtnUsersSecurityAccess.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnUsersSecurityAccess.Name = "BtnUsersSecurityAccess";
-            this.BtnUsersSecurityAccess.Size = new System.Drawing.Size(300, 35);
-            this.BtnUsersSecurityAccess.TabIndex = 47;
-            this.BtnUsersSecurityAccess.Text = "SEGURIDAD Y ACCESOS";
-            this.BtnUsersSecurityAccess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUsersSecurityAccess.UseVisualStyleBackColor = false;
-            this.BtnUsersSecurityAccess.Click += new System.EventHandler(this.BtnUsersSecurityAccess_Click);
             // 
             // BtnUsersRolesPermisos
             // 
@@ -508,7 +351,7 @@
             this.PanelOrders.Controls.Add(this.BtnOrdersManagment);
             this.PanelOrders.Controls.Add(this.BtnOrdersRequisicionManagment);
             this.PanelOrders.Controls.Add(this.BtnOrdersSolicitud);
-            this.PanelOrders.Location = new System.Drawing.Point(200, 4);
+            this.PanelOrders.Location = new System.Drawing.Point(200, 1);
             this.PanelOrders.Name = "PanelOrders";
             this.PanelOrders.Size = new System.Drawing.Size(300, 120);
             this.PanelOrders.TabIndex = 7;
@@ -529,7 +372,7 @@
             this.BtnOrdersManagment.Name = "BtnOrdersManagment";
             this.BtnOrdersManagment.Size = new System.Drawing.Size(300, 35);
             this.BtnOrdersManagment.TabIndex = 46;
-            this.BtnOrdersManagment.Text = "GESTIÓN DE ORDENES DE COMPRAS";
+            this.BtnOrdersManagment.Text = "EMISIÓN DE ÓRDEN DE COMPRA";
             this.BtnOrdersManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnOrdersManagment.UseVisualStyleBackColor = false;
             this.BtnOrdersManagment.Click += new System.EventHandler(this.BtnOrdersManagment_Click);
@@ -787,11 +630,10 @@
             this.PanelChecks.Controls.Add(this.BtnChecksFileControl);
             this.PanelChecks.Controls.Add(this.BtnChecksConfiguration);
             this.PanelChecks.Controls.Add(this.BtnChecksReports);
-            this.PanelChecks.Controls.Add(this.BtnChecksCheckbooks);
             this.PanelChecks.Controls.Add(this.BtnChecksManagment);
-            this.PanelChecks.Location = new System.Drawing.Point(200, 6);
+            this.PanelChecks.Location = new System.Drawing.Point(200, 1);
             this.PanelChecks.Name = "PanelChecks";
-            this.PanelChecks.Size = new System.Drawing.Size(300, 200);
+            this.PanelChecks.Size = new System.Drawing.Size(300, 160);
             this.PanelChecks.TabIndex = 10;
             this.PanelChecks.Visible = false;
             // 
@@ -805,7 +647,7 @@
             this.BtnChecksFileControl.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnChecksFileControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecksFileControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksFileControl.Location = new System.Drawing.Point(0, 140);
+            this.BtnChecksFileControl.Location = new System.Drawing.Point(0, 105);
             this.BtnChecksFileControl.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksFileControl.Name = "BtnChecksFileControl";
             this.BtnChecksFileControl.Size = new System.Drawing.Size(300, 35);
@@ -825,7 +667,7 @@
             this.BtnChecksConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnChecksConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecksConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksConfiguration.Location = new System.Drawing.Point(0, 105);
+            this.BtnChecksConfiguration.Location = new System.Drawing.Point(0, 70);
             this.BtnChecksConfiguration.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksConfiguration.Name = "BtnChecksConfiguration";
             this.BtnChecksConfiguration.Size = new System.Drawing.Size(300, 35);
@@ -845,7 +687,7 @@
             this.BtnChecksReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.BtnChecksReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BtnChecksReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksReports.Location = new System.Drawing.Point(0, 70);
+            this.BtnChecksReports.Location = new System.Drawing.Point(0, 35);
             this.BtnChecksReports.Margin = new System.Windows.Forms.Padding(0);
             this.BtnChecksReports.Name = "BtnChecksReports";
             this.BtnChecksReports.Size = new System.Drawing.Size(300, 35);
@@ -854,26 +696,6 @@
             this.BtnChecksReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnChecksReports.UseVisualStyleBackColor = false;
             this.BtnChecksReports.Click += new System.EventHandler(this.BtnChecksReports_Click);
-            // 
-            // BtnChecksCheckbooks
-            // 
-            this.BtnChecksCheckbooks.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnChecksCheckbooks.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnChecksCheckbooks.FlatAppearance.BorderSize = 0;
-            this.BtnChecksCheckbooks.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnChecksCheckbooks.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnChecksCheckbooks.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnChecksCheckbooks.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnChecksCheckbooks.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksCheckbooks.Location = new System.Drawing.Point(0, 35);
-            this.BtnChecksCheckbooks.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnChecksCheckbooks.Name = "BtnChecksCheckbooks";
-            this.BtnChecksCheckbooks.Size = new System.Drawing.Size(300, 35);
-            this.BtnChecksCheckbooks.TabIndex = 46;
-            this.BtnChecksCheckbooks.Text = "CONTROL DE CHEQUERAS";
-            this.BtnChecksCheckbooks.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnChecksCheckbooks.UseVisualStyleBackColor = false;
-            this.BtnChecksCheckbooks.Click += new System.EventHandler(this.BtnChecksCheckbooks_Click);
             // 
             // BtnChecksManagment
             // 
@@ -890,7 +712,7 @@
             this.BtnChecksManagment.Name = "BtnChecksManagment";
             this.BtnChecksManagment.Size = new System.Drawing.Size(300, 35);
             this.BtnChecksManagment.TabIndex = 45;
-            this.BtnChecksManagment.Text = "GESTIÓN DE CHEQUES";
+            this.BtnChecksManagment.Text = "EMISIÓN DE CHEQUES";
             this.BtnChecksManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnChecksManagment.UseVisualStyleBackColor = false;
             this.BtnChecksManagment.Click += new System.EventHandler(this.BtnChecksManagment_Click);
@@ -1282,7 +1104,6 @@
             // PanelStaticItems
             // 
             this.PanelStaticItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelStaticItems.Controls.Add(this.BtnStaticItemsConfiguration);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsReports);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsDepreciation);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsMaintenance);
@@ -1291,29 +1112,9 @@
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsManagment);
             this.PanelStaticItems.Location = new System.Drawing.Point(500, 1);
             this.PanelStaticItems.Name = "PanelStaticItems";
-            this.PanelStaticItems.Size = new System.Drawing.Size(300, 280);
+            this.PanelStaticItems.Size = new System.Drawing.Size(300, 240);
             this.PanelStaticItems.TabIndex = 14;
             this.PanelStaticItems.Visible = false;
-            // 
-            // BtnStaticItemsConfiguration
-            // 
-            this.BtnStaticItemsConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnStaticItemsConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnStaticItemsConfiguration.FlatAppearance.BorderSize = 0;
-            this.BtnStaticItemsConfiguration.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnStaticItemsConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnStaticItemsConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnStaticItemsConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnStaticItemsConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsConfiguration.Location = new System.Drawing.Point(0, 210);
-            this.BtnStaticItemsConfiguration.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnStaticItemsConfiguration.Name = "BtnStaticItemsConfiguration";
-            this.BtnStaticItemsConfiguration.Size = new System.Drawing.Size(300, 35);
-            this.BtnStaticItemsConfiguration.TabIndex = 50;
-            this.BtnStaticItemsConfiguration.Text = "CONFIGURACIÓN DE ACTIVOS";
-            this.BtnStaticItemsConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsConfiguration.UseVisualStyleBackColor = false;
-            this.BtnStaticItemsConfiguration.Click += new System.EventHandler(this.BtnStaticItemsConfiguration_Click);
             // 
             // BtnStaticItemsReports
             // 
@@ -2566,57 +2367,36 @@
             // PanelInventory_1
             // 
             this.PanelInventory_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelInventory_1.Controls.Add(this.BtnKardexInsumosSedes);
-            this.PanelInventory_1.Controls.Add(this.BtnKardexValorizacion);
+            this.PanelInventory_1.Controls.Add(this.BtnKardexInputControl);
             this.PanelInventory_1.Controls.Add(this.BtnKardexInventory);
             this.PanelInventory_1.Controls.Add(this.BtnKardexInventoryReport);
             this.PanelInventory_1.Controls.Add(this.BtnKardex_CatalogLocationsCategories);
             this.PanelInventory_1.Controls.Add(this.BtnKardex_ItemsManagment);
             this.PanelInventory_1.Location = new System.Drawing.Point(500, 1);
             this.PanelInventory_1.Name = "PanelInventory_1";
-            this.PanelInventory_1.Size = new System.Drawing.Size(300, 240);
+            this.PanelInventory_1.Size = new System.Drawing.Size(300, 200);
             this.PanelInventory_1.TabIndex = 27;
             this.PanelInventory_1.Visible = false;
             // 
-            // BtnKardexInsumosSedes
+            // BtnKardexInputControl
             // 
-            this.BtnKardexInsumosSedes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnKardexInsumosSedes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnKardexInsumosSedes.FlatAppearance.BorderSize = 0;
-            this.BtnKardexInsumosSedes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnKardexInsumosSedes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnKardexInsumosSedes.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnKardexInsumosSedes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnKardexInsumosSedes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexInsumosSedes.Location = new System.Drawing.Point(0, 175);
-            this.BtnKardexInsumosSedes.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnKardexInsumosSedes.Name = "BtnKardexInsumosSedes";
-            this.BtnKardexInsumosSedes.Size = new System.Drawing.Size(300, 35);
-            this.BtnKardexInsumosSedes.TabIndex = 52;
-            this.BtnKardexInsumosSedes.Text = "CONTROL DE INSUMOS EN SEDES";
-            this.BtnKardexInsumosSedes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexInsumosSedes.UseVisualStyleBackColor = false;
-            this.BtnKardexInsumosSedes.Click += new System.EventHandler(this.BtnKardexInsumosSedes_Click);
-            // 
-            // BtnKardexValorizacion
-            // 
-            this.BtnKardexValorizacion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnKardexValorizacion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnKardexValorizacion.FlatAppearance.BorderSize = 0;
-            this.BtnKardexValorizacion.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnKardexValorizacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnKardexValorizacion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnKardexValorizacion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnKardexValorizacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexValorizacion.Location = new System.Drawing.Point(0, 140);
-            this.BtnKardexValorizacion.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnKardexValorizacion.Name = "BtnKardexValorizacion";
-            this.BtnKardexValorizacion.Size = new System.Drawing.Size(300, 35);
-            this.BtnKardexValorizacion.TabIndex = 51;
-            this.BtnKardexValorizacion.Text = "VALORIZACIÓN Y COSTOS";
-            this.BtnKardexValorizacion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnKardexValorizacion.UseVisualStyleBackColor = false;
-            this.BtnKardexValorizacion.Click += new System.EventHandler(this.BtnKardexValorizacion_Click);
+            this.BtnKardexInputControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnKardexInputControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnKardexInputControl.FlatAppearance.BorderSize = 0;
+            this.BtnKardexInputControl.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnKardexInputControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnKardexInputControl.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnKardexInputControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnKardexInputControl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnKardexInputControl.Location = new System.Drawing.Point(0, 140);
+            this.BtnKardexInputControl.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnKardexInputControl.Name = "BtnKardexInputControl";
+            this.BtnKardexInputControl.Size = new System.Drawing.Size(300, 35);
+            this.BtnKardexInputControl.TabIndex = 52;
+            this.BtnKardexInputControl.Text = "CONTROL DE MOVIMIENTOS E/S";
+            this.BtnKardexInputControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnKardexInputControl.UseVisualStyleBackColor = false;
+            this.BtnKardexInputControl.Click += new System.EventHandler(this.BtnKardexInsumosSedes_Click);
             // 
             // BtnKardexInventory
             // 
@@ -2633,7 +2413,7 @@
             this.BtnKardexInventory.Name = "BtnKardexInventory";
             this.BtnKardexInventory.Size = new System.Drawing.Size(300, 35);
             this.BtnKardexInventory.TabIndex = 50;
-            this.BtnKardexInventory.Text = "CONTROL DE INVENTARIOS";
+            this.BtnKardexInventory.Text = "CONTROL DE INVENTARIOS POR SEDE";
             this.BtnKardexInventory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnKardexInventory.UseVisualStyleBackColor = false;
             this.BtnKardexInventory.Click += new System.EventHandler(this.BtnKardexInventory_Click);
@@ -2772,16 +2552,9 @@
         private System.Windows.Forms.Panel PanelEmployees;
         private System.Windows.Forms.Button BtnEmployeesManagment;
         private System.Windows.Forms.Button BtnEmployeesInformation;
-        private System.Windows.Forms.Button BtnEmployeesNomina;
-        private System.Windows.Forms.Button BtnEmployeesSalary;
-        private System.Windows.Forms.Button BtnEmployeesDepartments;
-        private System.Windows.Forms.Button BtnEmployeesDocencia;
         private System.Windows.Forms.Panel PanelUsers;
-        private System.Windows.Forms.Button BtnUsersConfiguration;
-        private System.Windows.Forms.Button BtnUsersSecurityAccess;
         private System.Windows.Forms.Button BtnUsersRolesPermisos;
         private System.Windows.Forms.Button BtnUsersManagment;
-        private System.Windows.Forms.Button BtnEmployeesHistory;
         private System.Windows.Forms.Panel PanelSuppliers;
         private System.Windows.Forms.Button BtnSuppliersManagment;
         private System.Windows.Forms.Panel PanelCounts;
@@ -2801,7 +2574,6 @@
         private System.Windows.Forms.Panel PanelChecks;
         private System.Windows.Forms.Button BtnChecksConfiguration;
         private System.Windows.Forms.Button BtnChecksReports;
-        private System.Windows.Forms.Button BtnChecksCheckbooks;
         private System.Windows.Forms.Button BtnChecksManagment;
         private System.Windows.Forms.Panel PanelBanks;
         private System.Windows.Forms.Button BtnBanksConfiguration;
@@ -2824,7 +2596,6 @@
         private System.Windows.Forms.Button BtnLocationsConfiguration;
         private System.Windows.Forms.Button BtnLocationsManagment;
         private System.Windows.Forms.Panel PanelStaticItems;
-        private System.Windows.Forms.Button BtnStaticItemsConfiguration;
         private System.Windows.Forms.Button BtnStaticItemsReports;
         private System.Windows.Forms.Button BtnStaticItemsDepreciation;
         private System.Windows.Forms.Button BtnStaticItemsMaintenance;
@@ -2901,8 +2672,7 @@
         private System.Windows.Forms.Button BtnInvStaticItems;
         private System.Windows.Forms.Button BtnInvKardex;
         private System.Windows.Forms.Button BtnInvWarehouse;
-        private System.Windows.Forms.Button BtnKardexInsumosSedes;
-        private System.Windows.Forms.Button BtnKardexValorizacion;
+        private System.Windows.Forms.Button BtnKardexInputControl;
         private System.Windows.Forms.Button BtnKardexInventory;
         private System.Windows.Forms.Button BtnKardexInventoryReport;
     }

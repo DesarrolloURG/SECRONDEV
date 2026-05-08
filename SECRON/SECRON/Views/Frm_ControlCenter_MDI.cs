@@ -171,17 +171,10 @@ namespace SECRON.Views
         {
             // Panel de Navegación Submenú Empleados
             ConfigurarBotonSubmenuNavegacion(BtnEmployeesManagment);
-            ConfigurarBotonSubmenuNavegacion(BtnEmployeesDepartments);
-            ConfigurarBotonSubmenuNavegacion(BtnEmployeesDocencia);
             ConfigurarBotonSubmenuNavegacion(BtnEmployeesInformation);
-            ConfigurarBotonSubmenuNavegacion(BtnEmployeesNomina);
-            ConfigurarBotonSubmenuNavegacion(BtnEmployeesSalary);
-            ConfigurarBotonSubmenuNavegacion(BtnEmployeesHistory);
             // Panel de Navegación Submenú Usuarios
             ConfigurarBotonSubmenuNavegacion(BtnUsersManagment);
             ConfigurarBotonSubmenuNavegacion(BtnUsersRolesPermisos);
-            ConfigurarBotonSubmenuNavegacion(BtnUsersConfiguration);
-            ConfigurarBotonSubmenuNavegacion(BtnUsersSecurityAccess);
             // Panel de Navegación Submenú Proveedores
             ConfigurarBotonSubmenuNavegacion(BtnSuppliersManagment);
             // Panel de Navegación Submenú Cuentas
@@ -205,7 +198,6 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnChecksManagment);
             ConfigurarBotonSubmenuNavegacion(BtnChecksReports);
             ConfigurarBotonSubmenuNavegacion(BtnChecksConfiguration);
-            ConfigurarBotonSubmenuNavegacion(BtnChecksCheckbooks);
             ConfigurarBotonSubmenuNavegacion(BtnChecksFileControl);
             // Panel de Navegación Submenú Bancos
             ConfigurarBotonSubmenuNavegacion(BtnBanksAccounts);
@@ -229,7 +221,6 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnLocationsStaff);
             // Panel de Navegación Submenú Activos Fijos
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsManagment);
-            ConfigurarBotonSubmenuNavegacion(BtnStaticItemsConfiguration);
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsDepreciation);
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsMaintenance);
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsMovementsController);
@@ -261,6 +252,9 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnTeachers_ConflictReports);
             ConfigurarBotonSubmenuNavegacion(BtnTeachers_PensumReports);
             ConfigurarBotonSubmenuNavegacion(BtnTeachers_CoursesReports);
+            // Panel de Navegación Submenú Transferencias
+            ConfigurarBotonSubmenuNavegacion(BtnTransfersManagment);
+            ConfigurarBotonSubmenuNavegacion(BtnTransfersReports);
         }
         // Configurar botones de SubSubmenus de Navegacion
         private void ConfigurarSubSubmenuNavegacion()
@@ -269,13 +263,11 @@ namespace SECRON.Views
             ConfigurarBotonSubSubmenuNavegacion(BtnKardex_CatalogLocationsCategories);
             ConfigurarBotonSubSubmenuNavegacion(BtnKardex_ItemsManagment);
             ConfigurarBotonSubSubmenuNavegacion(BtnKardexInventory);
-            ConfigurarBotonSubSubmenuNavegacion(BtnKardexInsumosSedes);
+            ConfigurarBotonSubSubmenuNavegacion(BtnKardexInputControl);
             ConfigurarBotonSubSubmenuNavegacion(BtnKardexInventoryReport);
-            ConfigurarBotonSubSubmenuNavegacion(BtnKardexValorizacion);
 
             // Panel de Navegación SubSubmenú ACTIVOS FIJOS
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsManagment);
-            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsConfiguration);
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsDepreciation);
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsMaintenance);
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsMovementsController);
@@ -869,18 +861,11 @@ namespace SECRON.Views
         {
             // ========== EMPLEADOS ==========
             BtnEmployeesManagment.Visible = TienePermiso("EMPLOYEES_MANAGMENT");
-            BtnEmployeesDepartments.Visible = TienePermiso("EMPLOYEES_DEPARTMENTS");
-            BtnEmployeesDocencia.Visible = TienePermiso("EMPLOYEES_TEACHERS");
             BtnEmployeesInformation.Visible = TienePermiso("EMPLOYEES_INFORMATION");
-            BtnEmployeesNomina.Visible = TienePermiso("EMPLOYEES_NOMINA");
-            BtnEmployeesSalary.Visible = TienePermiso("EMPLOYEES_SALARY");
-            BtnEmployeesHistory.Visible = TienePermiso("EMPLOYEES_HISTORY");
 
             // ========== USUARIOS ==========
             BtnUsersManagment.Visible = TienePermiso("USERS_MANAGMENT");
             BtnUsersRolesPermisos.Visible = TienePermiso("USERS_ROLEPERMISSIONS");
-            BtnUsersConfiguration.Visible = TienePermiso("USERS_CONFIGURATION");
-            BtnUsersSecurityAccess.Visible = TienePermiso("USERS_SECURITYACCESS");
 
             // ========== PROVEEDORES ==========
             BtnSuppliersManagment.Visible = TienePermiso("SUPPLIERS_MANAGMENT");
@@ -902,9 +887,8 @@ namespace SECRON.Views
             BtnKardex_CatalogLocationsCategories.Visible = TienePermiso("KARDEX_CATALOG");
             BtnKardex_ItemsManagment.Visible = TienePermiso("KARDEX_CATALOG");
             BtnKardexInventory.Visible = TienePermiso("KARDEX_INVENTORY");
-            BtnKardexInsumosSedes.Visible = TienePermiso("KARDEX_INPUTCONTROL");
+            BtnKardexInputControl.Visible = TienePermiso("KARDEX_INPUTCONTROL");
             BtnKardexInventoryReport.Visible = TienePermiso("KARDEX_REPORTS");
-            BtnKardexValorizacion.Visible = TienePermiso("KARDEX_COSTVALUATION");
 
 
             // ========== GASTOS ==========
@@ -919,7 +903,6 @@ namespace SECRON.Views
             BtnChecksManagment.Visible = TienePermiso("CHECKS_MANAGMENT");
             BtnChecksReports.Visible = TienePermiso("CHECKS_REPORTS");
             BtnChecksConfiguration.Visible = TienePermiso("CHECKS_CONFIGURATION");
-            BtnChecksCheckbooks.Visible = TienePermiso("CHECKS_CHECKBOOKS");
             BtnChecksFileControl.Visible = TienePermiso("CHECKS_FILECONTROL");
 
             // ========== BANCOS ==========
@@ -947,7 +930,6 @@ namespace SECRON.Views
 
             // ========== ACTIVOS FIJOS ==========
             BtnStaticItemsManagment.Visible = TienePermiso("STATICITEMS_MANAGMENT");
-            BtnStaticItemsConfiguration.Visible = TienePermiso("STATICITEMS_CONFIGURATION");
             BtnStaticItemsDepreciation.Visible = TienePermiso("STATICITEMS_DEPRECIATION");
             BtnStaticItemsMaintenance.Visible = TienePermiso("STATICITEMS_MAINTENANCE");
             BtnStaticItemsMovementsController.Visible = TienePermiso("STATICITEMS_MOVEMENTS");
@@ -1065,14 +1047,14 @@ namespace SECRON.Views
             // Diccionario con la configuracion de cada panel (solo tamaño, la posicion se calcula dinamicamente)
             var configuracionPaneles = new Dictionary<Button, (Panel panel, Size tamaño)>
             {
-                { BtnEmployees, (PanelEmployees, new Size(300, 280)) },
-                { BtnUsers, (PanelUsers, new Size(300, 160)) },
+                { BtnEmployees, (PanelEmployees, new Size(300, 80)) },
+                { BtnUsers, (PanelUsers, new Size(300, 80)) },
                 { BtnSuppliers, (PanelSuppliers, new Size(300, 41)) },
                 { BtnCounts, (PanelCounts, new Size(300, 41)) },
                 { BtnOrders, (PanelOrders, new Size(300, 120)) },
                 { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
                 { BtnBills, (PanelBills, new Size(300, 240)) },
-                { BtnChecks, (PanelChecks, new Size(300, 200)) },
+                { BtnChecks, (PanelChecks, new Size(300, 160)) },
                 { BtnBanks, (PanelBanks, new Size(300, 240)) },
                 { BtnAccountingBooks, (PanelAccountingBooks, new Size(300, 240)) },
                 { BtnLocations, (PanelLocations, new Size(300, 200)) },
@@ -1118,7 +1100,7 @@ namespace SECRON.Views
             var configuracionSubPaneles = new Dictionary<Button, (Panel panel, Size tamaño)>
             {
                 //INVENTORY
-                { BtnInvKardex, (PanelInventory_1, new Size(300, 240)) },
+                { BtnInvKardex, (PanelInventory_1, new Size(300, 200)) },
                 { BtnInvStaticItems, (PanelStaticItems, new Size(300, 280)) },
                 // Aquí ira el BtnInvWareHouse aún no existe
 
@@ -1466,79 +1448,22 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Frm_Employees_Managment frm = new Frm_Employees_Managment();
-            frm.Text = "Gestión de Empleados";
+            frm.Text = "Ficha del Trabajador";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
-            AbrirFormularioConPestana(frm, "Gestión de Empleados", "EmployeesManagment");
+            AbrirFormularioConPestana(frm, "Ficha del Trabajador", "EmployeesManagment");
         }
-
-        private void BtnEmployeesDepartments_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Asignación de Áreas Académicas";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Asignación de Áreas Académicas", "EmployeesDepartments");
-        }
-
-        private void BtnEmployeesDocencia_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Docencia";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Docencia", "EmployeesDocencia");
-        }
-
-        private void BtnEmployeesHistory_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Historial y Auditoría";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Historial y Auditoría", "EmployeesHistory");
-        }
-
         private void BtnEmployeesInformation_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Form frm = new Form();
-            frm.Text = "Información Laboral";
+            frm.Text = "Mi Perfil de Trabajo";
             frm.BackColor = Color.White;
 
-            AbrirFormularioConPestana(frm, "Información Laboral", "EmployeesInformation");
+            AbrirFormularioConPestana(frm, "Mi Perfil de Trabajo", "EmployeesInformation");
         }
-
-        private void BtnEmployeesNomina_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Reportes de Nómina";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Reportes de Nómina", "EmployeesNomina");
-        }
-
-        private void BtnEmployeesSalary_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Configuración Salarial";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Configuración Salarial", "EmployeesSalary");
-        }
-
         private void BtnAccountingBooksCatalog_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1736,18 +1661,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Reportes de Gastos", "BillsReports");
         }
-
-        private void BtnChecksCheckbooks_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Control de Chequeras";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Control de Chequeras", "ChecksCheckbooks");
-        }
-
         private void BtnChecksConfiguration_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1764,12 +1677,12 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Frm_Checks_Managment frm = new Frm_Checks_Managment();
-            frm.Text = "Gestión de Cheques";
+            frm.Text = "Emisión de Cheques";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
             
-            AbrirFormularioConPestana(frm, "Gestión de Cheques", "ChecksManagment");
+            AbrirFormularioConPestana(frm, "Emisión de Cheques", "ChecksManagment");
         }
 
         private void BtnChecksReports_Click(object sender, EventArgs e)
@@ -1888,10 +1801,10 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Form frm = new Form();
-            frm.Text = "Gestión de Órdenes de Compras";
+            frm.Text = "Emisión de Órden de Compra";
             frm.BackColor = Color.White;
 
-            AbrirFormularioConPestana(frm, "Gestión de Órdenes de Compras", "OrdersManagment");
+            AbrirFormularioConPestana(frm, "Emisión de Órden de Compra", "OrdersManagment");
         }
 
         private void BtnOrdersRequisicionManagment_Click(object sender, EventArgs e)
@@ -1979,18 +1892,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Reportes de Transferencias", "TransfersReports");
         }
-
-        private void BtnUsersConfiguration_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Administrador de Configuración";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Administrador de Configuración", "UsersConfiguration");
-        }
-
         private void BtnUsersManagment_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2016,17 +1917,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Roles y Permisos", "UsersRolesPermisos");
         }
-
-        private void BtnUsersSecurityAccess_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Seguridad y Accesos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Seguridad y Accesos", "UsersSecurityAccess");
-        }
         #endregion EventosClickSubmenuNavegacion
         #region EventosClickSubSubmenuNavegacion
         private void BtnKardexInsumosSedes_Click(object sender, EventArgs e)
@@ -2034,7 +1924,7 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Form frm = new Form();
-            frm.Text = "Control de Insumos en Sedes";
+            frm.Text = "Control de Movimientos E/S";
             frm.BackColor = Color.White;
 
             AbrirFormularioConPestana(frm, "Control de Insumos en Sedes", "KardexInsumosSedes");
@@ -2045,12 +1935,12 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Frm_KARDEX_LocationsInventary frm = new Frm_KARDEX_LocationsInventary();
-            frm.Text = "Control de Inventarios";
+            frm.Text = "Control de Inventarios por Sede";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
 
-            AbrirFormularioConPestana(frm, "Control de Inventarios", "KardexInventory");
+            AbrirFormularioConPestana(frm, "Control de Inventarios por Sede", "KardexInventory");
         }
 
         private void BtnKardexInventoryReport_Click(object sender, EventArgs e)
@@ -2063,29 +1953,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Reportes de Inventarios", "KardexInventoryReport");
         }
-
-        private void BtnKardexValorizacion_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Valorización y Costos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Valorización y Costos", "KardexValorizacion");
-        }
-
-        private void BtnStaticItemsConfiguration_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Configuración de Activos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Configuración de Activos", "StaticItemsConfiguration");
-        }
-
         private void BtnStaticItemsDepreciation_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
