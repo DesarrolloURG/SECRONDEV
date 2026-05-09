@@ -107,6 +107,8 @@
     <Compile Include="Controllers\Ctrl_CheckStatus.cs" />
     <Compile Include="Controllers\Ctrl_Departments.cs" />
     <Compile Include="Controllers\Ctrl_EmployeeStatus.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetAttributeDefinitions.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetCategories.cs" />
     <Compile Include="Controllers\Ctrl_ItemCategories.cs" />
     <Compile Include="Controllers\Ctrl_ItemMovementDetails.cs" />
     <Compile Include="Controllers\Ctrl_ItemMovementMaster.cs" />
@@ -157,6 +159,8 @@
     <Compile Include="Models\Mdl_Employees.cs" />
     <Compile Include="Models\Mdl_AudithLog_LoginResult.cs" />
     <Compile Include="Models\Mdl_EmployeeStatus.cs" />
+    <Compile Include="Models\Mdl_FixedAssetAttributeDefinition.cs" />
+    <Compile Include="Models\Mdl_FixedAssetCategory.cs" />
     <Compile Include="Models\Mdl_ItemCategories.cs" />
     <Compile Include="Models\Mdl_ItemMovementDetails.cs" />
     <Compile Include="Models\Mdl_ItemMovementMaster.cs" />
@@ -287,6 +291,12 @@
     <Compile Include="Views\Frm_Employees_Managment.Designer.cs">
       <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_FA_SearchAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchAccount.Designer.cs">
+      <DependentUpon>Frm_FA_SearchAccount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_Home.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,6 +320,12 @@
     </Compile>
     <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.Designer.cs">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAssetCategories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAssetCategories.Designer.cs">
+      <DependentUpon>Frm_FixedAssetCategories.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_KARDEX_ItemsManagment.cs">
       <SubType>Form</SubType>
@@ -478,6 +494,9 @@
     <EmbeddedResource Include="Views\Frm_Employees_Managment.resx">
       <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FA_SearchAccount.resx">
+      <DependentUpon>Frm_FA_SearchAccount.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Home.resx">
       <DependentUpon>Frm_Home.cs</DependentUpon>
     </EmbeddedResource>
@@ -489,6 +508,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.resx">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAssetCategories.resx">
+      <DependentUpon>Frm_FixedAssetCategories.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_ItemsManagment.resx">
       <DependentUpon>Frm_KARDEX_ItemsManagment.cs</DependentUpon>

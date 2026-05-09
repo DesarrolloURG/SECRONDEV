@@ -1,0 +1,852 @@
+﻿namespace SECRON.Views
+{
+    partial class Frm_FixedAssetCategories
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null)) components.Dispose();
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_FixedAssetCategories));
+            this.Panel_Superior = new System.Windows.Forms.Panel();
+            this.Btn_Export = new System.Windows.Forms.Button();
+            this.Lbl_Formulario = new System.Windows.Forms.Label();
+            this.Panel_Izquierdo = new System.Windows.Forms.Panel();
+            this.Lbl_Titulo = new System.Windows.Forms.Label();
+            this.Panel_CRUD = new System.Windows.Forms.Panel();
+            this.Btn_Clear = new System.Windows.Forms.Button();
+            this.Btn_Inactive = new System.Windows.Forms.Button();
+            this.Btn_Update = new System.Windows.Forms.Button();
+            this.Btn_Save = new System.Windows.Forms.Button();
+            this.Panel_1 = new System.Windows.Forms.Panel();
+            this.Lbl_Subtitulo1 = new System.Windows.Forms.Label();
+            this.Lbl_CategoryCode = new System.Windows.Forms.Label();
+            this.Txt_CategoryCode = new System.Windows.Forms.TextBox();
+            this.Lbl_CategoryName = new System.Windows.Forms.Label();
+            this.Txt_CategoryName = new System.Windows.Forms.TextBox();
+            this.Lbl_Description = new System.Windows.Forms.Label();
+            this.Txt_Description = new System.Windows.Forms.TextBox();
+            this.Lbl_DepreciationYears = new System.Windows.Forms.Label();
+            this.Txt_DepreciationYears = new System.Windows.Forms.TextBox();
+            this.Lbl_DepreciationMethod = new System.Windows.Forms.Label();
+            this.ComboBox_DepreciationMethod = new System.Windows.Forms.ComboBox();
+            this.Panel_2 = new System.Windows.Forms.Panel();
+            this.Lbl_Subtitulo2 = new System.Windows.Forms.Label();
+            this.Lbl_AccountAccumDep = new System.Windows.Forms.Label();
+            this.Btn_SearchAccountAccumDep = new System.Windows.Forms.Button();
+            this.Txt_AccountAccumDep = new System.Windows.Forms.TextBox();
+            this.Lbl_AccountExpense = new System.Windows.Forms.Label();
+            this.Btn_SearchAccountExpense = new System.Windows.Forms.Button();
+            this.Txt_AccountExpense = new System.Windows.Forms.TextBox();
+            this.Panel_Derecho = new System.Windows.Forms.Panel();
+            this.Panel_Atributos = new System.Windows.Forms.Panel();
+            this.Lbl_AtributosHeader = new System.Windows.Forms.Label();
+            this.TablaAtributos = new System.Windows.Forms.DataGridView();
+            this.Panel_AtributosCRUD = new System.Windows.Forms.Panel();
+            this.Lbl_SubtituloAtributos = new System.Windows.Forms.Label();
+            this.Lbl_AttributeKey = new System.Windows.Forms.Label();
+            this.Txt_AttributeKey = new System.Windows.Forms.TextBox();
+            this.Lbl_AttributeLabel = new System.Windows.Forms.Label();
+            this.Txt_AttributeLabel = new System.Windows.Forms.TextBox();
+            this.Lbl_DataType = new System.Windows.Forms.Label();
+            this.ComboBox_DataType = new System.Windows.Forms.ComboBox();
+            this.Lbl_IsRequired = new System.Windows.Forms.Label();
+            this.ComboBox_IsRequired = new System.Windows.Forms.ComboBox();
+            this.Panel_AtributosBotones = new System.Windows.Forms.Panel();
+            this.Btn_SaveAtributo = new System.Windows.Forms.Button();
+            this.Btn_UpdateAtributo = new System.Windows.Forms.Button();
+            this.Btn_InactiveAtributo = new System.Windows.Forms.Button();
+            this.Btn_ClearAtributo = new System.Windows.Forms.Button();
+            this.PanelTabla = new System.Windows.Forms.Panel();
+            this.Tabla = new System.Windows.Forms.DataGridView();
+            this.PanelToolStrip = new System.Windows.Forms.Panel();
+            this.Lbl_Paginas = new System.Windows.Forms.Label();
+            this.Panel_Busqueda = new System.Windows.Forms.Panel();
+            this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
+            this.Btn_Search = new System.Windows.Forms.Button();
+            this.Btn_CleanSearch = new System.Windows.Forms.Button();
+            this.Filtro1 = new System.Windows.Forms.ComboBox();
+            this.FiltroEstado = new System.Windows.Forms.ComboBox();
+            this.Panel_Superior.SuspendLayout();
+            this.Panel_Izquierdo.SuspendLayout();
+            this.Panel_CRUD.SuspendLayout();
+            this.Panel_1.SuspendLayout();
+            this.Panel_2.SuspendLayout();
+            this.Panel_Derecho.SuspendLayout();
+            this.Panel_Atributos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).BeginInit();
+            this.Panel_AtributosCRUD.SuspendLayout();
+            this.Panel_AtributosBotones.SuspendLayout();
+            this.PanelTabla.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
+            this.PanelToolStrip.SuspendLayout();
+            this.Panel_Busqueda.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // Panel_Superior
+            // 
+            this.Panel_Superior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
+            this.Panel_Superior.Controls.Add(this.Btn_Export);
+            this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
+            this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Panel_Superior.Location = new System.Drawing.Point(0, 0);
+            this.Panel_Superior.Name = "Panel_Superior";
+            this.Panel_Superior.Size = new System.Drawing.Size(1579, 68);
+            this.Panel_Superior.TabIndex = 6;
+            // 
+            // Btn_Export
+            // 
+            this.Btn_Export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Export.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Export.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
+            this.Btn_Export.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Export.Location = new System.Drawing.Point(1404, 16);
+            this.Btn_Export.Name = "Btn_Export";
+            this.Btn_Export.Size = new System.Drawing.Size(159, 37);
+            this.Btn_Export.TabIndex = 0;
+            this.Btn_Export.Text = "EXPORTAR";
+            this.Btn_Export.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Export.UseVisualStyleBackColor = true;
+            this.Btn_Export.Click += new System.EventHandler(this.Btn_Export_Click);
+            // 
+            // Lbl_Formulario
+            // 
+            this.Lbl_Formulario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Lbl_Formulario.AutoSize = true;
+            this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Formulario.Location = new System.Drawing.Point(11, 16);
+            this.Lbl_Formulario.Name = "Lbl_Formulario";
+            this.Lbl_Formulario.Size = new System.Drawing.Size(295, 25);
+            this.Lbl_Formulario.TabIndex = 1;
+            this.Lbl_Formulario.Text = "CATEGORÍAS DE ACTIVOS FIJOS";
+            // 
+            // Panel_Izquierdo
+            // 
+            this.Panel_Izquierdo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Izquierdo.Controls.Add(this.Lbl_Titulo);
+            this.Panel_Izquierdo.Controls.Add(this.Panel_CRUD);
+            this.Panel_Izquierdo.Controls.Add(this.Panel_1);
+            this.Panel_Izquierdo.Controls.Add(this.Panel_2);
+            this.Panel_Izquierdo.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Panel_Izquierdo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 68);
+            this.Panel_Izquierdo.Name = "Panel_Izquierdo";
+            this.Panel_Izquierdo.Size = new System.Drawing.Size(581, 992);
+            this.Panel_Izquierdo.TabIndex = 7;
+            // 
+            // Lbl_Titulo
+            // 
+            this.Lbl_Titulo.AutoSize = true;
+            this.Lbl_Titulo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Titulo.Location = new System.Drawing.Point(16, 12);
+            this.Lbl_Titulo.Name = "Lbl_Titulo";
+            this.Lbl_Titulo.Size = new System.Drawing.Size(251, 20);
+            this.Lbl_Titulo.TabIndex = 0;
+            this.Lbl_Titulo.Text = "INFORMACIÓN DE LA CATEGORÍA";
+            // 
+            // Panel_CRUD
+            // 
+            this.Panel_CRUD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_CRUD.Controls.Add(this.Btn_Clear);
+            this.Panel_CRUD.Controls.Add(this.Btn_Inactive);
+            this.Panel_CRUD.Controls.Add(this.Btn_Update);
+            this.Panel_CRUD.Controls.Add(this.Btn_Save);
+            this.Panel_CRUD.Location = new System.Drawing.Point(16, 49);
+            this.Panel_CRUD.Name = "Panel_CRUD";
+            this.Panel_CRUD.Size = new System.Drawing.Size(555, 58);
+            this.Panel_CRUD.TabIndex = 79;
+            // 
+            // Btn_Clear
+            // 
+            this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_Clear.Location = new System.Drawing.Point(503, 6);
+            this.Btn_Clear.Name = "Btn_Clear";
+            this.Btn_Clear.Size = new System.Drawing.Size(44, 46);
+            this.Btn_Clear.TabIndex = 0;
+            this.Btn_Clear.UseVisualStyleBackColor = true;
+            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
+            // 
+            // Btn_Inactive
+            // 
+            this.Btn_Inactive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Inactive.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
+            this.Btn_Inactive.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Inactive.Location = new System.Drawing.Point(326, 6);
+            this.Btn_Inactive.Name = "Btn_Inactive";
+            this.Btn_Inactive.Size = new System.Drawing.Size(165, 46);
+            this.Btn_Inactive.TabIndex = 1;
+            this.Btn_Inactive.Text = "INACTIVAR";
+            this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Inactive.UseVisualStyleBackColor = true;
+            this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
+            // 
+            // Btn_Update
+            // 
+            this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
+            this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Update.Location = new System.Drawing.Point(167, 6);
+            this.Btn_Update.Name = "Btn_Update";
+            this.Btn_Update.Size = new System.Drawing.Size(151, 46);
+            this.Btn_Update.TabIndex = 2;
+            this.Btn_Update.Text = "EDITAR";
+            this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Update.UseVisualStyleBackColor = true;
+            this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
+            // 
+            // Btn_Save
+            // 
+            this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Save.Location = new System.Drawing.Point(3, 6);
+            this.Btn_Save.Name = "Btn_Save";
+            this.Btn_Save.Size = new System.Drawing.Size(156, 46);
+            this.Btn_Save.TabIndex = 3;
+            this.Btn_Save.Text = "GUARDAR";
+            this.Btn_Save.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
+            // 
+            // Panel_1
+            // 
+            this.Panel_1.BackColor = System.Drawing.Color.White;
+            this.Panel_1.Controls.Add(this.Lbl_Subtitulo1);
+            this.Panel_1.Controls.Add(this.Lbl_CategoryCode);
+            this.Panel_1.Controls.Add(this.Txt_CategoryCode);
+            this.Panel_1.Controls.Add(this.Lbl_CategoryName);
+            this.Panel_1.Controls.Add(this.Txt_CategoryName);
+            this.Panel_1.Controls.Add(this.Lbl_Description);
+            this.Panel_1.Controls.Add(this.Txt_Description);
+            this.Panel_1.Controls.Add(this.Lbl_DepreciationYears);
+            this.Panel_1.Controls.Add(this.Txt_DepreciationYears);
+            this.Panel_1.Controls.Add(this.Lbl_DepreciationMethod);
+            this.Panel_1.Controls.Add(this.ComboBox_DepreciationMethod);
+            this.Panel_1.Location = new System.Drawing.Point(16, 114);
+            this.Panel_1.Name = "Panel_1";
+            this.Panel_1.Size = new System.Drawing.Size(555, 380);
+            this.Panel_1.TabIndex = 52;
+            // 
+            // Lbl_Subtitulo1
+            // 
+            this.Lbl_Subtitulo1.AutoSize = true;
+            this.Lbl_Subtitulo1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Subtitulo1.Location = new System.Drawing.Point(13, 9);
+            this.Lbl_Subtitulo1.Name = "Lbl_Subtitulo1";
+            this.Lbl_Subtitulo1.Size = new System.Drawing.Size(169, 20);
+            this.Lbl_Subtitulo1.TabIndex = 0;
+            this.Lbl_Subtitulo1.Text = "      DATOS GENERALES";
+            // 
+            // Lbl_CategoryCode
+            // 
+            this.Lbl_CategoryCode.AutoSize = true;
+            this.Lbl_CategoryCode.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_CategoryCode.Location = new System.Drawing.Point(13, 39);
+            this.Lbl_CategoryCode.Name = "Lbl_CategoryCode";
+            this.Lbl_CategoryCode.Size = new System.Drawing.Size(78, 20);
+            this.Lbl_CategoryCode.TabIndex = 1;
+            this.Lbl_CategoryCode.Text = "CÓDIGO *";
+            // 
+            // Txt_CategoryCode
+            // 
+            this.Txt_CategoryCode.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_CategoryCode.Location = new System.Drawing.Point(19, 65);
+            this.Txt_CategoryCode.Name = "Txt_CategoryCode";
+            this.Txt_CategoryCode.Size = new System.Drawing.Size(525, 27);
+            this.Txt_CategoryCode.TabIndex = 2;
+            // 
+            // Lbl_CategoryName
+            // 
+            this.Lbl_CategoryName.AutoSize = true;
+            this.Lbl_CategoryName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_CategoryName.Location = new System.Drawing.Point(13, 104);
+            this.Lbl_CategoryName.Name = "Lbl_CategoryName";
+            this.Lbl_CategoryName.Size = new System.Drawing.Size(85, 20);
+            this.Lbl_CategoryName.TabIndex = 3;
+            this.Lbl_CategoryName.Text = "NOMBRE *";
+            // 
+            // Txt_CategoryName
+            // 
+            this.Txt_CategoryName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_CategoryName.Location = new System.Drawing.Point(19, 130);
+            this.Txt_CategoryName.Name = "Txt_CategoryName";
+            this.Txt_CategoryName.Size = new System.Drawing.Size(525, 27);
+            this.Txt_CategoryName.TabIndex = 4;
+            // 
+            // Lbl_Description
+            // 
+            this.Lbl_Description.AutoSize = true;
+            this.Lbl_Description.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Description.Location = new System.Drawing.Point(13, 169);
+            this.Lbl_Description.Name = "Lbl_Description";
+            this.Lbl_Description.Size = new System.Drawing.Size(106, 20);
+            this.Lbl_Description.TabIndex = 5;
+            this.Lbl_Description.Text = "DESCRIPCIÓN";
+            // 
+            // Txt_Description
+            // 
+            this.Txt_Description.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_Description.Location = new System.Drawing.Point(19, 195);
+            this.Txt_Description.Multiline = true;
+            this.Txt_Description.Name = "Txt_Description";
+            this.Txt_Description.Size = new System.Drawing.Size(525, 60);
+            this.Txt_Description.TabIndex = 6;
+            // 
+            // Lbl_DepreciationYears
+            // 
+            this.Lbl_DepreciationYears.AutoSize = true;
+            this.Lbl_DepreciationYears.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_DepreciationYears.Location = new System.Drawing.Point(13, 270);
+            this.Lbl_DepreciationYears.Name = "Lbl_DepreciationYears";
+            this.Lbl_DepreciationYears.Size = new System.Drawing.Size(197, 20);
+            this.Lbl_DepreciationYears.TabIndex = 7;
+            this.Lbl_DepreciationYears.Text = "AÑOS DE DEPRECIACIÓN *";
+            // 
+            // Txt_DepreciationYears
+            // 
+            this.Txt_DepreciationYears.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_DepreciationYears.Location = new System.Drawing.Point(19, 296);
+            this.Txt_DepreciationYears.Name = "Txt_DepreciationYears";
+            this.Txt_DepreciationYears.Size = new System.Drawing.Size(240, 27);
+            this.Txt_DepreciationYears.TabIndex = 8;
+            // 
+            // Lbl_DepreciationMethod
+            // 
+            this.Lbl_DepreciationMethod.AutoSize = true;
+            this.Lbl_DepreciationMethod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_DepreciationMethod.Location = new System.Drawing.Point(275, 270);
+            this.Lbl_DepreciationMethod.Name = "Lbl_DepreciationMethod";
+            this.Lbl_DepreciationMethod.Size = new System.Drawing.Size(83, 20);
+            this.Lbl_DepreciationMethod.TabIndex = 9;
+            this.Lbl_DepreciationMethod.Text = "MÉTODO *";
+            // 
+            // ComboBox_DepreciationMethod
+            // 
+            this.ComboBox_DepreciationMethod.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.ComboBox_DepreciationMethod.Location = new System.Drawing.Point(281, 296);
+            this.ComboBox_DepreciationMethod.Name = "ComboBox_DepreciationMethod";
+            this.ComboBox_DepreciationMethod.Size = new System.Drawing.Size(263, 28);
+            this.ComboBox_DepreciationMethod.TabIndex = 10;
+            // 
+            // Panel_2
+            // 
+            this.Panel_2.BackColor = System.Drawing.Color.White;
+            this.Panel_2.Controls.Add(this.Lbl_Subtitulo2);
+            this.Panel_2.Controls.Add(this.Lbl_AccountAccumDep);
+            this.Panel_2.Controls.Add(this.Btn_SearchAccountAccumDep);
+            this.Panel_2.Controls.Add(this.Txt_AccountAccumDep);
+            this.Panel_2.Controls.Add(this.Lbl_AccountExpense);
+            this.Panel_2.Controls.Add(this.Btn_SearchAccountExpense);
+            this.Panel_2.Controls.Add(this.Txt_AccountExpense);
+            this.Panel_2.Location = new System.Drawing.Point(16, 504);
+            this.Panel_2.Name = "Panel_2";
+            this.Panel_2.Size = new System.Drawing.Size(555, 340);
+            this.Panel_2.TabIndex = 78;
+            // 
+            // Lbl_Subtitulo2
+            // 
+            this.Lbl_Subtitulo2.AutoSize = true;
+            this.Lbl_Subtitulo2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Subtitulo2.Location = new System.Drawing.Point(13, 9);
+            this.Lbl_Subtitulo2.Name = "Lbl_Subtitulo2";
+            this.Lbl_Subtitulo2.Size = new System.Drawing.Size(189, 20);
+            this.Lbl_Subtitulo2.TabIndex = 0;
+            this.Lbl_Subtitulo2.Text = "      CUENTAS CONTABLES";
+            // 
+            // Lbl_AccountAccumDep
+            // 
+            this.Lbl_AccountAccumDep.AutoSize = true;
+            this.Lbl_AccountAccumDep.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_AccountAccumDep.Location = new System.Drawing.Point(13, 34);
+            this.Lbl_AccountAccumDep.Name = "Lbl_AccountAccumDep";
+            this.Lbl_AccountAccumDep.Size = new System.Drawing.Size(229, 20);
+            this.Lbl_AccountAccumDep.TabIndex = 4;
+            this.Lbl_AccountAccumDep.Text = "DEPRECIACIÓN ACUMULADA *";
+            // 
+            // Btn_SearchAccountAccumDep
+            // 
+            this.Btn_SearchAccountAccumDep.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SearchAccountAccumDep.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_SearchAccountAccumDep.Location = new System.Drawing.Point(499, 57);
+            this.Btn_SearchAccountAccumDep.Name = "Btn_SearchAccountAccumDep";
+            this.Btn_SearchAccountAccumDep.Size = new System.Drawing.Size(47, 35);
+            this.Btn_SearchAccountAccumDep.TabIndex = 5;
+            this.Btn_SearchAccountAccumDep.UseVisualStyleBackColor = true;
+            this.Btn_SearchAccountAccumDep.Click += new System.EventHandler(this.Btn_SearchAccountAccumDep_Click);
+            // 
+            // Txt_AccountAccumDep
+            // 
+            this.Txt_AccountAccumDep.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_AccountAccumDep.Location = new System.Drawing.Point(19, 57);
+            this.Txt_AccountAccumDep.Name = "Txt_AccountAccumDep";
+            this.Txt_AccountAccumDep.Size = new System.Drawing.Size(471, 27);
+            this.Txt_AccountAccumDep.TabIndex = 6;
+            // 
+            // Lbl_AccountExpense
+            // 
+            this.Lbl_AccountExpense.AutoSize = true;
+            this.Lbl_AccountExpense.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_AccountExpense.Location = new System.Drawing.Point(13, 105);
+            this.Lbl_AccountExpense.Name = "Lbl_AccountExpense";
+            this.Lbl_AccountExpense.Size = new System.Drawing.Size(181, 20);
+            this.Lbl_AccountExpense.TabIndex = 7;
+            this.Lbl_AccountExpense.Text = "GASTO DEPRECIACIÓN *";
+            // 
+            // Btn_SearchAccountExpense
+            // 
+            this.Btn_SearchAccountExpense.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SearchAccountExpense.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_SearchAccountExpense.Location = new System.Drawing.Point(499, 128);
+            this.Btn_SearchAccountExpense.Name = "Btn_SearchAccountExpense";
+            this.Btn_SearchAccountExpense.Size = new System.Drawing.Size(47, 35);
+            this.Btn_SearchAccountExpense.TabIndex = 8;
+            this.Btn_SearchAccountExpense.UseVisualStyleBackColor = true;
+            this.Btn_SearchAccountExpense.Click += new System.EventHandler(this.Btn_SearchAccountExpense_Click);
+            // 
+            // Txt_AccountExpense
+            // 
+            this.Txt_AccountExpense.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_AccountExpense.Location = new System.Drawing.Point(19, 128);
+            this.Txt_AccountExpense.Name = "Txt_AccountExpense";
+            this.Txt_AccountExpense.Size = new System.Drawing.Size(471, 27);
+            this.Txt_AccountExpense.TabIndex = 9;
+            // 
+            // Panel_Derecho
+            // 
+            this.Panel_Derecho.Controls.Add(this.Panel_Atributos);
+            this.Panel_Derecho.Controls.Add(this.PanelTabla);
+            this.Panel_Derecho.Controls.Add(this.PanelToolStrip);
+            this.Panel_Derecho.Controls.Add(this.Panel_Busqueda);
+            this.Panel_Derecho.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Panel_Derecho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Panel_Derecho.Location = new System.Drawing.Point(581, 68);
+            this.Panel_Derecho.Name = "Panel_Derecho";
+            this.Panel_Derecho.Size = new System.Drawing.Size(998, 992);
+            this.Panel_Derecho.TabIndex = 8;
+            // 
+            // Panel_Atributos
+            // 
+            this.Panel_Atributos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_Atributos.BackColor = System.Drawing.Color.White;
+            this.Panel_Atributos.Controls.Add(this.Lbl_AtributosHeader);
+            this.Panel_Atributos.Controls.Add(this.TablaAtributos);
+            this.Panel_Atributos.Controls.Add(this.Panel_AtributosCRUD);
+            this.Panel_Atributos.Location = new System.Drawing.Point(16, 610);
+            this.Panel_Atributos.Name = "Panel_Atributos";
+            this.Panel_Atributos.Size = new System.Drawing.Size(968, 370);
+            this.Panel_Atributos.TabIndex = 76;
+            // 
+            // Lbl_AtributosHeader
+            // 
+            this.Lbl_AtributosHeader.AutoSize = true;
+            this.Lbl_AtributosHeader.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_AtributosHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
+            this.Lbl_AtributosHeader.Location = new System.Drawing.Point(0, 6);
+            this.Lbl_AtributosHeader.Name = "Lbl_AtributosHeader";
+            this.Lbl_AtributosHeader.Size = new System.Drawing.Size(326, 20);
+            this.Lbl_AtributosHeader.TabIndex = 0;
+            this.Lbl_AtributosHeader.Text = "ATRIBUTOS — SELECCIONE UNA CATEGORÍA";
+            // 
+            // TablaAtributos
+            // 
+            this.TablaAtributos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TablaAtributos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaAtributos.Location = new System.Drawing.Point(0, 30);
+            this.TablaAtributos.Name = "TablaAtributos";
+            this.TablaAtributos.Size = new System.Drawing.Size(968, 180);
+            this.TablaAtributos.TabIndex = 2;
+            // 
+            // Panel_AtributosCRUD
+            // 
+            this.Panel_AtributosCRUD.BackColor = System.Drawing.Color.White;
+            this.Panel_AtributosCRUD.Controls.Add(this.Lbl_SubtituloAtributos);
+            this.Panel_AtributosCRUD.Controls.Add(this.Lbl_AttributeKey);
+            this.Panel_AtributosCRUD.Controls.Add(this.Txt_AttributeKey);
+            this.Panel_AtributosCRUD.Controls.Add(this.Lbl_AttributeLabel);
+            this.Panel_AtributosCRUD.Controls.Add(this.Txt_AttributeLabel);
+            this.Panel_AtributosCRUD.Controls.Add(this.Lbl_DataType);
+            this.Panel_AtributosCRUD.Controls.Add(this.ComboBox_DataType);
+            this.Panel_AtributosCRUD.Controls.Add(this.Lbl_IsRequired);
+            this.Panel_AtributosCRUD.Controls.Add(this.ComboBox_IsRequired);
+            this.Panel_AtributosCRUD.Controls.Add(this.Panel_AtributosBotones);
+            this.Panel_AtributosCRUD.Location = new System.Drawing.Point(4, 220);
+            this.Panel_AtributosCRUD.Name = "Panel_AtributosCRUD";
+            this.Panel_AtributosCRUD.Size = new System.Drawing.Size(968, 150);
+            this.Panel_AtributosCRUD.TabIndex = 3;
+            // 
+            // Lbl_SubtituloAtributos
+            // 
+            this.Lbl_SubtituloAtributos.AutoSize = true;
+            this.Lbl_SubtituloAtributos.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_SubtituloAtributos.Location = new System.Drawing.Point(8, 6);
+            this.Lbl_SubtituloAtributos.Name = "Lbl_SubtituloAtributos";
+            this.Lbl_SubtituloAtributos.Size = new System.Drawing.Size(206, 19);
+            this.Lbl_SubtituloAtributos.TabIndex = 0;
+            this.Lbl_SubtituloAtributos.Text = "AGREGAR / EDITAR ATRIBUTO";
+            // 
+            // Lbl_AttributeKey
+            // 
+            this.Lbl_AttributeKey.AutoSize = true;
+            this.Lbl_AttributeKey.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_AttributeKey.Location = new System.Drawing.Point(8, 30);
+            this.Lbl_AttributeKey.Name = "Lbl_AttributeKey";
+            this.Lbl_AttributeKey.Size = new System.Drawing.Size(60, 19);
+            this.Lbl_AttributeKey.TabIndex = 1;
+            this.Lbl_AttributeKey.Text = "CLAVE *";
+            // 
+            // Txt_AttributeKey
+            // 
+            this.Txt_AttributeKey.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Txt_AttributeKey.Location = new System.Drawing.Point(8, 54);
+            this.Txt_AttributeKey.Name = "Txt_AttributeKey";
+            this.Txt_AttributeKey.Size = new System.Drawing.Size(160, 25);
+            this.Txt_AttributeKey.TabIndex = 2;
+            // 
+            // Lbl_AttributeLabel
+            // 
+            this.Lbl_AttributeLabel.AutoSize = true;
+            this.Lbl_AttributeLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_AttributeLabel.Location = new System.Drawing.Point(178, 30);
+            this.Lbl_AttributeLabel.Name = "Lbl_AttributeLabel";
+            this.Lbl_AttributeLabel.Size = new System.Drawing.Size(83, 19);
+            this.Lbl_AttributeLabel.TabIndex = 3;
+            this.Lbl_AttributeLabel.Text = "ETIQUETA *";
+            // 
+            // Txt_AttributeLabel
+            // 
+            this.Txt_AttributeLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Txt_AttributeLabel.Location = new System.Drawing.Point(178, 54);
+            this.Txt_AttributeLabel.Name = "Txt_AttributeLabel";
+            this.Txt_AttributeLabel.Size = new System.Drawing.Size(240, 25);
+            this.Txt_AttributeLabel.TabIndex = 4;
+            // 
+            // Lbl_DataType
+            // 
+            this.Lbl_DataType.AutoSize = true;
+            this.Lbl_DataType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_DataType.Location = new System.Drawing.Point(428, 30);
+            this.Lbl_DataType.Name = "Lbl_DataType";
+            this.Lbl_DataType.Size = new System.Drawing.Size(51, 19);
+            this.Lbl_DataType.TabIndex = 5;
+            this.Lbl_DataType.Text = "TIPO *";
+            // 
+            // ComboBox_DataType
+            // 
+            this.ComboBox_DataType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.ComboBox_DataType.Location = new System.Drawing.Point(428, 54);
+            this.ComboBox_DataType.Name = "ComboBox_DataType";
+            this.ComboBox_DataType.Size = new System.Drawing.Size(130, 25);
+            this.ComboBox_DataType.TabIndex = 6;
+            // 
+            // Lbl_IsRequired
+            // 
+            this.Lbl_IsRequired.AutoSize = true;
+            this.Lbl_IsRequired.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_IsRequired.Location = new System.Drawing.Point(584, 30);
+            this.Lbl_IsRequired.Name = "Lbl_IsRequired";
+            this.Lbl_IsRequired.Size = new System.Drawing.Size(111, 19);
+            this.Lbl_IsRequired.TabIndex = 7;
+            this.Lbl_IsRequired.Text = "OBLIGATORIO *";
+            // 
+            // ComboBox_IsRequired
+            // 
+            this.ComboBox_IsRequired.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.ComboBox_IsRequired.Location = new System.Drawing.Point(584, 54);
+            this.ComboBox_IsRequired.Name = "ComboBox_IsRequired";
+            this.ComboBox_IsRequired.Size = new System.Drawing.Size(130, 25);
+            this.ComboBox_IsRequired.TabIndex = 8;
+            // 
+            // Panel_AtributosBotones
+            // 
+            this.Panel_AtributosBotones.BackColor = System.Drawing.Color.White;
+            this.Panel_AtributosBotones.Controls.Add(this.Btn_SaveAtributo);
+            this.Panel_AtributosBotones.Controls.Add(this.Btn_UpdateAtributo);
+            this.Panel_AtributosBotones.Controls.Add(this.Btn_InactiveAtributo);
+            this.Panel_AtributosBotones.Controls.Add(this.Btn_ClearAtributo);
+            this.Panel_AtributosBotones.Location = new System.Drawing.Point(8, 94);
+            this.Panel_AtributosBotones.Name = "Panel_AtributosBotones";
+            this.Panel_AtributosBotones.Size = new System.Drawing.Size(957, 50);
+            this.Panel_AtributosBotones.TabIndex = 11;
+            // 
+            // Btn_SaveAtributo
+            // 
+            this.Btn_SaveAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_SaveAtributo.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_SaveAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_SaveAtributo.Location = new System.Drawing.Point(4, 4);
+            this.Btn_SaveAtributo.Name = "Btn_SaveAtributo";
+            this.Btn_SaveAtributo.Size = new System.Drawing.Size(162, 42);
+            this.Btn_SaveAtributo.TabIndex = 0;
+            this.Btn_SaveAtributo.Text = "GUARDAR";
+            this.Btn_SaveAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_SaveAtributo.UseVisualStyleBackColor = true;
+            this.Btn_SaveAtributo.Click += new System.EventHandler(this.Btn_SaveAtributo_Click);
+            // 
+            // Btn_UpdateAtributo
+            // 
+            this.Btn_UpdateAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_UpdateAtributo.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
+            this.Btn_UpdateAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_UpdateAtributo.Location = new System.Drawing.Point(174, 4);
+            this.Btn_UpdateAtributo.Name = "Btn_UpdateAtributo";
+            this.Btn_UpdateAtributo.Size = new System.Drawing.Size(130, 42);
+            this.Btn_UpdateAtributo.TabIndex = 1;
+            this.Btn_UpdateAtributo.Text = "EDITAR";
+            this.Btn_UpdateAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_UpdateAtributo.UseVisualStyleBackColor = true;
+            this.Btn_UpdateAtributo.Click += new System.EventHandler(this.Btn_UpdateAtributo_Click);
+            // 
+            // Btn_InactiveAtributo
+            // 
+            this.Btn_InactiveAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_InactiveAtributo.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
+            this.Btn_InactiveAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_InactiveAtributo.Location = new System.Drawing.Point(312, 4);
+            this.Btn_InactiveAtributo.Name = "Btn_InactiveAtributo";
+            this.Btn_InactiveAtributo.Size = new System.Drawing.Size(170, 42);
+            this.Btn_InactiveAtributo.TabIndex = 2;
+            this.Btn_InactiveAtributo.Text = "INACTIVAR";
+            this.Btn_InactiveAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_InactiveAtributo.UseVisualStyleBackColor = true;
+            this.Btn_InactiveAtributo.Click += new System.EventHandler(this.Btn_InactiveAtributo_Click);
+            // 
+            // Btn_ClearAtributo
+            // 
+            this.Btn_ClearAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_ClearAtributo.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_ClearAtributo.Location = new System.Drawing.Point(488, 4);
+            this.Btn_ClearAtributo.Name = "Btn_ClearAtributo";
+            this.Btn_ClearAtributo.Size = new System.Drawing.Size(44, 42);
+            this.Btn_ClearAtributo.TabIndex = 3;
+            this.Btn_ClearAtributo.UseVisualStyleBackColor = true;
+            this.Btn_ClearAtributo.Click += new System.EventHandler(this.Btn_ClearAtributo_Click);
+            // 
+            // PanelTabla
+            // 
+            this.PanelTabla.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.PanelTabla.Controls.Add(this.Tabla);
+            this.PanelTabla.Location = new System.Drawing.Point(16, 260);
+            this.PanelTabla.Name = "PanelTabla";
+            this.PanelTabla.Size = new System.Drawing.Size(968, 340);
+            this.PanelTabla.TabIndex = 75;
+            // 
+            // Tabla
+            // 
+            this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tabla.Location = new System.Drawing.Point(0, 0);
+            this.Tabla.Name = "Tabla";
+            this.Tabla.Size = new System.Drawing.Size(968, 340);
+            this.Tabla.TabIndex = 1;
+            // 
+            // PanelToolStrip
+            // 
+            this.PanelToolStrip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
+            this.PanelToolStrip.Location = new System.Drawing.Point(16, 207);
+            this.PanelToolStrip.Name = "PanelToolStrip";
+            this.PanelToolStrip.Size = new System.Drawing.Size(968, 48);
+            this.PanelToolStrip.TabIndex = 74;
+            // 
+            // Lbl_Paginas
+            // 
+            this.Lbl_Paginas.AutoSize = true;
+            this.Lbl_Paginas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Paginas.Location = new System.Drawing.Point(16, 14);
+            this.Lbl_Paginas.Name = "Lbl_Paginas";
+            this.Lbl_Paginas.Size = new System.Drawing.Size(284, 20);
+            this.Lbl_Paginas.TabIndex = 0;
+            this.Lbl_Paginas.Text = "MOSTRANDO 1-100 DE 0 CATEGORÍAS";
+            // 
+            // Panel_Busqueda
+            // 
+            this.Panel_Busqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_Busqueda.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
+            this.Panel_Busqueda.Controls.Add(this.Btn_Search);
+            this.Panel_Busqueda.Controls.Add(this.Btn_CleanSearch);
+            this.Panel_Busqueda.Controls.Add(this.Filtro1);
+            this.Panel_Busqueda.Controls.Add(this.FiltroEstado);
+            this.Panel_Busqueda.Location = new System.Drawing.Point(16, 25);
+            this.Panel_Busqueda.Name = "Panel_Busqueda";
+            this.Panel_Busqueda.Size = new System.Drawing.Size(968, 148);
+            this.Panel_Busqueda.TabIndex = 73;
+            // 
+            // Txt_ValorBuscado
+            // 
+            this.Txt_ValorBuscado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_ValorBuscado.Location = new System.Drawing.Point(21, 28);
+            this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(720, 27);
+            this.Txt_ValorBuscado.TabIndex = 0;
+            this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
+            // 
+            // Btn_Search
+            // 
+            this.Btn_Search.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Search.Location = new System.Drawing.Point(758, 25);
+            this.Btn_Search.Name = "Btn_Search";
+            this.Btn_Search.Size = new System.Drawing.Size(135, 38);
+            this.Btn_Search.TabIndex = 1;
+            this.Btn_Search.Text = "BUSCAR";
+            this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Search.UseVisualStyleBackColor = true;
+            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
+            // 
+            // Btn_CleanSearch
+            // 
+            this.Btn_CleanSearch.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(901, 25);
+            this.Btn_CleanSearch.Name = "Btn_CleanSearch";
+            this.Btn_CleanSearch.Size = new System.Drawing.Size(40, 38);
+            this.Btn_CleanSearch.TabIndex = 2;
+            this.Btn_CleanSearch.UseVisualStyleBackColor = true;
+            this.Btn_CleanSearch.Click += new System.EventHandler(this.Btn_CleanSearch_Click);
+            // 
+            // Filtro1
+            // 
+            this.Filtro1.FormattingEnabled = true;
+            this.Filtro1.Location = new System.Drawing.Point(21, 82);
+            this.Filtro1.Name = "Filtro1";
+            this.Filtro1.Size = new System.Drawing.Size(291, 28);
+            this.Filtro1.TabIndex = 3;
+            // 
+            // FiltroEstado
+            // 
+            this.FiltroEstado.FormattingEnabled = true;
+            this.FiltroEstado.Location = new System.Drawing.Point(336, 82);
+            this.FiltroEstado.Name = "FiltroEstado";
+            this.FiltroEstado.Size = new System.Drawing.Size(291, 28);
+            this.FiltroEstado.TabIndex = 4;
+            // 
+            // Frm_FixedAssetCategories
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1579, 1060);
+            this.Controls.Add(this.Panel_Derecho);
+            this.Controls.Add(this.Panel_Izquierdo);
+            this.Controls.Add(this.Panel_Superior);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Frm_FixedAssetCategories";
+            this.Text = "SECRON - CATEGORÍAS DE ACTIVOS FIJOS";
+            this.Load += new System.EventHandler(this.Frm_FixedAssetCategories_Load);
+            this.Panel_Superior.ResumeLayout(false);
+            this.Panel_Superior.PerformLayout();
+            this.Panel_Izquierdo.ResumeLayout(false);
+            this.Panel_Izquierdo.PerformLayout();
+            this.Panel_CRUD.ResumeLayout(false);
+            this.Panel_1.ResumeLayout(false);
+            this.Panel_1.PerformLayout();
+            this.Panel_2.ResumeLayout(false);
+            this.Panel_2.PerformLayout();
+            this.Panel_Derecho.ResumeLayout(false);
+            this.Panel_Atributos.ResumeLayout(false);
+            this.Panel_Atributos.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).EndInit();
+            this.Panel_AtributosCRUD.ResumeLayout(false);
+            this.Panel_AtributosCRUD.PerformLayout();
+            this.Panel_AtributosBotones.ResumeLayout(false);
+            this.PanelTabla.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();
+            this.PanelToolStrip.ResumeLayout(false);
+            this.PanelToolStrip.PerformLayout();
+            this.Panel_Busqueda.ResumeLayout(false);
+            this.Panel_Busqueda.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        // Panel_Superior
+        private System.Windows.Forms.Panel Panel_Superior;
+        private System.Windows.Forms.Button Btn_Export;
+        private System.Windows.Forms.Label Lbl_Formulario;
+        // Panel_Izquierdo
+        private System.Windows.Forms.Panel Panel_Izquierdo;
+        private System.Windows.Forms.Label Lbl_Titulo;
+        private System.Windows.Forms.Panel Panel_CRUD;
+        private System.Windows.Forms.Button Btn_Save;
+        private System.Windows.Forms.Button Btn_Update;
+        private System.Windows.Forms.Button Btn_Inactive;
+        private System.Windows.Forms.Button Btn_Clear;
+        private System.Windows.Forms.Panel Panel_1;
+        private System.Windows.Forms.Label Lbl_Subtitulo1;
+        private System.Windows.Forms.Label Lbl_CategoryCode;
+        private System.Windows.Forms.TextBox Txt_CategoryCode;
+        private System.Windows.Forms.Label Lbl_CategoryName;
+        private System.Windows.Forms.TextBox Txt_CategoryName;
+        private System.Windows.Forms.Label Lbl_Description;
+        private System.Windows.Forms.TextBox Txt_Description;
+        private System.Windows.Forms.Label Lbl_DepreciationYears;
+        private System.Windows.Forms.TextBox Txt_DepreciationYears;
+        private System.Windows.Forms.Label Lbl_DepreciationMethod;
+        private System.Windows.Forms.ComboBox ComboBox_DepreciationMethod;
+        private System.Windows.Forms.Panel Panel_2;
+        private System.Windows.Forms.Label Lbl_Subtitulo2;
+        private System.Windows.Forms.Label Lbl_AccountAccumDep;
+        private System.Windows.Forms.Button Btn_SearchAccountAccumDep;
+        private System.Windows.Forms.TextBox Txt_AccountAccumDep;
+        private System.Windows.Forms.Label Lbl_AccountExpense;
+        private System.Windows.Forms.Button Btn_SearchAccountExpense;
+        private System.Windows.Forms.TextBox Txt_AccountExpense;
+        // Panel_Derecho
+        private System.Windows.Forms.Panel Panel_Derecho;
+        private System.Windows.Forms.Panel Panel_Busqueda;
+        private System.Windows.Forms.TextBox Txt_ValorBuscado;
+        private System.Windows.Forms.Button Btn_Search;
+        private System.Windows.Forms.Button Btn_CleanSearch;
+        private System.Windows.Forms.ComboBox Filtro1;
+        private System.Windows.Forms.ComboBox FiltroEstado;
+        private System.Windows.Forms.Panel PanelToolStrip;
+        private System.Windows.Forms.Label Lbl_Paginas;
+        private System.Windows.Forms.Panel PanelTabla;
+        private System.Windows.Forms.DataGridView Tabla;
+        // Panel_Atributos (maestro-detalle)
+        private System.Windows.Forms.Panel Panel_Atributos;
+        private System.Windows.Forms.Label Lbl_AtributosHeader;
+        private System.Windows.Forms.DataGridView TablaAtributos;
+        private System.Windows.Forms.Panel Panel_AtributosCRUD;
+        private System.Windows.Forms.Label Lbl_SubtituloAtributos;
+        private System.Windows.Forms.Label Lbl_AttributeKey;
+        private System.Windows.Forms.TextBox Txt_AttributeKey;
+        private System.Windows.Forms.Label Lbl_AttributeLabel;
+        private System.Windows.Forms.TextBox Txt_AttributeLabel;
+        private System.Windows.Forms.Label Lbl_DataType;
+        private System.Windows.Forms.ComboBox ComboBox_DataType;
+        private System.Windows.Forms.Label Lbl_IsRequired;
+        private System.Windows.Forms.ComboBox ComboBox_IsRequired;
+        private System.Windows.Forms.Panel Panel_AtributosBotones;
+        private System.Windows.Forms.Button Btn_SaveAtributo;
+        private System.Windows.Forms.Button Btn_UpdateAtributo;
+        private System.Windows.Forms.Button Btn_InactiveAtributo;
+        private System.Windows.Forms.Button Btn_ClearAtributo;
+    }
+}
