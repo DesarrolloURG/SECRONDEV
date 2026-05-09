@@ -7,6 +7,7 @@ CREATE OR ALTER PROCEDURE SP_FixedAssetCategories_Update
     @DepreciationYears  DECIMAL(4,1),
     @AccountAccumDepId  INT,
     @AccountExpenseId   INT,
+    @IsTangible         BIT,
     @IsActive           BIT,
     @ModifiedBy         INT = NULL
 AS
@@ -16,21 +17,19 @@ BEGIN
     BEGIN TRANSACTION
     BEGIN TRY
 
-        -- Validar que el registro exista
         IF NOT EXISTS (SELECT 1 FROM FixedAssetCategories WHERE AssetCategoryId = @AssetCategoryId)
         BEGIN
             ROLLBACK TRANSACTION
-            SELECT -1  -- Registro no encontrado
+            SELECT -1
             RETURN
         END
 
-        -- Validar código duplicado excluyendo el registro actual
         IF EXISTS (SELECT 1 FROM FixedAssetCategories 
                    WHERE CategoryCode = UPPER(@CategoryCode) 
                    AND AssetCategoryId != @AssetCategoryId)
         BEGIN
             ROLLBACK TRANSACTION
-            SELECT -2  -- Código duplicado en otro registro
+            SELECT -2
             RETURN
         END
 
@@ -42,6 +41,7 @@ BEGIN
             DepreciationYears  = @DepreciationYears,
             AccountAccumDepId  = @AccountAccumDepId,
             AccountExpenseId   = @AccountExpenseId,
+            IsTangible         = @IsTangible,
             IsActive           = @IsActive,
             ModifiedDate       = GETDATE(),
             ModifiedBy         = @ModifiedBy

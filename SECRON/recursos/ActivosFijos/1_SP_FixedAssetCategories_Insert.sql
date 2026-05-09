@@ -6,6 +6,7 @@ create or ALTER PROCEDURE SP_FixedAssetCategories_Insert
     @DepreciationYears  DECIMAL(4,1),
     @AccountAccumDepId  INT,
     @AccountExpenseId   INT,
+    @IsTangible         BIT,
     @CreatedBy          INT = NULL
 AS
 BEGIN
@@ -14,11 +15,10 @@ BEGIN
     BEGIN TRANSACTION
     BEGIN TRY
 
-        -- Validar que no exista el mismo código
         IF EXISTS (SELECT 1 FROM FixedAssetCategories WHERE CategoryCode = UPPER(@CategoryCode))
         BEGIN
             ROLLBACK TRANSACTION
-            SELECT -1  -- Código duplicado
+            SELECT -1
             RETURN
         END
 
@@ -26,12 +26,12 @@ BEGIN
             (CategoryCode, CategoryName, Description,
              DepreciationMethod, DepreciationYears,
              AccountAccumDepId, AccountExpenseId,
-             IsActive, CreatedDate, CreatedBy)
+             IsTangible, IsActive, CreatedBy)
         VALUES
             (UPPER(@CategoryCode), UPPER(@CategoryName), UPPER(@Description),
              @DepreciationMethod, @DepreciationYears,
              @AccountAccumDepId, @AccountExpenseId,
-             1, GETDATE(), @CreatedBy)
+             @IsTangible, 1, @CreatedBy)
 
         COMMIT TRANSACTION
         SELECT 1

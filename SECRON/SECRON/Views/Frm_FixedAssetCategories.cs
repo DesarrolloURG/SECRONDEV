@@ -20,6 +20,8 @@ namespace SECRON.Views
         private string _ultimoTextoBusqueda = "";
         private string _ultimoFiltro1 = "TODOS";
         private string _ultimoFiltroEstado = "SOLO ACTIVOS";
+        private string _ultimoFiltroTipo = "TODOS";
+
 
         // Categorías
         private List<Mdl_FixedAssetCategory> _categoriesList;
@@ -178,6 +180,13 @@ namespace SECRON.Views
             FiltroEstado.Items.Add("SOLO ACTIVOS");
             FiltroEstado.Items.Add("SOLO INACTIVOS");
             FiltroEstado.SelectedIndex = 1;
+
+            FiltroTipo.DropDownStyle = ComboBoxStyle.DropDownList;
+            FiltroTipo.Items.Clear();
+            FiltroTipo.Items.Add("TODOS");
+            FiltroTipo.Items.Add("TANGIBLE");
+            FiltroTipo.Items.Add("INTANGIBLE");
+            FiltroTipo.SelectedIndex = 0;
         }
 
         #endregion Filtros
@@ -205,6 +214,12 @@ namespace SECRON.Views
             ComboBox_IsRequired.Items.Add("No");
             ComboBox_IsRequired.Items.Add("Si");
             ComboBox_IsRequired.SelectedIndex = 0;
+
+            ComboBox_IsTangible.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_IsTangible.Items.Clear();
+            ComboBox_IsTangible.Items.Add("TANGIBLE");
+            ComboBox_IsTangible.Items.Add("INTANGIBLE");
+            ComboBox_IsTangible.SelectedIndex = 0;
         }
 
         #endregion ConfigurarCombos
@@ -231,6 +246,7 @@ namespace SECRON.Views
                 Tabla.Columns["CategoryCode"].HeaderText = "CÓDIGO";
                 Tabla.Columns["CategoryName"].HeaderText = "NOMBRE";
                 Tabla.Columns["Description"].HeaderText = "DESCRIPCIÓN";
+                Tabla.Columns["IsTangible"].HeaderText = "TIPO";
                 Tabla.Columns["DepreciationMethod"].HeaderText = "MÉTODO DEP.";
                 Tabla.Columns["DepreciationYears"].HeaderText = "AÑOS DEP.";
                 Tabla.Columns["AccountAccumDepName"].HeaderText = "CTA. DEP. ACUM.";
@@ -267,6 +283,7 @@ namespace SECRON.Views
             SetFillWeight(Tabla, "CategoryCode", 8);
             SetFillWeight(Tabla, "CategoryName", 20);
             SetFillWeight(Tabla, "Description", 22);
+            SetFillWeight(Tabla, "IsTangible", 8);
             SetFillWeight(Tabla, "DepreciationMethod", 13);
             SetFillWeight(Tabla, "DepreciationYears", 7);
             SetFillWeight(Tabla, "AccountAccumDepName", 13);
@@ -291,6 +308,7 @@ namespace SECRON.Views
                 c.CategoryCode,
                 c.CategoryName,
                 c.Description,
+                IsTangible = c.IsTangible ? "TANGIBLE" : "INTANGIBLE",
                 c.DepreciationMethod,
                 c.DepreciationYears,
                 c.AccountAccumDepId,
@@ -328,6 +346,8 @@ namespace SECRON.Views
                 SetTextBoxFromValue(Txt_CategoryName, _categoriaSeleccionada.CategoryName, "NOMBRE DE CATEGORÍA");
                 SetTextBoxFromValue(Txt_Description, _categoriaSeleccionada.Description, "DESCRIPCIÓN");
                 SetTextBoxFromValue(Txt_DepreciationYears, _categoriaSeleccionada.DepreciationYears.ToString("0.0"), "AÑOS (ej. 5)");
+
+                ComboBox_IsTangible.SelectedItem = _categoriaSeleccionada.IsTangible ? "TANGIBLE" : "INTANGIBLE";
 
                 int mi = ComboBox_DepreciationMethod.Items.IndexOf(_categoriaSeleccionada.DepreciationMethod ?? "LINEA_RECTA");
                 ComboBox_DepreciationMethod.SelectedIndex = mi >= 0 ? mi : 0;
@@ -477,6 +497,8 @@ namespace SECRON.Views
                 string valorBusqueda = TienePlaceholder(Txt_ValorBuscado, "BUSCAR POR CÓDIGO O NOMBRE...")
                     ? "" : Txt_ValorBuscado.Text.Trim();
 
+                string filtroTipo = FiltroTipo.SelectedItem?.ToString() ?? "TODOS";
+
                 _ultimoTextoBusqueda = valorBusqueda;
                 _ultimoFiltro1 = Filtro1.SelectedItem?.ToString() ?? "TODOS";
                 _ultimoFiltroEstado = FiltroEstado.SelectedItem?.ToString() ?? "TODOS";
@@ -484,7 +506,7 @@ namespace SECRON.Views
                 paginaActual = 1;
 
                 _categoriesList = Ctrl_FixedAssetCategories.BuscarCategorias(
-                    valorBusqueda, _ultimoFiltro1, _ultimoFiltroEstado,
+                    valorBusqueda, _ultimoFiltro1, _ultimoFiltroEstado, filtroTipo,
                     paginaActual, registrosPorPagina);
 
                 AsignarDataSourceCategorias();
@@ -529,7 +551,11 @@ namespace SECRON.Views
             _ultimoTextoBusqueda = "";
             _ultimoFiltro1 = "TODOS";
             _ultimoFiltroEstado = "SOLO ACTIVOS";
+            _ultimoFiltroTipo = "TODOS";
+            FiltroTipo.SelectedIndex = 0;
+
             paginaActual = 1;
+
 
             RefrescarListado();
             ConfigurarTabla();
@@ -621,8 +647,9 @@ namespace SECRON.Views
             if (!string.IsNullOrEmpty(_ultimoTextoBusqueda))
             {
                 _categoriesList = Ctrl_FixedAssetCategories.BuscarCategorias(
-                    _ultimoTextoBusqueda, _ultimoFiltro1, _ultimoFiltroEstado,
+                    _ultimoTextoBusqueda, _ultimoFiltro1, _ultimoFiltroEstado, _ultimoFiltroTipo,
                     paginaActual, registrosPorPagina);
+
                 AsignarDataSourceCategorias();
                 ConfigurarTabla();
                 AjustarColumnas();
@@ -799,6 +826,7 @@ namespace SECRON.Views
                     CategoryCode = Txt_CategoryCode.Text.Trim(),
                     CategoryName = Txt_CategoryName.Text.Trim(),
                     Description = TienePlaceholder(Txt_Description, "DESCRIPCIÓN") ? null : Txt_Description.Text.Trim(),
+                    IsTangible = ComboBox_IsTangible.SelectedItem?.ToString() == "TANGIBLE",
                     DepreciationMethod = ComboBox_DepreciationMethod.SelectedItem?.ToString() ?? "LINEA_RECTA",
                     DepreciationYears = depYears,
                     AccountAccumDepId = _accountAccumDepId ?? 0,
@@ -856,6 +884,7 @@ namespace SECRON.Views
                 _categoriaSeleccionada.CategoryCode = Txt_CategoryCode.Text.Trim();
                 _categoriaSeleccionada.CategoryName = Txt_CategoryName.Text.Trim();
                 _categoriaSeleccionada.Description = TienePlaceholder(Txt_Description, "DESCRIPCIÓN") ? null : Txt_Description.Text.Trim();
+                _categoriaSeleccionada.IsTangible = ComboBox_IsTangible.SelectedItem?.ToString() == "TANGIBLE";
                 _categoriaSeleccionada.DepreciationMethod = ComboBox_DepreciationMethod.SelectedItem?.ToString() ?? "LINEA_RECTA";
                 _categoriaSeleccionada.DepreciationYears = depYears;
                 _categoriaSeleccionada.AccountAccumDepId = _accountAccumDepId ?? 0;

@@ -74,6 +74,10 @@
             this.Btn_CleanSearch = new System.Windows.Forms.Button();
             this.Filtro1 = new System.Windows.Forms.ComboBox();
             this.FiltroEstado = new System.Windows.Forms.ComboBox();
+            this.ComboBox_IsTangible = new System.Windows.Forms.ComboBox();
+            this.FiltroTipo = new System.Windows.Forms.ComboBox();
+            this.Lbl_IsTangible = new System.Windows.Forms.Label();
+
             this.Panel_Superior.SuspendLayout();
             this.Panel_Izquierdo.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
@@ -233,9 +237,12 @@
             this.Panel_1.Controls.Add(this.Txt_DepreciationYears);
             this.Panel_1.Controls.Add(this.Lbl_DepreciationMethod);
             this.Panel_1.Controls.Add(this.ComboBox_DepreciationMethod);
+            this.Panel_1.Controls.Add(this.Lbl_IsTangible);
+            this.Panel_1.Controls.Add(this.ComboBox_IsTangible);
+
             this.Panel_1.Location = new System.Drawing.Point(16, 114);
             this.Panel_1.Name = "Panel_1";
-            this.Panel_1.Size = new System.Drawing.Size(555, 380);
+            this.Panel_1.Size = new System.Drawing.Size(555, 420);
             this.Panel_1.TabIndex = 52;
             // 
             // Lbl_Subtitulo1
@@ -338,6 +345,21 @@
             this.ComboBox_DepreciationMethod.Name = "ComboBox_DepreciationMethod";
             this.ComboBox_DepreciationMethod.Size = new System.Drawing.Size(263, 28);
             this.ComboBox_DepreciationMethod.TabIndex = 10;
+
+            // Lbl_IsTangible
+            this.Lbl_IsTangible.AutoSize = true;
+            this.Lbl_IsTangible.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_IsTangible.Location = new System.Drawing.Point(13, 338);
+            this.Lbl_IsTangible.Name = "Lbl_IsTangible";
+            this.Lbl_IsTangible.Text = "TIPO DE ACTIVO *";
+
+            // ComboBox_IsTangible
+            this.ComboBox_IsTangible.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.ComboBox_IsTangible.Location = new System.Drawing.Point(19, 362);
+            this.ComboBox_IsTangible.Name = "ComboBox_IsTangible";
+            this.ComboBox_IsTangible.Size = new System.Drawing.Size(525, 28);
+            this.ComboBox_IsTangible.TabIndex = 11;
+            
             // 
             // Panel_2
             // 
@@ -685,6 +707,7 @@
             this.Panel_Busqueda.Controls.Add(this.Btn_CleanSearch);
             this.Panel_Busqueda.Controls.Add(this.Filtro1);
             this.Panel_Busqueda.Controls.Add(this.FiltroEstado);
+            this.Panel_Busqueda.Controls.Add(this.FiltroTipo);
             this.Panel_Busqueda.Location = new System.Drawing.Point(16, 25);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
             this.Panel_Busqueda.Size = new System.Drawing.Size(968, 148);
@@ -744,6 +767,14 @@
             this.FiltroEstado.Name = "FiltroEstado";
             this.FiltroEstado.Size = new System.Drawing.Size(291, 28);
             this.FiltroEstado.TabIndex = 4;
+
+            // FiltroTipo
+            this.FiltroTipo.FormattingEnabled = true;
+            this.FiltroTipo.Location = new System.Drawing.Point(648, 82);
+            this.FiltroTipo.Name = "FiltroTipo";
+            this.FiltroTipo.Size = new System.Drawing.Size(200, 28);
+            this.FiltroTipo.TabIndex = 5;
+
             // 
             // Frm_FixedAssetCategories
             // 
@@ -789,6 +820,7 @@
         private System.Windows.Forms.Panel Panel_Superior;
         private System.Windows.Forms.Button Btn_Export;
         private System.Windows.Forms.Label Lbl_Formulario;
+        
         // Panel_Izquierdo
         private System.Windows.Forms.Panel Panel_Izquierdo;
         private System.Windows.Forms.Label Lbl_Titulo;
@@ -829,6 +861,10 @@
         private System.Windows.Forms.Label Lbl_Paginas;
         private System.Windows.Forms.Panel PanelTabla;
         private System.Windows.Forms.DataGridView Tabla;
+        private System.Windows.Forms.ComboBox ComboBox_IsTangible;
+        private System.Windows.Forms.ComboBox FiltroTipo;
+        private System.Windows.Forms.Label Lbl_IsTangible;
+
         // Panel_Atributos (maestro-detalle)
         private System.Windows.Forms.Panel Panel_Atributos;
         private System.Windows.Forms.Label Lbl_AtributosHeader;
