@@ -29,6 +29,7 @@ CREATE TABLE [FixedAssetCategories](
 );
 GO
 
+
 -- -------------------------------------------------------
 -- 2. DEFINICIÓN DE ATRIBUTOS POR CATEGORÍA (EAV)
 -- -------------------------------------------------------
@@ -224,6 +225,8 @@ CREATE INDEX IX_FAT_Status     ON [dbo].[FixedAssetTransfers]([TransferStatusId]
 CREATE INDEX IX_FAT_Date       ON [dbo].[FixedAssetTransfers]([TransferDate]);
 GO
 
+ALTER TABLE FixedAssetCategories
+ADD IsTangible bit NOT NULL CONSTRAINT DF_FAC_IsTangible DEFAULT 1;
 
 -- Categorías
 INSERT INTO [dbo].[FixedAssetCategories]
@@ -257,5 +260,4 @@ VALUES
     (2,'OS',          'Sistema Operativo','TEXT',   0, 5),
     (2,'RAM_GB',      'RAM (GB)',         'NUMBER', 1, 6);
 GO
-
 

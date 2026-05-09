@@ -23,6 +23,7 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                         SELECT AssetCategoryId, CategoryCode, CategoryName, Description,
+                               IsTangible,
                                DepreciationMethod, DepreciationYears,
                                AccountAccumDepId, AccountExpenseId,
                                IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
@@ -59,6 +60,7 @@ namespace SECRON.Controllers
             string textoBusqueda = "",
             string filtro1 = "TODOS",
             string filtroEstado = "TODOS",
+            string filtroTipo = "TODOS",
             int pageNumber = 1,
             int pageSize = 100)
         {
@@ -70,6 +72,7 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                         SELECT AssetCategoryId, CategoryCode, CategoryName, Description,
+                               IsTangible,
                                DepreciationMethod, DepreciationYears,
                                AccountAccumDepId, AccountExpenseId,
                                IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
@@ -94,6 +97,11 @@ namespace SECRON.Controllers
 
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
+
+                    if (filtroTipo == "TANGIBLE")
+                        query += " AND IsTangible = 1";
+                    else if (filtroTipo == "INTANGIBLE")
+                        query += " AND IsTangible = 0";
 
                     query += " ORDER BY CategoryName OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
                     parametros.Add(new SqlParameter("@offset", offset));
@@ -195,6 +203,7 @@ namespace SECRON.Controllers
                         cmd.Parameters.AddWithValue("@CategoryCode", cat.CategoryCode?.ToUpper() ?? "");
                         cmd.Parameters.AddWithValue("@CategoryName", cat.CategoryName?.ToUpper() ?? "");
                         cmd.Parameters.AddWithValue("@Description", (object)cat.Description?.ToUpper() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@IsTangible", cat.IsTangible);
                         cmd.Parameters.AddWithValue("@DepreciationMethod", cat.DepreciationMethod ?? "LINEA_RECTA");
                         cmd.Parameters.AddWithValue("@DepreciationYears", cat.DepreciationYears);
                         cmd.Parameters.AddWithValue("@AccountAccumDepId", cat.AccountAccumDepId);
@@ -230,6 +239,7 @@ namespace SECRON.Controllers
                         cmd.Parameters.AddWithValue("@CategoryCode", cat.CategoryCode?.ToUpper() ?? "");
                         cmd.Parameters.AddWithValue("@CategoryName", cat.CategoryName?.ToUpper() ?? "");
                         cmd.Parameters.AddWithValue("@Description", (object)cat.Description?.ToUpper() ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@IsTangible", cat.IsTangible);
                         cmd.Parameters.AddWithValue("@DepreciationMethod", cat.DepreciationMethod ?? "LINEA_RECTA");
                         cmd.Parameters.AddWithValue("@DepreciationYears", cat.DepreciationYears);
                         cmd.Parameters.AddWithValue("@AccountAccumDepId", cat.AccountAccumDepId);
@@ -258,6 +268,7 @@ namespace SECRON.Controllers
                 CategoryName = reader["CategoryName"].ToString(),
                 Description = reader["Description"] == DBNull.Value ? null : reader["Description"].ToString(),
                 DepreciationMethod = reader["DepreciationMethod"].ToString(),
+                IsTangible = reader.GetBoolean(reader.GetOrdinal("IsTangible")),
                 DepreciationYears = reader.GetDecimal(reader.GetOrdinal("DepreciationYears")),
                 AccountAccumDepId = reader.GetInt32(reader.GetOrdinal("AccountAccumDepId")),
                 AccountExpenseId = reader.GetInt32(reader.GetOrdinal("AccountExpenseId")),
