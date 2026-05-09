@@ -144,7 +144,7 @@ namespace SECRON.Views
             ConfigurarBotonNavegacion(BtnBills);
             ConfigurarBotonNavegacion(BtnChecks);
             ConfigurarBotonNavegacion(BtnBanks);
-            ConfigurarBotonNavegacion(BtnAccountingBooks); 
+            ConfigurarBotonNavegacion(BtnAccountingBooks);
             ConfigurarBotonNavegacion(BtnLocations);
             ConfigurarBotonNavegacion(Btn_Teachers);
             ConfigurarBotonNavegacion(Btn_Transfers);
@@ -226,6 +226,7 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsMovementsController);
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsReports);
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsResponsabilityLetter);
+            ConfigurarBotonSubmenuNavegacion(BtnStaticItemsConfiguration);
             // Panel de Navegación Submenú Teachers
             ConfigurarBotonSubmenuNavegacion(BtnTeachersAcademicConfiguration);
             ConfigurarBotonSubmenuNavegacion(BtnTeachersPersonal);
@@ -273,6 +274,7 @@ namespace SECRON.Views
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsMovementsController);
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsReports);
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsResponsabilityLetter);
+            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsConfiguration);
 
             // Panel de Navegación SubSubmenú Teachers - Academic Configuration
             ConfigurarBotonSubSubmenuNavegacion(BtnTeachers_Schedules);
@@ -691,10 +693,10 @@ namespace SECRON.Views
                     // Configurar interfaz con datos del usuario
                     ConfigurarInterfazConDatosUsuario(userInfo);
 
-                    // ⭐ CARGAR PERMISOS DEL USUARIO
+                    //   CARGAR PERMISOS DEL USUARIO
                     await CargarPermisosUsuario(userInfo.UserId, userInfo.RoleId);
 
-                    // ⭐ CONFIGURAR VISIBILIDAD DE BOTONES SEGÚN PERMISOS
+                    //   CONFIGURAR VISIBILIDAD DE BOTONES SEGÚN PERMISOS
                     ConfigurarVisibilidadBotonesPrincipales();
                     ConfigurarVisibilidadSubmenus();
                 }
@@ -935,6 +937,7 @@ namespace SECRON.Views
             BtnStaticItemsMovementsController.Visible = TienePermiso("STATICITEMS_MOVEMENTS");
             BtnStaticItemsReports.Visible = TienePermiso("STATICITEMS_REPORTS");
             BtnStaticItemsResponsabilityLetter.Visible = TienePermiso("STATICITEMS_RESPONSLETTER");
+            BtnStaticItemsConfiguration.Visible = TienePermiso("STATICITEMS_CONFIGURATION");
 
             // ========== DOCENTES ==========
             BtnTeachersAcademicConfiguration.Visible = TienePermiso("TEACHERS_CONFIGURATION");
@@ -1471,7 +1474,7 @@ namespace SECRON.Views
             Form frm = new Form();
             frm.Text = "Catálogo de Cuentas";
             frm.BackColor = Color.White;
-            
+
             AbrirFormularioConPestana(frm, "Catálogo de Cuentas", "AccountingBooksCatalog");
         }
 
@@ -1681,8 +1684,8 @@ namespace SECRON.Views
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
-            
-            AbrirFormularioConPestana(frm, "Emisión de Cheques", "ChecksManagment");
+
+            AbrirFormularioConPestana(frm, "Gestión de Cheques", "ChecksManagment");
         }
 
         private void BtnChecksReports_Click(object sender, EventArgs e)
@@ -1953,6 +1956,29 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Reportes de Inventarios", "KardexInventoryReport");
         }
+
+        private void BtnKardexValorizacion_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Valorización y Costos";
+            frm.BackColor = Color.White;
+
+            AbrirFormularioConPestana(frm, "Valorización y Costos", "KardexValorizacion");
+        }
+
+        private void BtnStaticItemsConfiguration_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            Frm_FixedAssetCategories frm = new Frm_FixedAssetCategories();
+            frm.Text = "Configuración de Activos";
+            frm.BackColor = Color.White;
+            frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Configuración de Activos", "StaticItemsConfiguration");
+        }
+
         private void BtnStaticItemsDepreciation_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2018,6 +2044,7 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Cartas de Responsabilidad", "StaticItemsResponsabilityLetter");
         }
+
         private void BtnKARDEX_ItemsManagment_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2166,7 +2193,7 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             MessageBox.Show("Módulo de Reportes de Cursos en desarrollo", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        
+
         #endregion EventosClickSubSubmenuNavegacion
         #region EventoResizeFormulario
         private void Frm_ControlCenter_MDI_Resize(object sender, EventArgs e)
@@ -2411,7 +2438,7 @@ namespace SECRON.Views
                     childForm.Close();
                 }
 
-                // ⭐ CERRAR TODAS LAS PESTAÑAS
+                //   CERRAR TODAS LAS PESTAÑAS
                 if (tabControl != null)
                 {
                     while (tabControl.TabPages.Count > 0)
@@ -2427,7 +2454,7 @@ namespace SECRON.Views
                 // Marcar que el cierre fue confirmado
                 cierreConfirmado = true;
 
-                // ⭐ OPCIÓN SIMPLE: Reiniciar la aplicación completa
+                //   OPCIÓN SIMPLE: Reiniciar la aplicación completa
                 Application.Restart();
                 Application.Exit();
             }

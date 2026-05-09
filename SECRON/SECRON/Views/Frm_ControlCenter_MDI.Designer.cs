@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ControlCenter_MDI));
             this.PanelEmployees = new System.Windows.Forms.Panel();
-            this.BtnEmployeesInformation = new System.Windows.Forms.Button();
             this.BtnEmployeesManagment = new System.Windows.Forms.Button();
             this.PanelUsers = new System.Windows.Forms.Panel();
             this.BtnUsersRolesPermisos = new System.Windows.Forms.Button();
@@ -85,6 +84,7 @@
             this.BtnStaticItemsMaintenance = new System.Windows.Forms.Button();
             this.BtnStaticItemsMovementsController = new System.Windows.Forms.Button();
             this.BtnStaticItemsResponsabilityLetter = new System.Windows.Forms.Button();
+            this.BtnStaticItemsConfiguration = new System.Windows.Forms.Button();
             this.BtnStaticItemsManagment = new System.Windows.Forms.Button();
             this.PanelProfile = new System.Windows.Forms.Panel();
             this.LblRol = new System.Windows.Forms.Label();
@@ -155,6 +155,7 @@
             this.BtnKardexInventoryReport = new System.Windows.Forms.Button();
             this.BtnKardex_CatalogLocationsCategories = new System.Windows.Forms.Button();
             this.BtnKardex_ItemsManagment = new System.Windows.Forms.Button();
+            this.BtnEmployeesInformation = new System.Windows.Forms.Button();
             this.PanelEmployees.SuspendLayout();
             this.PanelUsers.SuspendLayout();
             this.PanelSuppliers.SuspendLayout();
@@ -1104,6 +1105,7 @@
             // PanelStaticItems
             // 
             this.PanelStaticItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelStaticItems.Controls.Add(this.BtnStaticItemsConfiguration); 
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsReports);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsDepreciation);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsMaintenance);
@@ -1112,7 +1114,7 @@
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsManagment);
             this.PanelStaticItems.Location = new System.Drawing.Point(500, 1);
             this.PanelStaticItems.Name = "PanelStaticItems";
-            this.PanelStaticItems.Size = new System.Drawing.Size(300, 240);
+            this.PanelStaticItems.Size = new System.Drawing.Size(300, 280); // antes 240, ahora 280
             this.PanelStaticItems.TabIndex = 14;
             this.PanelStaticItems.Visible = false;
             // 
@@ -1135,6 +1137,26 @@
             this.BtnStaticItemsReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnStaticItemsReports.UseVisualStyleBackColor = false;
             this.BtnStaticItemsReports.Click += new System.EventHandler(this.BtnStaticItemsReports_Click);
+            // 
+            // BtnStaticItemsConfiguration  
+            // 
+            this.BtnStaticItemsConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnStaticItemsConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnStaticItemsConfiguration.FlatAppearance.BorderSize = 0;
+            this.BtnStaticItemsConfiguration.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnStaticItemsConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnStaticItemsConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnStaticItemsConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnStaticItemsConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnStaticItemsConfiguration.Location = new System.Drawing.Point(0, 210);
+            this.BtnStaticItemsConfiguration.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnStaticItemsConfiguration.Name = "BtnStaticItemsConfiguration";
+            this.BtnStaticItemsConfiguration.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsConfiguration.TabIndex = 50;
+            this.BtnStaticItemsConfiguration.Text = "CONFIGURACIÓN DE ACTIVOS";
+            this.BtnStaticItemsConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnStaticItemsConfiguration.UseVisualStyleBackColor = false;
+            this.BtnStaticItemsConfiguration.Click += new System.EventHandler(this.BtnStaticItemsConfiguration_Click);
             // 
             // BtnStaticItemsDepreciation
             // 
@@ -2601,6 +2623,7 @@
         private System.Windows.Forms.Button BtnStaticItemsMaintenance;
         private System.Windows.Forms.Button BtnStaticItemsMovementsController;
         private System.Windows.Forms.Button BtnStaticItemsResponsabilityLetter;
+        private System.Windows.Forms.Button BtnStaticItemsConfiguration;
         private System.Windows.Forms.Button BtnStaticItemsManagment;
         private System.Windows.Forms.Panel PanelProfile;
         private System.Windows.Forms.Panel panel2;
