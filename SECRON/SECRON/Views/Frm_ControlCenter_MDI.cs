@@ -1973,10 +1973,11 @@ namespace SECRON.Views
         private void BtnStaticItemsManagment_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
-            Frm_FixedAssetCategories frm = new Frm_FixedAssetCategories();
+            //Frm_FixedAssetCategories frm = new Frm_FixedAssetCategories();
+            Form frm = new Form();
             frm.Text = "Catálogo General de Activos";
             frm.BackColor = Color.White;
-            frm.UserData = this.UserData;
+            //frm.UserData = this.UserData;
 
             AbrirFormularioConPestana(frm, "Catálogo General de Activos", "StaticItemsManagment");
         }
