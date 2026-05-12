@@ -1017,6 +1017,8 @@ VALUES
 ('TCH_008', 'TEACHERS_PERSONAL_COORDINATORMANAGMENT', 'PERMITE REGISTRAR NUEVA GESTIÓN DE COORDINADORES EN EL SISTEMA.', 'TEACHERS', 'TAB'),
 
 ('TCH_009', 'TEACHERS_PERSONAL_ASSIGNMENTCOURSES', 'PERMITE REGISTRAR ASIGNACIÓN DE CURSOS DE DOCENTES EN EL SISTEMA.', 'TEACHERS', 'TAB'),
+-- ==================================================== FINANCES ============================================================================
+('FNS_001', 'FINANCES_TAB', 'PERMITE VISUALIZAR EL BOTÓN PRINCIPAL EN EL MENÚ PARA FINANZAS EN EL SISTEMA.', 'FINANCES', 'TAB'),
 
 -- ==================================================== TRANSFERS ============================================================================
 ('TNS_001', 'TRANSFERS_TAB', 'PERMITE VISUALIZAR EL BOTÓN PRINCIPAL EN EL MENÚ PARA TRANSFERENCIAS EN EL SISTEMA.', 'TRANSFERS', 'TAB'),
@@ -1053,3 +1055,4 @@ VALUES
 
 -- ****************************************************************************************************************************************************************************
 -- ****************************************************************************************************************************************************************************
+

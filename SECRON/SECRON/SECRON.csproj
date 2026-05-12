@@ -679,10 +679,16 @@
     <None Include="Img\LogotipoHome2026.png" />
     <None Include="Img\CopyBlack25x25.png" />
     <None Include="Img\TemplateBlack25x25.png" />
+    <None Include="Img\AjustesNegro25x25.png" />
     <Content Include="Img\CategoriesBlack25x25.png" />
     <None Include="Img\CategoriesBlack50x50.png" />
     <None Include="Img\MatchBlack25x25.png" />
     <None Include="Img\Filtrar.png" />
+    <None Include="Img\FinancesNegro20x20.png" />
+    <None Include="Img\FinancesNegro25x25.png" />
+    <None Include="Img\ComprasNegro25x25.png" />
+    <None Include="Img\InventoryNegro25x25.png" />
+    <None Include="Img\Gastos2Negro25x25.png" />
     <Content Include="SECRON-Logotipo.ico" />
   </ItemGroup>
   <ItemGroup>

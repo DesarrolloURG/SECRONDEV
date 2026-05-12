@@ -137,17 +137,12 @@ namespace SECRON.Views
             ConfigurarBotonNavegacion(BtnHome);
             ConfigurarBotonNavegacion(BtnEmployees);
             ConfigurarBotonNavegacion(BtnUsers);
-            ConfigurarBotonNavegacion(BtnSuppliers);
-            ConfigurarBotonNavegacion(BtnCounts);
+            ConfigurarBotonNavegacion(BtnFinances);
             ConfigurarBotonNavegacion(BtnOrders);
             ConfigurarBotonNavegacion(Btn_Inventory);
             ConfigurarBotonNavegacion(BtnBills);
-            ConfigurarBotonNavegacion(BtnChecks);
-            ConfigurarBotonNavegacion(BtnBanks);
-            ConfigurarBotonNavegacion(BtnAccountingBooks);
             ConfigurarBotonNavegacion(BtnLocations);
             ConfigurarBotonNavegacion(Btn_Teachers);
-            ConfigurarBotonNavegacion(Btn_Transfers);
         }
         // Configurar Botones de Menu de Navegacion
         private void ConfigurarBotonNavegacion(Button boton)
@@ -175,8 +170,14 @@ namespace SECRON.Views
             // Panel de Navegación Submenú Usuarios
             ConfigurarBotonSubmenuNavegacion(BtnUsersManagment);
             ConfigurarBotonSubmenuNavegacion(BtnUsersRolesPermisos);
-            // Panel de Navegación Submenú Proveedores
-            ConfigurarBotonSubmenuNavegacion(BtnSuppliersManagment);
+            // Panel de Navegación Submenú Finanzas
+            ConfigurarBotonSubmenuNavegacion(BtnFinances_Accounts);
+            ConfigurarBotonSubmenuNavegacion(BtnFinances_Checks);
+            ConfigurarBotonSubmenuNavegacion(BtnFinances_Transfers);
+            ConfigurarBotonSubmenuNavegacion(BtnFinances_Banks);
+            ConfigurarBotonSubmenuNavegacion(BtnFinances_AccountingBooks);
+            // Panel de Navegación Submenú Compras (Proveedores)
+            ConfigurarBotonSubmenuNavegacion(BtnSuppliers);
             // Panel de Navegación Submenú Cuentas
             ConfigurarBotonSubmenuNavegacion(BtnCountsManagment);
             // Panel de Navegación Submenú Compras
@@ -211,7 +212,6 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnAccountingBooksMayor);
             ConfigurarBotonSubmenuNavegacion(BtnAccountingBooksFinancialStatemants);
             ConfigurarBotonSubmenuNavegacion(BtnAccountingBooksClosing);
-            ConfigurarBotonSubmenuNavegacion(BtnAccountingBooksCatalog);
             ConfigurarBotonSubmenuNavegacion(BtnAccountingBooksReports);
             // Panel de Navegación Submenú Sedes
             ConfigurarBotonSubmenuNavegacion(BtnLocationsManagment);
@@ -226,7 +226,9 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsMovementsController);
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsReports);
             ConfigurarBotonSubmenuNavegacion(BtnStaticItemsResponsabilityLetter);
-            ConfigurarBotonSubmenuNavegacion(BtnStaticItemsConfiguration);
+            // Panel de Navegación Submenú Almacenes/Warehouse
+            ConfigurarBotonSubmenuNavegacion(BtnWarehouse_Managment);
+            ConfigurarBotonSubmenuNavegacion(BtnWarehouse_Reports);
             // Panel de Navegación Submenú Teachers
             ConfigurarBotonSubmenuNavegacion(BtnTeachersAcademicConfiguration);
             ConfigurarBotonSubmenuNavegacion(BtnTeachersPersonal);
@@ -274,7 +276,6 @@ namespace SECRON.Views
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsMovementsController);
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsReports);
             ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsResponsabilityLetter);
-            ConfigurarBotonSubSubmenuNavegacion(BtnStaticItemsConfiguration);
 
             // Panel de Navegación SubSubmenú Teachers - Academic Configuration
             ConfigurarBotonSubSubmenuNavegacion(BtnTeachers_Schedules);
@@ -304,6 +305,9 @@ namespace SECRON.Views
             ConfigurarBotonSubSubmenuNavegacion(BtnTeachers_ConflictReports);
             ConfigurarBotonSubSubmenuNavegacion(BtnTeachers_PensumReports);
             ConfigurarBotonSubSubmenuNavegacion(BtnTeachers_CoursesReports);
+
+            // Panel de Navegación SubSubmenú Orders - Suppliers
+            ConfigurarBotonSubSubmenuNavegacion(BtnSuppliersManagment);
         }
         // Configurar Botones de Menu de Navegacion
         private void ConfigurarBotonSubSubmenuNavegacion(Button boton)
@@ -502,27 +506,30 @@ namespace SECRON.Views
         //Configurar bordes redondeados
         private void ConfigurarBordesRedondeados()
         {
+            int radioEsquinas = 15;
             // Aplicar bordes redondeados a los paneles que lo requieran
-            ConfigurarBordesRedondeadosPanel(PanelEmployees, 15);
-            ConfigurarBordesRedondeadosPanel(PanelUsers, 15);
-            ConfigurarBordesRedondeadosPanel(PanelSuppliers, 15);
-            ConfigurarBordesRedondeadosPanel(PanelCounts, 15);
-            ConfigurarBordesRedondeadosPanel(PanelOrders, 15);
-            ConfigurarBordesRedondeadosPanel(PanelInventory, 15);
-            ConfigurarBordesRedondeadosPanel(PanelBills, 15);
-            ConfigurarBordesRedondeadosPanel(PanelChecks, 15);
-            ConfigurarBordesRedondeadosPanel(PanelBanks, 15);
-            ConfigurarBordesRedondeadosPanel(PanelAccountingBooks, 15);
-            ConfigurarBordesRedondeadosPanel(PanelLocations, 15);
-            ConfigurarBordesRedondeadosPanel(PanelStaticItems, 15);
-            ConfigurarBordesRedondeadosPanel(PanelTeachers, 15);
-            ConfigurarBordesRedondeadosPanel(PanelTransfers, 15);
-            ConfigurarBordesRedondeadosPanel(PanelInventory_1, 15);
-            ConfigurarBordesRedondeadosPanel(PanelTeachers_1, 15);
-            ConfigurarBordesRedondeadosPanel(PanelTeachers_2, 15);
-            ConfigurarBordesRedondeadosPanel(PanelTeachers_3, 15);
-            ConfigurarBordesRedondeadosPanel(PanelTeachers_4, 15);
-            ConfigurarBordesRedondeadosPanel(PanelTeachers_5, 15);
+            ConfigurarBordesRedondeadosPanel(PanelEmployees, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelUsers, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelFinances, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelCounts, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelOrders, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelInventory, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelBills, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelChecks, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelBanks, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelAccountingBooks, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelLocations,    radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelStaticItems, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelWarehouses, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelTeachers,     radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelTransfers, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelInventory_1, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelTeachers_1, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelTeachers_2, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelTeachers_3, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelTeachers_4, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelTeachers_5, radioEsquinas);
+            ConfigurarBordesRedondeadosPanel(PanelSuppliers, radioEsquinas);
         }
         // Aplica bordes redondeados a un Panel específico
         public void ConfigurarBordesRedondeadosPanel(Panel panel, int radioEsquinas = 15)
@@ -804,35 +811,19 @@ namespace SECRON.Views
             BtnHome.Visible = false;
             BtnEmployees.Visible = false;
             BtnUsers.Visible = false;
-            BtnSuppliers.Visible = false;
-            BtnCounts.Visible = false;
+            BtnFinances.Visible = false;
             BtnOrders.Visible = false;
             Btn_Inventory.Visible = false;
             BtnBills.Visible = false;
-            BtnChecks.Visible = false;
-            BtnBanks.Visible = false;
-            BtnAccountingBooks.Visible = false;
             BtnLocations.Visible = false;
             Btn_Teachers.Visible = false;
 
             // Luego hacerlos visibles en ORDEN INVERSO
-            if (TienePermiso("TRANSFERS_TAB"))
-                Btn_Transfers.Visible = true;
-
             if (TienePermiso("TEACHERS_TAB"))
                 Btn_Teachers.Visible = true;
 
             if (TienePermiso("LOCATIONS_TAB"))
                 BtnLocations.Visible = true;
-
-            if (TienePermiso("ACCOUNTINGBOOKS_TAB"))
-                BtnAccountingBooks.Visible = true;
-
-            if (TienePermiso("BANKS_TAB"))
-                BtnBanks.Visible = true;
-
-            if (TienePermiso("CHECKS_TAB"))
-                BtnChecks.Visible = true;
 
             if (TienePermiso("BILLS_TAB"))
                 BtnBills.Visible = true;
@@ -843,11 +834,8 @@ namespace SECRON.Views
             if (TienePermiso("PURCHASEORDERS_TAB"))
                 BtnOrders.Visible = true;
 
-            if (TienePermiso("ACCOUNTS_TAB"))
-                BtnCounts.Visible = true;
-
-            if (TienePermiso("SUPPLIERS_TAB"))
-                BtnSuppliers.Visible = true;
+            if (TienePermiso("FINANCES_TAB"))
+                BtnFinances.Visible = true;
 
             if (TienePermiso("USERS_TAB"))
                 BtnUsers.Visible = true;
@@ -868,6 +856,13 @@ namespace SECRON.Views
             // ========== USUARIOS ==========
             BtnUsersManagment.Visible = TienePermiso("USERS_MANAGMENT");
             BtnUsersRolesPermisos.Visible = TienePermiso("USERS_ROLEPERMISSIONS");
+
+            // ========== FINANCES ==========
+            BtnFinances_Accounts.Visible = TienePermiso("ACCOUNTS_TAB");
+            BtnFinances_Checks.Visible = TienePermiso("CHECKS_TAB");
+            BtnFinances_Transfers.Visible = TienePermiso("TRANSFERS_TAB");
+            BtnFinances_Banks.Visible = TienePermiso("BANKS_TAB");
+            BtnFinances_AccountingBooks.Visible = TienePermiso("ACCOUNTINGBOOKS_TAB");
 
             // ========== PROVEEDORES ==========
             BtnSuppliersManagment.Visible = TienePermiso("SUPPLIERS_MANAGMENT");
@@ -891,7 +886,6 @@ namespace SECRON.Views
             BtnKardexInventory.Visible = TienePermiso("KARDEX_INVENTORY");
             BtnKardexInputControl.Visible = TienePermiso("KARDEX_INPUTCONTROL");
             BtnKardexInventoryReport.Visible = TienePermiso("KARDEX_REPORTS");
-
 
             // ========== GASTOS ==========
             BtnBillsAuthorization.Visible = TienePermiso("BILLS_AUTHORIZATION");
@@ -920,7 +914,6 @@ namespace SECRON.Views
             BtnAccountingBooksMayor.Visible = TienePermiso("ACCOUNTINGBOOKS_LEDGER");
             BtnAccountingBooksFinancialStatemants.Visible = TienePermiso("ACCOUNTINGBOOKS_FINANTIALSTATEMANTS");
             BtnAccountingBooksClosing.Visible = TienePermiso("ACCOUNTINGBOOKS_CLOSING");
-            BtnAccountingBooksCatalog.Visible = TienePermiso("ACCOUNTINGBOOKS_CATALOG");
             BtnAccountingBooksReports.Visible = TienePermiso("ACCOUNTINGBOOKS_REPORTS");
 
             // ========== SEDES ==========
@@ -937,7 +930,6 @@ namespace SECRON.Views
             BtnStaticItemsMovementsController.Visible = TienePermiso("STATICITEMS_MOVEMENTS");
             BtnStaticItemsReports.Visible = TienePermiso("STATICITEMS_REPORTS");
             BtnStaticItemsResponsabilityLetter.Visible = TienePermiso("STATICITEMS_RESPONSLETTER");
-            BtnStaticItemsConfiguration.Visible = TienePermiso("STATICITEMS_CONFIGURATION");
 
             // ========== DOCENTES ==========
             BtnTeachersAcademicConfiguration.Visible = TienePermiso("TEACHERS_CONFIGURATION");
@@ -994,18 +986,12 @@ namespace SECRON.Views
             {
                 (PanelEmployees, BtnEmployees),
                 (PanelUsers, BtnUsers),
-                (PanelSuppliers, BtnSuppliers),
-                (PanelCounts, BtnCounts),
+                (PanelFinances, BtnFinances),
                 (PanelOrders, BtnOrders),
                 (PanelInventory, Btn_Inventory),
                 (PanelBills, BtnBills),
-                (PanelChecks, BtnChecks),
-                (PanelBanks, BtnBanks),
-                (PanelAccountingBooks, BtnAccountingBooks),
                 (PanelLocations, BtnLocations),
-                (PanelStaticItems, Btn_Inventory),
-                (PanelTeachers, Btn_Teachers),
-                (PanelTransfers, Btn_Transfers)
+                (PanelTeachers, Btn_Teachers)
             };
             // Ocultar todos los paneles excepto el especificado
             foreach (var (panel, boton) in panelesYBotones)
@@ -1013,7 +999,7 @@ namespace SECRON.Views
                 if (panel != panelExcepcion)
                 {
                     panel.Visible = false;
-                    panel.Location = new Point(200, 1);
+                    panel.Location = new Point(220, 1);
                     panel.Size = new Size(1, 1);
                     boton.BackColor = Color.FromArgb(255, 255, 255);
                 }
@@ -1025,12 +1011,22 @@ namespace SECRON.Views
                 (PanelInventory_1, Btn_Inventory),
                 //ACTIVOS FIJOS
                 (PanelStaticItems, Btn_Inventory),
+                //ALMACENES/WAREHOUSE
+                (PanelWarehouses, Btn_Inventory),
                 //TEACHERS
                 (PanelTeachers_1, Btn_Teachers),
                 (PanelTeachers_2, Btn_Teachers),
                 (PanelTeachers_3, Btn_Teachers),
                 (PanelTeachers_4, Btn_Teachers),
-                (PanelTeachers_5, Btn_Teachers)
+                (PanelTeachers_5, Btn_Teachers),
+                //ORDERS
+                (PanelSuppliers, BtnOrders),
+                //FINANCES
+                (PanelCounts, BtnFinances),
+                (PanelChecks, BtnFinances),
+                (PanelTransfers, BtnFinances),
+                (PanelBanks, BtnFinances),
+                (PanelAccountingBooks, BtnFinances)
             };
             // Ocultar todos los paneles excepto el especificado
             foreach (var (subpanel, subboton) in subpanelesYBotones)
@@ -1038,7 +1034,7 @@ namespace SECRON.Views
                 if (subpanel != panelExcepcion)
                 {
                     subpanel.Visible = false;
-                    subpanel.Location = new Point(500, 1);
+                    subpanel.Location = new Point(510, 1);
                     subpanel.Size = new Size(1, 1);
                     subboton.BackColor = Color.FromArgb(255, 255, 255);
                 }
@@ -1052,17 +1048,12 @@ namespace SECRON.Views
             {
                 { BtnEmployees, (PanelEmployees, new Size(300, 80)) },
                 { BtnUsers, (PanelUsers, new Size(300, 80)) },
-                { BtnSuppliers, (PanelSuppliers, new Size(300, 41)) },
-                { BtnCounts, (PanelCounts, new Size(300, 41)) },
-                { BtnOrders, (PanelOrders, new Size(300, 120)) },
+                { BtnFinances, (PanelFinances, new Size(300, 200)) },
+                { BtnOrders, (PanelOrders, new Size(300, 160)) },
                 { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
                 { BtnBills, (PanelBills, new Size(300, 240)) },
-                { BtnChecks, (PanelChecks, new Size(300, 160)) },
-                { BtnBanks, (PanelBanks, new Size(300, 240)) },
-                { BtnAccountingBooks, (PanelAccountingBooks, new Size(300, 240)) },
                 { BtnLocations, (PanelLocations, new Size(300, 200)) },
                 { Btn_Teachers, (PanelTeachers, new Size(300, 200)) },
-                { Btn_Transfers, (PanelTransfers, new Size(300, 80)) }
             };
 
             // Verificar si el boton existe en la configuracion
@@ -1074,7 +1065,7 @@ namespace SECRON.Views
             if (panel.Visible)
             {
                 panel.Visible = false;
-                panel.Location = new Point(200, 1);
+                panel.Location = new Point(220, 1);
                 panel.Size = new Size(1, 1);
                 button.BackColor = Color.FromArgb(255, 255, 255);
 
@@ -1087,8 +1078,8 @@ namespace SECRON.Views
                 OcultarTodosLosPaneles(panel);
 
                 // CALCULAR POSICION DINAMICA DEL PANEL
-                int panelX = 193; // X siempre fijo
-                int panelY = button.Location.Y; // 6 puntos debajo del boton
+                int panelX = 215; // X siempre fijo
+                int panelY = button.Location.Y + 1; // 1 punto debajo del boton
                 Point ubicacion = new Point(panelX, panelY);
 
                 // Mostrar el panel seleccionado
@@ -1104,15 +1095,25 @@ namespace SECRON.Views
             {
                 //INVENTORY
                 { BtnInvKardex, (PanelInventory_1, new Size(300, 200)) },
-                { BtnInvStaticItems, (PanelStaticItems, new Size(300, 280)) },
-                // Aquí ira el BtnInvWareHouse aún no existe
+                { BtnInvStaticItems, (PanelStaticItems, new Size(300, 240)) },
+                { BtnInvWarehouse, (PanelWarehouses, new Size(300, 80)) },
 
                 //TEACHERS
                 { BtnTeachersAcademicConfiguration, (PanelTeachers_1, new Size(300, 160)) },
                 { BtnTeachersPersonal, (PanelTeachers_2, new Size(300, 120)) },
                 { BtnTeachersSections, (PanelTeachers_3, new Size(300, 80)) },
                 { BtnTeachersSchedules, (PanelTeachers_4, new Size(300, 120)) },
-                { BtnTeachersReports, (PanelTeachers_5, new Size(300, 280)) }
+                { BtnTeachersReports, (PanelTeachers_5, new Size(300, 280)) },
+
+                //COMPRAS
+                { BtnSuppliers, (PanelSuppliers, new Size(300, 40)) },
+
+                //FINANCES
+                { BtnFinances_Accounts, (PanelCounts, new Size(300, 40)) },
+                { BtnFinances_Checks, (PanelChecks, new Size(300, 160)) },
+                { BtnFinances_Transfers, (PanelTransfers, new Size(300, 80)) },
+                { BtnFinances_Banks, (PanelBanks, new Size(300, 240)) },
+                { BtnFinances_AccountingBooks, (PanelAccountingBooks, new Size(300, 200)) }
             };
 
             if (!configuracionSubPaneles.ContainsKey(button)) return;
@@ -1122,7 +1123,7 @@ namespace SECRON.Views
             if (panel.Visible)
             {
                 panel.Visible = false;
-                panel.Location = new Point(500, 1);
+                panel.Location = new Point(510, 1);
                 panel.Size = new Size(1, 1);
             }
             else
@@ -1135,7 +1136,7 @@ namespace SECRON.Views
 
                 if (panelPrincipal != null)
                 {
-                    int panelX = 490;
+                    int panelX = 510;
                     int panelY = panelPrincipal.Location.Y + button.Location.Y;
 
                     Point ubicacion = new Point(panelX, panelY);
@@ -1161,18 +1162,28 @@ namespace SECRON.Views
                 { BtnTeachersPersonal, PanelTeachers },
                 { BtnTeachersSections, PanelTeachers },
                 { BtnTeachersSchedules, PanelTeachers },
-                { BtnTeachersReports, PanelTeachers }
+                { BtnTeachersReports, PanelTeachers },
+
+                //ORDERS
+                { BtnSuppliers, PanelOrders },
+
+                //FINANCES
+                { BtnFinances_Accounts, PanelFinances },
+                { BtnFinances_Checks, PanelFinances },
+                { BtnFinances_Transfers, PanelFinances },
+                { BtnFinances_Banks, PanelFinances },
+                { BtnFinances_AccountingBooks, PanelFinances }
             };
 
             return mapeoBotonPanel.ContainsKey(button) ? mapeoBotonPanel[button] : null;
         }
-        // Oculta todos los subpaneles de todos los paneles principales (Kardex, Teachers, etc.)
+        // Oculta todos los subpaneles de todos los paneles principales
         private void OcultarTodosLosSubPaneles()
         {
             // INVENTORY
             OcultarSubPanel(PanelInventory_1);
             OcultarSubPanel(PanelStaticItems);
-            // OcultarSubPanel(PanelWireHouse);
+            OcultarSubPanel(PanelWarehouses);
 
             // TEACHERS
             OcultarSubPanel(PanelTeachers_1);
@@ -1180,13 +1191,23 @@ namespace SECRON.Views
             OcultarSubPanel(PanelTeachers_3);
             OcultarSubPanel(PanelTeachers_4);
             OcultarSubPanel(PanelTeachers_5);
+
+            //FINANCES
+            OcultarSubPanel(PanelCounts);
+            OcultarSubPanel(PanelChecks);
+            OcultarSubPanel(PanelTransfers);
+            OcultarSubPanel(PanelBanks);
+            OcultarSubPanel(PanelAccountingBooks);
+
+            //ORDERS
+            OcultarSubPanel(PanelSuppliers);
         }
 
         // Facilita no repetir código para ocultar subpaneles
         private void OcultarSubPanel(Panel panel)
         {
             panel.Visible = false;
-            panel.Location = new Point(500, 1);
+            panel.Location = new Point(510, 1);
             panel.Size = new Size(1, 1);
         }
         // Función específica para el botón Home - cierra todos los paneles
@@ -1212,18 +1233,14 @@ namespace SECRON.Views
             {
                 { BtnEmployees, (PanelEmployees, new Size(300, 280)) },
                 { BtnUsers, (PanelUsers, new Size(300, 160)) },
-                { BtnSuppliers, (PanelSuppliers, new Size(300, 41)) },
-                { BtnCounts, (PanelCounts, new Size(300, 41)) },
-                { BtnOrders, (PanelOrders, new Size(300, 120)) },
+                { BtnFinances, (PanelFinances, new Size(300, 200)) },
+                { BtnOrders, (PanelOrders, new Size(300, 160)) },
                 { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
                 { BtnBills, (PanelBills, new Size(300, 240)) },
-                { BtnChecks, (PanelChecks, new Size(300, 200)) },
-                { BtnBanks, (PanelBanks, new Size(300, 240)) },
-                { BtnAccountingBooks, (PanelAccountingBooks, new Size(300, 240)) },
                 { BtnLocations, (PanelLocations, new Size(300, 200)) },
                 { BtnInvStaticItems, (PanelStaticItems, new Size(300, 280)) },
-                { Btn_Teachers, (PanelTeachers, new Size(300, 200)) },
-                { Btn_Transfers, (PanelTransfers, new Size(300, 80)) }
+                { BtnInvWarehouse, (PanelWarehouses, new Size(300, 80)) },
+                { Btn_Teachers, (PanelTeachers, new Size(300, 200)) }
             };
 
             // Verificar si el botón existe en la configuración
@@ -1235,8 +1252,8 @@ namespace SECRON.Views
             if (panel.Visible) return;
 
             // CALCULAR POSICIÓN DINÁMICA DEL PANEL
-            int panelX = 193; // X siempre fijo
-            int panelY = button.Location.Y; // 6 puntos debajo del botón
+            int panelX = 215; // X siempre fijo
+            int panelY = button.Location.Y + 1; // 1 punto debajo del botón
             Point ubicacion = new Point(panelX, panelY);
 
             // Ocultar todos los paneles y mostrar el del botón actual
@@ -1251,10 +1268,8 @@ namespace SECRON.Views
         {
             var paneles = new Panel[]
             {
-                PanelEmployees, PanelUsers, PanelSuppliers, PanelCounts,
-                PanelOrders, PanelInventory, PanelBills, PanelChecks,
-                PanelBanks, PanelAccountingBooks, PanelLocations, PanelStaticItems,
-                PanelTeachers, PanelTransfers
+                PanelEmployees, PanelUsers, PanelOrders, PanelInventory, PanelLocations,
+                PanelTeachers, PanelFinances, PanelBills
             };
 
             return paneles.Any(panel => panel.Visible);
@@ -1309,7 +1324,7 @@ namespace SECRON.Views
                 // Asegurar que no se salga del lado izquierdo
                 if (posicionX < 10) posicionX = 10;
 
-                PanelProfile.Location = new Point(posicionX, 55);
+                PanelProfile.Location = new Point(posicionX, 70);
             }
         }
         private void BtnProfile_Click(object sender, EventArgs e)
@@ -1332,13 +1347,9 @@ namespace SECRON.Views
         {
             ConfigurarPanelesVisibles(BtnUsers);
         }
-        private void BtnSuppliers_Click(object sender, EventArgs e)
+        private void BtnFinances_Click(object sender, EventArgs e)
         {
-            ConfigurarPanelesVisibles(BtnSuppliers);
-        }
-        private void BtnCounts_Click(object sender, EventArgs e)
-        {
-            ConfigurarPanelesVisibles(BtnCounts);
+            ConfigurarPanelesVisibles(BtnFinances);
         }
         private void BtnOrders_Click(object sender, EventArgs e)
         {
@@ -1352,18 +1363,6 @@ namespace SECRON.Views
         {
             ConfigurarPanelesVisibles(BtnBills);
         }
-        private void BtnChecks_Click(object sender, EventArgs e)
-        {
-            ConfigurarPanelesVisibles(BtnChecks);
-        }
-        private void BtnBanks_Click(object sender, EventArgs e)
-        {
-            ConfigurarPanelesVisibles(BtnBanks);
-        }
-        private void BtnAccountingBooks_Click(object sender, EventArgs e)
-        {
-            ConfigurarPanelesVisibles(BtnAccountingBooks);
-        }
         private void BtnLocations_Click(object sender, EventArgs e)
         {
             ConfigurarPanelesVisibles(BtnLocations);
@@ -1371,10 +1370,6 @@ namespace SECRON.Views
         private void Btn_Teachers_Click(object sender, EventArgs e)
         {
             ConfigurarPanelesVisibles(Btn_Teachers);
-        }
-        private void Btn_Transfers_Click(object sender, EventArgs e)
-        {
-            ConfigurarPanelesVisibles(Btn_Transfers);
         }
         #endregion EventosClickNavegacion
         #region EventosMouseEnterNavegacion
@@ -1391,17 +1386,10 @@ namespace SECRON.Views
         {
             ConfigurarPanelesMouseEnter(BtnUsers);
         }
-
-        private void BtnSuppliers_MouseEnter(object sender, EventArgs e)
+        private void BtnFinances_MouseEnter(object sender, EventArgs e)
         {
-            ConfigurarPanelesMouseEnter(BtnSuppliers);
+            ConfigurarPanelesMouseEnter(BtnFinances);
         }
-
-        private void BtnCounts_MouseEnter(object sender, EventArgs e)
-        {
-            ConfigurarPanelesMouseEnter(BtnCounts);
-        }
-
         private void BtnOrders_MouseEnter(object sender, EventArgs e)
         {
             ConfigurarPanelesMouseEnter(BtnOrders);
@@ -1416,22 +1404,6 @@ namespace SECRON.Views
         {
             ConfigurarPanelesMouseEnter(BtnBills);
         }
-
-        private void BtnChecks_MouseEnter(object sender, EventArgs e)
-        {
-            ConfigurarPanelesMouseEnter(BtnChecks);
-        }
-
-        private void BtnBanks_MouseEnter(object sender, EventArgs e)
-        {
-            ConfigurarPanelesMouseEnter(BtnBanks);
-        }
-
-        private void BtnAccountingBooks_MouseEnter(object sender, EventArgs e)
-        {
-            ConfigurarPanelesMouseEnter(BtnAccountingBooks);
-        }
-
         private void BtnLocations_MouseEnter(object sender, EventArgs e)
         {
             ConfigurarPanelesMouseEnter(BtnLocations);
@@ -1439,10 +1411,6 @@ namespace SECRON.Views
         private void Btn_Teachers_MouseEnter(object sender, EventArgs e)
         {
             ConfigurarPanelesMouseEnter(Btn_Teachers);
-        }
-        private void Btn_Transfers_MouseEnter(object sender, EventArgs e)
-        {
-            ConfigurarPanelesMouseEnter(Btn_Transfers);
         }
         #endregion EventosMouseEnterNavegacion
         #region EventosClickSubmenuNavegacion
@@ -1920,6 +1888,7 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Roles y Permisos", "UsersRolesPermisos");
         }
+        
         #endregion EventosClickSubmenuNavegacion
         #region EventosClickSubSubmenuNavegacion
         private void BtnKardexInsumosSedes_Click(object sender, EventArgs e)
@@ -2004,12 +1973,12 @@ namespace SECRON.Views
         private void BtnStaticItemsManagment_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Gestión de Activos";
+            Frm_FixedAssetCategories frm = new Frm_FixedAssetCategories();
+            frm.Text = "Catálogo General de Activos";
             frm.BackColor = Color.White;
+            frm.UserData = this.UserData;
 
-            AbrirFormularioConPestana(frm, "Gestión de Activos", "StaticItemsManagment");
+            AbrirFormularioConPestana(frm, "Catálogo General de Activos", "StaticItemsManagment");
         }
 
         private void BtnStaticItemsMovementsController_Click(object sender, EventArgs e)
@@ -2072,6 +2041,35 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Catálogo de Artículos por Categorías", "CatalogLocationsCategories");
         }
+
+        private void BtnWarehouse_Managment_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Administrar Bodegas";
+            frm.BackColor = Color.White;
+
+            //Pasamos los datos del usuario
+            //frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Administrar Bodegas", "WarehouseManagment");
+        }
+
+        private void BtnWarehouse_Reports_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Form frm = new Form();
+            frm.Text = "Reportería Bodegas";
+            frm.BackColor = Color.White;
+
+            //Pasamos los datos del usuario
+            //frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Reportería Bodegas", "WarehouseReports");
+        }
+
         private void BtnTeachers_Schedules_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2193,7 +2191,35 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             MessageBox.Show("Módulo de Reportes de Cursos en desarrollo", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+        private void BtnSuppliers_Click(object sender, EventArgs e)
+        {
+            ConfigurarSubPanelesVisibles(BtnSuppliers);
+        }
 
+        private void BtnFinances_Accounts_Click(object sender, EventArgs e)
+        {
+            ConfigurarSubPanelesVisibles(BtnFinances_Accounts);
+        }
+
+        private void BtnFinances_Checks_Click(object sender, EventArgs e)
+        {
+            ConfigurarSubPanelesVisibles(BtnFinances_Checks);
+        }
+
+        private void BtnFinances_Transfers_Click(object sender, EventArgs e)
+        {
+            ConfigurarSubPanelesVisibles(BtnFinances_Transfers);
+        }
+
+        private void BtnFinances_Banks_Click(object sender, EventArgs e)
+        {
+            ConfigurarSubPanelesVisibles(BtnFinances_Banks);
+        }
+
+        private void BtnFinances_AccountingBooks_Click(object sender, EventArgs e)
+        {
+            ConfigurarSubPanelesVisibles(BtnFinances_AccountingBooks);
+        }
         #endregion EventosClickSubSubmenuNavegacion
         #region EventoResizeFormulario
         private void Frm_ControlCenter_MDI_Resize(object sender, EventArgs e)
@@ -2464,6 +2490,8 @@ namespace SECRON.Views
                 e.Cancel = true;
             }
         }
+
+
         #endregion EventoFormClosing
     }
 }
