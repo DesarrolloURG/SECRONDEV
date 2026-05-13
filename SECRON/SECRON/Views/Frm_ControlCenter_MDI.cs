@@ -1936,18 +1936,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Valorización y Costos", "KardexValorizacion");
         }
-
-        private void BtnStaticItemsConfiguration_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            Frm_FixedAssetCategories frm = new Frm_FixedAssetCategories();
-            frm.Text = "Configuración de Activos";
-            frm.BackColor = Color.White;
-            frm.UserData = this.UserData;
-
-            AbrirFormularioConPestana(frm, "Configuración de Activos", "StaticItemsConfiguration");
-        }
-
         private void BtnStaticItemsDepreciation_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
