@@ -997,6 +997,15 @@ VALUES
 
 ('FA_009', 'FA_ATTRIBUTES_INACTIVE', 'PERMITE DESACTIVAR REPORTERÍA EN EL SISTEMA.', 'FIXEDASSETS', 'INACTIVE'),
 
+('FA_010', 'FA_ASSETS_CREATE', 'PERMITE REGISTRAR NUEVA REPORTERÍA EN EL SISTEMA', 'FIXEDASSETS', 'CREATE'),
+
+('FA_011', 'FA_ASSETS_UPDATE', 'PERMITE MODIFICAR REPORTERÍA EN EL SISTEMA.', 'FIXEDASSETS', 'UPDATE'),
+
+('FA_012', 'FA_ASSETS_INACTIVE', 'PERMITE DESACTIVAR REPORTERÍA EN EL SISTEMA.', 'FIXEDASSETS', 'INACTIVE'),
+
+('FA_013', 'FA_ASSETS_EXPORT', 'PERMITE EXPORTAR LISTADO DE REPORTERÍA EN EL SISTEMA.', 'FIXEDASSETS', 'EXPORT'),
+
+('FA_014', 'FA_ASSETS_READ', 'PERMITE VISUALIZAR LA LISTA Y DETALLES DE REPORTERÍA EN EL SISTEMA.', 'FIXEDASSETS', 'READ'),
 
 -- ==================================================== TEACHERS ============================================================================
 ('TCH_001', 'TEACHERS_TAB', 'PERMITE VISUALIZAR EL BOTÓN PRINCIPAL EN EL MENÚ PARA DOCENTES EN EL SISTEMA.', 'TEACHERS', 'TAB'),
@@ -1055,4 +1064,7 @@ VALUES
 
 -- ****************************************************************************************************************************************************************************
 -- ****************************************************************************************************************************************************************************
+
+
+
 

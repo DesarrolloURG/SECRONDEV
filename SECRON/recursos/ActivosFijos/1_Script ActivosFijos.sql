@@ -1,4 +1,75 @@
 -- ============================================================
+-- SECRON - Drop Módulo de Activos Fijos si existe 
+-- para que tome siempre la ultima versión
+-- ============================================================
+
+-- -------------------------------------------------------
+-- 1. ELIMINAR FOREIGN KEYS DE TABLAS DEPENDIENTES
+-- -------------------------------------------------------
+ALTER TABLE FixedAssetAttributeValues      DROP CONSTRAINT FK_FAAV_Asset;
+ALTER TABLE FixedAssetAttributeValues      DROP CONSTRAINT FK_FAAV_AttrDef;
+ALTER TABLE AccountingEntryFixedAssets     DROP CONSTRAINT FK_AEFA_Entry;
+ALTER TABLE AccountingEntryFixedAssets     DROP CONSTRAINT FK_AEFA_Asset;
+ALTER TABLE FixedAssetTransfers            DROP CONSTRAINT FK_FAT_Asset;
+ALTER TABLE FixedAssetTransfers            DROP CONSTRAINT FK_FAT_FromWarehouse;
+ALTER TABLE FixedAssetTransfers            DROP CONSTRAINT FK_FAT_ToWarehouse;
+ALTER TABLE FixedAssetTransfers            DROP CONSTRAINT FK_FAT_FromEmployee;
+ALTER TABLE FixedAssetTransfers            DROP CONSTRAINT FK_FAT_ToEmployee;
+ALTER TABLE FixedAssetTransfers            DROP CONSTRAINT FK_FAT_Status;
+ALTER TABLE FixedAssets                    DROP CONSTRAINT FK_FA_Category;
+ALTER TABLE FixedAssets                    DROP CONSTRAINT FK_FA_Warehouse;
+ALTER TABLE FixedAssets                    DROP CONSTRAINT FK_FA_Employee;
+ALTER TABLE FixedAssets                    DROP CONSTRAINT FK_FA_Supplier;
+ALTER TABLE FixedAssetAttributeDefinitions DROP CONSTRAINT FK_FAAD_Category;
+ALTER TABLE FixedAssetCategories           DROP CONSTRAINT FK_FAC_AccountsDep;
+ALTER TABLE FixedAssetCategories           DROP CONSTRAINT FK_FAC_AccountsExp;
+GO
+
+-- -------------------------------------------------------
+-- 2. ELIMINAR ÍNDICES
+-- -------------------------------------------------------
+DROP INDEX IX_FA_Category   ON FixedAssets;
+DROP INDEX IX_FA_Warehouse  ON FixedAssets;
+DROP INDEX IX_FA_Employee   ON FixedAssets;
+DROP INDEX IX_FA_Status     ON FixedAssets;
+DROP INDEX IX_FA_Supplier   ON FixedAssets;
+
+DROP INDEX IX_FAAV_Asset    ON FixedAssetAttributeValues;
+DROP INDEX IX_FAAV_AttrDef  ON FixedAssetAttributeValues;
+
+DROP INDEX IX_AEFA_Entry    ON AccountingEntryFixedAssets;
+DROP INDEX IX_AEFA_Asset    ON AccountingEntryFixedAssets;
+DROP INDEX IX_AEFA_Period   ON AccountingEntryFixedAssets;
+
+DROP INDEX IX_FAT_Asset     ON FixedAssetTransfers;
+DROP INDEX IX_FAT_Status    ON FixedAssetTransfers;
+DROP INDEX IX_FAT_Date      ON FixedAssetTransfers;
+GO
+
+-- -------------------------------------------------------
+-- 3. ELIMINAR TABLAS (orden por dependencias)
+-- -------------------------------------------------------
+DROP TABLE FixedAssetAttributeValues;
+DROP TABLE AccountingEntryFixedAssets;
+DROP TABLE FixedAssetTransfers;
+DROP TABLE FixedAssetTransferStatus;
+DROP TABLE FixedAssets;
+DROP TABLE FixedAssetAttributeDefinitions;
+DROP TABLE FixedAssetCategories;
+GO
+
+-- -------------------------------------------------------
+-- 4. ELIMINAR STORED PROCEDURES
+-- -------------------------------------------------------
+DROP PROCEDURE IF EXISTS SP_FixedAssetCategories_Insert;
+DROP PROCEDURE IF EXISTS SP_FixedAssetCategories_Update;
+DROP PROCEDURE IF EXISTS SP_FixedAssetAttributeDefinitions_Insert;
+DROP PROCEDURE IF EXISTS SP_FixedAssetAttributeDefinitions_Update;
+GO
+
+
+
+-- ============================================================
 -- SECRON - Módulo de Control de Activos Fijos
 -- ============================================================
 
@@ -11,7 +82,7 @@ CREATE TABLE [FixedAssetCategories](
     [CategoryName]          [varchar](100) NOT NULL,
     [Description]           [varchar](255) NULL,
     [DepreciationMethod]    [varchar](30) NOT NULL
-        CONSTRAINT DF_FAC_Method DEFAULT 'STRAIGHT_LINE',
+        CONSTRAINT DF_FAC_Method DEFAULT 'LINEA_RECTA',
     [DepreciationYears]     [decimal](4,1) NOT NULL,
     [AccountAccumDepId]     [int] NOT NULL,
     [AccountExpenseId]      [int] NOT NULL,
@@ -20,6 +91,7 @@ CREATE TABLE [FixedAssetCategories](
     [CreatedBy]             [int] NULL,
     [ModifiedDate]          [datetime] NULL,
     [ModifiedBy]            [int] NULL,
+    IsTangible              bit     NOT NULL CONSTRAINT DF_FAC_IsTangible DEFAULT 1,
     CONSTRAINT PK_FixedAssetCategories PRIMARY KEY CLUSTERED ([AssetCategoryId] ASC),
     CONSTRAINT UK_FAC_Code UNIQUE ([CategoryCode]),
     CONSTRAINT FK_FAC_AccountsDep FOREIGN KEY ([AccountAccumDepId])
@@ -39,7 +111,7 @@ CREATE TABLE [dbo].[FixedAssetAttributeDefinitions](
     [AttributeKey]      [varchar](50) NOT NULL,
     [AttributeLabel]    [varchar](100) NOT NULL,
     [DataType]          [varchar](20) NOT NULL
-        CONSTRAINT DF_FAAD_DataType DEFAULT 'TEXT',
+        CONSTRAINT DF_FAAD_DataType DEFAULT 'TEXTO',
     [IsRequired]        [bit] NULL CONSTRAINT DF_FAAD_Required DEFAULT 0,
     [IsActive]          [bit] NULL CONSTRAINT DF_FAAD_Active DEFAULT 1,
     CONSTRAINT PK_FixedAssetAttributeDefinitions PRIMARY KEY ([AttributeDefId]),
@@ -63,7 +135,7 @@ CREATE TABLE [dbo].[FixedAssets](
 	[Serial]                 [varchar](100) NULL,
     [PurchaseDate]          [date] NULL,
     [PurchaseValue]         [decimal](18,2) NOT NULL,
-	[ResidualValue]         [decimal](5,2) NOT NULL CONSTRAINT DF_FAC_Residual DEFAULT 0,
+	[ResidualValue]         [decimal](18,2) NOT NULL CONSTRAINT DF_FAC_Residual DEFAULT 0,
     [InvoiceNumber]         [varchar](50) NULL,
     [SupplierId]            [int] NULL,
     [WarrantyDocumentPath]  [varchar](500) NULL,
@@ -225,39 +297,37 @@ CREATE INDEX IX_FAT_Status     ON [dbo].[FixedAssetTransfers]([TransferStatusId]
 CREATE INDEX IX_FAT_Date       ON [dbo].[FixedAssetTransfers]([TransferDate]);
 GO
 
-ALTER TABLE FixedAssetCategories
-ADD IsTangible bit NOT NULL CONSTRAINT DF_FAC_IsTangible DEFAULT 1;
 
 -- Categorías
 INSERT INTO [dbo].[FixedAssetCategories]
     ([CategoryCode],[CategoryName],[DepreciationYears],[DepreciationMethod],
-     [AccountAssetId],[AccountAccumDepId],[AccountExpenseId])
+     [AccountAccumDepId],[AccountExpenseId], IsTangible)
 VALUES
-    ('VEHICLE',   'Vehículos',          5,  'STRAIGHT_LINE', 310, 416, 301),
-    ('COMPUTER',  'Equipo de Cómputo',  3,  'STRAIGHT_LINE', 470, 417, 302);
+    ('VEHICLE',   'Vehículos',          5,  'LINEA_RECTA', 416, 301, 1),
+    ('COMPUTER',  'Equipo de Cómputo',  3,  'LINEA_RECTA', 417, 302, 1);
 GO
 
 -- Atributos para VEHICLE (CategoryId = 1)
 INSERT INTO [dbo].[FixedAssetAttributeDefinitions]
-    ([AssetCategoryId],[AttributeKey],[AttributeLabel],[DataType],[IsRequired],[DisplayOrder])
+    ([AssetCategoryId],[AttributeKey],[AttributeLabel],[DataType],[IsRequired])
 VALUES
-    (1,'VIN',       'Número VIN',       'TEXT',    1, 1),
-    (1,'PLATE',     'Placa',            'TEXT',    1, 2),
-    (1,'YEAR',      'Año',              'NUMBER',  1, 3),
-    (1,'COLOR',     'Color',            'TEXT',    0, 4),
-    (1,'FUEL_TYPE', 'Tipo de Combustible','TEXT',  0, 5),
-    (1,'ENGINE_CC', 'Cilindraje (cc)',  'NUMBER',  0, 6);
+    (1,'VIN',       'Número VIN',       'TEXT',    1),
+    (1,'PLATE',     'Placa',            'TEXT',    1),
+    (1,'YEAR',      'Año',              'NUMBER',  1),
+    (1,'COLOR',     'Color',            'TEXT',    0),
+    (1,'FUEL_TYPE', 'Tipo de Combustible','TEXT',  0),
+    (1,'ENGINE_CC', 'Cilindraje (cc)',  'NUMBER',  0);
 GO
 
 -- Atributos para COMPUTER (CategoryId = 2)
 INSERT INTO [dbo].[FixedAssetAttributeDefinitions]
-    ([AssetCategoryId],[AttributeKey],[AttributeLabel],[DataType],[IsRequired],[DisplayOrder])
+    ([AssetCategoryId],[AttributeKey],[AttributeLabel],[DataType],[IsRequired])
 VALUES
-    (2,'SERIAL',      'Número de Serie', 'TEXT',   1, 1),
-    (2,'PROCESSOR',   'Procesador',      'TEXT',   1, 2),
-    (2,'MAC_ADDRESS', 'MAC Address',      'TEXT',   1, 3),
-    (2,'STORAGE_GB',  'Almacenamiento (GB)','NUMBER',1,4),
-    (2,'OS',          'Sistema Operativo','TEXT',   0, 5),
-    (2,'RAM_GB',      'RAM (GB)',         'NUMBER', 1, 6);
+    (2,'SERIAL',      'Número de Serie', 'TEXT',   1),
+    (2,'PROCESSOR',   'Procesador',      'TEXT',   1),
+    (2,'MAC_ADDRESS', 'MAC Address',      'TEXT',   1),
+    (2,'STORAGE_GB',  'Almacenamiento (GB)','NUMBER',1),
+    (2,'OS',          'Sistema Operativo','TEXT',   0),
+    (2,'RAM_GB',      'RAM (GB)',         'NUMBER', 1);
 GO
 
