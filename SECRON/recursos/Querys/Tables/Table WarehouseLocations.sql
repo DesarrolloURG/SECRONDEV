@@ -5,13 +5,11 @@ CREATE TABLE WarehouseLocations (
     LocationCode VARCHAR(20) NOT NULL,
     LocationName VARCHAR(100) NOT NULL,
     Description VARCHAR(255),
-    
     -- Estructura física
     Aisle VARCHAR(10),      -- Pasillo
     Rack VARCHAR(10),       -- Estante
     Shelf VARCHAR(10),      -- Nivel
     Position VARCHAR(10),   -- Posición
-    
     IsActive BIT DEFAULT 1,
     CreatedDate DATETIME DEFAULT GETDATE(),
     CreatedBy INT,

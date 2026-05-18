@@ -108,7 +108,9 @@
     <Compile Include="Controllers\Ctrl_Departments.cs" />
     <Compile Include="Controllers\Ctrl_EmployeeStatus.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeDefinitions.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetAttributeValues.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetCategories.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssets.cs" />
     <Compile Include="Controllers\Ctrl_ItemCategories.cs" />
     <Compile Include="Controllers\Ctrl_ItemMovementDetails.cs" />
     <Compile Include="Controllers\Ctrl_ItemMovementMaster.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Controllers\Ctrl_UserPermissions.cs" />
     <Compile Include="Controllers\Ctrl_Users.cs" />
     <Compile Include="Controllers\Ctrl_UserStatus.cs" />
+    <Compile Include="Controllers\Ctrl_Warehouses.cs" />
     <Compile Include="Models\Mdl_AccountingEntryChecks.cs" />
     <Compile Include="Models\Mdl_AccountingEntryDetails.cs" />
     <Compile Include="Models\Mdl_AccountingEntryMaster.cs" />
@@ -160,7 +163,9 @@
     <Compile Include="Models\Mdl_AudithLog_LoginResult.cs" />
     <Compile Include="Models\Mdl_EmployeeStatus.cs" />
     <Compile Include="Models\Mdl_FixedAssetAttributeDefinition.cs" />
+    <Compile Include="Models\Mdl_FixedAssetAttributeValue.cs" />
     <Compile Include="Models\Mdl_FixedAssetCategory.cs" />
+    <Compile Include="Models\Mdl_FixedAssets.cs" />
     <Compile Include="Models\Mdl_ItemCategories.cs" />
     <Compile Include="Models\Mdl_ItemMovementDetails.cs" />
     <Compile Include="Models\Mdl_ItemMovementMaster.cs" />
@@ -196,6 +201,7 @@
     <Compile Include="Models\Mdl_UserPermissions.cs" />
     <Compile Include="Models\Mdl_Users.cs" />
     <Compile Include="Models\Mdl_UserStatus.cs" />
+    <Compile Include="Models\Mdl_Warehouse.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -291,11 +297,47 @@
     <Compile Include="Views\Frm_Employees_Managment.Designer.cs">
       <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_FA_SearchEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchEmployee.Designer.cs">
+      <DependentUpon>Frm_FA_SearchEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FA_AssetAttributeValues.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FA_AssetAttributeValues.Designer.cs">
+      <DependentUpon>Frm_FA_AssetAttributeValues.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchWarehouse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchWarehouse.Designer.cs">
+      <DependentUpon>Frm_FA_SearchWarehouse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchSupplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchSupplier.Designer.cs">
+      <DependentUpon>Frm_FA_SearchSupplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchCategory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FA_SearchCategory.Designer.cs">
+      <DependentUpon>Frm_FA_SearchCategory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_FA_SearchAccount.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\Frm_FA_SearchAccount.Designer.cs">
       <DependentUpon>Frm_FA_SearchAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset.Designer.cs">
+      <DependentUpon>Frm_FixedAsset.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_Home.cs">
       <SubType>Form</SubType>
@@ -494,8 +536,26 @@
     <EmbeddedResource Include="Views\Frm_Employees_Managment.resx">
       <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FA_SearchEmployee.resx">
+      <DependentUpon>Frm_FA_SearchEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FA_AssetAttributeValues.resx">
+      <DependentUpon>Frm_FA_AssetAttributeValues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FA_SearchWarehouse.resx">
+      <DependentUpon>Frm_FA_SearchWarehouse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FA_SearchSupplier.resx">
+      <DependentUpon>Frm_FA_SearchSupplier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FA_SearchCategory.resx">
+      <DependentUpon>Frm_FA_SearchCategory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FA_SearchAccount.resx">
       <DependentUpon>Frm_FA_SearchAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset.resx">
+      <DependentUpon>Frm_FixedAsset.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Home.resx">
       <DependentUpon>Frm_Home.cs</DependentUpon>

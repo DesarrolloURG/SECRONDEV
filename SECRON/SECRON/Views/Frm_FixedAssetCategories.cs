@@ -54,7 +54,7 @@ namespace SECRON.Views
             this.Resize += (s, e) =>
             {
                 if (toolStripPaginacion != null)
-                    toolStripPaginacion.Location = new Point(this.Width - 300, 225);
+                    toolStripPaginacion.Location = new Point(this.Width - 300, 205);
             };
         }
 
@@ -75,6 +75,9 @@ namespace SECRON.Views
                 CargarCategorias();
                 ActualizarInfoPaginacion();
                 LimpiarPanelAtributos();
+
+                ConfigurarTablaAtributos();
+                AjustarColumnasAtributos();
 
                 if (UserData != null)
                 {
@@ -211,8 +214,8 @@ namespace SECRON.Views
 
             ComboBox_IsRequired.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_IsRequired.Items.Clear();
-            ComboBox_IsRequired.Items.Add("No");
-            ComboBox_IsRequired.Items.Add("Si");
+            ComboBox_IsRequired.Items.Add("NO");
+            ComboBox_IsRequired.Items.Add("SI");
             ComboBox_IsRequired.SelectedIndex = 0;
 
             ComboBox_IsTangible.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -220,6 +223,23 @@ namespace SECRON.Views
             ComboBox_IsTangible.Items.Add("TANGIBLE");
             ComboBox_IsTangible.Items.Add("INTANGIBLE");
             ComboBox_IsTangible.SelectedIndex = 0;
+
+            FiltroAtributoTipo.DropDownStyle = ComboBoxStyle.DropDownList;
+            FiltroAtributoTipo.Items.Clear();
+            FiltroAtributoTipo.Items.Add("TODOS");
+            FiltroAtributoTipo.Items.Add("TEXTO");
+            FiltroAtributoTipo.Items.Add("NUMERO");
+            FiltroAtributoTipo.Items.Add("FECHA");
+            FiltroAtributoTipo.SelectedIndex = 0;
+
+            FiltroAtributoEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            FiltroAtributoEstado.Items.Clear();
+            FiltroAtributoEstado.Items.Add("TODOS");
+            FiltroAtributoEstado.Items.Add("SOLO ACTIVOS");
+            FiltroAtributoEstado.Items.Add("SOLO INACTIVOS");
+            FiltroAtributoEstado.SelectedIndex = 1;
+
+            ConfigurarPlaceHolder(Txt_BuscarAtributo, "BUSCAR CARACTERÍSTICA...");
         }
 
         #endregion ConfigurarCombos
@@ -267,7 +287,20 @@ namespace SECRON.Views
             Tabla.MultiSelect = false;
             Tabla.ReadOnly = true;
             Tabla.AllowUserToResizeRows = false;
-            Tabla.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+
+            // Estilos visuales
+            Tabla.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(94, 53, 177);
+            Tabla.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            Tabla.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Tabla.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            Tabla.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 143, 109);
+            Tabla.DefaultCellStyle.SelectionForeColor = Color.White;
+            Tabla.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            Tabla.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+
+            Tabla.RowTemplate.Height = 35;
+            Tabla.ColumnHeadersHeight = 40;
 
             if (Tabla.Rows.Count > 0)
                 Tabla.Rows[0].Selected = true;
@@ -361,7 +394,7 @@ namespace SECRON.Views
                 SetTextBoxFromValue(Txt_AccountExpense, cuentaExpense != null ? $"{cuentaExpense.Code} - {cuentaExpense.Name}" : "", "SELECCIONAR CUENTA GASTO DEP.");
 
                 CargarAtributosDeCategoriaSeleccionada(categoryId);
-                Lbl_AtributosHeader.Text = $"ATRIBUTOS DE: {_categoriaSeleccionada.CategoryName.ToUpper()}";
+                Lbl_AtributosHeader.Text = $"CARACTERÍSTICAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_atributosList.Count} CARACTERÍSTICAS";
             }
             catch (Exception ex)
             {
@@ -402,11 +435,13 @@ namespace SECRON.Views
                 a.AttributeKey,
                 a.AttributeLabel,
                 a.DataType,
-                IsRequired = a.IsRequired ? "Si" : "No",
+                IsRequired = a.IsRequired ? "SI" : "NO",
                 IsActive = a.IsActive ? "ACTIVO" : "INACTIVO"
             }).ToList();
 
             TablaAtributos.DataSource = data;
+            ConfigurarTablaAtributos();
+            AjustarColumnasAtributos();
         }
 
         private void ConfigurarTablaAtributos()
@@ -427,7 +462,19 @@ namespace SECRON.Views
             TablaAtributos.MultiSelect = false;
             TablaAtributos.ReadOnly = true;
             TablaAtributos.AllowUserToResizeRows = false;
+
+            TablaAtributos.RowHeadersVisible = false;
+            TablaAtributos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(94, 53, 177);
+            TablaAtributos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             TablaAtributos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            TablaAtributos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            TablaAtributos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 143, 109);
+            TablaAtributos.DefaultCellStyle.SelectionForeColor = Color.White;
+            TablaAtributos.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            TablaAtributos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            TablaAtributos.RowTemplate.Height = 35;
+            TablaAtributos.ColumnHeadersHeight = 40;
+
 
             TablaAtributos.SelectionChanged -= TablaAtributos_SelectionChanged;
             TablaAtributos.SelectionChanged += TablaAtributos_SelectionChanged;
@@ -465,7 +512,7 @@ namespace SECRON.Views
                 int di = ComboBox_DataType.Items.IndexOf(_atributoSeleccionado.DataType ?? "TEXT");
                 ComboBox_DataType.SelectedIndex = di >= 0 ? di : 0;
 
-                ComboBox_IsRequired.SelectedItem = _atributoSeleccionado.IsRequired ? "Si" : "No";
+                ComboBox_IsRequired.SelectedItem = _atributoSeleccionado.IsRequired ? "SI" : "NO";
             }
             catch (Exception ex)
             {
@@ -486,6 +533,59 @@ namespace SECRON.Views
         #endregion ConfiguracionesTabla_Atributos
 
         #region Search
+
+        private void Btn_SearchAtributo_Click(object sender, EventArgs e)
+        {
+            if (_categoriaSeleccionada == null) return;
+
+            string texto = TienePlaceholder(Txt_BuscarAtributo, "BUSCAR CARACTERÍSTICA...") ? "" : Txt_BuscarAtributo.Text.Trim().ToUpper();
+            string filtroTipo = FiltroAtributoTipo.SelectedItem?.ToString() ?? "TODOS";
+            string filtroEstado = FiltroAtributoEstado.SelectedItem?.ToString() ?? "TODOS";
+
+            var filtrados = _atributosList.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(texto))
+                filtrados = filtrados.Where(a => a.AttributeKey.Contains(texto) || a.AttributeLabel.Contains(texto));
+
+            if (filtroTipo != "TODOS")
+                filtrados = filtrados.Where(a => a.DataType == filtroTipo);
+
+            if (filtroEstado == "SOLO ACTIVOS")
+                filtrados = filtrados.Where(a => a.IsActive);
+            else if (filtroEstado == "SOLO INACTIVOS")
+                filtrados = filtrados.Where(a => !a.IsActive);
+
+            var data = filtrados.Select(a => new
+            {
+                a.AttributeDefId,
+                a.AssetCategoryId,
+                a.AttributeKey,
+                a.AttributeLabel,
+                DataType = a.DataType,
+                IsRequired = a.IsRequired ? "SI" : "NO",
+                IsActive = a.IsActive ? "ACTIVO" : "INACTIVO"
+            }).ToList();
+
+            TablaAtributos.DataSource = null;
+            TablaAtributos.DataSource = data;
+            ConfigurarTablaAtributos();
+            AjustarColumnasAtributos();
+        }
+
+        private void Txt_BuscarAtributo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; Btn_SearchAtributo_Click(sender, e); }
+        }
+
+        private void Btn_CleanSearchAtributo_Click(object sender, EventArgs e)
+        {
+            SetTextBoxFromValue(Txt_BuscarAtributo, "", "BUSCAR CARACTERÍSTICA...");
+            FiltroAtributoTipo.SelectedIndex = 0;
+            FiltroAtributoEstado.SelectedIndex = 1;
+            AsignarDataSourceAtributos();
+            ConfigurarTablaAtributos();
+            AjustarColumnasAtributos();
+        }
 
         private void Btn_Search_Click(object sender, EventArgs e)
         {
@@ -521,7 +621,7 @@ namespace SECRON.Views
                 else
                 {
                     TablaAtributos.DataSource = null;
-                    Lbl_AtributosHeader.Text = "ATRIBUTOS — SELECCIONE UNA CATEGORÍA";
+                    Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UNA CATEGORÍA";
                     LimpiarPanelAtributos();
                 }
 
@@ -567,7 +667,7 @@ namespace SECRON.Views
             else
             {
                 TablaAtributos.DataSource = null;
-                Lbl_AtributosHeader.Text = "ATRIBUTOS — SELECCIONE UNA CATEGORÍA";
+                Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UNA CATEGORÍA";
                 LimpiarPanelAtributos();
             }
 
@@ -586,7 +686,7 @@ namespace SECRON.Views
             toolStripPaginacion.GripStyle = ToolStripGripStyle.Hidden;
             toolStripPaginacion.BackColor = Color.FromArgb(248, 249, 250);
             toolStripPaginacion.AutoSize = true;
-            toolStripPaginacion.Location = new Point(this.Width - 400, 225);
+            toolStripPaginacion.Location = new Point(this.Width - 400, 200);
 
             btnAnterior = new ToolStripButton { Text = "❮ Anterior" };
             btnAnterior.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -776,13 +876,13 @@ namespace SECRON.Views
             }
             if (TienePlaceholder(Txt_AttributeKey, "CLAVE (ej. VIN, SERIAL)"))
             {
-                MessageBox.Show("El campo CLAVE DEL ATRIBUTO es obligatorio.", "Validación",
+                MessageBox.Show("El campo CLAVE es obligatorio.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Txt_AttributeKey.Focus(); return false;
             }
             if (TienePlaceholder(Txt_AttributeLabel, "ETIQUETA DEL ATRIBUTO"))
             {
-                MessageBox.Show("El campo ETIQUETA DEL ATRIBUTO es obligatorio.", "Validación",
+                MessageBox.Show("El campo ETIQUETA es obligatorio.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Txt_AttributeLabel.Focus(); return false;
             }
@@ -994,7 +1094,7 @@ namespace SECRON.Views
             ComboBox_DepreciationMethod.SelectedIndex = 0;
 
             TablaAtributos.DataSource = null;
-            Lbl_AtributosHeader.Text = "ATRIBUTOS — SELECCIONE UNA CATEGORÍA";
+            Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UNA CATEGORÍA";
             LimpiarPanelAtributos();
 
             Txt_CategoryCode.Focus();
@@ -1019,7 +1119,7 @@ namespace SECRON.Views
                     AttributeKey = Txt_AttributeKey.Text.Trim(),
                     AttributeLabel = Txt_AttributeLabel.Text.Trim(),
                     DataType = ComboBox_DataType.SelectedItem?.ToString() ?? "TEXT",
-                    IsRequired = ComboBox_IsRequired.SelectedItem?.ToString() == "Si",
+                    IsRequired = ComboBox_IsRequired.SelectedItem?.ToString() == "SI",
                     IsActive = true
                 });
 
@@ -1068,7 +1168,7 @@ namespace SECRON.Views
                 _atributoSeleccionado.AttributeKey = Txt_AttributeKey.Text.Trim();
                 _atributoSeleccionado.AttributeLabel = Txt_AttributeLabel.Text.Trim();
                 _atributoSeleccionado.DataType = ComboBox_DataType.SelectedItem?.ToString() ?? "TEXT";
-                _atributoSeleccionado.IsRequired = ComboBox_IsRequired.SelectedItem?.ToString() == "Si";
+                _atributoSeleccionado.IsRequired = ComboBox_IsRequired.SelectedItem?.ToString() == "SI";
                 _atributoSeleccionado = ConvertirAtributo(_atributoSeleccionado);
 
                 int resultado = Ctrl_FixedAssetAttributeDefinitions.ActualizarAtributo(_atributoSeleccionado);
