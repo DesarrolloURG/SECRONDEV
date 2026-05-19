@@ -413,7 +413,6 @@ namespace SECRON.Views
                 }
 
                 // ===== PASO 2: ACTUALIZAR TODAS LAS PARTIDAS CONTABLES =====
-                int partidasActualizadas = 0;
 
                 if (cantidadPartidas > 0)
                 {

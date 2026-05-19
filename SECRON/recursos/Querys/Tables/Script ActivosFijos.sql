@@ -148,20 +148,60 @@ CREATE TABLE [dbo].[FixedAssetTransferStatus](
     [TransferStatusId]  [int] IDENTITY(1,1) NOT NULL,
     [StatusCode]        [varchar](20) NOT NULL,
     [StatusName]        [varchar](50) NOT NULL,
+    [Description]       [varchar](255) NULL,
+    [Order]             [int] NOT NULL,
+    [IsFinal]           [bit] NOT NULL CONSTRAINT DF_FATS_IsFinal DEFAULT 0,
+    [IsActive]          [bit] NOT NULL CONSTRAINT DF_FATS_Active DEFAULT 1,
     CONSTRAINT PK_FATS PRIMARY KEY ([TransferStatusId]),
-    CONSTRAINT UK_FATS_Code UNIQUE ([StatusCode])
+    CONSTRAINT UK_FATS_Code UNIQUE ([StatusCode]),
+    CONSTRAINT UK_FATS_Order UNIQUE ([Order])
 );
 GO
 
-INSERT INTO [dbo].[FixedAssetTransferStatus] ([StatusCode],[StatusName]) VALUES
-('PENDING',   'Pendiente'),
-('APPROVED',  'Aprobado'),
-('REJECTED',  'Rechazado'),
-('COMPLETED', 'Completado');
+INSERT INTO [dbo].[FixedAssetTransferStatus]
+    ([StatusCode], [StatusName], [Description], [Order], [IsFinal], [IsActive])
+VALUES
+    ('PENDING',   'PENDIENTE',  'SE REALIZA LA SOLICITUD PARA EL TRASLADO DE UN ACTIVO', 1, 0, 1),
+    ('APPROVED',  'APROBADO',   'SE APRUEBA LA SOLICITUD PARA EL TRASLADO DEL ACTIVO',   2, 0, 1),
+    ('REJECTED',  'RECHAZADO',  'SE RECHAZO LA SOLICITUD PARA EL TRASLADO DEL ACTIVO',   3, 1, 1),
+    ('COMPLETED', 'COMPLETADO', 'SE COMPLETO EL TRASLADO',                               4, 1, 1);
 GO
 
 -- -------------------------------------------------------
--- 7. TRASLADOS DE ACTIVOS
+-- 7. TRANSICIONES PERMITIDAS ENTRE ESTADOS
+-- -------------------------------------------------------
+CREATE TABLE [dbo].[FixedAssetTransferStatusTransitions](
+    [TransitionId]  [int] IDENTITY(1,1) NOT NULL,
+    [FromStatusId]  [int] NOT NULL,
+    [ToStatusId]    [int] NOT NULL,
+    [IsActive]      [bit] NOT NULL CONSTRAINT DF_FATST_Active DEFAULT 1,
+    [CreatedDate]   [datetime] NULL CONSTRAINT DF_FATST_Created DEFAULT GETDATE(),
+    [CreatedBy]     [int] NULL,
+    CONSTRAINT PK_FATST PRIMARY KEY ([TransitionId]),
+    CONSTRAINT UK_FATST_Pair UNIQUE ([FromStatusId], [ToStatusId]),
+    CONSTRAINT FK_FATST_From FOREIGN KEY ([FromStatusId])
+        REFERENCES [dbo].[FixedAssetTransferStatus]([TransferStatusId]),
+    CONSTRAINT FK_FATST_To FOREIGN KEY ([ToStatusId])
+        REFERENCES [dbo].[FixedAssetTransferStatus]([TransferStatusId]),
+    CONSTRAINT CHK_FATST_NoSelf CHECK ([FromStatusId] <> [ToStatusId])
+);
+GO
+
+CREATE INDEX IX_FATST_From ON [dbo].[FixedAssetTransferStatusTransitions]([FromStatusId]);
+CREATE INDEX IX_FATST_To   ON [dbo].[FixedAssetTransferStatusTransitions]([ToStatusId]);
+GO
+
+-- PENDING(1) → APPROVED(2)
+-- PENDING(1) → REJECTED(3)
+-- APPROVED(2) → COMPLETED(4)
+INSERT INTO [dbo].[FixedAssetTransferStatusTransitions] ([FromStatusId], [ToStatusId]) VALUES
+(1, 2),
+(1, 3),
+(2, 4);
+GO
+
+-- -------------------------------------------------------
+-- 8. TRASLADOS DE ACTIVOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransfers](
     [TransferId]            [int] IDENTITY(1,1) NOT NULL,

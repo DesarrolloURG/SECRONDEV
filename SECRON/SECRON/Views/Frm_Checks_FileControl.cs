@@ -16,8 +16,6 @@ namespace SECRON.Views
     {
         #region PropiedadesIniciales
         // Propiedades para resize panel izquierdo
-        private bool _isResizingPanel = false;
-        private int _resizeStartX = 0;
         private const int PANEL_WIDTH_MAX = 477;
         private const int PANEL_WIDTH_MIN = 200;
         private const int RESIZE_BORDER_WIDTH = 5;

@@ -15,9 +15,9 @@ namespace SECRON.Configuration
         // Cadena de conexión centralizada BASE DE DATOS QA
         //private static readonly string connectionString = "Initial Catalog=SECRONQA; User ID=sa; Password=URdatabase24.; Data Source=172.16.0.153";
         // Cadena de conexión centralizada BASE DE DATOS DEVELOPMENT
-        private static readonly string connectionString = "Initial Catalog=SECRONDEV; User ID=sa; Password=URdatabase24.; Data Source=172.16.0.153";
+        //private static readonly string connectionString = "Initial Catalog=SECRONDEV; User ID=sa; Password=URdatabase24.; Data Source=172.16.0.153";
         // Cadena de conexión alternativa para entorno de desarrollo local
-        //private static readonly string connectionString = "Initial Catalog=SECRON; User ID=sa; Password=URdatabase24.; Data Source=DESKTOP-G7KKLEL\\SQLEXPRESS";
+        private static readonly string connectionString = "Initial Catalog=SECRONDEV; User ID=sa; Password=Dante2000; Data Source=DIGITALPOINT26\\SQLEXPRESS";
         #endregion CadenaDeConexion
         #region ProcedimientosDeConexion
         // Método original de iniciar conexión

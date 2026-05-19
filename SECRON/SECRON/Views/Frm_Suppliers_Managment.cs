@@ -27,7 +27,7 @@ namespace SECRON.Views
         private ToolStrip toolStripPaginacion;
         private ToolStripButton btnAnterior;
         private ToolStripButton btnSiguiente;
-        private ToolStripLabel lblPaginaInfo;
+        //private ToolStripLabel lblPaginaInfo;
 
         private void Frm_Suppliers_Managment_Load(object sender, EventArgs e)
         {

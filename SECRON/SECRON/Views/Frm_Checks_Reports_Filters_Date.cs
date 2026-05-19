@@ -39,8 +39,6 @@ namespace SECRON.Views
 
         #region PropiedadesPrivadas
 
-        private bool _cargandoExclusiones = false;
-        private bool _precargaAplicada = false;
 
         // Mes actualmente visible en el calendario
         private int _viewYear;
@@ -104,8 +102,6 @@ namespace SECRON.Views
 
             foreach (var f in FechasExcluidasIniciales ?? new List<DateTime>())
                 _diasExcluidos.Add(DayKey(f));
-
-            _precargaAplicada = true;
 
             _viewYear = DTP_FechaInicio.Value.Year;
             _viewMonth = DTP_FechaInicio.Value.Month - 1;

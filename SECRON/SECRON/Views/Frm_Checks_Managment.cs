@@ -22,8 +22,6 @@ namespace SECRON.Views
         // Variables de entorno
         public Mdl_Security_UserInfo UserData { get; set; }
 
-        // Cheque seleccionado para editar
-        private Mdl_Checks _chequeSeleccionado = null;
 
         // Lista de cuentas de la partida contable
         private List<PartidaCuentaItem> _partidaContable = new List<PartidaCuentaItem>();
@@ -2421,7 +2419,6 @@ namespace SECRON.Views
             int col1Width = 40;
             int col2Width = 300;
             int col3Width = 40;
-            int col4Width = 120;
 
             // Líneas verticales
             g.DrawLine(pen, tableX + col1Width, tableY, tableX + col1Width, tableY + tableHeight);

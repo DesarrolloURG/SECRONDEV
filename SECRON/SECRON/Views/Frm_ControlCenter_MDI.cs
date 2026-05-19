@@ -1936,7 +1936,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Valorización y Costos", "KardexValorizacion");
         }
-
         private void BtnStaticItemsDepreciation_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1963,8 +1962,6 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             Frm_FixedAssetCategories frm = new Frm_FixedAssetCategories();
-            //Form frm = new Form();
-            frm.UserData = this.UserData;
             frm.Text = "Catálogo General de Activos";
             frm.BackColor = Color.White;
             //frm.UserData = this.UserData;
@@ -1976,12 +1973,13 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_FixedAsset frm = new Frm_FixedAsset();
-            frm.UserData = this.UserData;   
-            frm.Text = "Control de Movimientos";
+            Frm_FixedAsset_Movements frm = new Frm_FixedAsset_Movements();
+            frm.Text = "Traslados de Activos";
             frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
 
-            AbrirFormularioConPestana(frm, "Control de Movimientos", "StaticItemsMovementsController");
+            AbrirFormularioConPestana(frm, "Traslados de Activos", "StaticItemsMovementsController");
         }
 
         private void BtnStaticItemsReports_Click(object sender, EventArgs e)

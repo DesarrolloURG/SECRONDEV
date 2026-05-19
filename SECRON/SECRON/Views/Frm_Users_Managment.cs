@@ -31,7 +31,6 @@ namespace SECRON.Views
 
         // Listas para almacenar datos
         private List<Mdl_Users> usuariosList;
-        private List<Mdl_Employees> colaboradoresList;
 
         // Variables para paginación - TABLA 1 (USUARIOS)
         private int paginaActualUsuarios = 1;
@@ -883,11 +882,6 @@ namespace SECRON.Views
 
                 if (confirmacion != DialogResult.Yes)
                     return;
-
-                bool TienePlaceholder(TextBox txt, string placeholder)
-                {
-                    return string.IsNullOrWhiteSpace(txt.Text) || txt.Text == placeholder || txt.ForeColor == Color.Gray;
-                }
 
                 string passwordPlainText = Txt_Password.Text.Trim();
 

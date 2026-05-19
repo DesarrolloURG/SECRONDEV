@@ -41,7 +41,7 @@ namespace SECRON.Views
         private ToolStrip toolStripPaginacion;
         private ToolStripButton btnAnterior;
         private ToolStripButton btnSiguiente;
-        private ToolStripLabel lblPaginaInfo;
+        //private ToolStripLabel lblPaginaInfo;
         private bool _cargandoFormulario = true;
         // Evento Load del formulario
         private void Frm_Employees_Managment_Load(object sender, EventArgs e)

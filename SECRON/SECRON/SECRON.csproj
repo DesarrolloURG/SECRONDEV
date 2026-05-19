@@ -110,7 +110,10 @@
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeDefinitions.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeValues.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetCategories.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetMovements.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssets.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetTransferStatus.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetTransferStatusTransitions.cs" />
     <Compile Include="Controllers\Ctrl_ItemCategories.cs" />
     <Compile Include="Controllers\Ctrl_ItemMovementDetails.cs" />
     <Compile Include="Controllers\Ctrl_ItemMovementMaster.cs" />
@@ -166,6 +169,9 @@
     <Compile Include="Models\Mdl_FixedAssetAttributeValue.cs" />
     <Compile Include="Models\Mdl_FixedAssetCategory.cs" />
     <Compile Include="Models\Mdl_FixedAssets.cs" />
+    <Compile Include="Models\Mdl_FixedAssetTransfers.cs" />
+    <Compile Include="Models\Mdl_FixedAssetTransferStatus.cs" />
+    <Compile Include="Models\Mdl_FixedAssetTransferStatusTransition.cs" />
     <Compile Include="Models\Mdl_ItemCategories.cs" />
     <Compile Include="Models\Mdl_ItemMovementDetails.cs" />
     <Compile Include="Models\Mdl_ItemMovementMaster.cs" />
@@ -338,6 +344,24 @@
     </Compile>
     <Compile Include="Views\Frm_FixedAsset.Designer.cs">
       <DependentUpon>Frm_FixedAsset.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_Movements.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_Movements.Designer.cs">
+      <DependentUpon>Frm_FixedAsset_Movements.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_StatusMovements.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_StatusMovements.Designer.cs">
+      <DependentUpon>Frm_FixedAsset_StatusMovements.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_TransferStatusTransitions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_TransferStatusTransitions.Designer.cs">
+      <DependentUpon>Frm_FixedAsset_TransferStatusTransitions.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_Home.cs">
       <SubType>Form</SubType>
@@ -557,6 +581,15 @@
     <EmbeddedResource Include="Views\Frm_FixedAsset.resx">
       <DependentUpon>Frm_FixedAsset.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset_Movements.resx">
+      <DependentUpon>Frm_FixedAsset_Movements.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset_StatusMovements.resx">
+      <DependentUpon>Frm_FixedAsset_StatusMovements.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset_TransferStatusTransitions.resx">
+      <DependentUpon>Frm_FixedAsset_TransferStatusTransitions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Home.resx">
       <DependentUpon>Frm_Home.cs</DependentUpon>
     </EmbeddedResource>
@@ -749,6 +782,10 @@
     <None Include="Img\ComprasNegro25x25.png" />
     <None Include="Img\InventoryNegro25x25.png" />
     <None Include="Img\Gastos2Negro25x25.png" />
+    <None Include="Resources\KardexBlanco20x20.png" />
+    <None Include="Resources\KardexNegro20x20.png" />
+    <None Include="Resources\LocationBlanco20x20.png" />
+    <None Include="Resources\LocationNegro20x20.png" />
     <Content Include="SECRON-Logotipo.ico" />
   </ItemGroup>
   <ItemGroup>

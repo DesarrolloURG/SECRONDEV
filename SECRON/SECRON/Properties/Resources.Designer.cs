@@ -19,7 +19,7 @@ namespace SECRON.Properties {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -393,6 +393,26 @@ namespace SECRON.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap KardexBlanco20x20 {
+            get {
+                object obj = ResourceManager.GetObject("KardexBlanco20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap KardexNegro20x20 {
+            get {
+                object obj = ResourceManager.GetObject("KardexNegro20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap KardexNegro25x25 {
             get {
                 object obj = ResourceManager.GetObject("KardexNegro25x25", resourceCulture);
@@ -416,6 +436,26 @@ namespace SECRON.Properties {
         internal static System.Drawing.Bitmap LibrosContablesNegro25x25 {
             get {
                 object obj = ResourceManager.GetObject("LibrosContablesNegro25x25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LocationBlanco20x20 {
+            get {
+                object obj = ResourceManager.GetObject("LocationBlanco20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LocationNegro20x20 {
+            get {
+                object obj = ResourceManager.GetObject("LocationNegro20x20", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

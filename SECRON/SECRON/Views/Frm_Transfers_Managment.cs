@@ -21,9 +21,6 @@ namespace SECRON.Views
         #region PropiedadesIniciales
         public Mdl_Security_UserInfo UserData { get; set; }
 
-        // Transfer seleccionada para editar
-        private Mdl_Transfers _transferSeleccionada = null;
-
         // Lista de cuentas de la partida contable
         private List<PartidaCuentaItem> _partidaContable = new List<PartidaCuentaItem>();
 
@@ -31,7 +28,6 @@ namespace SECRON.Views
         private decimal _montoTotal = 0;
         private decimal _valorImpreso = 0;
         private int _filaSeleccionadaIndex = -1;
-        private bool _advertenciaLimiteMostrada = false;
         private bool _esExencionManual = false;
 
         [System.Runtime.InteropServices.DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -2353,7 +2349,6 @@ namespace SECRON.Views
             int col1Width = 40;
             int col2Width = 300;
             int col3Width = 40;
-            int col4Width = 120;
 
             // Líneas verticales
             g.DrawLine(pen, tableX + col1Width, tableY, tableX + col1Width, tableY + tableHeight);

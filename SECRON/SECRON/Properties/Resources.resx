@@ -142,6 +142,12 @@
   <data name="TemplateBlack25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\TemplateBlack25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Gastos2Negro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\Gastos2Negro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AccountsNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\AccountsNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Clear25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\Clear25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -184,8 +190,8 @@
   <data name="LogoModificadoURG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\LogoModificadoURG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AccountsNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Img\AccountsNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CheckNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\CheckNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SECRON-LogotipoAzul" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\SECRON-LogotipoAzul.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -229,14 +235,8 @@
   <data name="HomeNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\HomeNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SaveVerde25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Img\SaveVerde25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Indice25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\Indice25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CheckNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Img\CheckNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="UpdateAzul25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\UpdateAzul25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -273,6 +273,9 @@
   </data>
   <data name="SeleccionarNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\SeleccionarNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveVerde25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Img\SaveVerde25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TransferNegro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\TransferNegro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -313,7 +316,16 @@
   <data name="SECRON-Logotipo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Img\SECRON-Logotipo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Gastos2Negro25x25" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Img\Gastos2Negro25x25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="KardexBlanco20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KardexBlanco20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KardexNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KardexNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LocationBlanco20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LocationBlanco20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LocationNegro20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LocationNegro20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
