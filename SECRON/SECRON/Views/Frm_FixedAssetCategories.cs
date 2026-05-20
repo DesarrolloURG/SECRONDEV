@@ -1081,7 +1081,6 @@ namespace SECRON.Views
         {
             if (!Btn_Clear.Enabled) return;
             LimpiarFormularioCategoria();
-            ConfigurarControlesPorPermisos();
         }
 
         private void LimpiarFormularioCategoria()
@@ -1509,5 +1508,7 @@ namespace SECRON.Views
         }
 
         #endregion SistemaDePermisos
+
+
     }
 }

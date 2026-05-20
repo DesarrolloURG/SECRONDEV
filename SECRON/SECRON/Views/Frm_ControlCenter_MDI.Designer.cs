@@ -81,7 +81,7 @@
             this.BtnLocationsManagment = new System.Windows.Forms.Button();
             this.PanelStaticItems = new System.Windows.Forms.Panel();
             this.BtnStaticItemsReports = new System.Windows.Forms.Button();
-            this.BtnStaticItemsDepreciation = new System.Windows.Forms.Button();
+            this.BtnStaticItemsCategories = new System.Windows.Forms.Button();
             this.BtnStaticItemsMaintenance = new System.Windows.Forms.Button();
             this.BtnStaticItemsMovementsController = new System.Windows.Forms.Button();
             this.BtnStaticItemsResponsabilityLetter = new System.Windows.Forms.Button();
@@ -1111,12 +1111,12 @@
             // 
             this.PanelStaticItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsReports);
-            this.PanelStaticItems.Controls.Add(this.BtnStaticItemsDepreciation);
+            this.PanelStaticItems.Controls.Add(this.BtnStaticItemsCategories);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsMaintenance);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsMovementsController);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsResponsabilityLetter);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsManagment);
-            this.PanelStaticItems.Location = new System.Drawing.Point(520, 1);
+            this.PanelStaticItems.Location = new System.Drawing.Point(520, 300);
             this.PanelStaticItems.Name = "PanelStaticItems";
             this.PanelStaticItems.Size = new System.Drawing.Size(300, 240);
             this.PanelStaticItems.TabIndex = 14;
@@ -1142,25 +1142,25 @@
             this.BtnStaticItemsReports.UseVisualStyleBackColor = false;
             this.BtnStaticItemsReports.Click += new System.EventHandler(this.BtnStaticItemsReports_Click);
             // 
-            // BtnStaticItemsDepreciation
+            // BtnStaticItemsCategories
             // 
-            this.BtnStaticItemsDepreciation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnStaticItemsDepreciation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnStaticItemsDepreciation.FlatAppearance.BorderSize = 0;
-            this.BtnStaticItemsDepreciation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnStaticItemsDepreciation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnStaticItemsDepreciation.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnStaticItemsDepreciation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnStaticItemsDepreciation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsDepreciation.Location = new System.Drawing.Point(0, 140);
-            this.BtnStaticItemsDepreciation.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnStaticItemsDepreciation.Name = "BtnStaticItemsDepreciation";
-            this.BtnStaticItemsDepreciation.Size = new System.Drawing.Size(300, 35);
-            this.BtnStaticItemsDepreciation.TabIndex = 48;
-            this.BtnStaticItemsDepreciation.Text = "DEPRECIACIÓN Y VALUACIÓN";
-            this.BtnStaticItemsDepreciation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnStaticItemsDepreciation.UseVisualStyleBackColor = false;
-            this.BtnStaticItemsDepreciation.Click += new System.EventHandler(this.BtnStaticItemsDepreciation_Click);
+            this.BtnStaticItemsCategories.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnStaticItemsCategories.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnStaticItemsCategories.FlatAppearance.BorderSize = 0;
+            this.BtnStaticItemsCategories.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnStaticItemsCategories.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnStaticItemsCategories.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnStaticItemsCategories.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnStaticItemsCategories.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnStaticItemsCategories.Location = new System.Drawing.Point(0, 140);
+            this.BtnStaticItemsCategories.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnStaticItemsCategories.Name = "BtnStaticItemsCategories";
+            this.BtnStaticItemsCategories.Size = new System.Drawing.Size(300, 35);
+            this.BtnStaticItemsCategories.TabIndex = 48;
+            this.BtnStaticItemsCategories.Text = "CATEGORÍAS DE ACTIVOS";
+            this.BtnStaticItemsCategories.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnStaticItemsCategories.UseVisualStyleBackColor = false;
+            this.BtnStaticItemsCategories.Click += new System.EventHandler(this.BtnStaticItemsCategories_Click);
             // 
             // BtnStaticItemsMaintenance
             // 
@@ -2650,7 +2650,7 @@
         private System.Windows.Forms.Button BtnLocationsManagment;
         private System.Windows.Forms.Panel PanelStaticItems;
         private System.Windows.Forms.Button BtnStaticItemsReports;
-        private System.Windows.Forms.Button BtnStaticItemsDepreciation;
+        private System.Windows.Forms.Button BtnStaticItemsCategories;
         private System.Windows.Forms.Button BtnStaticItemsMaintenance;
         private System.Windows.Forms.Button BtnStaticItemsMovementsController;
         private System.Windows.Forms.Button BtnStaticItemsResponsabilityLetter;

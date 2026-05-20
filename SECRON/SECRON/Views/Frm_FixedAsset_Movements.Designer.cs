@@ -117,7 +117,7 @@
             this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Superior.Location = new System.Drawing.Point(0, 0);
             this.Panel_Superior.Name = "Panel_Superior";
-            this.Panel_Superior.Size = new System.Drawing.Size(1184, 55);
+            this.Panel_Superior.Size = new System.Drawing.Size(1155, 55);
             this.Panel_Superior.TabIndex = 5;
             // 
             // Btn_Cancel
@@ -127,7 +127,7 @@
             this.Btn_Cancel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_Cancel.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
             this.Btn_Cancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Cancel.Location = new System.Drawing.Point(420, 12);
+            this.Btn_Cancel.Location = new System.Drawing.Point(391, 12);
             this.Btn_Cancel.Name = "Btn_Cancel";
             this.Btn_Cancel.Size = new System.Drawing.Size(201, 30);
             this.Btn_Cancel.TabIndex = 57;
@@ -143,7 +143,7 @@
             this.Btn_States.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_States.Image = global::SECRON.Properties.Resources.ArticleNegro25x25;
             this.Btn_States.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_States.Location = new System.Drawing.Point(627, 12);
+            this.Btn_States.Location = new System.Drawing.Point(598, 12);
             this.Btn_States.Name = "Btn_States";
             this.Btn_States.Size = new System.Drawing.Size(209, 30);
             this.Btn_States.TabIndex = 56;
@@ -159,7 +159,7 @@
             this.Btn_Export.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_Export.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
             this.Btn_Export.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Export.Location = new System.Drawing.Point(1043, 12);
+            this.Btn_Export.Location = new System.Drawing.Point(1014, 12);
             this.Btn_Export.Name = "Btn_Export";
             this.Btn_Export.Size = new System.Drawing.Size(119, 30);
             this.Btn_Export.TabIndex = 55;
@@ -175,7 +175,7 @@
             this.Btn_Transfer.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_Transfer.Image = global::SECRON.Properties.Resources.KardexNegro25x25;
             this.Btn_Transfer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Transfer.Location = new System.Drawing.Point(842, 13);
+            this.Btn_Transfer.Location = new System.Drawing.Point(813, 13);
             this.Btn_Transfer.Name = "Btn_Transfer";
             this.Btn_Transfer.Size = new System.Drawing.Size(195, 30);
             this.Btn_Transfer.TabIndex = 54;
@@ -207,7 +207,7 @@
             this.Panel_Derecho.ForeColor = System.Drawing.Color.Black;
             this.Panel_Derecho.Location = new System.Drawing.Point(477, 55);
             this.Panel_Derecho.Name = "Panel_Derecho";
-            this.Panel_Derecho.Size = new System.Drawing.Size(707, 790);
+            this.Panel_Derecho.Size = new System.Drawing.Size(678, 632);
             this.Panel_Derecho.TabIndex = 12;
             // 
             // PanelToolStrip
@@ -218,7 +218,7 @@
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(22, 167);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(663, 39);
+            this.PanelToolStrip.Size = new System.Drawing.Size(634, 39);
             this.PanelToolStrip.TabIndex = 76;
             // 
             // Lbl_Paginas
@@ -243,7 +243,7 @@
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(22, 212);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(663, 559);
+            this.PanelTabla.Size = new System.Drawing.Size(634, 401);
             this.PanelTabla.TabIndex = 75;
             // 
             // Tabla
@@ -252,8 +252,10 @@
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(663, 559);
+            this.Tabla.RowHeadersWidth = 51;
+            this.Tabla.Size = new System.Drawing.Size(634, 401);
             this.Tabla.TabIndex = 1;
+            this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
             // 
             // Panel_Busqueda
             // 
@@ -273,7 +275,7 @@
             this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
             this.Panel_Busqueda.Location = new System.Drawing.Point(22, 6);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(663, 157);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(634, 157);
             this.Panel_Busqueda.TabIndex = 73;
             // 
             // CheckBox_FiltroFechas
@@ -331,7 +333,7 @@
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(620, 7);
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(591, 7);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(30, 31);
             this.Btn_CleanSearch.TabIndex = 71;
@@ -361,7 +363,7 @@
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(513, 7);
+            this.Btn_Search.Location = new System.Drawing.Point(484, 7);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(101, 31);
             this.Btn_Search.TabIndex = 54;
@@ -386,7 +388,7 @@
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(16, 10);
             this.Txt_ValorBuscado.MaxLength = 15;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(491, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(462, 27);
             this.Txt_ValorBuscado.TabIndex = 59;
             // 
             // ComboBox_ChangeState
@@ -414,7 +416,7 @@
             this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 55);
             this.Panel_Izquierdo.MaximumSize = new System.Drawing.Size(477, 806);
             this.Panel_Izquierdo.Name = "Panel_Izquierdo";
-            this.Panel_Izquierdo.Size = new System.Drawing.Size(477, 790);
+            this.Panel_Izquierdo.Size = new System.Drawing.Size(477, 632);
             this.Panel_Izquierdo.TabIndex = 11;
             // 
             // Panel_4
@@ -549,6 +551,7 @@
             this.ComboBox_SelectTo.Name = "ComboBox_SelectTo";
             this.ComboBox_SelectTo.Size = new System.Drawing.Size(401, 28);
             this.ComboBox_SelectTo.TabIndex = 74;
+            this.ComboBox_SelectTo.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectTo_SelectedIndexChanged);
             // 
             // Lbl_ToWarehouse
             // 
@@ -645,7 +648,7 @@
             this.Txt_AssetId.Location = new System.Drawing.Point(14, 68);
             this.Txt_AssetId.MaxLength = 15;
             this.Txt_AssetId.Name = "Txt_AssetId";
-            this.Txt_AssetId.Size = new System.Drawing.Size(216, 27);
+            this.Txt_AssetId.Size = new System.Drawing.Size(407, 27);
             this.Txt_AssetId.TabIndex = 6;
             // 
             // Lbl_AssetId
@@ -681,7 +684,7 @@
             this.Panel_CRUD.Controls.Add(this.Btn_Save);
             this.Panel_CRUD.Location = new System.Drawing.Point(13, 13);
             this.Panel_CRUD.Name = "Panel_CRUD";
-            this.Panel_CRUD.Size = new System.Drawing.Size(265, 47);
+            this.Panel_CRUD.Size = new System.Drawing.Size(283, 47);
             this.Panel_CRUD.TabIndex = 81;
             // 
             // Btn_Clear
@@ -691,7 +694,7 @@
             this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_Clear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Clear.Location = new System.Drawing.Point(231, 3);
+            this.Btn_Clear.Location = new System.Drawing.Point(249, 3);
             this.Btn_Clear.Name = "Btn_Clear";
             this.Btn_Clear.Size = new System.Drawing.Size(33, 37);
             this.Btn_Clear.TabIndex = 57;
@@ -706,9 +709,9 @@
             this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Update.Location = new System.Drawing.Point(127, 3);
+            this.Btn_Update.Location = new System.Drawing.Point(132, 3);
             this.Btn_Update.Name = "Btn_Update";
-            this.Btn_Update.Size = new System.Drawing.Size(98, 37);
+            this.Btn_Update.Size = new System.Drawing.Size(111, 37);
             this.Btn_Update.TabIndex = 55;
             this.Btn_Update.Text = "EDITAR";
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -722,7 +725,7 @@
             this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Save.Location = new System.Drawing.Point(5, 3);
+            this.Btn_Save.Location = new System.Drawing.Point(8, 3);
             this.Btn_Save.Name = "Btn_Save";
             this.Btn_Save.Size = new System.Drawing.Size(117, 37);
             this.Btn_Save.TabIndex = 54;
@@ -736,7 +739,7 @@
             this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
             this.vScrollBar.Location = new System.Drawing.Point(467, 0);
             this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(10, 790);
+            this.vScrollBar.Size = new System.Drawing.Size(10, 632);
             this.vScrollBar.TabIndex = 80;
             // 
             // Panel_1
@@ -855,13 +858,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 845);
+            this.ClientSize = new System.Drawing.Size(1155, 687);
             this.Controls.Add(this.Panel_Derecho);
             this.Controls.Add(this.Panel_Izquierdo);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_FixedAsset_Movements";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON - TRASLADOS DE ACTIVOS";
+            this.Load += new System.EventHandler(this.Frm_FixedAsset_Movements_Load);
             this.Panel_Superior.ResumeLayout(false);
             this.Panel_Superior.PerformLayout();
             this.Panel_Derecho.ResumeLayout(false);

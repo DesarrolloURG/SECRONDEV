@@ -36,6 +36,10 @@
             this.Btn_Update = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Panel_1 = new System.Windows.Forms.Panel();
+            this.CheckBox_IsActive = new System.Windows.Forms.CheckBox();
+            this.CheckBox_IsFinal = new System.Windows.Forms.CheckBox();
+            this.Txt_Order = new System.Windows.Forms.TextBox();
+            this.Lbl_Order = new System.Windows.Forms.Label();
             this.Txt_Description = new System.Windows.Forms.TextBox();
             this.Lbl_Description = new System.Windows.Forms.Label();
             this.Lbl_Subtitulo1 = new System.Windows.Forms.Label();
@@ -60,10 +64,6 @@
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Panel_Superior = new System.Windows.Forms.Panel();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
-            this.Txt_Order = new System.Windows.Forms.TextBox();
-            this.Lbl_Order = new System.Windows.Forms.Label();
-            this.CheckBox_IsFinal = new System.Windows.Forms.CheckBox();
-            this.CheckBox_IsActive = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
             this.Panel_1.SuspendLayout();
@@ -176,6 +176,48 @@
             this.Panel_1.Size = new System.Drawing.Size(294, 417);
             this.Panel_1.TabIndex = 97;
             // 
+            // CheckBox_IsActive
+            // 
+            this.CheckBox_IsActive.AutoSize = true;
+            this.CheckBox_IsActive.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.CheckBox_IsActive.Location = new System.Drawing.Point(155, 199);
+            this.CheckBox_IsActive.Name = "CheckBox_IsActive";
+            this.CheckBox_IsActive.Size = new System.Drawing.Size(136, 23);
+            this.CheckBox_IsActive.TabIndex = 72;
+            this.CheckBox_IsActive.Text = "ESTADO ACTIVO";
+            this.CheckBox_IsActive.UseVisualStyleBackColor = true;
+            // 
+            // CheckBox_IsFinal
+            // 
+            this.CheckBox_IsFinal.AutoSize = true;
+            this.CheckBox_IsFinal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.CheckBox_IsFinal.Location = new System.Drawing.Point(14, 199);
+            this.CheckBox_IsFinal.Name = "CheckBox_IsFinal";
+            this.CheckBox_IsFinal.Size = new System.Drawing.Size(137, 23);
+            this.CheckBox_IsFinal.TabIndex = 71;
+            this.CheckBox_IsFinal.Text = "ÚLTIMO ESTADO";
+            this.CheckBox_IsFinal.UseVisualStyleBackColor = true;
+            // 
+            // Txt_Order
+            // 
+            this.Txt_Order.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_Order.Location = new System.Drawing.Point(14, 166);
+            this.Txt_Order.MaxLength = 15;
+            this.Txt_Order.Name = "Txt_Order";
+            this.Txt_Order.Size = new System.Drawing.Size(267, 27);
+            this.Txt_Order.TabIndex = 64;
+            // 
+            // Lbl_Order
+            // 
+            this.Lbl_Order.AutoSize = true;
+            this.Lbl_Order.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Order.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Order.Location = new System.Drawing.Point(13, 143);
+            this.Lbl_Order.Name = "Lbl_Order";
+            this.Lbl_Order.Size = new System.Drawing.Size(72, 20);
+            this.Lbl_Order.TabIndex = 65;
+            this.Lbl_Order.Text = "ORDEN *";
+            // 
             // Txt_Description
             // 
             this.Txt_Description.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
@@ -281,7 +323,7 @@
             this.Btn_TransferStatusTransition.Text = "ORDEN DE LOS ESTADOS DE TRASLADOS";
             this.Btn_TransferStatusTransition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_TransferStatusTransition.UseVisualStyleBackColor = true;
-            this.Btn_TransferStatusTransition.Click += new System.EventHandler(this.Btn_TransferStatusTransition_Click);
+            this.Btn_TransferStatusTransition.Click += new System.EventHandler(this.Btn_TransferStatusTransition_Click_1);
             // 
             // Btn_No
             // 
@@ -351,6 +393,7 @@
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
+            this.Tabla.RowHeadersWidth = 51;
             this.Tabla.Size = new System.Drawing.Size(651, 279);
             this.Tabla.TabIndex = 1;
             // 
@@ -459,48 +502,6 @@
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "ESTADOS DE TRASLADOS DE LOS ACTIVOS";
             // 
-            // Txt_Order
-            // 
-            this.Txt_Order.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Order.Location = new System.Drawing.Point(14, 166);
-            this.Txt_Order.MaxLength = 15;
-            this.Txt_Order.Name = "Txt_Order";
-            this.Txt_Order.Size = new System.Drawing.Size(267, 27);
-            this.Txt_Order.TabIndex = 64;
-            // 
-            // Lbl_Order
-            // 
-            this.Lbl_Order.AutoSize = true;
-            this.Lbl_Order.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Order.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Order.Location = new System.Drawing.Point(13, 143);
-            this.Lbl_Order.Name = "Lbl_Order";
-            this.Lbl_Order.Size = new System.Drawing.Size(72, 20);
-            this.Lbl_Order.TabIndex = 65;
-            this.Lbl_Order.Text = "ORDEN *";
-            // 
-            // CheckBox_IsFinal
-            // 
-            this.CheckBox_IsFinal.AutoSize = true;
-            this.CheckBox_IsFinal.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.CheckBox_IsFinal.Location = new System.Drawing.Point(14, 199);
-            this.CheckBox_IsFinal.Name = "CheckBox_IsFinal";
-            this.CheckBox_IsFinal.Size = new System.Drawing.Size(137, 23);
-            this.CheckBox_IsFinal.TabIndex = 71;
-            this.CheckBox_IsFinal.Text = "ÚLTIMO ESTADO";
-            this.CheckBox_IsFinal.UseVisualStyleBackColor = true;
-            // 
-            // CheckBox_IsActive
-            // 
-            this.CheckBox_IsActive.AutoSize = true;
-            this.CheckBox_IsActive.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.CheckBox_IsActive.Location = new System.Drawing.Point(155, 199);
-            this.CheckBox_IsActive.Name = "CheckBox_IsActive";
-            this.CheckBox_IsActive.Size = new System.Drawing.Size(136, 23);
-            this.CheckBox_IsActive.TabIndex = 72;
-            this.CheckBox_IsActive.Text = "ESTADO ACTIVO";
-            this.CheckBox_IsActive.UseVisualStyleBackColor = true;
-            // 
             // Frm_FixedAsset_StatusMovements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -515,6 +516,7 @@
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_FixedAsset_StatusMovements";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON - ESTADOS DE TRASLADOS DE LOS ACTIVOS";
             this.panel2.ResumeLayout(false);
             this.Panel_CRUD.ResumeLayout(false);

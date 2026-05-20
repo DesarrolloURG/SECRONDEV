@@ -1,4 +1,4 @@
-﻿using SECRON.Controllers;
+﻿    using SECRON.Controllers;
 using SECRON.Models;
 using System;
 using System.Collections.Generic;
@@ -973,7 +973,6 @@ namespace SECRON.Views
         {
             if (!Btn_Clear.Enabled) return;
             LimpiarFormulario();
-            ConfigurarControlesPorPermisos();
         }
 
         private void LimpiarFormulario()

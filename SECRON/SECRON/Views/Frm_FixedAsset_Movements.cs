@@ -37,6 +37,8 @@ namespace SECRON.Views
             CargarComboChangeState();
             CargarMovimientos();
             EstadoInicial();
+            InicializarScroll();
+            ConfigurarEventosScroll();
         }
 
         #endregion
@@ -502,6 +504,115 @@ namespace SECRON.Views
                 MessageBox.Show($"ERROR AL EXPORTAR: {ex.Message}", "ERROR",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        #endregion
+
+        #region ScrollBar
+
+        private void InicializarScroll()
+        {
+            if (Panel_Izquierdo == null || vScrollBar == null)
+                return;
+
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+            {
+                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
+                    ctrl.Tag = "OrigY:" + ctrl.Top;
+            }
+
+            int maxBottom = 0;
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+                maxBottom = Math.Max(maxBottom, ctrl.Bottom);
+
+            int totalContentHeight = maxBottom + (Panel_Izquierdo.Height / 3);
+
+            if (totalContentHeight <= Panel_Izquierdo.Height)
+            {
+                vScrollBar.Visible = false;
+                return;
+            }
+
+            vScrollBar.Visible = true;
+            vScrollBar.Minimum = 0;
+            vScrollBar.Maximum = totalContentHeight - Panel_Izquierdo.Height;
+            vScrollBar.SmallChange = 30;
+            vScrollBar.LargeChange = Panel_Izquierdo.Height / 4;
+
+            vScrollBar.Scroll -= vScrollBar_Scroll;
+            vScrollBar.Scroll += vScrollBar_Scroll;
+            vScrollBar.Value = 0;
+        }
+
+        private void ConfigurarEventosScroll()
+        {
+            if (Panel_Izquierdo == null || vScrollBar == null)
+                return;
+
+            Panel_Izquierdo.TabStop = true;
+            Panel_Izquierdo.MouseWheel += Panel_Izquierdo_MouseWheel;
+            Panel_Izquierdo.MouseEnter += Panel_Izquierdo_MouseEnter;
+
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+            {
+                if (!(ctrl is ComboBox))
+                    ctrl.MouseWheel += Panel_Izquierdo_MouseWheel;
+            }
+        }
+
+        private void Panel_Izquierdo_MouseEnter(object sender, EventArgs e)
+        {
+            Panel_Izquierdo.Focus();
+        }
+
+        private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            int scrollPosition = vScrollBar.Value;
+
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+            {
+                if (ctrl is ComboBox) continue;
+
+                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
+                    ctrl.Tag = "OrigY:" + ctrl.Top;
+
+                string[] parts = ctrl.Tag.ToString().Split(':');
+                int originalY = int.Parse(parts[1]);
+                ctrl.Top = originalY - scrollPosition;
+            }
+
+            Panel_Izquierdo.Invalidate();
+        }
+
+        private void Panel_Izquierdo_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!vScrollBar.Visible) return;
+
+            int delta = e.Delta / 120;
+            int newValue = vScrollBar.Value - (delta * 30);
+
+            if (newValue < 0) newValue = 0;
+            if (newValue > vScrollBar.Maximum) newValue = vScrollBar.Maximum;
+
+            vScrollBar.Value = newValue;
+            MoverContenido(newValue);
+        }
+
+        private void MoverContenido(int scrollPosition)
+        {
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+            {
+                if (ctrl is ComboBox) continue;
+
+                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
+                    ctrl.Tag = "OrigY:" + ctrl.Top;
+
+                string[] parts = ctrl.Tag.ToString().Split(':');
+                int originalY = int.Parse(parts[1]);
+                ctrl.Top = originalY - scrollPosition;
+            }
+
+            Panel_Izquierdo.Invalidate();
         }
 
         #endregion

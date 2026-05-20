@@ -257,7 +257,22 @@ namespace SECRON.Views
                     break;
             }
         }
+        private void Btn_TransferStatusTransition_Click_1(object sender, EventArgs e)
+        {
+            if (_selectedStatusId == 0) return;
 
+            Frm_FixedAsset_TransferStatusTransitions frm = new Frm_FixedAsset_TransferStatusTransitions
+            {
+                UserData = UserData,
+                FromStatusId = _selectedStatusId,
+                FromStatusName = Txt_StatusName.Text.Trim(),
+                IsFinalStatus = CheckBox_IsFinal.Checked
+            };
+            frm.ShowDialog();
+
+            // Recargar por si hubo cambios
+            CargarEstados();
+        }
         private void Btn_Inactive_Click(object sender, EventArgs e)
         {
             if (_selectedStatusId == 0) return;
@@ -318,19 +333,7 @@ namespace SECRON.Views
 
         private void Btn_TransferStatusTransition_Click(object sender, EventArgs e)
         {
-            if (_selectedStatusId == 0) return;
 
-            Frm_FixedAsset_TransferStatusTransitions frm = new Frm_FixedAsset_TransferStatusTransitions
-            {
-                UserData = UserData,
-                FromStatusId = _selectedStatusId,
-                FromStatusName = Txt_StatusName.Text.Trim(),
-                IsFinalStatus = CheckBox_IsFinal.Checked
-            };
-            frm.ShowDialog();
-
-            // Recargar por si hubo cambios
-            CargarEstados();
         }
 
         #endregion
