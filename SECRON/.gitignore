@@ -4,4 +4,4 @@
 *.user
 *.suo
 *.userosscache
-*.sln.docstates
+*.sln.docstates**/DatabaseConfig.cs 
