@@ -129,10 +129,10 @@ namespace SECRON.Views
             ComboBox_ToWarehouse.Enabled = true;
             ComboBox_ToEmployee.Enabled = false;
 
-            Btn_Save.Visible = true;
-            Btn_Update.Visible = false;
-            Btn_Clear.Visible = true;
-            Btn_Cancel.Visible = false;
+            Btn_Save.Enabled = true;
+            Btn_Update.Enabled = false;
+            Btn_Clear.Enabled = true;
+            Btn_Cancel.Enabled = false;
         }
 
         #endregion

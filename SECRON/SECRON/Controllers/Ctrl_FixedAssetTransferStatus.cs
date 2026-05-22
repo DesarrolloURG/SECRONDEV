@@ -197,5 +197,32 @@ namespace SECRON.Controllers
                 ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy"))
             };
         }
+
+        // ─────────────────────────────────────────────
+        // DELETE
+        // ─────────────────────────────────────────────
+        public static int EliminarEstado(int transferStatusId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_FixedAssetTransferStatus_Delete", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@TransferStatusId", transferStatusId);
+
+                        return (int)cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar estado: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

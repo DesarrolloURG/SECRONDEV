@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_FixedAsset_StatusMovements));
             this.panel2 = new System.Windows.Forms.Panel();
             this.Btn_Inactive = new System.Windows.Forms.Button();
@@ -49,8 +52,6 @@
             this.Lbl_Codigo = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Btn_TransferStatusTransition = new System.Windows.Forms.Button();
-            this.Btn_No = new System.Windows.Forms.Button();
-            this.Btn_Yes = new System.Windows.Forms.Button();
             this.Lbl_Beneficiario = new System.Windows.Forms.Label();
             this.Txt_Selected = new System.Windows.Forms.TextBox();
             this.PanelTabla = new System.Windows.Forms.Panel();
@@ -94,7 +95,7 @@
             this.Btn_Inactive.Name = "Btn_Inactive";
             this.Btn_Inactive.Size = new System.Drawing.Size(124, 37);
             this.Btn_Inactive.TabIndex = 56;
-            this.Btn_Inactive.Text = "INACTIVAR";
+            this.Btn_Inactive.Text = "ELIMINAR";
             this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Inactive.UseVisualStyleBackColor = true;
             this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
@@ -300,8 +301,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.panel1.Controls.Add(this.Btn_TransferStatusTransition);
-            this.panel1.Controls.Add(this.Btn_No);
-            this.panel1.Controls.Add(this.Btn_Yes);
             this.panel1.Controls.Add(this.Lbl_Beneficiario);
             this.panel1.Controls.Add(this.Txt_Selected);
             this.panel1.Location = new System.Drawing.Point(307, 494);
@@ -324,36 +323,6 @@
             this.Btn_TransferStatusTransition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_TransferStatusTransition.UseVisualStyleBackColor = true;
             this.Btn_TransferStatusTransition.Click += new System.EventHandler(this.Btn_TransferStatusTransition_Click_1);
-            // 
-            // Btn_No
-            // 
-            this.Btn_No.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_No.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_No.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
-            this.Btn_No.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_No.Location = new System.Drawing.Point(406, 65);
-            this.Btn_No.Name = "Btn_No";
-            this.Btn_No.Size = new System.Drawing.Size(124, 37);
-            this.Btn_No.TabIndex = 66;
-            this.Btn_No.Text = "CANCELAR";
-            this.Btn_No.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_No.UseVisualStyleBackColor = true;
-            this.Btn_No.Click += new System.EventHandler(this.Btn_No_Click);
-            // 
-            // Btn_Yes
-            // 
-            this.Btn_Yes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Yes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Yes.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
-            this.Btn_Yes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Yes.Location = new System.Drawing.Point(536, 65);
-            this.Btn_Yes.Name = "Btn_Yes";
-            this.Btn_Yes.Size = new System.Drawing.Size(117, 37);
-            this.Btn_Yes.TabIndex = 65;
-            this.Btn_Yes.Text = "ACEPTAR";
-            this.Btn_Yes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Yes.UseVisualStyleBackColor = true;
-            this.Btn_Yes.Click += new System.EventHandler(this.Btn_Yes_Click);
             // 
             // Lbl_Beneficiario
             // 
@@ -389,13 +358,38 @@
             // 
             // Tabla
             // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Tabla.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.Tabla.DefaultCellStyle = dataGridViewCellStyle2;
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Tabla.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.Tabla.RowHeadersWidth = 51;
             this.Tabla.Size = new System.Drawing.Size(651, 279);
             this.Tabla.TabIndex = 1;
+            this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
             // 
             // Panel_DetalleTabla
             // 
@@ -518,6 +512,7 @@
             this.Name = "Frm_FixedAsset_StatusMovements";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON - ESTADOS DE TRASLADOS DE LOS ACTIVOS";
+            this.Load += new System.EventHandler(this.Frm_FixedAsset_StatusMovements_Load);
             this.panel2.ResumeLayout(false);
             this.Panel_CRUD.ResumeLayout(false);
             this.Panel_1.ResumeLayout(false);
@@ -551,8 +546,6 @@
         private System.Windows.Forms.Label Lbl_UnitName;
         private System.Windows.Forms.Label Lbl_Codigo;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button Btn_No;
-        private System.Windows.Forms.Button Btn_Yes;
         private System.Windows.Forms.Label Lbl_Beneficiario;
         private System.Windows.Forms.TextBox Txt_Selected;
         private System.Windows.Forms.Panel PanelTabla;
