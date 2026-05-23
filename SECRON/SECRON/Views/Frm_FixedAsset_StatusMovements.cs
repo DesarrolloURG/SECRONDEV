@@ -16,6 +16,9 @@ namespace SECRON.Views
         private bool _modoEdicion = false;
         public Mdl_Security_UserInfo UserData { get; set; }
 
+        private Ctrl_Security_Auth authController;
+        private List<string> permisosUsuario = new List<string>();
+
         #endregion
 
         #region Constructor
@@ -23,18 +26,40 @@ namespace SECRON.Views
         public Frm_FixedAsset_StatusMovements()
         {
             InitializeComponent();
+            ConfigurarTamañoFormulario();
+        }
+
+        #endregion
+
+        #region TamañoFormulario
+
+        private void ConfigurarTamañoFormulario()
+        {
+            this.Size = new Size(1000, 650);
+            this.MinimumSize = new Size(1000, 650);
+            this.MaximumSize = new Size(1000, 650);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.MaximizeBox = false;
         }
 
         #endregion
 
         #region Load
 
-        private void Frm_FixedAsset_StatusMovements_Load(object sender, EventArgs e)
+        private async void Frm_FixedAsset_StatusMovements_Load(object sender, EventArgs e)
         {
             ConfigurarComboBoxBuscarPor();
             ConfigurarTabla();
             CargarEstados();
             EstadoInicial();
+            ConfigurarComboBoxes();
+            ConfigurarTabIndexYFocus();
+
+            // Permisos — se cargan una sola vez; nunca se vuelven a tocar
+            authController = new Ctrl_Security_Auth();
+            await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+            ConfigurarBotonesPorPermisos();
         }
 
         #endregion
@@ -81,20 +106,65 @@ namespace SECRON.Views
             CheckBox_IsActive.Checked = true;
             Txt_Selected.Clear();
 
-            // Visibilidad de botones
             Btn_Save.Visible = true;
-            Btn_Update.Visible = false;
-            Btn_Inactive.Visible = false;
-            Btn_TransferStatusTransition.Visible = false;
-            Btn_Yes.Visible = false;
-            Btn_No.Visible = false;
-            Lbl_Beneficiario.Visible = false;
-            Txt_Selected.Visible = false;
+            Btn_Update.Visible = true;
+            Btn_Inactive.Visible = true;
+            Btn_TransferStatusTransition.Visible = true;
+            Lbl_Beneficiario.Visible = true;
+            Txt_Selected.Visible = true;
+
+            // Botones dependientes de selección
+            Btn_Update.Enabled = false;
+            Btn_Inactive.Enabled = false;
+            Lbl_Beneficiario.Enabled = false;
+            Txt_Selected.Enabled = false;
+
+            // Estos respetan permisos ya cargados
+            Btn_Save.Enabled = TienePermiso("FA_MOVEMENTSSTATES_CREATE");
+            Btn_TransferStatusTransition.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
 
             Txt_StatusCode.ReadOnly = _modoEdicion;
         }
 
+        private void ConfigurarTabIndexYFocus()
+        {
+            // Sección de búsqueda
+            ComboBox_BuscarPor.TabIndex = 0;
+            Txt_ValorBuscado.TabIndex = 1;
+            Btn_Search.TabIndex = 2;
+            Btn_ClearSearch.TabIndex = 3;
+
+            // Detalle del estado
+            Txt_StatusCode.TabIndex = 4;
+            Txt_StatusName.TabIndex = 5;
+            Txt_Order.TabIndex = 6;
+            CheckBox_IsFinal.TabIndex = 7;
+            CheckBox_IsActive.TabIndex = 8;
+            Txt_Description.TabIndex = 9;
+
+            // Botones CRUD
+            Btn_Save.TabIndex = 10;
+            Btn_Update.TabIndex = 11;
+            Btn_Clear.TabIndex = 12;
+
+            // Botones de acción secundaria
+            Btn_Inactive.TabIndex = 13;
+            Btn_TransferStatusTransition.TabIndex = 14;
+
+            // Foco inicial
+            ComboBox_BuscarPor.Select();
+        }
+
         #endregion
+
+        #region ConfigurarComboBox
+        // Método para configurar ComboBoxes
+        private void ConfigurarComboBoxes()
+        {
+            // Configurar propiedades de los ComboBox para que no permitan escritura
+            ComboBox_BuscarPor.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+        #endregion ConfigurarComboBox
 
         #region Carga de datos
 
@@ -156,18 +226,18 @@ namespace SECRON.Views
             CheckBox_IsActive.Checked = Convert.ToBoolean(row.Cells["colActivo"].Value);
             Txt_Selected.Text = row.Cells["colNombre"].Value?.ToString();
 
-            // Mostrar botones de acción
-            Btn_Save.Visible = false;
-            Btn_Update.Visible = true;
-            Btn_Inactive.Visible = true;
-            Btn_TransferStatusTransition.Visible = true;
-            Btn_Yes.Visible = false;
-            Btn_No.Visible = false;
-            Lbl_Beneficiario.Visible = true;
-            Txt_Selected.Visible = true;
+            Lbl_Beneficiario.Text = "";
+            Lbl_Beneficiario.Enabled = true;
+            Txt_Selected.Enabled = true;
 
             Txt_StatusCode.ReadOnly = true;
             _modoEdicion = true;
+
+            // Enabled respetando permisos ya cargados
+            Btn_Save.Enabled = TienePermiso("FA_MOVEMENTSSTATES_CREATE");
+            Btn_Update.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
+            Btn_Inactive.Enabled = TienePermiso("FA_MOVEMENTSSTATES_INACTIVE");
+            Btn_TransferStatusTransition.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
         }
 
         #endregion
@@ -212,7 +282,6 @@ namespace SECRON.Views
                     break;
             }
         }
-
         private void Btn_Update_Click(object sender, EventArgs e)
         {
             if (!ValidarCampos()) return;
@@ -277,51 +346,10 @@ namespace SECRON.Views
         {
             if (_selectedStatusId == 0) return;
 
-            // Mostrar confirmación
-            Lbl_Beneficiario.Text = "¿INACTIVAR ESTADO?";
-            Btn_Yes.Visible = true;
-            Btn_No.Visible = true;
-            Btn_Inactive.Visible = false;
-            Btn_Update.Visible = false;
+            Lbl_Beneficiario.Text = "¿ELIMINAR ESTADO?";
+            Btn_Inactive.Enabled = false;
+            Btn_Update.Enabled = false;
         }
-
-        private void Btn_Yes_Click(object sender, EventArgs e)
-        {
-            int resultado = Ctrl_FixedAssetTransferStatus.InactivarEstado(
-                _selectedStatusId, UserData?.UserId);
-
-            switch (resultado)
-            {
-                case 1:
-                    MessageBox.Show("Estado inactivado correctamente.", "Éxito",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    CargarEstados();
-                    EstadoInicial();
-                    break;
-                case -1:
-                    MessageBox.Show("El estado no existe.", "Aviso",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    break;
-                case -2:
-                    MessageBox.Show("No se puede inactivar: el estado tiene traslados asociados.", "Aviso",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    break;
-                default:
-                    MessageBox.Show("Ocurrió un error al inactivar el estado.", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-            }
-        }
-
-        private void Btn_No_Click(object sender, EventArgs e)
-        {
-            Btn_Yes.Visible = false;
-            Btn_No.Visible = false;
-            Btn_Inactive.Visible = true;
-            Btn_Update.Visible = true;
-            Lbl_Beneficiario.Text = "";
-        }
-
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
             EstadoInicial();
@@ -367,6 +395,48 @@ namespace SECRON.Views
             }
 
             return true;
+        }
+
+        #endregion
+
+        #region SistemaDePermisos
+
+        private async System.Threading.Tasks.Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                permisosUsuario = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}",
+                    "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool TienePermiso(string permissionCode)
+        {
+            if (permisosUsuario == null || permisosUsuario.Count == 0)
+                return false;
+
+            return permisosUsuario.Contains(permissionCode);
+        }
+
+        private void ConfigurarBotonesPorPermisos()
+        {
+            // FA_020 - Registrar
+            Btn_Save.Enabled = TienePermiso("FA_MOVEMENTSSTATES_CREATE");
+
+            // FA_021 - Modificar / FA_022 - Eliminar: se habilitan al seleccionar fila
+            Btn_Update.Enabled = false;
+            Btn_Inactive.Enabled = false;
+
+            // FA_021 - Transiciones: siempre activo si tiene permiso
+            Btn_TransferStatusTransition.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
+
+            // FA_024 - Buscar
+            Btn_Search.Enabled = TienePermiso("FA_MOVEMENTSSTATES_READ");
+            Btn_ClearSearch.Enabled = TienePermiso("FA_MOVEMENTSSTATES_READ");
         }
 
         #endregion

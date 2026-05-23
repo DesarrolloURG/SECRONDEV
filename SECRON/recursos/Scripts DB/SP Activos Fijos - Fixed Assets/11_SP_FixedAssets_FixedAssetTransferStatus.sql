@@ -200,3 +200,55 @@ BEGIN
     END CATCH
 END
 GO
+
+-- -------------------------------------------------------
+-- SP_FixedAssetTransferStatus_Delete
+-- -------------------------------------------------------
+CREATE OR ALTER PROCEDURE [dbo].[SP_FixedAssetTransferStatus_Delete]
+    @TransferStatusId   INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRANSACTION
+    BEGIN TRY
+
+        IF NOT EXISTS (SELECT 1 FROM [dbo].[FixedAssetTransferStatus]
+                       WHERE [TransferStatusId] = @TransferStatusId)
+        BEGIN
+            ROLLBACK TRANSACTION
+            SELECT -1  -- No existe
+            RETURN
+        END
+
+        -- Verificar si tiene traslados asociados
+        IF EXISTS (SELECT 1 FROM [dbo].[FixedAssetTransfers]
+                   WHERE [TransferStatusId] = @TransferStatusId)
+        BEGIN
+            ROLLBACK TRANSACTION
+            SELECT -2  -- Tiene traslados, no se puede eliminar
+            RETURN
+        END
+
+        -- Verificar si tiene transiciones configuradas
+        IF EXISTS (SELECT 1 FROM [dbo].[FixedAssetTransferStatusTransitions]
+                   WHERE [FromStatusId] = @TransferStatusId
+                      OR [ToStatusId]   = @TransferStatusId)
+        BEGIN
+            ROLLBACK TRANSACTION
+            SELECT -3  -- Tiene transiciones configuradas, no se puede eliminar
+            RETURN
+        END
+
+        DELETE FROM [dbo].[FixedAssetTransferStatus]
+        WHERE [TransferStatusId] = @TransferStatusId
+
+        COMMIT TRANSACTION
+        SELECT 1
+
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION
+        SELECT 0
+    END CATCH
+END
+GO
