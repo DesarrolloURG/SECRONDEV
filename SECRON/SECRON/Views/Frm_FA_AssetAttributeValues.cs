@@ -229,7 +229,7 @@ namespace SECRON.Views
                 {
                     switch (attr.DataType?.ToUpper())
                     {
-                        case "NUMBER":
+                        case "NUMERO":
                             if (!decimal.TryParse(val,
                                 System.Globalization.NumberStyles.Any,
                                 System.Globalization.CultureInfo.InvariantCulture, out _))
@@ -240,7 +240,7 @@ namespace SECRON.Views
                                 return false;
                             }
                             break;
-                        case "DATE":
+                        case "FECHA":
                             if (!DateTime.TryParse(val, out _))
                             {
                                 MessageBox.Show($"El campo '{attr.AttributeLabel}' debe ser una fecha válida.",

@@ -255,7 +255,7 @@
             this.Lbl_Subtitulo1.AutoSize = true;
             this.Lbl_Subtitulo1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Subtitulo1.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
-            this.Lbl_Subtitulo1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.Lbl_Subtitulo1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Lbl_Subtitulo1.Location = new System.Drawing.Point(13, 9);
             this.Lbl_Subtitulo1.Name = "Lbl_Subtitulo1";
             this.Lbl_Subtitulo1.Size = new System.Drawing.Size(169, 20);
@@ -489,7 +489,7 @@
             this.Lbl_AtributosHeader.AutoSize = true;
             this.Lbl_AtributosHeader.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_AtributosHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
-            this.Lbl_AtributosHeader.Location = new System.Drawing.Point(0, 6);
+            this.Lbl_AtributosHeader.Location = new System.Drawing.Point(5, 6);
             this.Lbl_AtributosHeader.Name = "Lbl_AtributosHeader";
             this.Lbl_AtributosHeader.Size = new System.Drawing.Size(376, 20);
             this.Lbl_AtributosHeader.TabIndex = 0;

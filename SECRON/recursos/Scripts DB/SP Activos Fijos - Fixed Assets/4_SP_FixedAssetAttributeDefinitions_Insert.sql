@@ -23,10 +23,10 @@ BEGIN
 
         INSERT INTO FixedAssetAttributeDefinitions
             (AssetCategoryId, AttributeKey, AttributeLabel,
-             DataType, IsRequired, IsActive)
+             DataType, IsRequired, IsActive, IsSystem)
         VALUES
             (@AssetCategoryId, UPPER(@AttributeKey), UPPER(@AttributeLabel),
-             @DataType, @IsRequired, 1)
+             UPPER(@DataType), @IsRequired, 1, 0)
 
         COMMIT TRANSACTION
         SELECT 1

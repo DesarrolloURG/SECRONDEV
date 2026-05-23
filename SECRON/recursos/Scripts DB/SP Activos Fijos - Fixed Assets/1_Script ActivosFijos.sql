@@ -138,6 +138,7 @@ CREATE TABLE [dbo].[FixedAssetAttributeDefinitions](
         CONSTRAINT DF_FAAD_DataType DEFAULT 'TEXTO',
     [IsRequired]        [bit] NULL CONSTRAINT DF_FAAD_Required DEFAULT 0,
     [IsActive]          [bit] NULL CONSTRAINT DF_FAAD_Active DEFAULT 1,
+	[IsSystem] BIT NOT NULL CONSTRAINT DF_FAAD_IsSystem DEFAULT 0,
     CONSTRAINT PK_FixedAssetAttributeDefinitions PRIMARY KEY ([AttributeDefId]),
     CONSTRAINT UK_FAAD_CategoryKey UNIQUE ([AssetCategoryId], [AttributeKey]),
     CONSTRAINT FK_FAAD_Category FOREIGN KEY ([AssetCategoryId])
@@ -154,9 +155,6 @@ CREATE TABLE [dbo].[FixedAssets](
     [AssetName]             [varchar](150) NOT NULL,
     [Description]           [varchar](500) NULL,
     [AssetCategoryId]       [int] NOT NULL,
-    [Brand]                 [varchar](100) NULL,
-    [Model]                 [varchar](100) NULL,
-    [Serial]                [varchar](100) NULL,
     [PurchaseDate]          [date] NULL,
     [PurchaseValue]         [decimal](18,2) NOT NULL,
     [ResidualValue]         [decimal](18,2) NOT NULL CONSTRAINT DF_FAC_Residual DEFAULT 0,

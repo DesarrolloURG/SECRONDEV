@@ -93,6 +93,7 @@ namespace SECRON.Controllers
         // MÉTODO PRINCIPAL: Búsqueda con filtros
         public static List<Mdl_Suppliers> BuscarProveedores(
             string textoBusqueda = "",
+            string filtro = "NOMBRE",
             string classification = "",
             int pageNumber = 1,
             int pageSize = 100)
@@ -108,8 +109,18 @@ namespace SECRON.Controllers
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
-                        query += @" AND (SupplierCode LIKE @texto OR SupplierName LIKE @texto OR 
-                            LegalName LIKE @texto OR TaxId LIKE @texto OR Phone LIKE @texto)";
+                        switch (filtro)
+                        {
+                            case "RAZÓN SOCIAL":
+                                query += " AND LegalName LIKE @texto";
+                                break;
+                            case "ACTIVIDAD COMERCIAL":
+                                query += " AND CommercialActivity LIKE @texto";
+                                break;
+                            default: // NOMBRE
+                                query += " AND SupplierName LIKE @texto";
+                                break;
+                        }
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 
@@ -129,16 +140,15 @@ namespace SECRON.Controllers
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
-                            {
                                 lista.Add(MapearProveedor(reader));
-                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en búsqueda: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error en búsqueda de proveedores: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return lista;
         }

@@ -18,13 +18,14 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT av.AttributeValueId, av.AssetId, av.AttributeDefId, av.Value,
-                               av.CreatedDate, av.CreatedBy, av.ModifiedDate, av.ModifiedBy,
-                               ad.AttributeKey, ad.AttributeLabel, ad.DataType, ad.IsRequired
-                        FROM   FixedAssetAttributeValues av
-                        INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
-                        WHERE  av.AssetId = @AssetId
-                        ORDER  BY ad.AttributeKey";
+                            SELECT av.AttributeValueId, av.AssetId, av.AttributeDefId, av.Value,
+                                   av.CreatedDate, av.CreatedBy, av.ModifiedDate, av.ModifiedBy,
+                                   ad.AttributeKey, ad.AttributeLabel, ad.DataType, ad.IsRequired, ad.IsSystem
+                            FROM   FixedAssetAttributeValues av
+                            INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                            WHERE  av.AssetId = @AssetId
+                            AND    ad.IsSystem = 0
+                            ORDER  BY ad.AttributeDefId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -57,10 +58,12 @@ namespace SECRON.Controllers
                                ad.AttributeDefId, NULL AS Value,
                                GETDATE() AS CreatedDate, NULL AS CreatedBy,
                                NULL AS ModifiedDate, NULL AS ModifiedBy,
-                               ad.AttributeKey, ad.AttributeLabel, ad.DataType, ad.IsRequired
+                               ad.AttributeKey, ad.AttributeLabel, ad.DataType, ad.IsRequired,
+                               ad.IsSystem
                         FROM   FixedAssetAttributeDefinitions ad
                         WHERE  ad.AssetCategoryId = @CategoryId
                         AND    ad.IsActive = 1
+                        AND    ad.IsSystem = 0
                         ORDER  BY ad.AttributeKey";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -146,7 +149,8 @@ namespace SECRON.Controllers
                 AttributeKey = reader["AttributeKey"].ToString(),
                 AttributeLabel = reader["AttributeLabel"].ToString(),
                 DataType = reader["DataType"].ToString(),
-                IsRequired = reader.GetBoolean(reader.GetOrdinal("IsRequired"))
+                IsRequired = reader.GetBoolean(reader.GetOrdinal("IsRequired")),
+                IsSystem = reader.GetBoolean(reader.GetOrdinal("IsSystem"))
             };
         }
     }

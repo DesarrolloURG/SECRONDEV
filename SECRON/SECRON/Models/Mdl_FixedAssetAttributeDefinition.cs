@@ -11,5 +11,6 @@ namespace SECRON.Models
         public string DataType { get; set; }
         public bool IsRequired { get; set; }
         public bool IsActive { get; set; }
+        public bool IsSystem { get; set; }
     }
 }
