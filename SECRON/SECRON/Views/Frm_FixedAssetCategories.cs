@@ -1155,6 +1155,13 @@ namespace SECRON.Views
             if (!Btn_UpdateAtributo.Enabled) return;
             try
             {
+                if (_atributoSeleccionado?.IsSystem == true)
+                {
+                    MessageBox.Show("Esta característica es del sistema y no puede modificarse.",
+                        "Operación no permitida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (_atributoSeleccionado == null || _atributoSeleccionado.AttributeDefId == 0)
                 {
                     MessageBox.Show("Debe seleccionar un atributo para actualizar.", "Validación",
@@ -1207,6 +1214,13 @@ namespace SECRON.Views
             if (!Btn_InactiveAtributo.Enabled) return;
             try
             {
+                if (_atributoSeleccionado?.IsSystem == true)
+                {
+                    MessageBox.Show("Esta característica es del sistema y no puede inactivarse.",
+                        "Operación no permitida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (_atributoSeleccionado == null || _atributoSeleccionado.AttributeDefId == 0)
                 {
                     MessageBox.Show("Debe seleccionar un atributo para inactivar.", "Validación",

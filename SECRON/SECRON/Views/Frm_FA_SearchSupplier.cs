@@ -1,5 +1,7 @@
 ﻿using SECRON.Controllers;
+using SECRON.Models;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -10,6 +12,7 @@ namespace SECRON.Views
         #region PropiedadesIniciales
 
         private Frm_FixedAsset _frmPadre;
+        private int _proveedorId = 0;
 
         public Frm_FA_SearchSupplier(Frm_FixedAsset frmPadre)
         {
@@ -21,6 +24,7 @@ namespace SECRON.Views
         private void Frm_FA_SearchSupplier_Load(object sender, EventArgs e)
         {
             ConfigurarComponentesDeshabilitados();
+            ConfigurarComboBuscarPor();
             ConfigurarPlaceHolder();
             ConfigurarTabla();
             CargarTodos();
@@ -38,8 +42,17 @@ namespace SECRON.Views
 
         private void ConfigurarComponentesDeshabilitados()
         {
-            Txt_Codigo.Enabled = false;
             Txt_Cuenta.Enabled = false;
+        }
+
+        private void ConfigurarComboBuscarPor()
+        {
+            ComboBox_BuscarPor.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_BuscarPor.Items.Clear();
+            ComboBox_BuscarPor.Items.Add("NOMBRE");
+            ComboBox_BuscarPor.Items.Add("RAZÓN SOCIAL");
+            ComboBox_BuscarPor.Items.Add("ACTIVIDAD COMERCIAL");
+            ComboBox_BuscarPor.SelectedIndex = 0;
         }
 
         #endregion PropiedadesIniciales
@@ -49,17 +62,17 @@ namespace SECRON.Views
         private void ConfigurarPlaceHolder()
         {
             Txt_ValorBuscado.ForeColor = Color.Gray;
-            Txt_ValorBuscado.Text = "INGRESE CÓDIGO O NOMBRE DE PROVEEDOR";
+            Txt_ValorBuscado.Text = "INGRESE EL VALOR A BUSCAR";
 
             Txt_ValorBuscado.GotFocus += (s, e) =>
             {
-                if (Txt_ValorBuscado.Text == "INGRESE CÓDIGO O NOMBRE DE PROVEEDOR")
+                if (Txt_ValorBuscado.Text == "INGRESE EL VALOR A BUSCAR")
                 { Txt_ValorBuscado.Text = ""; Txt_ValorBuscado.ForeColor = Color.Black; }
             };
             Txt_ValorBuscado.LostFocus += (s, e) =>
             {
                 if (string.IsNullOrWhiteSpace(Txt_ValorBuscado.Text))
-                { Txt_ValorBuscado.Text = "INGRESE CÓDIGO O NOMBRE DE PROVEEDOR"; Txt_ValorBuscado.ForeColor = Color.Gray; }
+                { Txt_ValorBuscado.Text = "INGRESE EL VALOR A BUSCAR"; Txt_ValorBuscado.ForeColor = Color.Gray; }
             };
         }
 
@@ -103,32 +116,7 @@ namespace SECRON.Views
             try
             {
                 var lista = Ctrl_Suppliers.MostrarProveedores(1, int.MaxValue);
-                Tabla.DataSource = null;
-                Tabla.DataSource = lista;
-
-                if (Tabla.Columns.Count > 0)
-                {
-                    foreach (DataGridViewColumn col in Tabla.Columns)
-                        col.Visible = false;
-
-                    if (Tabla.Columns.Contains("SupplierId"))
-                        Tabla.Columns["SupplierId"].Visible = false;
-
-                    if (Tabla.Columns.Contains("SupplierCode"))
-                    {
-                        Tabla.Columns["SupplierCode"].Visible = true;
-                        Tabla.Columns["SupplierCode"].HeaderText = "CÓDIGO";
-                        Tabla.Columns["SupplierCode"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                        Tabla.Columns["SupplierCode"].FillWeight = 20;
-                    }
-                    if (Tabla.Columns.Contains("SupplierName"))
-                    {
-                        Tabla.Columns["SupplierName"].Visible = true;
-                        Tabla.Columns["SupplierName"].HeaderText = "PROVEEDOR";
-                        Tabla.Columns["SupplierName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                        Tabla.Columns["SupplierName"].FillWeight = 80;
-                    }
-                }
+                AsignarDataSource(lista);
             }
             catch (Exception ex)
             {
@@ -137,46 +125,66 @@ namespace SECRON.Views
             }
         }
 
+        private void AsignarDataSource(List<Mdl_Suppliers> lista)
+        {
+            Tabla.DataSource = null;
+            Tabla.DataSource = lista;
+
+            if (Tabla.Columns.Count == 0) return;
+
+            foreach (DataGridViewColumn col in Tabla.Columns)
+                col.Visible = false;
+
+            if (Tabla.Columns.Contains("SupplierId"))
+                Tabla.Columns["SupplierId"].Visible = false;
+
+            if (Tabla.Columns.Contains("SupplierCode"))
+            {
+                Tabla.Columns["SupplierCode"].Visible = true;
+                Tabla.Columns["SupplierCode"].HeaderText = "CÓDIGO";
+                Tabla.Columns["SupplierCode"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                Tabla.Columns["SupplierCode"].FillWeight = 15;
+            }
+            if (Tabla.Columns.Contains("SupplierName"))
+            {
+                Tabla.Columns["SupplierName"].Visible = true;
+                Tabla.Columns["SupplierName"].HeaderText = "NOMBRE";
+                Tabla.Columns["SupplierName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                Tabla.Columns["SupplierName"].FillWeight = 35;
+            }
+            if (Tabla.Columns.Contains("LegalName"))
+            {
+                Tabla.Columns["LegalName"].Visible = true;
+                Tabla.Columns["LegalName"].HeaderText = "RAZÓN SOCIAL";
+                Tabla.Columns["LegalName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                Tabla.Columns["LegalName"].FillWeight = 35;
+            }
+            if (Tabla.Columns.Contains("CommercialActivity"))
+            {
+                Tabla.Columns["CommercialActivity"].Visible = true;
+                Tabla.Columns["CommercialActivity"].HeaderText = "ACTIVIDAD COMERCIAL";
+                Tabla.Columns["CommercialActivity"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                Tabla.Columns["CommercialActivity"].FillWeight = 15;
+            }
+        }
+
         #endregion CargarDatos
 
         #region Buscar
 
-        private void Btn_SearchCuenta_Click(object sender, EventArgs e)
+        private void Btn_Search_Click(object sender, EventArgs e)
         {
             try
             {
-                string texto = Txt_ValorBuscado.Text == "INGRESE CÓDIGO O NOMBRE DE PROVEEDOR"
+                string texto = Txt_ValorBuscado.Text == "INGRESE EL VALOR A BUSCAR"
                     ? "" : Txt_ValorBuscado.Text.Trim();
 
                 if (string.IsNullOrWhiteSpace(texto)) { CargarTodos(); return; }
 
-                var resultados = Ctrl_Suppliers.BuscarProveedores(texto);
-                Tabla.DataSource = null;
-                Tabla.DataSource = resultados;
+                string filtro = ComboBox_BuscarPor.SelectedItem?.ToString() ?? "NOMBRE";
+                var resultados = Ctrl_Suppliers.BuscarProveedores(texto, filtro);
 
-                if (Tabla.Columns.Count > 0)
-                {
-                    foreach (DataGridViewColumn col in Tabla.Columns)
-                        col.Visible = false;
-
-                    if (Tabla.Columns.Contains("SupplierId"))
-                        Tabla.Columns["SupplierId"].Visible = false;
-
-                    if (Tabla.Columns.Contains("SupplierCode"))
-                    {
-                        Tabla.Columns["SupplierCode"].Visible = true;
-                        Tabla.Columns["SupplierCode"].HeaderText = "CÓDIGO";
-                        Tabla.Columns["SupplierCode"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                        Tabla.Columns["SupplierCode"].FillWeight = 20;
-                    }
-                    if (Tabla.Columns.Contains("SupplierName"))
-                    {
-                        Tabla.Columns["SupplierName"].Visible = true;
-                        Tabla.Columns["SupplierName"].HeaderText = "PROVEEDOR";
-                        Tabla.Columns["SupplierName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                        Tabla.Columns["SupplierName"].FillWeight = 80;
-                    }
-                }
+                AsignarDataSource(resultados);
 
                 if (resultados.Count == 0)
                     MessageBox.Show("No se encontraron proveedores con ese criterio.",
@@ -191,7 +199,7 @@ namespace SECRON.Views
 
         private void Txt_ValorBuscado_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; Btn_SearchCuenta_Click(sender, e); }
+            if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; Btn_Search_Click(sender, e); }
         }
 
         #endregion Buscar
@@ -202,7 +210,7 @@ namespace SECRON.Views
         {
             if (Tabla.SelectedRows.Count == 0) return;
             var row = Tabla.SelectedRows[0];
-            Txt_Codigo.Text = row.Cells["SupplierId"].Value?.ToString() ?? "";
+            _proveedorId = Convert.ToInt32(row.Cells["SupplierId"].Value);
             Txt_Cuenta.Text = row.Cells["SupplierName"].Value?.ToString() ?? "";
         }
 
@@ -212,7 +220,7 @@ namespace SECRON.Views
 
         private void Btn_Yes_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Txt_Codigo.Text))
+            if (_proveedorId == 0)
             {
                 MessageBox.Show("Debe seleccionar un proveedor.", "VALIDACIÓN",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -220,7 +228,7 @@ namespace SECRON.Views
             }
 
             if (_frmPadre != null && !_frmPadre.IsDisposed)
-                _frmPadre.ActualizarProveedor(int.Parse(Txt_Codigo.Text), Txt_Cuenta.Text);
+                _frmPadre.ActualizarProveedor(_proveedorId, Txt_Cuenta.Text);
 
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -234,10 +242,11 @@ namespace SECRON.Views
 
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
-            Txt_ValorBuscado.Text = "INGRESE CÓDIGO O NOMBRE DE PROVEEDOR";
+            Txt_ValorBuscado.Text = "INGRESE EL VALOR A BUSCAR";
             Txt_ValorBuscado.ForeColor = Color.Gray;
-            Txt_Codigo.Clear();
             Txt_Cuenta.Clear();
+            _proveedorId = 0;
+            ComboBox_BuscarPor.SelectedIndex = 0;
             CargarTodos();
         }
 

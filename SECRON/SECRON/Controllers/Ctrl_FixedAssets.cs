@@ -22,7 +22,16 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                         SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
-                               fa.AssetCategoryId, fa.Brand, fa.Model, fa.Serial,
+                               fa.AssetCategoryId, 
+                               (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
+                               (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'MODEL' AND ad.IsSystem = 1) AS Model,
+                                (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1) AS Serial,
                                fa.PurchaseDate, fa.PurchaseValue, fa.ResidualValue,
                                fa.InvoiceNumber, fa.SupplierId,
                                fa.WarrantyDocumentPath, fa.WarrantyExpirationDate,
@@ -83,7 +92,16 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                         SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
-                               fa.AssetCategoryId, fa.Brand, fa.Model, fa.Serial,
+                               fa.AssetCategoryId, 
+                               (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
+                               (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'MODEL' AND ad.IsSystem = 1) AS Model,
+                                (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1) AS Serial,
                                fa.PurchaseDate, fa.PurchaseValue, fa.ResidualValue,
                                fa.InvoiceNumber, fa.SupplierId,
                                fa.WarrantyDocumentPath, fa.WarrantyExpirationDate,
@@ -194,7 +212,16 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                         SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
-                               fa.AssetCategoryId, fa.Brand, fa.Model, fa.Serial,
+                               fa.AssetCategoryId, 
+                                (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
+                               (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'MODEL' AND ad.IsSystem = 1) AS Model,
+                                (SELECT av.Value FROM FixedAssetAttributeValues av
+                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1) AS Serial,
                                fa.PurchaseDate, fa.PurchaseValue, fa.ResidualValue,
                                fa.InvoiceNumber, fa.SupplierId,
                                fa.WarrantyDocumentPath, fa.WarrantyExpirationDate,
@@ -309,9 +336,6 @@ namespace SECRON.Controllers
             cmd.Parameters.AddWithValue("@AssetName", asset.AssetName?.ToUpper() ?? "");
             cmd.Parameters.AddWithValue("@Description", string.IsNullOrWhiteSpace(asset.Description) ? (object)DBNull.Value : asset.Description.ToUpper());
             cmd.Parameters.AddWithValue("@AssetCategoryId", asset.AssetCategoryId);
-            cmd.Parameters.AddWithValue("@Brand", string.IsNullOrWhiteSpace(asset.Brand) ? (object)DBNull.Value : asset.Brand.ToUpper());
-            cmd.Parameters.AddWithValue("@Model", string.IsNullOrWhiteSpace(asset.Model) ? (object)DBNull.Value : asset.Model.ToUpper());
-            cmd.Parameters.AddWithValue("@Serial", string.IsNullOrWhiteSpace(asset.Serial) ? (object)DBNull.Value : asset.Serial.ToUpper());
             cmd.Parameters.AddWithValue("@PurchaseDate", asset.PurchaseDate.HasValue ? (object)asset.PurchaseDate.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@PurchaseValue", asset.PurchaseValue);
             cmd.Parameters.AddWithValue("@ResidualValue", asset.ResidualValue);  // NOT NULL DEFAULT 0
@@ -328,6 +352,9 @@ namespace SECRON.Controllers
             cmd.Parameters.AddWithValue("@DisposalValue", asset.DisposalValue.HasValue ? (object)asset.DisposalValue.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@Notes", string.IsNullOrWhiteSpace(asset.Notes) ? (object)DBNull.Value : asset.Notes.ToUpper());
             cmd.Parameters.AddWithValue("@CreatedBy", asset.CreatedBy.HasValue ? (object)asset.CreatedBy.Value : DBNull.Value);
+            cmd.Parameters.AddWithValue("@Brand", string.IsNullOrWhiteSpace(asset.Brand) ? (object)DBNull.Value : asset.Brand.ToUpper());
+            cmd.Parameters.AddWithValue("@Model", string.IsNullOrWhiteSpace(asset.Model) ? (object)DBNull.Value : asset.Model.ToUpper());
+            cmd.Parameters.AddWithValue("@Serial", string.IsNullOrWhiteSpace(asset.Serial) ? (object)DBNull.Value : asset.Serial.ToUpper());
         }
 
         private static Mdl_FixedAsset MapearActivo(SqlDataReader reader)

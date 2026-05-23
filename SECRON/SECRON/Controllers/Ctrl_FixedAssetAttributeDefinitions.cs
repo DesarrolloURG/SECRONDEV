@@ -10,9 +10,6 @@ namespace SECRON.Controllers
 {
     internal class Ctrl_FixedAssetAttributeDefinitions
     {
-        // ─────────────────────────────────────────────
-        // READ - por categoría
-        // ─────────────────────────────────────────────
         public static List<Mdl_FixedAssetAttributeDefinition> MostrarAtributosPorCategoria(int categoryId)
         {
             List<Mdl_FixedAssetAttributeDefinition> lista = new List<Mdl_FixedAssetAttributeDefinition>();
@@ -20,12 +17,11 @@ namespace SECRON.Controllers
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = @"
-                        SELECT AttributeDefId, AssetCategoryId, AttributeKey, AttributeLabel,
-                               DataType, IsRequired, IsActive
-                        FROM   FixedAssetAttributeDefinitions
-                        WHERE  AssetCategoryId = @CategoryId
-                        ORDER  BY AttributeDefId, AttributeKey";
+                    string query = @"SELECT AttributeDefId, AssetCategoryId, AttributeKey, AttributeLabel,
+                                       DataType, IsRequired, IsActive, IsSystem
+                                FROM   FixedAssetAttributeDefinitions
+                                WHERE  AssetCategoryId = @CategoryId
+                                ORDER  BY AttributeDefId, AttributeKey";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -47,9 +43,6 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // ─────────────────────────────────────────────
-        // CREATE
-        // ─────────────────────────────────────────────
         public static int RegistrarAtributo(Mdl_FixedAssetAttributeDefinition attr)
         {
             try
@@ -78,9 +71,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // UPDATE
-        // ─────────────────────────────────────────────
         public static int ActualizarAtributo(Mdl_FixedAssetAttributeDefinition attr)
         {
             try
@@ -120,7 +110,8 @@ namespace SECRON.Controllers
                 AttributeLabel = reader["AttributeLabel"].ToString(),
                 DataType = reader["DataType"].ToString(),
                 IsRequired = reader.GetBoolean(reader.GetOrdinal("IsRequired")),
-                IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive"))
+                IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive")),
+                IsSystem = reader.GetBoolean(reader.GetOrdinal("IsSystem"))
             };
         }
     }

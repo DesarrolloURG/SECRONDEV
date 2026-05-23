@@ -11,6 +11,7 @@ create or ALTER PROCEDURE SP_FixedAssetCategories_Insert
 AS
 BEGIN
     SET NOCOUNT ON;
+    SET XACT_ABORT ON;
 
     BEGIN TRANSACTION
     BEGIN TRY
@@ -32,6 +33,18 @@ BEGIN
              @DepreciationMethod, @DepreciationYears,
              @AccountAccumDepId, @AccountExpenseId,
              @IsTangible, 1, @CreatedBy)
+
+        DECLARE @NewCategoryId INT = SCOPE_IDENTITY()
+        DECLARE @AttrDefId INT
+
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @NewCategoryId, 'BRAND',  'MARCA',  @AttrDefId OUTPUT
+        SET @AttrDefId = NULL
+
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @NewCategoryId, 'MODEL',  'MODELO', @AttrDefId OUTPUT
+        SET @AttrDefId = NULL
+
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @NewCategoryId, 'SERIAL', 'SERIE',  @AttrDefId OUTPUT
+        SET @AttrDefId = NULL
 
         COMMIT TRANSACTION
         SELECT 1

@@ -12,7 +12,7 @@ CREATE OR ALTER PROCEDURE SP_FixedAssets_Update
     @Serial                 VARCHAR(100)  = NULL,
     @PurchaseDate           DATE          = NULL,
     @PurchaseValue          DECIMAL(18,2),
-    @ResidualValue          DECIMAL(5,2)  = 0,
+    @ResidualValue          DECIMAL(18,2) = 0,
     @InvoiceNumber          VARCHAR(50)   = NULL,
     @SupplierId             INT           = NULL,
     @WarrantyDocumentPath   VARCHAR(500)  = NULL,
@@ -30,39 +30,37 @@ CREATE OR ALTER PROCEDURE SP_FixedAssets_Update
 AS
 BEGIN
     SET NOCOUNT ON;
-
+    SET XACT_ABORT ON;
+ 
     BEGIN TRANSACTION
     BEGIN TRY
-
+ 
         IF NOT EXISTS (SELECT 1 FROM FixedAssets WHERE AssetId = @AssetId)
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -1
             RETURN
         END
-
+ 
         IF EXISTS (SELECT 1 FROM FixedAssets WHERE AssetCode = UPPER(@AssetCode) AND AssetId != @AssetId)
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -2
             RETURN
         END
-
+ 
         IF NOT EXISTS (SELECT 1 FROM FixedAssetCategories WHERE AssetCategoryId = @AssetCategoryId AND IsActive = 1)
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -3
             RETURN
         END
-
+ 
         UPDATE FixedAssets SET
             AssetCode              = UPPER(@AssetCode),
             AssetName              = UPPER(@AssetName),
             Description            = UPPER(@Description),
             AssetCategoryId        = @AssetCategoryId,
-            Brand                  = UPPER(@Brand),
-            Model                  = UPPER(@Model),
-            Serial                 = UPPER(@Serial),
             PurchaseDate           = @PurchaseDate,
             PurchaseValue          = @PurchaseValue,
             ResidualValue          = @ResidualValue,
@@ -82,10 +80,22 @@ BEGIN
             ModifiedDate           = GETDATE(),
             ModifiedBy             = @ModifiedBy
         WHERE AssetId = @AssetId
-
+ 
+        -- Upsert atributos de sistema BRAND, MODEL, SERIAL
+        DECLARE @AttrDefId INT
+ 
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'BRAND',  'Marca',  @AttrDefId OUTPUT
+        EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Brand,  @ModifiedBy
+ 
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'MODEL',  'Modelo', @AttrDefId OUTPUT
+        EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Model,  @ModifiedBy
+ 
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'SERIAL', 'Serie',  @AttrDefId OUTPUT
+        EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Serial, @ModifiedBy
+ 
         COMMIT TRANSACTION
         SELECT 1
-
+ 
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION

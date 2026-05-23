@@ -219,6 +219,9 @@ namespace SECRON.Views
             ComboBox_AssetStatus.Items.Add("TRASLADO");
             ComboBox_AssetStatus.Items.Add("EXTRAVIADO");
             ComboBox_AssetStatus.SelectedIndex = 0;
+            
+            ComboBox_AssetStatus.SelectedIndexChanged += ComboBox_AssetStatus_SelectedIndexChanged;
+            ActualizarCamposBaja();
         }
 
         #endregion ConfigurarCombos
@@ -428,6 +431,7 @@ namespace SECRON.Views
 
                 int statusIdx = ComboBox_AssetStatus.Items.IndexOf(_activoSeleccionado.AssetStatus ?? "ACTIVO");
                 ComboBox_AssetStatus.SelectedIndex = statusIdx >= 0 ? statusIdx : 0;
+                ActualizarCamposBaja();
 
                 SetTextBoxFromValue(Txt_Notes, _activoSeleccionado.Notes, "NOTAS");
 
@@ -687,6 +691,27 @@ namespace SECRON.Views
             Txt_ValorBuscado.Focus();
         }
 
+        private void ComboBox_AssetStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActualizarCamposBaja();
+        }
+
+        private void ActualizarCamposBaja()
+        {
+            bool esBaja = ComboBox_AssetStatus.SelectedItem?.ToString() == "BAJA";
+
+            DTP_DisposalDate.Enabled = esBaja;
+            Txt_DisposalReason.Enabled = esBaja;
+            Txt_DisposalValue.Enabled = esBaja;
+
+            if (!esBaja)
+            {
+                DTP_DisposalDate.Checked = false;
+                SetTextBoxFromValue(Txt_DisposalReason, "", "MOTIVO DE BAJA");
+                SetTextBoxFromValue(Txt_DisposalValue, "", "0.00");
+            }
+        }
+
         #endregion AsignacionFocus
 
         #region Validaciones
@@ -720,6 +745,28 @@ namespace SECRON.Views
                 MessageBox.Show("Ingrese un VALOR DE COMPRA válido.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Txt_PurchaseValue.Focus(); return false;
+            }
+
+            if (ComboBox_AssetStatus.SelectedItem?.ToString() == "BAJA")
+            {
+                if (!DTP_DisposalDate.Checked)
+                {
+                    MessageBox.Show("Debe ingresar la FECHA DE BAJA.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    DTP_DisposalDate.Focus(); return false;
+                }
+                if (TienePlaceholder(Txt_DisposalReason, "MOTIVO DE BAJA"))
+                {
+                    MessageBox.Show("Debe ingresar el MOTIVO DE BAJA.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Txt_DisposalReason.Focus(); return false;
+                }
+                if (TienePlaceholder(Txt_DisposalValue, "0.00"))
+                {
+                    MessageBox.Show("Debe ingresar el VALOR DE BAJA.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Txt_DisposalValue.Focus(); return false;
+                }
             }
 
             return true;

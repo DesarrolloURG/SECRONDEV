@@ -17,6 +17,7 @@ namespace SECRON.Models
         public string AttributeLabel { get; set; }
         public string DataType { get; set; }
         public bool IsRequired { get; set; }
+        public bool IsSystem { get; set; }
 
         public Mdl_FixedAssetAttributeValue()
         {
