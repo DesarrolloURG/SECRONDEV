@@ -142,9 +142,18 @@ namespace SECRON.Controllers
                         else if (filtro1 == "POR NOMBRE")
                             query += " AND fa.AssetName LIKE @texto";
                         else if (filtro1 == "POR SERIE")
-                            query += " AND fa.Serial LIKE @texto";
+                            query += @" AND EXISTS (
+                        SELECT 1 FROM FixedAssetAttributeValues av
+                        INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                        WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1
+                        AND av.Value LIKE @texto)";
                         else
-                            query += " AND (fa.AssetCode LIKE @texto OR fa.AssetName LIKE @texto OR fa.Serial LIKE @texto)";
+                                            query += @" AND (fa.AssetCode LIKE @texto OR fa.AssetName LIKE @texto
+                        OR EXISTS (
+                            SELECT 1 FROM FixedAssetAttributeValues av
+                            INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                            WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1
+                            AND av.Value LIKE @texto))";
 
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
