@@ -511,27 +511,6 @@ namespace SECRON.Views
             if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; Btn_Search_Click(sender, e); }
         }
 
-        private void Btn_CleanSearch_Click(object sender, EventArgs e)
-        {
-            if (!Btn_CleanSearch.Enabled) return;
-
-            SetTextBoxFromValue(Txt_ValorBuscado, "", "BUSCAR POR CÓDIGO, NOMBRE O SERIE...");
-            Filtro1.SelectedIndex = 0;
-            FiltroEstado.SelectedIndex = 1;
-
-            _ultimoTextoBusqueda = "";
-            _ultimoFiltro1 = "TODOS";
-            _ultimoFiltroEstado = "SOLO ACTIVOS";
-            _ultimoCategoriaId = null;
-            paginaActual = 1;
-
-            RefrescarListado();
-            ConfigurarTabla();
-            AjustarColumnas();
-            ActualizarInfoPaginacion();
-            ConfigurarControlesPorPermisos();
-        }
-
         #endregion Search
 
         #region ToolStrip_Paginacion
