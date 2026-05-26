@@ -13,8 +13,7 @@ namespace SECRON.Controllers
     internal class Ctrl_Employees
     {
         // MÉTODO AUXILIAR: Generar próximo código 
-        // Obtiene el último código registrado, lo incrementa y retorna el nuevo código
-        // Formato: 000001, 000002, etc. o con prefijo si existe
+        // Obtiene el último código registrado, lo incrementa y retorna el nuevo código// Formato: 000001, 000002, etc. o con prefijo si existe
         public static string ObtenerProximoCodigo()
         {
             try
@@ -776,6 +775,30 @@ namespace SECRON.Controllers
                 }
             }
             catch { return 0; }
+        }
+
+        public static List<KeyValuePair<int, string>> ObtenerEmpleadosParaCombo()
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT EmployeeId, FullName FROM Employees WHERE IsActive = 1 ORDER BY FullName";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            lista.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener empleados para combo: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
         }
     }
 }

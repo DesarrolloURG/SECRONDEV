@@ -2,7 +2,7 @@
 
 namespace SECRON.Models
 {
-    internal class Mdl_FixedAsset
+    public class Mdl_FixedAsset
     {
         public int AssetId { get; set; }
         public string AssetCode { get; set; }

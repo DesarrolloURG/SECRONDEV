@@ -47,47 +47,70 @@ INNER JOIN [dbo].[FixedAssetTransferStatus] sf ON sf.[TransferStatusId] = t.[Fro
 INNER JOIN [dbo].[FixedAssetTransferStatus] st ON st.[TransferStatusId] = t.[ToStatusId]
 LEFT JOIN  [dbo].[Users] uc                    ON uc.[UserId]           = t.[CreatedBy];
 GO
-
--- -------------------------------------------------------
--- V_FixedAssetMovements
--- -------------------------------------------------------
-CREATE OR ALTER VIEW [dbo].[V_FixedAssetMovements]
+-- ============================================================
+-- VISTA MAESTRO
+-- ============================================================
+CREATE OR ALTER VIEW [dbo].[V_FixedAssetTransfers]
 AS
 SELECT
-    tr.[TransferId],
-    tr.[TransferCode],
-    tr.[AssetId],
-    fa.[AssetCode],
-    fa.[AssetName],
-    tr.[TransferStatusId],
+    t.[TransferId],
+    t.[TransferCode],
+    t.[TransferDate],
+    t.[ToWarehouseId],
+    w.[WarehouseName]   AS [ToWarehouseName],
+    t.[ToEmployeeId],
+    CONCAT(e.[FirstName], ' ', e.[LastName]) AS [ToEmployeeName],
+    t.[TransferStatusId],
     ts.[StatusCode],
     ts.[StatusName],
-    tr.[TransferDate],
-    tr.[FromWarehouseId],
-    wf.[WarehouseName]                          AS FromWarehouseName,
-    tr.[FromEmployeeId],
-    CONCAT(ef.[FirstName], ' ', ef.[LastName])  AS FromEmployeeName,
-    tr.[ToWarehouseId],
-    wt.[WarehouseName]                          AS ToWarehouseName,
-    tr.[ToEmployeeId],
-    CONCAT(et.[FirstName], ' ', et.[LastName])  AS ToEmployeeName,
-    tr.[Reason],
-    tr.[ApprovedByUserId],
-    tr.[ApprovedDate],
-    tr.[CompletedDate],
-    tr.[CreatedDate],
-    tr.[CreatedBy],
-    uc.[FullName]                               AS CreatedByName,
-    tr.[ModifiedDate],
-    tr.[ModifiedBy],
-    um.[FullName]                               AS ModifiedByName
-FROM [dbo].[FixedAssetTransfers] tr
-INNER JOIN [dbo].[FixedAssets]              fa  ON fa.[AssetId]          = tr.[AssetId]
-INNER JOIN [dbo].[FixedAssetTransferStatus] ts  ON ts.[TransferStatusId] = tr.[TransferStatusId]
-LEFT JOIN  [dbo].[Warehouses]               wf  ON wf.[WarehouseId]      = tr.[FromWarehouseId]
-LEFT JOIN  [dbo].[Warehouses]               wt  ON wt.[WarehouseId]      = tr.[ToWarehouseId]
-LEFT JOIN  [dbo].[Employees]                ef  ON ef.[EmployeeId]       = tr.[FromEmployeeId]
-LEFT JOIN  [dbo].[Employees]                et  ON et.[EmployeeId]       = tr.[ToEmployeeId]
-LEFT JOIN  [dbo].[Users]                    uc  ON uc.[UserId]           = tr.[CreatedBy]
-LEFT JOIN  [dbo].[Users]                    um  ON um.[UserId]           = tr.[ModifiedBy];
+    t.[Reason],
+    t.[ApprovedByUserId],
+    t.[ApprovedDate],
+    t.[CompletedDate],
+    t.[CreatedDate],
+    t.[CreatedBy],
+    uc.[FullName]       AS [CreatedByName],
+    t.[ModifiedDate],
+    t.[ModifiedBy],
+    um.[FullName]       AS [ModifiedByName]
+FROM [dbo].[FixedAssetTransfers] t
+LEFT JOIN [dbo].[Warehouses] w
+    ON w.[WarehouseId] = t.[ToWarehouseId]
+LEFT JOIN [dbo].[Employees] e
+    ON e.[EmployeeId] = t.[ToEmployeeId]
+INNER JOIN [dbo].[FixedAssetTransferStatus] ts
+    ON ts.[TransferStatusId] = t.[TransferStatusId]
+LEFT JOIN [dbo].[Users] uc
+    ON uc.[UserId] = t.[CreatedBy]
+LEFT JOIN [dbo].[Users] um
+    ON um.[UserId] = t.[ModifiedBy];
+GO
+
+-- ============================================================
+-- VISTA DETALLE
+-- ============================================================
+CREATE OR ALTER VIEW [dbo].[V_FixedAssetTransferDetails]
+AS
+SELECT
+    d.[TransferDetailId],
+    d.[TransferId],
+    d.[AssetId],
+    a.[AssetCode],
+    a.[AssetName],
+    d.[FromWarehouseId],
+    fw.[WarehouseName]  AS [FromWarehouseName],
+    d.[FromEmployeeId],
+    CONCAT(fe.[FirstName], ' ', fe.[LastName]) AS [FromEmployeeName],
+    d.[CreatedDate],
+    d.[CreatedBy],
+    uc.[FullName]       AS [CreatedByName]
+FROM [dbo].[FixedAssetTransferDetails] d
+INNER JOIN [dbo].[FixedAssets] a
+    ON a.[AssetId] = d.[AssetId]
+LEFT JOIN [dbo].[Warehouses] fw
+    ON fw.[WarehouseId] = d.[FromWarehouseId]
+LEFT JOIN [dbo].[Employees] fe
+    ON fe.[EmployeeId] = d.[FromEmployeeId]
+LEFT JOIN [dbo].[Users] uc
+    ON uc.[UserId] = d.[CreatedBy];
 GO

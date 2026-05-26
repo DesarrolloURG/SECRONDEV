@@ -286,41 +286,61 @@ INSERT INTO [dbo].[FixedAssetTransferStatusTransitions] ([FromStatusId],[ToStatu
 (2, 4);  -- APPROVED → COMPLETED
 GO
 
--- -------------------------------------------------------
--- 8. TRASLADOS DE ACTIVOS
--- -------------------------------------------------------
+-- ============================================================
+-- RESTRUCTURACIÓN: FixedAssetTransfers → Maestro + Detalle
+-- ============================================================
+
+-- 8. Eliminar tabla actual (ya no se usará)
+IF OBJECT_ID('dbo.FixedAssetTransfers', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FixedAssetTransfers];
+GO
+
+-- 9. Tabla MAESTRO — un registro por traslado
 CREATE TABLE [dbo].[FixedAssetTransfers](
-    [TransferId]            [int] IDENTITY(1,1) NOT NULL,
-    [TransferCode]          [varchar](30) NOT NULL,
-    [AssetId]               [int] NOT NULL,
-    [TransferDate]          [date] NOT NULL,
-    [FromWarehouseId]       [int] NULL,
-    [FromEmployeeId]        [int] NULL,
-    [ToWarehouseId]         [int] NULL,
-    [ToEmployeeId]          [int] NULL,
-    [TransferStatusId]      [int] NOT NULL,
-    [Reason]                [varchar](500) NULL,
-    [ApprovedByUserId]      [int] NULL,
-    [ApprovedDate]          [datetime] NULL,
-    [CompletedDate]         [datetime] NULL,
-    [CreatedDate]           [datetime] NULL CONSTRAINT DF_FAT_Created DEFAULT GETDATE(),
-    [CreatedBy]             [int] NULL,
-    [ModifiedDate]          [datetime] NULL,
-    [ModifiedBy]            [int] NULL,
+    [TransferId]        [int] IDENTITY(1,1) NOT NULL,
+    [TransferCode]      [varchar](30) NOT NULL,
+    [TransferDate]      [date] NOT NULL,
+    [ToWarehouseId]     [int] NULL,
+    [ToEmployeeId]      [int] NULL,
+    [TransferStatusId]  [int] NOT NULL,
+    [Reason]            [varchar](500) NULL,
+    [ApprovedByUserId]  [int] NULL,
+    [ApprovedDate]      [datetime] NULL,
+    [CompletedDate]     [datetime] NULL,
+    [CreatedDate]       [datetime] NULL CONSTRAINT DF_FAT_Created DEFAULT GETDATE(),
+    [CreatedBy]         [int] NULL,
+    [ModifiedDate]      [datetime] NULL,
+    [ModifiedBy]        [int] NULL,
     CONSTRAINT PK_FixedAssetTransfers PRIMARY KEY CLUSTERED ([TransferId] ASC),
     CONSTRAINT UK_FAT_Code UNIQUE ([TransferCode]),
-    CONSTRAINT FK_FAT_Asset FOREIGN KEY ([AssetId])
-        REFERENCES [dbo].[FixedAssets]([AssetId]),
-    CONSTRAINT FK_FAT_FromWarehouse FOREIGN KEY ([FromWarehouseId])
-        REFERENCES [dbo].[Warehouses]([WarehouseId]),
     CONSTRAINT FK_FAT_ToWarehouse FOREIGN KEY ([ToWarehouseId])
         REFERENCES [dbo].[Warehouses]([WarehouseId]),
-    CONSTRAINT FK_FAT_FromEmployee FOREIGN KEY ([FromEmployeeId])
-        REFERENCES [dbo].[Employees]([EmployeeId]),
     CONSTRAINT FK_FAT_ToEmployee FOREIGN KEY ([ToEmployeeId])
         REFERENCES [dbo].[Employees]([EmployeeId]),
     CONSTRAINT FK_FAT_Status FOREIGN KEY ([TransferStatusId])
         REFERENCES [dbo].[FixedAssetTransferStatus]([TransferStatusId])
+);
+GO
+
+-- 10. Tabla DETALLE — un registro por activo dentro del traslado
+CREATE TABLE [dbo].[FixedAssetTransferDetails](
+    [TransferDetailId]  [int] IDENTITY(1,1) NOT NULL,
+    [TransferId]        [int] NOT NULL,
+    [AssetId]           [int] NOT NULL,
+    [FromWarehouseId]   [int] NULL,
+    [FromEmployeeId]    [int] NULL,
+    [CreatedDate]       [datetime] NULL CONSTRAINT DF_FATD_Created DEFAULT GETDATE(),
+    [CreatedBy]         [int] NULL,
+    CONSTRAINT PK_FixedAssetTransferDetails PRIMARY KEY CLUSTERED ([TransferDetailId] ASC),
+    CONSTRAINT UK_FATD_Transfer_Asset UNIQUE ([TransferId], [AssetId]),
+    CONSTRAINT FK_FATD_Transfer FOREIGN KEY ([TransferId])
+        REFERENCES [dbo].[FixedAssetTransfers]([TransferId]) ON DELETE CASCADE,
+    CONSTRAINT FK_FATD_Asset FOREIGN KEY ([AssetId])
+        REFERENCES [dbo].[FixedAssets]([AssetId]),
+    CONSTRAINT FK_FATD_FromWarehouse FOREIGN KEY ([FromWarehouseId])
+        REFERENCES [dbo].[Warehouses]([WarehouseId]),
+    CONSTRAINT FK_FATD_FromEmployee FOREIGN KEY ([FromEmployeeId])
+        REFERENCES [dbo].[Employees]([EmployeeId])
 );
 GO
 

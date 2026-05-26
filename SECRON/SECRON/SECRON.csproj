@@ -110,7 +110,7 @@
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeDefinitions.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeValues.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetCategories.cs" />
-    <Compile Include="Controllers\Ctrl_FixedAssetMovements.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetTransfers.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssets.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetTransferStatus.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetTransferStatusTransitions.cs" />
@@ -351,6 +351,18 @@
     <Compile Include="Views\Frm_FixedAsset_Movements.Designer.cs">
       <DependentUpon>Frm_FixedAsset_Movements.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_FixedAsset_Movements_SearchAsset.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_Movements_SearchAsset.Designer.cs">
+      <DependentUpon>Frm_FixedAsset_Movements_SearchAsset.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_Movements_Tracking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_Movements_Tracking.Designer.cs">
+      <DependentUpon>Frm_FixedAsset_Movements_Tracking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_FixedAsset_StatusMovements.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -583,6 +595,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FixedAsset_Movements.resx">
       <DependentUpon>Frm_FixedAsset_Movements.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset_Movements_SearchAsset.resx">
+      <DependentUpon>Frm_FixedAsset_Movements_SearchAsset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset_Movements_Tracking.resx">
+      <DependentUpon>Frm_FixedAsset_Movements_Tracking.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FixedAsset_StatusMovements.resx">
       <DependentUpon>Frm_FixedAsset_StatusMovements.cs</DependentUpon>
