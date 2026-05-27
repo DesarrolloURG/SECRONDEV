@@ -31,31 +31,43 @@ AS
 BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
- 
+
     BEGIN TRANSACTION
     BEGIN TRY
- 
+
         IF NOT EXISTS (SELECT 1 FROM FixedAssets WHERE AssetId = @AssetId)
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -1
             RETURN
         END
- 
+
         IF EXISTS (SELECT 1 FROM FixedAssets WHERE AssetCode = UPPER(@AssetCode) AND AssetId != @AssetId)
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -2
             RETURN
         END
- 
+
         IF NOT EXISTS (SELECT 1 FROM FixedAssetCategories WHERE AssetCategoryId = @AssetCategoryId AND IsActive = 1)
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -3
             RETURN
         END
- 
+
+        -- Si cambió la categoría, eliminar todos los atributos anteriores del activo
+        DECLARE @CategoriaAnterior INT
+        SELECT @CategoriaAnterior = AssetCategoryId FROM FixedAssets WHERE AssetId = @AssetId
+
+        IF @CategoriaAnterior != @AssetCategoryId
+        BEGIN
+            DELETE av
+            FROM FixedAssetAttributeValues av
+            INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+            WHERE av.AssetId = @AssetId
+        END
+
         UPDATE FixedAssets SET
             AssetCode              = UPPER(@AssetCode),
             AssetName              = UPPER(@AssetName),
@@ -80,22 +92,24 @@ BEGIN
             ModifiedDate           = GETDATE(),
             ModifiedBy             = @ModifiedBy
         WHERE AssetId = @AssetId
- 
-        -- Upsert atributos de sistema BRAND, MODEL, SERIAL
+
         DECLARE @AttrDefId INT
- 
+
         EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'BRAND',  'Marca',  @AttrDefId OUTPUT
         EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Brand,  @ModifiedBy
- 
+        SET @AttrDefId = NULL
+
         EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'MODEL',  'Modelo', @AttrDefId OUTPUT
         EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Model,  @ModifiedBy
- 
+        SET @AttrDefId = NULL
+
         EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'SERIAL', 'Serie',  @AttrDefId OUTPUT
         EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Serial, @ModifiedBy
- 
+        SET @AttrDefId = NULL
+
         COMMIT TRANSACTION
         SELECT 1
- 
+
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION

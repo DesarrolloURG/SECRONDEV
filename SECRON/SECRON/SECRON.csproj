@@ -339,6 +339,12 @@
     <Compile Include="Views\Frm_FA_SearchAccount.Designer.cs">
       <DependentUpon>Frm_FA_SearchAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_FixedAssetCategories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAssetCategories.Designer.cs">
+      <DependentUpon>Frm_FixedAssetCategories.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_FixedAsset.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -398,12 +404,6 @@
     </Compile>
     <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.Designer.cs">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Frm_FixedAssetCategories.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Frm_FixedAssetCategories.Designer.cs">
-      <DependentUpon>Frm_FixedAssetCategories.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_KARDEX_ItemsManagment.cs">
       <SubType>Form</SubType>
@@ -590,6 +590,9 @@
     <EmbeddedResource Include="Views\Frm_FA_SearchAccount.resx">
       <DependentUpon>Frm_FA_SearchAccount.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAssetCategories.resx">
+      <DependentUpon>Frm_FixedAssetCategories.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FixedAsset.resx">
       <DependentUpon>Frm_FixedAsset.cs</DependentUpon>
     </EmbeddedResource>
@@ -619,9 +622,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.resx">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_FixedAssetCategories.resx">
-      <DependentUpon>Frm_FixedAssetCategories.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_ItemsManagment.resx">
       <DependentUpon>Frm_KARDEX_ItemsManagment.cs</DependentUpon>

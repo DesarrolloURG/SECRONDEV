@@ -126,21 +126,35 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // ─────────────────────────────────────────────
-        // COUNT
-        // ─────────────────────────────────────────────
-        public static int ContarTotalCategorias(string textoBusqueda = "")
+        public static int ContarTotalCategorias(string textoBusqueda = "", string filtro1 = "TODOS",
+        string filtroEstado = "SOLO ACTIVOS", string filtroTipo = "TODOS")
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT COUNT(*) FROM FixedAssetCategories WHERE IsActive = 1";
+                    string query = "SELECT COUNT(*) FROM FixedAssetCategories WHERE 1=1";
                     List<SqlParameter> parametros = new List<SqlParameter>();
+
+                    if (filtroEstado == "SOLO ACTIVOS")
+                        query += " AND IsActive = 1";
+                    else if (filtroEstado == "SOLO INACTIVOS")
+                        query += " AND IsActive = 0";
+
+                    if (filtroTipo == "TANGIBLE")
+                        query += " AND IsTangible = 1";
+                    else if (filtroTipo == "INTANGIBLE")
+                        query += " AND IsTangible = 0";
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
-                        query += " AND (CategoryCode LIKE @texto OR CategoryName LIKE @texto)";
+                        if (filtro1 == "POR CÓDIGO")
+                            query += " AND CategoryCode LIKE @texto";
+                        else if (filtro1 == "POR NOMBRE")
+                            query += " AND CategoryName LIKE @texto";
+                        else
+                            query += " AND (CategoryCode LIKE @texto OR CategoryName LIKE @texto)";
+
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 

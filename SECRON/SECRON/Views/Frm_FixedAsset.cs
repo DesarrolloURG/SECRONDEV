@@ -36,7 +36,7 @@ namespace SECRON.Views
 
         // Paginación
         private int paginaActual = 1;
-        private int registrosPorPagina = 100;
+        private int registrosPorPagina = 2;
         private int totalRegistros = 0;
         private int totalPaginas = 0;
         private ToolStrip toolStripPaginacion;
@@ -47,11 +47,6 @@ namespace SECRON.Views
         {
             InitializeComponent();
             this.Resize += FormularioResize;
-            this.Resize += (s, e) =>
-            {
-                if (toolStripPaginacion != null)
-                    toolStripPaginacion.Location = new Point(this.Width - 300, 170);
-            };
         }
 
         private async void Frm_FixedAsset_Load(object sender, EventArgs e)
@@ -203,6 +198,35 @@ namespace SECRON.Views
             FiltroEstado.Items.Add("SOLO ACTIVOS");
             FiltroEstado.Items.Add("SOLO INACTIVOS");
             FiltroEstado.SelectedIndex = 1;
+        }
+
+        private void Btn_CleanSearch_Click(object sender, EventArgs e)
+        {
+            if (!Btn_CleanSearch.Enabled) return;
+
+            Tabla.SelectionChanged -= Tabla_SelectionChanged;
+
+            SetTextBoxFromValue(Txt_ValorBuscado, "", "BUSCAR POR CÓDIGO, NOMBRE O SERIE...");
+            Filtro1.SelectedIndex = 0;
+            FiltroEstado.SelectedIndex = 1;
+
+            _ultimoTextoBusqueda = "";
+            _ultimoFiltro1 = "TODOS";
+            _ultimoFiltroEstado = "SOLO ACTIVOS";
+            _ultimoCategoriaId = null;
+            paginaActual = 1;
+
+            RefrescarListado();
+            ConfigurarTabla();
+            AjustarColumnas();
+            ActualizarInfoPaginacion();
+
+            if (Tabla.Rows.Count > 0)
+                CargarDatosActivoSeleccionado();
+            else
+                LimpiarFormulario();
+
+            Tabla.SelectionChanged += Tabla_SelectionChanged;
         }
 
         #endregion Filtros
@@ -523,7 +547,7 @@ namespace SECRON.Views
             toolStripPaginacion.GripStyle = ToolStripGripStyle.Hidden;
             toolStripPaginacion.BackColor = Color.FromArgb(248, 249, 250);
             toolStripPaginacion.AutoSize = true;
-            toolStripPaginacion.Location = new Point(this.Width - 400, 170);
+            toolStripPaginacion.Location = new Point(PanelToolStrip.Width - 300, 0);
 
             btnAnterior = new ToolStripButton { Text = "❮ Anterior" };
             btnAnterior.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -545,8 +569,15 @@ namespace SECRON.Views
             btnSiguiente.Click += (s, ev) => CambiarPagina(paginaActual + 1);
             toolStripPaginacion.Items.Add(btnSiguiente);
 
-            this.Controls.Add(toolStripPaginacion);
+            PanelToolStrip.Controls.Add(toolStripPaginacion);
             toolStripPaginacion.BringToFront();
+
+            // Reposicionar cuando el panel cambie de tamaño
+            PanelToolStrip.Resize += (s, e) =>
+            {
+                if (toolStripPaginacion != null)
+                    toolStripPaginacion.Location = new Point(PanelToolStrip.Width - toolStripPaginacion.Width, 0);
+            };
         }
 
         private void ActualizarBotonesNumerados()
@@ -560,7 +591,7 @@ namespace SECRON.Views
 
             int inicio = Math.Max(1, paginaActual - 1);
             int fin = Math.Min(totalPaginas, paginaActual + 1);
-            int posicion = toolStripPaginacion.Items.IndexOf(btnSiguiente);
+            int posicion = toolStripPaginacion.Items.IndexOf(btnAnterior) + 1;
 
             for (int i = inicio; i <= fin; i++)
             {
@@ -569,11 +600,15 @@ namespace SECRON.Views
                 btn.Margin = new Padding(1);
                 btn.Padding = new Padding(6, 4, 6, 4);
                 btn.BackColor = i == paginaActual ? Color.FromArgb(238, 143, 109) : Color.FromArgb(240, 240, 240);
-                btn.ForeColor = i == paginaActual ? Color.White : Color.FromArgb(51, 140, 255);
-                int num = i;
-                btn.Click += (s, ev) => CambiarPagina(num);
-                toolStripPaginacion.Items.Insert(posicion++, btn);
+                btn.ForeColor = i == paginaActual ? Color.White : Color.Black;
+                btn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+                int pagina = i;
+                btn.Click += (s, ev) => CambiarPagina(pagina);
+                toolStripPaginacion.Items.Insert(posicion + (i - inicio), btn);
             }
+
+            // Reposicionar después de agregar botones
+            toolStripPaginacion.Location = new Point(PanelToolStrip.Width - toolStripPaginacion.Width, 0);
         }
 
         private void CambiarPagina(int nuevaPagina)
@@ -667,7 +702,9 @@ namespace SECRON.Views
             Btn_Inactive.TabIndex = 29;
             Btn_Clear.TabIndex = 30;
 
-            Txt_ValorBuscado.Focus();
+            //Txt_ValorBuscado.Focus();
+            //Tabla.Focus();
+            this.ActiveControl = null;
         }
 
         private void ComboBox_AssetStatus_SelectedIndexChanged(object sender, EventArgs e)
@@ -679,6 +716,7 @@ namespace SECRON.Views
         {
             bool esBaja = ComboBox_AssetStatus.SelectedItem?.ToString() == "BAJA";
 
+            DTP_DisposalDate.Checked = true;
             DTP_DisposalDate.Enabled = esBaja;
             Txt_DisposalReason.Enabled = esBaja;
             Txt_DisposalValue.Enabled = esBaja;
@@ -1033,7 +1071,8 @@ namespace SECRON.Views
                 using (var frm = new Frm_FA_AssetAttributeValues(assetId, categoryId, userId))
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
-                    frm.ShowDialog(this);
+                    if (frm.ShowDialog(this) == DialogResult.OK)
+                        frm.GuardarValores(assetId);
                 }
             }
             catch (Exception ex)
@@ -1292,7 +1331,10 @@ namespace SECRON.Views
                 Etiqueta = a.AttributeLabel,
                 Tipo = a.DataType,
                 Obligatorio = a.IsRequired ? "SI" : "NO",
-                Valor = string.IsNullOrWhiteSpace(a.Value) ? "— SIN VALOR —" : a.Value
+                Valor = string.IsNullOrWhiteSpace(a.Value) ? "— SIN VALOR —"
+                    : a.DataType?.ToUpper() == "FECHA" && DateTime.TryParse(a.Value, out DateTime fecha)
+                        ? fecha.ToString("dd/MM/yyyy")
+                        : a.Value
             }).ToList();
 
             TablaAtributos.DataSource = data;
@@ -1318,16 +1360,14 @@ namespace SECRON.Views
             TablaAtributos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             TablaAtributos.MultiSelect = false;
             TablaAtributos.ReadOnly = true;
-            TablaAtributos.AllowUserToResizeRows = false;
             TablaAtributos.AllowUserToAddRows = false;
             TablaAtributos.AllowUserToDeleteRows = false;
-            TablaAtributos.RowHeadersVisible = false;
-
+            TablaAtributos.AllowUserToResizeRows = false;
+            TablaAtributos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            TablaAtributos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             TablaAtributos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(94, 53, 177);
             TablaAtributos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            TablaAtributos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             TablaAtributos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
             TablaAtributos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 143, 109);
             TablaAtributos.DefaultCellStyle.SelectionForeColor = Color.White;
             TablaAtributos.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
@@ -1458,7 +1498,18 @@ namespace SECRON.Views
             Txt_AttributeKey.Text = atrib.AttributeKey;
             Txt_AttributeLabel.Text = atrib.AttributeLabel;
             Txt_AttributeType.Text = atrib.DataType;
-            Txt_AttributeValue.Text = string.IsNullOrWhiteSpace(atrib.Value) ? "" : atrib.Value;
+
+            if (atrib.DataType?.ToUpper() == "FECHA")
+            {
+                Txt_AttributeValue.Visible = false;
+                MostrarDtpAtributo(atrib.Value);
+            }
+            else
+            {
+                OcultarDtpAtributo();
+                Txt_AttributeValue.Visible = true;
+                Txt_AttributeValue.Text = string.IsNullOrWhiteSpace(atrib.Value) ? "" : atrib.Value;
+            }
         }
 
         private void Btn_UpdateAtributo_Click(object sender, EventArgs e)
@@ -1479,7 +1530,12 @@ namespace SECRON.Views
                 var atrib = _atributosValoresList.FirstOrDefault(a => a.AttributeDefId == defId);
                 if (atrib == null) return;
 
-                string valor = Txt_AttributeValue.Text.Trim();
+                // Obtener valor según tipo
+                string valor;
+                if (atrib.DataType?.ToUpper() == "FECHA" && _dtpAtributo != null && _dtpAtributo.Visible)
+                    valor = _dtpAtributo.Value.ToString("yyyy-MM-dd");
+                else
+                    valor = Txt_AttributeValue.Text.Trim();
 
                 // Validar obligatorio
                 if (atrib.IsRequired && string.IsNullOrWhiteSpace(valor))
@@ -1504,19 +1560,9 @@ namespace SECRON.Views
                                 return;
                             }
                             break;
-                        case "FECHA":
-                        case "DATE":
-                            if (!DateTime.TryParse(valor, out _))
-                            {
-                                MessageBox.Show($"El campo '{atrib.AttributeLabel}' debe ser una fecha válida (ej. 31/12/2024).", "Validación",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                            break;
                     }
                 }
 
-                // Confirmación
                 if (MessageBox.Show(
                     $"¿Actualizar el valor de '{atrib.AttributeLabel}'?",
                     "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
@@ -1568,6 +1614,7 @@ namespace SECRON.Views
             }
         }
 
+        /*
         private void Btn_ClearAtributo_Click(object sender, EventArgs e)
         {
             Txt_AttributeKey.Text = string.Empty;
@@ -1575,6 +1622,51 @@ namespace SECRON.Views
             Txt_AttributeType.Text = string.Empty;
             Txt_AttributeValue.Text = string.Empty;
             TablaAtributos.ClearSelection();
+        }*/
+
+        private void Btn_ClearAtributo_Click(object sender, EventArgs e)
+        {
+            Txt_AttributeKey.Text = string.Empty;
+            Txt_AttributeLabel.Text = string.Empty;
+            Txt_AttributeType.Text = string.Empty;
+            Txt_AttributeValue.Text = string.Empty;
+            Txt_AttributeValue.Visible = true;
+            OcultarDtpAtributo();
+            TablaAtributos.ClearSelection();
+        }
+
+        private DateTimePicker _dtpAtributo = null;
+
+        private void MostrarDtpAtributo(string valorActual)
+        {
+            if (_dtpAtributo == null)
+            {
+                _dtpAtributo = new DateTimePicker
+                {
+                    Name = "DTP_AtributoValue",
+                    Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold),
+                    Format = DateTimePickerFormat.Custom,
+                    CustomFormat = "dd/MM/yyyy",
+                    Location = Txt_AttributeValue.Location,
+                    Size = Txt_AttributeValue.Size
+                };
+                Panel_AtributosCRUD.Controls.Add(_dtpAtributo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(valorActual) &&
+                DateTime.TryParse(valorActual, out DateTime fecha))
+                _dtpAtributo.Value = fecha;
+            else
+                _dtpAtributo.Value = DateTime.Today;
+
+            _dtpAtributo.Visible = true;
+            _dtpAtributo.BringToFront();
+        }
+
+        private void OcultarDtpAtributo()
+        {
+            if (_dtpAtributo != null)
+                _dtpAtributo.Visible = false;
         }
 
         #endregion ConfiguracionesTabla_Atributos
