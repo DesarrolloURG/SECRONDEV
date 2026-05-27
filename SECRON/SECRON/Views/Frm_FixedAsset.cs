@@ -36,7 +36,7 @@ namespace SECRON.Views
 
         // Paginación
         private int paginaActual = 1;
-        private int registrosPorPagina = 2;
+        private int registrosPorPagina = 100;
         private int totalRegistros = 0;
         private int totalPaginas = 0;
         private ToolStrip toolStripPaginacion;
