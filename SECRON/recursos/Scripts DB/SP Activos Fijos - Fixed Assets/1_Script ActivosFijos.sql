@@ -3,6 +3,22 @@
 -- para que tome siempre la ultima versión
 -- ============================================================
 
+------------- PROCEDIMIENTOS AÑADIDOS POR CAMBIO DE WAREHOUSE PARA ELIMINACIÓN -------------------
+-- 00. Deshabilitar todas las FK
+EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL';
+GO
+
+--. Borrar solo las tablas del módulo de traslados
+IF OBJECT_ID('dbo.FixedAssetTransferDetails', 'U') IS NOT NULL DROP TABLE dbo.FixedAssetTransferDetails;
+IF OBJECT_ID('dbo.FixedAssetTransfers', 'U') IS NOT NULL DROP TABLE dbo.FixedAssetTransfers;
+IF OBJECT_ID('dbo.FixedAssetTransferStatusTransitions', 'U') IS NOT NULL DROP TABLE dbo.FixedAssetTransferStatusTransitions;
+IF OBJECT_ID('dbo.FixedAssetTransferStatus', 'U') IS NOT NULL DROP TABLE dbo.FixedAssetTransferStatus;
+GO
+
+--. Rehabilitar todas las FK
+EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';
+GO
+
 -- -------------------------------------------------------
 -- 1. ELIMINAR FOREIGN KEYS DE TABLAS DEPENDIENTES
 -- -------------------------------------------------------
@@ -361,7 +377,6 @@ CREATE INDEX IX_AEFA_Entry     ON [dbo].[AccountingEntryFixedAssets]([EntryMaste
 CREATE INDEX IX_AEFA_Asset     ON [dbo].[AccountingEntryFixedAssets]([AssetId]);
 CREATE INDEX IX_AEFA_Period    ON [dbo].[AccountingEntryFixedAssets]([Period]);
 
-CREATE INDEX IX_FAT_Asset      ON [dbo].[FixedAssetTransfers]([AssetId]);
 CREATE INDEX IX_FAT_Status     ON [dbo].[FixedAssetTransfers]([TransferStatusId]);
 CREATE INDEX IX_FAT_Date       ON [dbo].[FixedAssetTransfers]([TransferDate]);
 GO

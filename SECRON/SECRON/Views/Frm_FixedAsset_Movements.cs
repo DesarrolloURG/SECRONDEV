@@ -230,62 +230,12 @@ namespace SECRON.Views
 
             DataGridViewRow row = Tabla.Rows[e.RowIndex];
 
-            _selectedTransferId = Convert.ToInt32(row.Cells["colId"].Value);
-            Txt_TransferId.Text = row.Cells["colCodigo"].Value?.ToString();
-            Txt_Reason.Text = row.Cells["colMotivo"].Value?.ToString();
+            _selectedAssetId = Convert.ToInt32(row.Cells["colAssetId"].Value);
+            Txt_AssetId.Text = row.Cells["colCodActivo"].Value?.ToString();
+            Txt_Asset.Text = row.Cells["colNombreActivo"].Value?.ToString();
+            Txt_FromWarehouse.Text = row.Cells["colOrigen"].Value?.ToString() ?? "";
 
-            if (DateTime.TryParse(row.Cells["colFecha"].Value?.ToString(), out DateTime fecha))
-                DTP_TransferDate.Value = fecha;
-
-            // Seleccionar el estado en ComboBox_SelectTo según el destino del traslado
-            var traslado = _trasladosList?.Find(t => t.TransferId == _selectedTransferId);
-            if (traslado != null)
-            {
-                if (traslado.ToWarehouseId.HasValue)
-                {
-                    ComboBox_SelectTo.SelectedItem = "BODEGA";
-                    // Buscar y seleccionar la bodega correcta
-                    foreach (var item in ComboBox_ToWarehouse.Items)
-                    {
-                        if (item is KeyValuePair<int, string> kvp && kvp.Key == traslado.ToWarehouseId.Value)
-                        {
-                            ComboBox_ToWarehouse.SelectedItem = item;
-                            break;
-                        }
-                    }
-                }
-                else if (traslado.ToEmployeeId.HasValue)
-                {
-                    ComboBox_SelectTo.SelectedItem = "EMPLEADO";
-                    foreach (var item in ComboBox_ToEmployee.Items)
-                    {
-                        if (item is KeyValuePair<int, string> kvp && kvp.Key == traslado.ToEmployeeId.Value)
-                        {
-                            ComboBox_ToEmployee.SelectedItem = item;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // Limpiar selección de activo individual
-            _selectedAssetId = 0;
-            _selectedFromWarehouseId = null;
-            _selectedFromEmployeeId = null;
-            Txt_Asset.Clear();
-            Txt_AssetId.Clear();
-            Txt_FromWarehouse.Clear();
-            Txt_FromEmployee.Clear();
-
-            Txt_TransferId.ReadOnly = true;
-            _modoEdicion = true;
-
-            // Cargar activos del traslado en TablaDetalles
-            CargarDetallesDeTabla(_selectedTransferId);
-
-            Btn_AddAsset.Visible = false;
-            Btn_Update.Visible = true;
-            Btn_Update.Enabled = true;
+            Btn_RemoveAsset.Enabled = true;
         }
 
         #endregion
