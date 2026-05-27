@@ -149,7 +149,8 @@ namespace SECRON.Views
                     var dtp = new DateTimePicker
                     {
                         Font = new Font("Segoe UI", 11F, FontStyle.Bold),
-                        Format = DateTimePickerFormat.Short,
+                        Format = DateTimePickerFormat.Custom,
+                        CustomFormat = "dd/MM/yyyy",
                         Height = 30
                     };
                     if (!string.IsNullOrWhiteSpace(valorActual) &&
@@ -202,8 +203,19 @@ namespace SECRON.Views
         private void Btn_Save_Click(object sender, EventArgs e)
         {
             if (!ValidarObligatorios()) return;
+            CapturarValoresEnModelo();
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void CapturarValoresEnModelo()
+        {
+            foreach (var kvp in _controles)
+            {
+                var attr = kvp.Value.Atributo;
+                var ctrl = kvp.Value.Entrada;
+                attr.Value = ObtenerValorDeControl(attr.DataType, ctrl);
+            }
         }
 
         // Validar sin guardar
@@ -261,14 +273,11 @@ namespace SECRON.Views
             foreach (var kvp in _controles)
             {
                 var attr = kvp.Value.Atributo;
-                var ctrl = kvp.Value.Entrada;
-
-                attr.Value = ObtenerValorDeControl(attr.DataType, ctrl);
                 attr.AssetId = assetId;
                 attr.CreatedBy = _userId;
                 attr.ModifiedBy = _userId;
 
-                Ctrl_FixedAssetAttributeValues.RegistrarValor(attr);
+                int resultado = Ctrl_FixedAssetAttributeValues.RegistrarValor(attr);
             }
         }
 

@@ -35,7 +35,7 @@ namespace SECRON.Views
 
         // Paginación
         private int paginaActual = 1;
-        private int registrosPorPagina = 100;
+        private int registrosPorPagina = 2;
         private int totalRegistros = 0;
         private int totalPaginas = 0;
         private ToolStrip toolStripPaginacion;
@@ -50,6 +50,7 @@ namespace SECRON.Views
         {
             InitializeComponent();
 
+            this.MinimumSize = new Size(1200, 700);
             this.Resize += FormularioResize;
             this.Resize += (s, e) =>
             {
@@ -63,6 +64,7 @@ namespace SECRON.Views
             try
             {
                 this.Cursor = Cursors.WaitCursor;
+                this.MinimumSize = new Size(1100, 600);
 
                 ConfigurarTabIndexYFocus();
                 ConfigurarMaxLengthTextBox();
@@ -70,20 +72,29 @@ namespace SECRON.Views
                 ConfigurarPlaceHoldersTextbox();
                 ConfigurarFiltros();
                 ConfigurarCombos();
-                CrearToolStripPaginacion();
 
                 CargarCategorias();
-                ActualizarInfoPaginacion();
-                LimpiarPanelAtributos();
 
+                LimpiarPanelAtributos();
                 ConfigurarTablaAtributos();
                 AjustarColumnasAtributos();
+
+                CrearToolStripPaginacion();
+                ActualizarInfoPaginacion();
 
                 if (UserData != null)
                 {
                     await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
                     ConfigurarControlesPorPermisos();
                 }
+
+                // Forzar reposicionamiento después de que el layout esté completo
+                this.BeginInvoke(new Action(() =>
+                {
+                    if (toolStripPaginacion != null)
+                        toolStripPaginacion.Location = new Point(
+                            PanelToolStrip.Width - toolStripPaginacion.Width, 0);
+                }));
 
                 this.Cursor = Cursors.Default;
             }
@@ -282,7 +293,7 @@ namespace SECRON.Views
                 Tabla.Columns["ModifiedDate"].Visible = false;
                 Tabla.Columns["ModifiedBy"].Visible = false;
             }
-            
+
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Tabla.MultiSelect = false;
             Tabla.ReadOnly = true;
@@ -351,7 +362,7 @@ namespace SECRON.Views
                 c.CreatedBy,
                 c.ModifiedDate,
                 c.ModifiedBy,
-                
+
                 AccountAccumDepName = Ctrl_Accounts.ObtenerNombreCuenta(c.AccountAccumDepId),
                 AccountExpenseName = Ctrl_Accounts.ObtenerNombreCuenta(c.AccountExpenseId)
             }).ToList();
@@ -661,7 +672,7 @@ namespace SECRON.Views
             ConfigurarTabla();
             AjustarColumnas();
             ActualizarInfoPaginacion();
-            
+
             if (Tabla.SelectedRows.Count > 0)
                 CargarDatosCategoriaSeleccionada();
             else
@@ -686,7 +697,7 @@ namespace SECRON.Views
             toolStripPaginacion.GripStyle = ToolStripGripStyle.Hidden;
             toolStripPaginacion.BackColor = Color.FromArgb(248, 249, 250);
             toolStripPaginacion.AutoSize = true;
-            toolStripPaginacion.Location = new Point(this.Width - 400, 200);
+            toolStripPaginacion.Location = new Point(PanelToolStrip.Width - 300, 0);
 
             btnAnterior = new ToolStripButton { Text = "❮ Anterior" };
             btnAnterior.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -708,8 +719,15 @@ namespace SECRON.Views
             btnSiguiente.Click += (s, ev) => CambiarPagina(paginaActual + 1);
             toolStripPaginacion.Items.Add(btnSiguiente);
 
-            this.Controls.Add(toolStripPaginacion);
+            PanelToolStrip.Controls.Add(toolStripPaginacion);
             toolStripPaginacion.BringToFront();
+
+            // Reposicionar cuando el panel cambie de tamaño
+            PanelToolStrip.Resize += (s, e) =>
+            {
+                if (toolStripPaginacion != null)
+                    toolStripPaginacion.Location = new Point(PanelToolStrip.Width - toolStripPaginacion.Width, 0);
+            };
         }
 
         private void ActualizarBotonesNumerados()
@@ -719,11 +737,15 @@ namespace SECRON.Views
             foreach (var i in toRemove)
                 toolStripPaginacion.Items.Remove(i);
 
-            if (totalPaginas <= 1) return;
+            if (totalPaginas <= 1)
+            {
+                toolStripPaginacion.Location = new Point(PanelToolStrip.Width - toolStripPaginacion.Width, 0);
+                return;
+            }
 
             int inicio = Math.Max(1, paginaActual - 1);
             int fin = Math.Min(totalPaginas, paginaActual + 1);
-            int posicion = toolStripPaginacion.Items.IndexOf(btnSiguiente);
+            int posicion = toolStripPaginacion.Items.IndexOf(btnAnterior) + 1;
 
             for (int i = inicio; i <= fin; i++)
             {
@@ -732,11 +754,14 @@ namespace SECRON.Views
                 btn.Margin = new Padding(1);
                 btn.Padding = new Padding(6, 4, 6, 4);
                 btn.BackColor = i == paginaActual ? Color.FromArgb(238, 143, 109) : Color.FromArgb(240, 240, 240);
-                btn.ForeColor = i == paginaActual ? Color.White : Color.FromArgb(51, 140, 255);
-                int num = i;
-                btn.Click += (s, ev) => CambiarPagina(num);
-                toolStripPaginacion.Items.Insert(posicion++, btn);
+                btn.ForeColor = i == paginaActual ? Color.White : Color.Black;
+                btn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+                int pagina = i;
+                btn.Click += (s, ev) => CambiarPagina(pagina);
+                toolStripPaginacion.Items.Insert(posicion + (i - inicio), btn);
             }
+
+            toolStripPaginacion.Location = new Point(PanelToolStrip.Width - toolStripPaginacion.Width, 0);
         }
 
         private void CambiarPagina(int nuevaPagina)
@@ -766,10 +791,11 @@ namespace SECRON.Views
 
         private void ActualizarInfoPaginacion()
         {
-            if (totalRegistros == 0)
-                totalRegistros = Ctrl_FixedAssetCategories.ContarTotalCategorias(_ultimoTextoBusqueda);
+            totalRegistros = Ctrl_FixedAssetCategories.ContarTotalCategorias(
+                _ultimoTextoBusqueda, _ultimoFiltro1, _ultimoFiltroEstado, _ultimoFiltroTipo);
 
             totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+            if (totalPaginas < 1) totalPaginas = 1;
 
             btnAnterior.Enabled = paginaActual > 1;
             btnSiguiente.Enabled = paginaActual < totalPaginas;
@@ -791,7 +817,7 @@ namespace SECRON.Views
         private void ConfigurarTabIndexYFocus()
         {
             int countIndexTabla = 0;
-            Txt_ValorBuscado.TabIndex = countIndexTabla; countIndexTabla++; 
+            Txt_ValorBuscado.TabIndex = countIndexTabla; countIndexTabla++;
             Filtro1.TabIndex = countIndexTabla; countIndexTabla++;
             FiltroEstado.TabIndex = countIndexTabla; countIndexTabla++;
             Txt_CategoryCode.TabIndex = countIndexTabla; countIndexTabla++;
