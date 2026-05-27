@@ -48,6 +48,7 @@
             this.Btn_SearchAccountExpense = new System.Windows.Forms.Button();
             this.Txt_AccountExpense = new System.Windows.Forms.TextBox();
             this.Panel_Derecho = new System.Windows.Forms.Panel();
+            this.Lbl_AtributosHeader = new System.Windows.Forms.Label();
             this.Panel_AtributosCRUD = new System.Windows.Forms.Panel();
             this.Lbl_SubtituloAtributos = new System.Windows.Forms.Label();
             this.Lbl_AttributeKey = new System.Windows.Forms.Label();
@@ -64,6 +65,7 @@
             this.Btn_InactiveAtributo = new System.Windows.Forms.Button();
             this.Btn_ClearAtributo = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.TablaAtributos = new System.Windows.Forms.DataGridView();
             this.Panel_BusquedaAtributos = new System.Windows.Forms.Panel();
             this.Txt_BuscarAtributo = new System.Windows.Forms.TextBox();
             this.Btn_SearchAtributo = new System.Windows.Forms.Button();
@@ -71,6 +73,7 @@
             this.FiltroAtributoTipo = new System.Windows.Forms.ComboBox();
             this.FiltroAtributoEstado = new System.Windows.Forms.ComboBox();
             this.PanelTabla = new System.Windows.Forms.Panel();
+            this.Tabla = new System.Windows.Forms.DataGridView();
             this.PanelToolStrip = new System.Windows.Forms.Panel();
             this.Lbl_Paginas = new System.Windows.Forms.Label();
             this.Panel_Busqueda = new System.Windows.Forms.Panel();
@@ -80,9 +83,6 @@
             this.Filtro1 = new System.Windows.Forms.ComboBox();
             this.FiltroEstado = new System.Windows.Forms.ComboBox();
             this.FiltroTipo = new System.Windows.Forms.ComboBox();
-            this.Lbl_AtributosHeader = new System.Windows.Forms.Label();
-            this.TablaAtributos = new System.Windows.Forms.DataGridView();
-            this.Tabla = new System.Windows.Forms.DataGridView();
             this.Panel_Superior.SuspendLayout();
             this.Panel_Izquierdo.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
@@ -92,12 +92,12 @@
             this.Panel_AtributosCRUD.SuspendLayout();
             this.Panel_AtributosBotones.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).BeginInit();
             this.Panel_BusquedaAtributos.SuspendLayout();
             this.PanelTabla.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
             this.PanelToolStrip.SuspendLayout();
             this.Panel_Busqueda.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
             this.SuspendLayout();
             // 
             // Panel_Superior
@@ -125,6 +125,7 @@
             this.Btn_Export.Text = "EXPORTAR";
             this.Btn_Export.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Export.UseVisualStyleBackColor = true;
+            this.Btn_Export.Click += new System.EventHandler(this.Btn_Export_Click);
             // 
             // Lbl_Formulario
             // 
@@ -135,9 +136,9 @@
             this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
             this.Lbl_Formulario.Location = new System.Drawing.Point(11, 16);
             this.Lbl_Formulario.Name = "Lbl_Formulario";
-            this.Lbl_Formulario.Size = new System.Drawing.Size(261, 25);
+            this.Lbl_Formulario.Size = new System.Drawing.Size(284, 25);
             this.Lbl_Formulario.TabIndex = 1;
-            this.Lbl_Formulario.Text = "GESTIÓN DE ACTIVOS FIJOS";
+            this.Lbl_Formulario.Text = "CATEGORÍA DE ACTIVOS FIJOS";
             // 
             // Panel_Izquierdo
             // 
@@ -185,6 +186,7 @@
             this.Btn_Clear.Size = new System.Drawing.Size(44, 46);
             this.Btn_Clear.TabIndex = 0;
             this.Btn_Clear.UseVisualStyleBackColor = true;
+            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
             // 
             // Btn_Inactive
             // 
@@ -198,6 +200,7 @@
             this.Btn_Inactive.Text = "INACTIVAR";
             this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Inactive.UseVisualStyleBackColor = true;
+            this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
             // 
             // Btn_Update
             // 
@@ -211,6 +214,7 @@
             this.Btn_Update.Text = "EDITAR";
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Update.UseVisualStyleBackColor = true;
+            this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
             // 
             // Btn_Save
             // 
@@ -224,6 +228,7 @@
             this.Btn_Save.Text = "GUARDAR";
             this.Btn_Save.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
             // 
             // Panel_1
             // 
@@ -413,6 +418,7 @@
             this.Btn_SearchAccountAccumDep.Size = new System.Drawing.Size(47, 45);
             this.Btn_SearchAccountAccumDep.TabIndex = 5;
             this.Btn_SearchAccountAccumDep.UseVisualStyleBackColor = true;
+            this.Btn_SearchAccountAccumDep.Click += new System.EventHandler(this.Btn_SearchAccountAccumDep_Click);
             // 
             // Txt_AccountAccumDep
             // 
@@ -441,6 +447,7 @@
             this.Btn_SearchAccountExpense.Size = new System.Drawing.Size(47, 45);
             this.Btn_SearchAccountExpense.TabIndex = 8;
             this.Btn_SearchAccountExpense.UseVisualStyleBackColor = true;
+            this.Btn_SearchAccountExpense.Click += new System.EventHandler(this.Btn_SearchAccountExpense_Click);
             // 
             // Txt_AccountExpense
             // 
@@ -466,6 +473,21 @@
             this.Panel_Derecho.Name = "Panel_Derecho";
             this.Panel_Derecho.Size = new System.Drawing.Size(998, 987);
             this.Panel_Derecho.TabIndex = 0;
+            // 
+            // Lbl_AtributosHeader
+            // 
+            this.Lbl_AtributosHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Lbl_AtributosHeader.BackColor = System.Drawing.Color.White;
+            this.Lbl_AtributosHeader.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.Lbl_AtributosHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
+            this.Lbl_AtributosHeader.Location = new System.Drawing.Point(5, 433);
+            this.Lbl_AtributosHeader.Name = "Lbl_AtributosHeader";
+            this.Lbl_AtributosHeader.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
+            this.Lbl_AtributosHeader.Size = new System.Drawing.Size(981, 28);
+            this.Lbl_AtributosHeader.TabIndex = 80;
+            this.Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UN ACTIVO FIJO";
+            this.Lbl_AtributosHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Panel_AtributosCRUD
             // 
@@ -595,6 +617,7 @@
             this.Btn_SaveAtributo.Text = "GUARDAR";
             this.Btn_SaveAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_SaveAtributo.UseVisualStyleBackColor = true;
+            this.Btn_SaveAtributo.Click += new System.EventHandler(this.Btn_SaveAtributo_Click);
             // 
             // Btn_UpdateAtributo
             // 
@@ -608,6 +631,7 @@
             this.Btn_UpdateAtributo.Text = "EDITAR";
             this.Btn_UpdateAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_UpdateAtributo.UseVisualStyleBackColor = true;
+            this.Btn_UpdateAtributo.Click += new System.EventHandler(this.Btn_UpdateAtributo_Click);
             // 
             // Btn_InactiveAtributo
             // 
@@ -621,6 +645,7 @@
             this.Btn_InactiveAtributo.Text = "INACTIVAR";
             this.Btn_InactiveAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_InactiveAtributo.UseVisualStyleBackColor = true;
+            this.Btn_InactiveAtributo.Click += new System.EventHandler(this.Btn_InactiveAtributo_Click);
             // 
             // Btn_ClearAtributo
             // 
@@ -631,6 +656,7 @@
             this.Btn_ClearAtributo.Size = new System.Drawing.Size(44, 42);
             this.Btn_ClearAtributo.TabIndex = 3;
             this.Btn_ClearAtributo.UseVisualStyleBackColor = true;
+            this.Btn_ClearAtributo.Click += new System.EventHandler(this.Btn_ClearAtributo_Click);
             // 
             // panel1
             // 
@@ -642,6 +668,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(981, 156);
             this.panel1.TabIndex = 78;
+            // 
+            // TablaAtributos
+            // 
+            this.TablaAtributos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaAtributos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TablaAtributos.Location = new System.Drawing.Point(0, 0);
+            this.TablaAtributos.Name = "TablaAtributos";
+            this.TablaAtributos.RowTemplate.Height = 24;
+            this.TablaAtributos.Size = new System.Drawing.Size(981, 156);
+            this.TablaAtributos.TabIndex = 0;
             // 
             // Panel_BusquedaAtributos
             // 
@@ -667,6 +703,7 @@
             this.Txt_BuscarAtributo.Name = "Txt_BuscarAtributo";
             this.Txt_BuscarAtributo.Size = new System.Drawing.Size(697, 27);
             this.Txt_BuscarAtributo.TabIndex = 0;
+            this.Txt_BuscarAtributo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_BuscarAtributo_KeyDown);
             // 
             // Btn_SearchAtributo
             // 
@@ -681,6 +718,7 @@
             this.Btn_SearchAtributo.Text = "BUSCAR";
             this.Btn_SearchAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_SearchAtributo.UseVisualStyleBackColor = true;
+            this.Btn_SearchAtributo.Click += new System.EventHandler(this.Btn_SearchAtributo_Click);
             // 
             // Btn_CleanSearchAtributo
             // 
@@ -693,6 +731,7 @@
             this.Btn_CleanSearchAtributo.Size = new System.Drawing.Size(40, 38);
             this.Btn_CleanSearchAtributo.TabIndex = 2;
             this.Btn_CleanSearchAtributo.UseVisualStyleBackColor = true;
+            this.Btn_CleanSearchAtributo.Click += new System.EventHandler(this.Btn_CleanSearchAtributo_Click);
             // 
             // FiltroAtributoTipo
             // 
@@ -720,6 +759,16 @@
             this.PanelTabla.Name = "PanelTabla";
             this.PanelTabla.Size = new System.Drawing.Size(981, 220);
             this.PanelTabla.TabIndex = 76;
+            // 
+            // Tabla
+            // 
+            this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tabla.Location = new System.Drawing.Point(0, 0);
+            this.Tabla.Name = "Tabla";
+            this.Tabla.RowTemplate.Height = 24;
+            this.Tabla.Size = new System.Drawing.Size(981, 220);
+            this.Tabla.TabIndex = 1;
             // 
             // PanelToolStrip
             // 
@@ -767,6 +816,7 @@
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
             this.Txt_ValorBuscado.Size = new System.Drawing.Size(697, 27);
             this.Txt_ValorBuscado.TabIndex = 0;
+            this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
             // Btn_Search
             // 
@@ -781,6 +831,7 @@
             this.Btn_Search.Text = "BUSCAR";
             this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Search.UseVisualStyleBackColor = true;
+            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
             // 
             // Btn_CleanSearch
             // 
@@ -793,6 +844,7 @@
             this.Btn_CleanSearch.Size = new System.Drawing.Size(40, 38);
             this.Btn_CleanSearch.TabIndex = 2;
             this.Btn_CleanSearch.UseVisualStyleBackColor = true;
+            this.Btn_CleanSearch.Click += new System.EventHandler(this.Btn_CleanSearch_Click);
             // 
             // Filtro1
             // 
@@ -817,41 +869,6 @@
             this.FiltroTipo.Name = "FiltroTipo";
             this.FiltroTipo.Size = new System.Drawing.Size(200, 28);
             this.FiltroTipo.TabIndex = 5;
-            // 
-            // Lbl_AtributosHeader
-            // 
-            this.Lbl_AtributosHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Lbl_AtributosHeader.BackColor = System.Drawing.Color.White;
-            this.Lbl_AtributosHeader.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.Lbl_AtributosHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
-            this.Lbl_AtributosHeader.Location = new System.Drawing.Point(5, 433);
-            this.Lbl_AtributosHeader.Name = "Lbl_AtributosHeader";
-            this.Lbl_AtributosHeader.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.Lbl_AtributosHeader.Size = new System.Drawing.Size(981, 28);
-            this.Lbl_AtributosHeader.TabIndex = 80;
-            this.Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UN ACTIVO FIJO";
-            this.Lbl_AtributosHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TablaAtributos
-            // 
-            this.TablaAtributos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TablaAtributos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TablaAtributos.Location = new System.Drawing.Point(0, 0);
-            this.TablaAtributos.Name = "TablaAtributos";
-            this.TablaAtributos.RowTemplate.Height = 24;
-            this.TablaAtributos.Size = new System.Drawing.Size(981, 156);
-            this.TablaAtributos.TabIndex = 0;
-            // 
-            // Tabla
-            // 
-            this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Tabla.Location = new System.Drawing.Point(0, 0);
-            this.Tabla.Name = "Tabla";
-            this.Tabla.RowTemplate.Height = 24;
-            this.Tabla.Size = new System.Drawing.Size(981, 220);
-            this.Tabla.TabIndex = 1;
             // 
             // Frm_FixedAssetCategories
             // 
@@ -879,15 +896,15 @@
             this.Panel_AtributosCRUD.PerformLayout();
             this.Panel_AtributosBotones.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).EndInit();
             this.Panel_BusquedaAtributos.ResumeLayout(false);
             this.Panel_BusquedaAtributos.PerformLayout();
             this.PanelTabla.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();
             this.PanelToolStrip.ResumeLayout(false);
             this.PanelToolStrip.PerformLayout();
             this.Panel_Busqueda.ResumeLayout(false);
             this.Panel_Busqueda.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();
             this.ResumeLayout(false);
 
         }
