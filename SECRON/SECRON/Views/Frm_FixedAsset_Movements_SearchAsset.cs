@@ -2,6 +2,7 @@
 using SECRON.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SECRON.Views
@@ -25,6 +26,7 @@ namespace SECRON.Views
         public Frm_FixedAsset_Movements_SearchAsset()
         {
             InitializeComponent();
+            ConfigurarTamañoFormulario();
         }
 
         #endregion
@@ -49,7 +51,15 @@ namespace SECRON.Views
         #endregion
 
         #region Configuración
-
+        private void ConfigurarTamañoFormulario()
+        {
+            this.Size = new Size(700, 650);
+            this.MinimumSize = new Size(700, 650);
+            this.MaximumSize = new Size(700, 650);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.MaximizeBox = false;
+        }
         private void ConfigurarTabla()
         {
             Tabla.Columns.Clear();

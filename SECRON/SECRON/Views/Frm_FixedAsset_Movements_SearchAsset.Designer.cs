@@ -249,6 +249,7 @@
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_FixedAsset_Movements_SearchAsset";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON - BÚSQUEDA DE ACTIVO PARA TRASLADO";
             this.Load += new System.EventHandler(this.Frm_FixedAsset_Movements_SearchAsset_Load);
             this.panel1.ResumeLayout(false);

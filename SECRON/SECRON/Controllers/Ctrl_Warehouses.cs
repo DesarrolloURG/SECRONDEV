@@ -19,7 +19,7 @@ namespace SECRON.Controllers
                     string query = @"
                         SELECT WarehouseId, WarehouseCode, WarehouseName, Description,
                                Address, PhoneNumber, ManagerUserId, WarehouseType,
-                               IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
+                               LocationId, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
                         FROM   Warehouses
                         WHERE  IsActive = 1
                         ORDER  BY WarehouseName";
@@ -50,7 +50,7 @@ namespace SECRON.Controllers
                     string query = @"
                         SELECT WarehouseId, WarehouseCode, WarehouseName, Description,
                                Address, PhoneNumber, ManagerUserId, WarehouseType,
-                               IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
+                               LocationId, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
                         FROM   Warehouses
                         WHERE  IsActive = 1
                         AND   (WarehouseCode LIKE @texto OR WarehouseName LIKE @texto)
@@ -99,6 +99,39 @@ namespace SECRON.Controllers
             return lista;
         }
 
+        public static List<KeyValuePair<int, string>> ObtenerBodegasPorLocation(int locationId)
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                        SELECT WarehouseId, WarehouseName
+                        FROM   Warehouses
+                        WHERE  IsActive = 1
+                        AND    LocationId = @LocationId
+                        ORDER  BY WarehouseName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@LocationId", locationId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener bodegas por sede: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
+
         private static Mdl_Warehouse MapearBodega(SqlDataReader reader)
         {
             return new Mdl_Warehouse
@@ -111,6 +144,7 @@ namespace SECRON.Controllers
                 PhoneNumber = reader["PhoneNumber"] == DBNull.Value ? null : reader["PhoneNumber"].ToString(),
                 ManagerUserId = reader["ManagerUserId"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ManagerUserId")),
                 WarehouseType = reader["WarehouseType"] == DBNull.Value ? null : reader["WarehouseType"].ToString(),
+                LocationId = reader["LocationId"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("LocationId")),
                 IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive")),
                 CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                 CreatedBy = reader["CreatedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("CreatedBy")),

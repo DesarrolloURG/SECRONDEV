@@ -41,41 +41,17 @@ namespace SECRON.Views
 
         private void Frm_FixedAsset_Movements_Load(object sender, EventArgs e)
         {
-            ConfigurarTabla();
             ConfigurarTablaDetalles();
-            ConfigurarFiltros();
             CargarComboBoxDestino();
-            CargarTraslados();
             EstadoInicial();
             InicializarScroll();
             ConfigurarEventosScroll();
-            CargarProximoCodigo();
+            ComboBox_Location.SelectedIndexChanged += ComboBox_Location_SelectedIndexChanged;
         }
 
         #endregion
 
         #region Configuración
-
-        private void ConfigurarTabla()
-        {
-            // Tabla derecha: lista de traslados guardados
-            Tabla.Columns.Clear();
-            Tabla.AutoGenerateColumns = false;
-            Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            Tabla.MultiSelect = false;
-            Tabla.ReadOnly = true;
-            Tabla.AllowUserToAddRows = false;
-            Tabla.RowHeadersVisible = false;
-
-            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colId", HeaderText = "ID", DataPropertyName = "TransferId", Visible = false });
-            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCodigo", HeaderText = "CÓDIGO", DataPropertyName = "TransferCode", Width = 120 });
-            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colEstado", HeaderText = "ESTADO", DataPropertyName = "StatusName", Width = 110 });
-            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colFecha", HeaderText = "FECHA", DataPropertyName = "TransferDate", Width = 100 });
-            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colDestino", HeaderText = "DESTINO", DataPropertyName = "ToWarehouseName", Width = 140 });
-            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMotivo", HeaderText = "MOTIVO", DataPropertyName = "Reason", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
-
-            Tabla.CellClick += new DataGridViewCellEventHandler(Tabla_CellClick);
-        }
 
         private void ConfigurarTablaDetalles()
         {
@@ -95,22 +71,6 @@ namespace SECRON.Views
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colOrigen", HeaderText = "ORIGEN", DataPropertyName = "FromWarehouseName", Width = 140 });
         }
 
-        private void ConfigurarFiltros()
-        {
-            Filtro1.Items.Clear();
-            Filtro1.Items.Add("POR CÓDIGO");
-            Filtro1.SelectedIndex = 0;
-
-            Filtro2.DataSource = null;
-            Filtro2.Items.Clear();
-            Filtro2.Items.Add("TODOS LOS ESTADOS");
-            List<KeyValuePair<int, string>> estados =
-                Ctrl_FixedAssetTransferStatus.ObtenerEstadosParaCombo(soloActivos: false);
-            foreach (var estado in estados)
-                Filtro2.Items.Add(estado);
-            Filtro2.SelectedIndex = 0;
-            Filtro2.DisplayMember = "Value";
-        }
 
         private void CargarComboBoxDestino()
         {
@@ -119,11 +79,19 @@ namespace SECRON.Views
             ComboBox_SelectTo.Items.Add("BODEGA");
             ComboBox_SelectTo.Items.Add("EMPLEADO");
             ComboBox_SelectTo.SelectedIndex = 0;
+            ComboBox_SelectTo.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // ComboBox_ToWarehouse con AutoComplete
-            var bodegas = Ctrl_Warehouses.ObtenerBodegasParaCombo();
+            // ComboBox_Location — sedes activas
+            var sedes = Ctrl_Locations.ObtenerLocationsActivas();
+            ComboBox_Location.DataSource = null;
+            ComboBox_Location.DataSource = sedes;
+            ComboBox_Location.DisplayMember = "Value";
+            ComboBox_Location.ValueMember = "Key";
+            ComboBox_Location.SelectedIndex = -1;
+            ComboBox_Location.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // ComboBox_ToWarehouse — inicia vacío, se llena al seleccionar sede
             ComboBox_ToWarehouse.DataSource = null;
-            ComboBox_ToWarehouse.DataSource = bodegas;
             ComboBox_ToWarehouse.DisplayMember = "Value";
             ComboBox_ToWarehouse.ValueMember = "Key";
             ComboBox_ToWarehouse.SelectedIndex = -1;
@@ -142,7 +110,8 @@ namespace SECRON.Views
             ComboBox_ToEmployee.AutoCompleteSource = AutoCompleteSource.ListItems;
             ComboBox_ToEmployee.DropDownStyle = ComboBoxStyle.DropDown;
 
-            ComboBox_ToWarehouse.Enabled = true;
+            ComboBox_Location.Enabled = true;
+            ComboBox_ToWarehouse.Enabled = false;
             ComboBox_ToEmployee.Enabled = false;
         }
 
@@ -177,7 +146,10 @@ namespace SECRON.Views
             Txt_AssetId.Enabled = false;
             Txt_Asset.Enabled = false;
             Txt_FromWarehouse.Clear();
+            Txt_FromWarehouse.Enabled = false;
             Txt_FromEmployee.Clear();
+            Txt_FromEmployee.Enabled = false;
+            Txt_TransferId.Enabled = false;
             Txt_Reason.Clear();
 
             ComboBox_SelectTo.SelectedIndex = 0;
@@ -189,9 +161,9 @@ namespace SECRON.Views
             Tabla.DataSource = null;
 
             Btn_AddAsset.Enabled = true;
-            Btn_AddAsset.Visible = true;
+            Btn_RemoveAsset.Enabled = false;
+            Btn_EndTransfer.Enabled = false;
             Btn_Update.Enabled = false;
-            Btn_Update.Visible = false;
             Btn_Clear.Enabled = true;
 
             CargarProximoCodigo();
@@ -246,30 +218,6 @@ namespace SECRON.Views
         {
             Tabla.DataSource = null;
             Tabla.DataSource = new List<Mdl_FixedAssetTransferDetail>(_detallesTemporales);
-        }
-
-        #endregion
-
-        #region Búsqueda
-
-        private void Btn_Search_Click(object sender, EventArgs e)
-        {
-            string valor = Txt_ValorBuscado.Text.Trim().ToUpper();
-            string filtro = Filtro1.SelectedItem?.ToString();
-            string transferCode = filtro == "POR CÓDIGO" ? valor : null;
-
-            int? statusId = null;
-            if (Filtro2.SelectedIndex > 0 && Filtro2.SelectedItem is KeyValuePair<int, string> kvp)
-                statusId = kvp.Key;
-
-            CargarTraslados(transferCode: transferCode, transferStatusId: statusId);
-        }
-
-        private void Btn_CleanSearch_Click(object sender, EventArgs e)
-        {
-            Txt_ValorBuscado.Clear();
-            Filtro2.SelectedIndex = 0;
-            CargarTraslados();
         }
 
         #endregion
@@ -362,8 +310,10 @@ namespace SECRON.Views
 
                 Txt_AssetId.Text = asset.AssetCode;
                 Txt_Asset.Text = asset.AssetName;
-                Txt_FromWarehouse.Text = asset.WarehouseName ?? "";
-                Txt_FromEmployee.Text = asset.EmployeeName ?? "";
+                Txt_FromWarehouse.Text = !string.IsNullOrEmpty(asset.WarehouseName)
+                                         ? asset.WarehouseName : "NO ASIGNADO";
+                Txt_FromEmployee.Text = !string.IsNullOrEmpty(asset.EmployeeName)
+                                         ? asset.EmployeeName : "NO ASIGNADO";
             }
         }
 
@@ -374,7 +324,10 @@ namespace SECRON.Views
         private void ComboBox_SelectTo_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool esBodega = ComboBox_SelectTo.SelectedItem?.ToString() == "BODEGA";
-            ComboBox_ToWarehouse.Enabled = esBodega;
+
+            // Sede siempre habilitada — es obligatoria independiente del tipo de destino
+            ComboBox_Location.Enabled = true;
+            ComboBox_ToWarehouse.Enabled = esBodega && ComboBox_Location.SelectedValue is int;
             ComboBox_ToEmployee.Enabled = !esBodega;
 
             if (esBodega)
@@ -384,7 +337,7 @@ namespace SECRON.Views
             }
             else
             {
-                ComboBox_ToWarehouse.SelectedIndex = -1;
+                ComboBox_ToWarehouse.DataSource = null;
                 ComboBox_ToWarehouse.Text = "";
             }
         }
@@ -393,115 +346,47 @@ namespace SECRON.Views
 
         #region CRUD
 
-        private void Btn_Save_Click(object sender, EventArgs e)
+
+        private void Btn_AddAsset_Click(object sender, EventArgs e)
         {
-            // Validar que haya al menos un activo en la lista temporal
-            if (_detallesTemporales.Count == 0)
+            if (_selectedAssetId == 0)
             {
-                MessageBox.Show("DEBE AGREGAR AL MENOS UN ACTIVO AL TRASLADO.",
+                MessageBox.Show("DEBE BUSCAR Y SELECCIONAR UN ACTIVO PRIMERO.",
                     "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Validar destino
-            bool esBodega = ComboBox_SelectTo.SelectedItem?.ToString() == "BODEGA";
-            int? toWarehouseId = null;
-            int? toEmployeeId = null;
-
-            if (esBodega)
+            if (_detallesTemporales.Exists(d => d.AssetId == _selectedAssetId))
             {
-                if (ComboBox_ToWarehouse.SelectedValue == null || !(ComboBox_ToWarehouse.SelectedValue is int))
-                {
-                    MessageBox.Show("DEBE SELECCIONAR UNA BODEGA DE DESTINO.",
-                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                toWarehouseId = (int)ComboBox_ToWarehouse.SelectedValue;
-            }
-            else
-            {
-                if (ComboBox_ToEmployee.SelectedValue == null || !(ComboBox_ToEmployee.SelectedValue is int))
-                {
-                    MessageBox.Show("DEBE SELECCIONAR UN EMPLEADO DE DESTINO.",
-                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                toEmployeeId = (int)ComboBox_ToEmployee.SelectedValue;
-            }
-
-            // Obtener el TransferStatusId de PENDING (Order = 1)
-            int pendingStatusId = ObtenerStatusPending();
-            if (pendingStatusId == 0)
-            {
-                MessageBox.Show("NO SE PUDO OBTENER EL ESTADO PENDIENTE. VERIFIQUE LA CONFIGURACIÓN.",
-                    "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("ESTE ACTIVO YA FUE AGREGADO AL TRASLADO.",
+                    "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Crear el maestro
-            var transfer = new Mdl_FixedAssetTransfer
+            _detallesTemporales.Add(new Mdl_FixedAssetTransferDetail
             {
-                TransferCode = Txt_TransferId.Text.Trim().ToUpper(),
-                TransferDate = DTP_TransferDate.Value.Date,
-                ToWarehouseId = toWarehouseId,
-                ToEmployeeId = toEmployeeId,
-                TransferStatusId = pendingStatusId,
-                Reason = Txt_Reason.Text.Trim(),
-                CreatedBy = UserData?.UserId
-            };
+                AssetId = _selectedAssetId,
+                FromWarehouseId = _selectedFromWarehouseId,
+                FromEmployeeId = _selectedFromEmployeeId,
+                AssetCode = Txt_AssetId.Text,
+                AssetName = Txt_Asset.Text,
+                FromWarehouseName = Txt_FromWarehouse.Text,
+                FromEmployeeName = Txt_FromEmployee.Text
+            });
 
-            int transferId = Ctrl_FixedAssetTransfers.RegistrarTraslado(transfer);
+            RefrescarTablaDetallesTemporales();
 
-            if (transferId <= 0)
-            {
-                switch (transferId)
-                {
-                    case -1:
-                        MessageBox.Show("EL CÓDIGO DE TRASLADO YA EXISTE.", "AVISO",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    case -2:
-                        MessageBox.Show("DEBE DEFINIR UN DESTINO (BODEGA O EMPLEADO).", "AVISO",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    default:
-                        MessageBox.Show("ERROR AL REGISTRAR EL TRASLADO.", "ERROR",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                }
-                return;
-            }
+            // Limpiar selección de activo para el siguiente
+            _selectedAssetId = 0;
+            _selectedFromWarehouseId = null;
+            _selectedFromEmployeeId = null;
+            Txt_Asset.Clear();
+            Txt_AssetId.Clear();
+            Txt_FromWarehouse.Clear();
+            Txt_FromEmployee.Clear();
 
-            // Guardar cada detalle
-            bool hayErrores = false;
-            foreach (var detalle in _detallesTemporales)
-            {
-                detalle.TransferId = transferId;
-                detalle.CreatedBy = UserData?.UserId;
-
-                int resultado = Ctrl_FixedAssetTransfers.AgregarDetalle(detalle);
-                if (resultado <= 0)
-                {
-                    hayErrores = true;
-                    MessageBox.Show($"ERROR AL AGREGAR EL ACTIVO '{detalle.AssetCode}' AL TRASLADO.",
-                        "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-
-            if (hayErrores)
-                MessageBox.Show("TRASLADO GUARDADO CON ALGUNOS ERRORES EN LOS DETALLES.", "AVISO",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else
-                MessageBox.Show("TRASLADO REGISTRADO CORRECTAMENTE.", "ÉXITO",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            CargarTraslados();
-            EstadoInicial();
-        }
-
-        private void Btn_AddAsset_Click(object sender, EventArgs e)
-        {
-
+            Btn_RemoveAsset.Enabled = true;
+            Btn_EndTransfer.Enabled = true;
         }
 
         private void Btn_RemoveAsset_Click(object sender, EventArgs e)
@@ -621,7 +506,6 @@ namespace SECRON.Views
                 UserData = UserData
             };
             frm.ShowDialog();
-            ConfigurarFiltros();
         }
 
         private void Btn_Transfer_Click(object sender, EventArgs e)
@@ -658,22 +542,10 @@ namespace SECRON.Views
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                string valor = Txt_ValorBuscado.Text.Trim().ToUpper();
-                string filtro = Filtro1.SelectedItem?.ToString();
-                string transferCode = filtro == "POR CÓDIGO" ? valor : null;
-
-                int? statusId = null;
-                if (Filtro2.SelectedIndex > 0 && Filtro2.SelectedItem is KeyValuePair<int, string> kvp)
-                    statusId = kvp.Key;
-
-                List<Mdl_FixedAssetTransfer> lista = Ctrl_FixedAssetTransfers.MostrarTraslados(
-                    transferCode: transferCode,
-                    transferStatusId: statusId);
-
-                if (lista == null || lista.Count == 0)
+                if (_detallesTemporales == null || _detallesTemporales.Count == 0)
                 {
                     this.Cursor = Cursors.Default;
-                    MessageBox.Show("NO HAY DATOS PARA EXPORTAR.", "INFORMACIÓN",
+                    MessageBox.Show("NO HAY ACTIVOS EN EL TRASLADO ACTUAL PARA EXPORTAR.", "INFORMACIÓN",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -681,8 +553,8 @@ namespace SECRON.Views
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     Filter = "Excel Files|*.xlsx",
-                    Title = "Exportar Traslados de Activos Fijos",
-                    FileName = $"ActivosFijos_Traslados_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
+                    Title = "Exportar Activos del Traslado",
+                    FileName = $"Traslado_{Txt_TransferId.Text}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
                 };
 
                 if (saveDialog.ShowDialog() != DialogResult.OK)
@@ -694,28 +566,29 @@ namespace SECRON.Views
                 var excelApp = new Excel.Application();
                 var workbook = excelApp.Workbooks.Add();
                 var worksheet = (Excel.Worksheet)workbook.Sheets[1];
-                worksheet.Name = "Traslados";
+                worksheet.Name = "Activos";
 
-                worksheet.Cells[1, 1] = "TRASLADOS DE ACTIVOS FIJOS - SECRON";
-                worksheet.Range["A1:F1"].Merge();
-                worksheet.Range["A1:F1"].Font.Size = 16;
-                worksheet.Range["A1:F1"].Font.Bold = true;
-                worksheet.Range["A1:F1"].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                worksheet.Range["A1:F1"].Interior.Color =
+                worksheet.Cells[1, 1] = "DETALLE DE TRASLADO DE ACTIVOS - SECRON";
+                worksheet.Range["A1:E1"].Merge();
+                worksheet.Range["A1:E1"].Font.Size = 16;
+                worksheet.Range["A1:E1"].Font.Bold = true;
+                worksheet.Range["A1:E1"].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                worksheet.Range["A1:E1"].Interior.Color =
                     System.Drawing.ColorTranslator.ToOle(Color.FromArgb(51, 140, 255));
-                worksheet.Range["A1:F1"].Font.Color =
+                worksheet.Range["A1:E1"].Font.Color =
                     System.Drawing.ColorTranslator.ToOle(Color.White);
 
-                worksheet.Cells[2, 1] = $"GENERADO POR: {UserData?.FullName?.ToUpper() ?? "SECRON"}";
-                worksheet.Cells[3, 1] = $"FECHA: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
-                worksheet.Cells[4, 1] = $"TOTAL REGISTROS: {lista.Count}";
+                worksheet.Cells[2, 1] = $"CÓDIGO TRASLADO: {Txt_TransferId.Text}";
+                worksheet.Cells[3, 1] = $"FECHA: {DTP_TransferDate.Value:dd/MM/yyyy}";
+                worksheet.Cells[4, 1] = $"GENERADO POR: {UserData?.FullName?.ToUpper() ?? "SECRON"}";
+                worksheet.Cells[5, 1] = $"TOTAL ACTIVOS: {_detallesTemporales.Count}";
 
-                int headerRow = 6;
-                string[] headers = { "CÓDIGO TRASLADO", "ESTADO", "FECHA", "DESTINO", "MOTIVO", "CREADO POR" };
+                int headerRow = 7;
+                string[] headers = { "CÓDIGO ACTIVO", "NOMBRE ACTIVO", "BODEGA ORIGEN", "EMPLEADO ORIGEN" };
                 for (int i = 0; i < headers.Length; i++)
                     worksheet.Cells[headerRow, i + 1] = headers[i];
 
-                var headerRange = worksheet.Range[$"A{headerRow}:F{headerRow}"];
+                var headerRange = worksheet.Range[$"A{headerRow}:D{headerRow}"];
                 headerRange.Font.Bold = true;
                 headerRange.Font.Color = System.Drawing.ColorTranslator.ToOle(Color.White);
                 headerRange.Interior.Color =
@@ -723,26 +596,23 @@ namespace SECRON.Views
                 headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
                 int row = headerRow + 1;
-                foreach (var t in lista)
+                foreach (var d in _detallesTemporales)
                 {
-                    worksheet.Cells[row, 1] = t.TransferCode;
-                    worksheet.Cells[row, 2] = t.StatusName;
-                    worksheet.Cells[row, 3] = t.TransferDate.ToString("dd/MM/yyyy");
-                    worksheet.Cells[row, 4] = t.ToWarehouseName ?? t.ToEmployeeName ?? "";
-                    worksheet.Cells[row, 5] = t.Reason ?? "";
-                    worksheet.Cells[row, 6] = t.CreatedByName ?? "";
+                    worksheet.Cells[row, 1] = d.AssetCode;
+                    worksheet.Cells[row, 2] = d.AssetName;
+                    worksheet.Cells[row, 3] = d.FromWarehouseName ?? "";
+                    worksheet.Cells[row, 4] = d.FromEmployeeName ?? "";
 
                     if (row % 2 == 0)
-                        worksheet.Range[$"A{row}:F{row}"].Interior.Color =
+                        worksheet.Range[$"A{row}:D{row}"].Interior.Color =
                             System.Drawing.ColorTranslator.ToOle(Color.FromArgb(240, 240, 240));
                     row++;
                 }
 
-                var dataRange = worksheet.Range[$"A{headerRow}:F{row - 1}"];
+                var dataRange = worksheet.Range[$"A{headerRow}:D{row - 1}"];
                 dataRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
                 dataRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
                 worksheet.Columns.AutoFit();
-                worksheet.Columns[5].ColumnWidth = 40;
 
                 workbook.SaveAs(saveDialog.FileName);
                 workbook.Close();
@@ -846,6 +716,134 @@ namespace SECRON.Views
             Panel_Izquierdo.Invalidate();
         }
 
+        #endregion
+
+        #region Terminar Traslado
+        private void Btn_EndTransfer_Click(object sender, EventArgs e)
+        {
+            if (_detallesTemporales.Count == 0)
+            {
+                MessageBox.Show("DEBE AGREGAR AL MENOS UN ACTIVO AL TRASLADO.",
+                    "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            bool esBodega = ComboBox_SelectTo.SelectedItem?.ToString() == "BODEGA";
+            int? toWarehouseId = null;
+            int? toEmployeeId = null;
+
+            if (esBodega)
+            {
+                if (ComboBox_ToWarehouse.SelectedValue == null || !(ComboBox_ToWarehouse.SelectedValue is int))
+                {
+                    MessageBox.Show("DEBE SELECCIONAR UNA BODEGA DE DESTINO.",
+                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                toWarehouseId = (int)ComboBox_ToWarehouse.SelectedValue;
+            }
+            else
+            {
+                if (ComboBox_ToEmployee.SelectedValue == null || !(ComboBox_ToEmployee.SelectedValue is int))
+                {
+                    MessageBox.Show("DEBE SELECCIONAR UN EMPLEADO DE DESTINO.",
+                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                toEmployeeId = (int)ComboBox_ToEmployee.SelectedValue;
+            }
+
+            int pendingStatusId = ObtenerStatusPending();
+            if (pendingStatusId == 0)
+            {
+                MessageBox.Show("NO SE PUDO OBTENER EL ESTADO PENDIENTE. VERIFIQUE LA CONFIGURACIÓN.",
+                    "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var transfer = new Mdl_FixedAssetTransfer
+            {
+                TransferCode = Txt_TransferId.Text.Trim().ToUpper(),
+                TransferDate = DTP_TransferDate.Value.Date,
+                ToWarehouseId = toWarehouseId,
+                ToEmployeeId = toEmployeeId,
+                TransferStatusId = pendingStatusId,
+                Reason = Txt_Reason.Text.Trim(),
+                CreatedBy = UserData?.UserId
+            };
+
+            int transferId = Ctrl_FixedAssetTransfers.RegistrarTraslado(transfer);
+
+            if (transferId <= 0)
+            {
+                switch (transferId)
+                {
+                    case -1:
+                        MessageBox.Show("EL CÓDIGO DE TRASLADO YA EXISTE.", "AVISO",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    case -2:
+                        MessageBox.Show("DEBE DEFINIR UN DESTINO (BODEGA O EMPLEADO).", "AVISO",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    default:
+                        MessageBox.Show("ERROR AL REGISTRAR EL TRASLADO.", "ERROR",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                }
+                return;
+            }
+
+            bool hayErrores = false;
+            foreach (var detalle in _detallesTemporales)
+            {
+                detalle.TransferId = transferId;
+                detalle.CreatedBy = UserData?.UserId;
+
+                int resultado = Ctrl_FixedAssetTransfers.AgregarDetalle(detalle);
+                if (resultado <= 0)
+                {
+                    hayErrores = true;
+                    MessageBox.Show($"ERROR AL AGREGAR EL ACTIVO '{detalle.AssetCode}' AL TRASLADO.",
+                        "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+            if (hayErrores)
+                MessageBox.Show("TRASLADO GUARDADO CON ALGUNOS ERRORES EN LOS DETALLES.", "AVISO",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            else
+                MessageBox.Show("TRASLADO REGISTRADO CORRECTAMENTE.", "ÉXITO",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            EstadoInicial();
+        }
+
+        #endregion
+
+        #region Eventos de Sede
+        private void ComboBox_Location_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ComboBox_Location.SelectedValue == null || !(ComboBox_Location.SelectedValue is int))
+            {
+                ComboBox_ToWarehouse.DataSource = null;
+                ComboBox_ToWarehouse.Enabled = false;
+                return;
+            }
+
+            int locationId = (int)ComboBox_Location.SelectedValue;
+            var bodegas = Ctrl_Warehouses.ObtenerBodegasPorLocation(locationId);
+
+            ComboBox_ToWarehouse.DataSource = null;
+            ComboBox_ToWarehouse.DataSource = bodegas;
+            ComboBox_ToWarehouse.DisplayMember = "Value";
+            ComboBox_ToWarehouse.ValueMember = "Key";
+            ComboBox_ToWarehouse.SelectedIndex = -1;
+            ComboBox_ToWarehouse.Text = "";
+
+            bool esBodega = ComboBox_SelectTo.SelectedItem?.ToString() == "BODEGA";
+            ComboBox_ToWarehouse.Enabled = esBodega;
+        }
         #endregion
     }
 }

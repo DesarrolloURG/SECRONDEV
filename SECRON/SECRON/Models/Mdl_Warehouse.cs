@@ -12,6 +12,7 @@ namespace SECRON.Models
         public string PhoneNumber { get; set; }
         public int? ManagerUserId { get; set; }
         public string WarehouseType { get; set; }
+        public int? LocationId { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }

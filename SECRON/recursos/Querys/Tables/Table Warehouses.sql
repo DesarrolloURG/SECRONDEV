@@ -30,4 +30,8 @@ CREATE TABLE Warehouses (
         REFERENCES Users(UserId)
 );
 
-SELECT * FROM Warehouses
+ALTER TABLE [dbo].[Warehouses]
+ADD [LocationId] INT NULL
+    CONSTRAINT FK_Warehouses_Location FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]([LocationId]);
+GO

@@ -29,13 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_FixedAsset_Movements_Tracking));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.Lbl_Paginas = new System.Windows.Forms.Label();
-            this.Btn_No = new System.Windows.Forms.Button();
-            this.Btn_Yes = new System.Windows.Forms.Button();
             this.PanelTabla = new System.Windows.Forms.Panel();
-            this.Tabla = new System.Windows.Forms.DataGridView();
             this.Panel_DetalleTabla = new System.Windows.Forms.Panel();
+            this.Txt_Reason = new System.Windows.Forms.TextBox();
+            this.Lbl_Reason = new System.Windows.Forms.Label();
             this.Btn_LimpiarSeleccion = new System.Windows.Forms.Button();
             this.Lbl_Info = new System.Windows.Forms.Label();
             this.CheckBox_FiltroFechas = new System.Windows.Forms.CheckBox();
@@ -54,69 +51,30 @@
             this.Lbl_ValorBuscado = new System.Windows.Forms.Label();
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Panel_Superior = new System.Windows.Forms.Panel();
-            this.Btn_RevertirAnulacion = new System.Windows.Forms.Button();
+            this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
-            this.Txt_Reason = new System.Windows.Forms.TextBox();
-            this.Lbl_Reason = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.PanelTablaDetalle = new System.Windows.Forms.Panel();
+            this.TablaDetalles = new System.Windows.Forms.DataGridView();
+            this.PanelEncabezadoTablaDetalle = new System.Windows.Forms.Panel();
+            this.EncabezadoTablaDetalle = new System.Windows.Forms.Label();
+            this.PanelEncabezadoTabla = new System.Windows.Forms.Panel();
+            this.EncabezadoTabla = new System.Windows.Forms.Label();
+            this.Tabla = new System.Windows.Forms.DataGridView();
+            this.Panel_NewState = new System.Windows.Forms.Panel();
+            this.Lbl_UpdateState = new System.Windows.Forms.Label();
+            this.Btn_CancelTransfer = new System.Windows.Forms.Button();
+            this.Btn_Yes = new System.Windows.Forms.Button();
+            this.ComboBox_NewState = new System.Windows.Forms.ComboBox();
             this.PanelTabla.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
             this.Panel_DetalleTabla.SuspendLayout();
             this.Panel_Superior.SuspendLayout();
+            this.PanelTablaDetalle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaDetalles)).BeginInit();
+            this.PanelEncabezadoTablaDetalle.SuspendLayout();
+            this.PanelEncabezadoTabla.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
+            this.Panel_NewState.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panel1.Controls.Add(this.Lbl_Paginas);
-            this.panel1.Controls.Add(this.Btn_No);
-            this.panel1.Controls.Add(this.Btn_Yes);
-            this.panel1.Location = new System.Drawing.Point(9, 806);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1165, 49);
-            this.panel1.TabIndex = 86;
-            // 
-            // Lbl_Paginas
-            // 
-            this.Lbl_Paginas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.Lbl_Paginas.AutoSize = true;
-            this.Lbl_Paginas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Paginas.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Paginas.Location = new System.Drawing.Point(10, 12);
-            this.Lbl_Paginas.Name = "Lbl_Paginas";
-            this.Lbl_Paginas.Size = new System.Drawing.Size(267, 20);
-            this.Lbl_Paginas.TabIndex = 77;
-            this.Lbl_Paginas.Text = "MOSTRANDO 1-10 DE 100 CHEQUES";
-            // 
-            // Btn_No
-            // 
-            this.Btn_No.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_No.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_No.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
-            this.Btn_No.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_No.Location = new System.Drawing.Point(906, 3);
-            this.Btn_No.Name = "Btn_No";
-            this.Btn_No.Size = new System.Drawing.Size(124, 37);
-            this.Btn_No.TabIndex = 66;
-            this.Btn_No.Text = "CANCELAR";
-            this.Btn_No.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_No.UseVisualStyleBackColor = true;
-            // 
-            // Btn_Yes
-            // 
-            this.Btn_Yes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Yes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Yes.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
-            this.Btn_Yes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Yes.Location = new System.Drawing.Point(1036, 3);
-            this.Btn_Yes.Name = "Btn_Yes";
-            this.Btn_Yes.Size = new System.Drawing.Size(117, 37);
-            this.Btn_Yes.TabIndex = 65;
-            this.Btn_Yes.Text = "ACEPTAR";
-            this.Btn_Yes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Yes.UseVisualStyleBackColor = true;
             // 
             // PanelTabla
             // 
@@ -125,19 +83,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.PanelTabla.Controls.Add(this.Tabla);
-            this.PanelTabla.Location = new System.Drawing.Point(9, 308);
+            this.PanelTabla.Controls.Add(this.PanelEncabezadoTabla);
+            this.PanelTabla.Location = new System.Drawing.Point(9, 366);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(1165, 492);
+            this.PanelTabla.Size = new System.Drawing.Size(1163, 124);
             this.PanelTabla.TabIndex = 85;
-            // 
-            // Tabla
-            // 
-            this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Tabla.Location = new System.Drawing.Point(0, 0);
-            this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(1165, 492);
-            this.Tabla.TabIndex = 1;
             // 
             // Panel_DetalleTabla
             // 
@@ -168,6 +118,29 @@
             this.Panel_DetalleTabla.Size = new System.Drawing.Size(1163, 235);
             this.Panel_DetalleTabla.TabIndex = 84;
             // 
+            // Txt_Reason
+            // 
+            this.Txt_Reason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Txt_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_Reason.Location = new System.Drawing.Point(95, 65);
+            this.Txt_Reason.MaxLength = 15;
+            this.Txt_Reason.Multiline = true;
+            this.Txt_Reason.Name = "Txt_Reason";
+            this.Txt_Reason.Size = new System.Drawing.Size(1053, 78);
+            this.Txt_Reason.TabIndex = 91;
+            // 
+            // Lbl_Reason
+            // 
+            this.Lbl_Reason.AutoSize = true;
+            this.Lbl_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Reason.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Reason.Location = new System.Drawing.Point(10, 65);
+            this.Lbl_Reason.Name = "Lbl_Reason";
+            this.Lbl_Reason.Size = new System.Drawing.Size(79, 20);
+            this.Lbl_Reason.TabIndex = 92;
+            this.Lbl_Reason.Text = "MOTIVO *";
+            // 
             // Btn_LimpiarSeleccion
             // 
             this.Btn_LimpiarSeleccion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -179,6 +152,7 @@
             this.Btn_LimpiarSeleccion.TabIndex = 90;
             this.Btn_LimpiarSeleccion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_LimpiarSeleccion.UseVisualStyleBackColor = true;
+            this.Btn_LimpiarSeleccion.Click += new System.EventHandler(this.Btn_LimpiarSeleccion_Click);
             // 
             // Lbl_Info
             // 
@@ -187,11 +161,11 @@
             this.Lbl_Info.AutoSize = true;
             this.Lbl_Info.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Info.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Info.Location = new System.Drawing.Point(869, 203);
+            this.Lbl_Info.Location = new System.Drawing.Point(860, 197);
             this.Lbl_Info.Name = "Lbl_Info";
-            this.Lbl_Info.Size = new System.Drawing.Size(267, 20);
+            this.Lbl_Info.Size = new System.Drawing.Size(288, 20);
             this.Lbl_Info.TabIndex = 89;
-            this.Lbl_Info.Text = "MOSTRANDO 1-10 DE 100 CHEQUES";
+            this.Lbl_Info.Text = "MOSTRANDO 1-10 DE 100 TRASLADOS";
             // 
             // CheckBox_FiltroFechas
             // 
@@ -205,6 +179,7 @@
             this.CheckBox_FiltroFechas.TabIndex = 82;
             this.CheckBox_FiltroFechas.Text = "FILTRO POR FECHAS";
             this.CheckBox_FiltroFechas.UseVisualStyleBackColor = true;
+            this.CheckBox_FiltroFechas.CheckedChanged += new System.EventHandler(this.CheckBox_FiltroFechas_CheckedChanged);
             // 
             // DTP_FechaFin
             // 
@@ -311,6 +286,7 @@
             this.Btn_Clear.TabIndex = 63;
             this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Clear.UseVisualStyleBackColor = true;
+            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
             // 
             // Btn_Search
             // 
@@ -323,6 +299,7 @@
             this.Btn_Search.TabIndex = 62;
             this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Search.UseVisualStyleBackColor = true;
+            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
             // 
             // Lbl_ValorBuscado
             // 
@@ -347,7 +324,8 @@
             // Panel_Superior
             // 
             this.Panel_Superior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.Panel_Superior.Controls.Add(this.Btn_RevertirAnulacion);
+            this.Panel_Superior.Controls.Add(this.Btn_Export);
+            this.Panel_Superior.Controls.Add(this.Btn_CancelTransfer);
             this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
             this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Superior.Location = new System.Drawing.Point(0, 0);
@@ -355,20 +333,21 @@
             this.Panel_Superior.Size = new System.Drawing.Size(1184, 55);
             this.Panel_Superior.TabIndex = 83;
             // 
-            // Btn_RevertirAnulacion
+            // Btn_Export
             // 
-            this.Btn_RevertirAnulacion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Btn_Export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_RevertirAnulacion.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_RevertirAnulacion.Image = global::SECRON.Properties.Resources.AlertaNegro25x25;
-            this.Btn_RevertirAnulacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_RevertirAnulacion.Location = new System.Drawing.Point(965, 13);
-            this.Btn_RevertirAnulacion.Name = "Btn_RevertirAnulacion";
-            this.Btn_RevertirAnulacion.Size = new System.Drawing.Size(207, 30);
-            this.Btn_RevertirAnulacion.TabIndex = 56;
-            this.Btn_RevertirAnulacion.Text = "REVERTIR ANULACIÓN";
-            this.Btn_RevertirAnulacion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.Btn_RevertirAnulacion.UseVisualStyleBackColor = true;
+            this.Btn_Export.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_Export.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
+            this.Btn_Export.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Export.Location = new System.Drawing.Point(1045, 13);
+            this.Btn_Export.Name = "Btn_Export";
+            this.Btn_Export.Size = new System.Drawing.Size(127, 30);
+            this.Btn_Export.TabIndex = 56;
+            this.Btn_Export.Text = "EXPORTAR";
+            this.Btn_Export.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.Btn_Export.UseVisualStyleBackColor = true;
+            this.Btn_Export.Click += new System.EventHandler(this.Btn_Export_Click);
             // 
             // Lbl_Formulario
             // 
@@ -383,61 +362,181 @@
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "TRACKING DE TRASLADOS DE ACTIVOS";
             // 
-            // Txt_Reason
+            // PanelTablaDetalle
             // 
-            this.Txt_Reason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.PanelTablaDetalle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Txt_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Reason.Location = new System.Drawing.Point(95, 65);
-            this.Txt_Reason.MaxLength = 15;
-            this.Txt_Reason.Multiline = true;
-            this.Txt_Reason.Name = "Txt_Reason";
-            this.Txt_Reason.Size = new System.Drawing.Size(1053, 78);
-            this.Txt_Reason.TabIndex = 91;
+            this.PanelTablaDetalle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.PanelTablaDetalle.Controls.Add(this.TablaDetalles);
+            this.PanelTablaDetalle.Controls.Add(this.PanelEncabezadoTablaDetalle);
+            this.PanelTablaDetalle.Location = new System.Drawing.Point(9, 496);
+            this.PanelTablaDetalle.Name = "PanelTablaDetalle";
+            this.PanelTablaDetalle.Size = new System.Drawing.Size(1163, 337);
+            this.PanelTablaDetalle.TabIndex = 87;
             // 
-            // Lbl_Reason
+            // TablaDetalles
             // 
-            this.Lbl_Reason.AutoSize = true;
-            this.Lbl_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Reason.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Reason.Location = new System.Drawing.Point(10, 65);
-            this.Lbl_Reason.Name = "Lbl_Reason";
-            this.Lbl_Reason.Size = new System.Drawing.Size(79, 20);
-            this.Lbl_Reason.TabIndex = 92;
-            this.Lbl_Reason.Text = "MOTIVO *";
+            this.TablaDetalles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaDetalles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TablaDetalles.Location = new System.Drawing.Point(0, 55);
+            this.TablaDetalles.Name = "TablaDetalles";
+            this.TablaDetalles.Size = new System.Drawing.Size(1163, 282);
+            this.TablaDetalles.TabIndex = 85;
+            // 
+            // PanelEncabezadoTablaDetalle
+            // 
+            this.PanelEncabezadoTablaDetalle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.PanelEncabezadoTablaDetalle.Controls.Add(this.EncabezadoTablaDetalle);
+            this.PanelEncabezadoTablaDetalle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.PanelEncabezadoTablaDetalle.Location = new System.Drawing.Point(0, 0);
+            this.PanelEncabezadoTablaDetalle.Name = "PanelEncabezadoTablaDetalle";
+            this.PanelEncabezadoTablaDetalle.Size = new System.Drawing.Size(1163, 55);
+            this.PanelEncabezadoTablaDetalle.TabIndex = 84;
+            // 
+            // EncabezadoTablaDetalle
+            // 
+            this.EncabezadoTablaDetalle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.EncabezadoTablaDetalle.AutoSize = true;
+            this.EncabezadoTablaDetalle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.EncabezadoTablaDetalle.ForeColor = System.Drawing.Color.Black;
+            this.EncabezadoTablaDetalle.Location = new System.Drawing.Point(9, 14);
+            this.EncabezadoTablaDetalle.Name = "EncabezadoTablaDetalle";
+            this.EncabezadoTablaDetalle.Size = new System.Drawing.Size(476, 25);
+            this.EncabezadoTablaDetalle.TabIndex = 50;
+            this.EncabezadoTablaDetalle.Text = "DETALLES DEL TRASLADO - ACTIVOS MOVILIZADOS";
+            // 
+            // PanelEncabezadoTabla
+            // 
+            this.PanelEncabezadoTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.PanelEncabezadoTabla.Controls.Add(this.EncabezadoTabla);
+            this.PanelEncabezadoTabla.Dock = System.Windows.Forms.DockStyle.Top;
+            this.PanelEncabezadoTabla.Location = new System.Drawing.Point(0, 0);
+            this.PanelEncabezadoTabla.Name = "PanelEncabezadoTabla";
+            this.PanelEncabezadoTabla.Size = new System.Drawing.Size(1163, 37);
+            this.PanelEncabezadoTabla.TabIndex = 86;
+            // 
+            // EncabezadoTabla
+            // 
+            this.EncabezadoTabla.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.EncabezadoTabla.AutoSize = true;
+            this.EncabezadoTabla.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.EncabezadoTabla.ForeColor = System.Drawing.Color.Black;
+            this.EncabezadoTabla.Location = new System.Drawing.Point(9, 5);
+            this.EncabezadoTabla.Name = "EncabezadoTabla";
+            this.EncabezadoTabla.Size = new System.Drawing.Size(378, 25);
+            this.EncabezadoTabla.TabIndex = 50;
+            this.EncabezadoTabla.Text = "INFORMACIÓN GENERAL DEL TRASLADO";
+            // 
+            // Tabla
+            // 
+            this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tabla.Location = new System.Drawing.Point(0, 37);
+            this.Tabla.Name = "Tabla";
+            this.Tabla.Size = new System.Drawing.Size(1163, 87);
+            this.Tabla.TabIndex = 87;
+            // 
+            // Panel_NewState
+            // 
+            this.Panel_NewState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_NewState.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_NewState.Controls.Add(this.ComboBox_NewState);
+            this.Panel_NewState.Controls.Add(this.Lbl_UpdateState);
+            this.Panel_NewState.Controls.Add(this.Btn_Yes);
+            this.Panel_NewState.Location = new System.Drawing.Point(9, 308);
+            this.Panel_NewState.Name = "Panel_NewState";
+            this.Panel_NewState.Size = new System.Drawing.Size(1163, 49);
+            this.Panel_NewState.TabIndex = 88;
+            // 
+            // Lbl_UpdateState
+            // 
+            this.Lbl_UpdateState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.Lbl_UpdateState.AutoSize = true;
+            this.Lbl_UpdateState.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_UpdateState.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_UpdateState.Location = new System.Drawing.Point(10, 12);
+            this.Lbl_UpdateState.Name = "Lbl_UpdateState";
+            this.Lbl_UpdateState.Size = new System.Drawing.Size(236, 20);
+            this.Lbl_UpdateState.TabIndex = 77;
+            this.Lbl_UpdateState.Text = "NUEVO ESTADO DEL TRASLADO";
+            // 
+            // Btn_CancelTransfer
+            // 
+            this.Btn_CancelTransfer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_CancelTransfer.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_CancelTransfer.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
+            this.Btn_CancelTransfer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_CancelTransfer.Location = new System.Drawing.Point(830, 13);
+            this.Btn_CancelTransfer.Name = "Btn_CancelTransfer";
+            this.Btn_CancelTransfer.Size = new System.Drawing.Size(209, 31);
+            this.Btn_CancelTransfer.TabIndex = 66;
+            this.Btn_CancelTransfer.Text = "CANCELAR TRASLADO";
+            this.Btn_CancelTransfer.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_CancelTransfer.UseVisualStyleBackColor = true;
+            this.Btn_CancelTransfer.Click += new System.EventHandler(this.Btn_CancelTransfer_Click);
+            // 
+            // Btn_Yes
+            // 
+            this.Btn_Yes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Yes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Yes.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_Yes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Yes.Location = new System.Drawing.Point(946, 6);
+            this.Btn_Yes.Name = "Btn_Yes";
+            this.Btn_Yes.Size = new System.Drawing.Size(211, 37);
+            this.Btn_Yes.TabIndex = 65;
+            this.Btn_Yes.Text = "CONFIRMAR CAMBIOS";
+            this.Btn_Yes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Yes.UseVisualStyleBackColor = true;
+            this.Btn_Yes.Click += new System.EventHandler(this.Btn_Yes_Click);
+            // 
+            // ComboBox_NewState
+            // 
+            this.ComboBox_NewState.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.ComboBox_NewState.FormattingEnabled = true;
+            this.ComboBox_NewState.Location = new System.Drawing.Point(252, 10);
+            this.ComboBox_NewState.Name = "ComboBox_NewState";
+            this.ComboBox_NewState.Size = new System.Drawing.Size(275, 26);
+            this.ComboBox_NewState.TabIndex = 78;
             // 
             // Frm_FixedAsset_Movements_Tracking
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 861);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(1184, 845);
+            this.Controls.Add(this.Panel_NewState);
+            this.Controls.Add(this.PanelTablaDetalle);
             this.Controls.Add(this.PanelTabla);
             this.Controls.Add(this.Panel_DetalleTabla);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_FixedAsset_Movements_Tracking";
             this.Text = "SECRON - TRACKING DE TRASLADOS DE ACTIVOS";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.Load += new System.EventHandler(this.Frm_FixedAsset_Movements_Tracking_Load);
             this.PanelTabla.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();
             this.Panel_DetalleTabla.ResumeLayout(false);
             this.Panel_DetalleTabla.PerformLayout();
             this.Panel_Superior.ResumeLayout(false);
             this.Panel_Superior.PerformLayout();
+            this.PanelTablaDetalle.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TablaDetalles)).EndInit();
+            this.PanelEncabezadoTablaDetalle.ResumeLayout(false);
+            this.PanelEncabezadoTablaDetalle.PerformLayout();
+            this.PanelEncabezadoTabla.ResumeLayout(false);
+            this.PanelEncabezadoTabla.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();
+            this.Panel_NewState.ResumeLayout(false);
+            this.Panel_NewState.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label Lbl_Paginas;
-        private System.Windows.Forms.Button Btn_No;
-        private System.Windows.Forms.Button Btn_Yes;
         private System.Windows.Forms.Panel PanelTabla;
-        private System.Windows.Forms.DataGridView Tabla;
         private System.Windows.Forms.Panel Panel_DetalleTabla;
         private System.Windows.Forms.Button Btn_LimpiarSeleccion;
         private System.Windows.Forms.Label Lbl_Info;
@@ -457,9 +556,21 @@
         private System.Windows.Forms.Label Lbl_ValorBuscado;
         private System.Windows.Forms.TextBox Txt_ValorBuscado;
         private System.Windows.Forms.Panel Panel_Superior;
-        private System.Windows.Forms.Button Btn_RevertirAnulacion;
+        private System.Windows.Forms.Button Btn_Export;
         private System.Windows.Forms.Label Lbl_Formulario;
         private System.Windows.Forms.TextBox Txt_Reason;
         private System.Windows.Forms.Label Lbl_Reason;
+        private System.Windows.Forms.Panel PanelTablaDetalle;
+        private System.Windows.Forms.DataGridView TablaDetalles;
+        private System.Windows.Forms.Panel PanelEncabezadoTablaDetalle;
+        private System.Windows.Forms.Label EncabezadoTablaDetalle;
+        private System.Windows.Forms.Panel PanelEncabezadoTabla;
+        private System.Windows.Forms.Label EncabezadoTabla;
+        private System.Windows.Forms.DataGridView Tabla;
+        private System.Windows.Forms.Panel Panel_NewState;
+        private System.Windows.Forms.Label Lbl_UpdateState;
+        private System.Windows.Forms.Button Btn_CancelTransfer;
+        private System.Windows.Forms.Button Btn_Yes;
+        private System.Windows.Forms.ComboBox ComboBox_NewState;
     }
 }
