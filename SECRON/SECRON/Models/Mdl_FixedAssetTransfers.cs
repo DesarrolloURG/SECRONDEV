@@ -66,7 +66,7 @@ namespace SECRON.Models
     // ─────────────────────────────────────────────
     // DETALLE — un registro por activo en el traslado
     // ─────────────────────────────────────────────
-    internal class Mdl_FixedAssetTransferDetail
+    public class Mdl_FixedAssetTransferDetail
     {
         #region Propiedades
 

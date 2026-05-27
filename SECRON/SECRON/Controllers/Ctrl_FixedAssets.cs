@@ -405,5 +405,35 @@ namespace SECRON.Controllers
                 EmployeeName = reader["EmployeeName"] == DBNull.Value ? null : reader["EmployeeName"].ToString()
             };
         }
+
+        public static int ActualizarEstadoActivo(int assetId, string nuevoEstado, int? modifiedBy = null)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                UPDATE FixedAssets SET
+                    AssetStatus  = UPPER(@AssetStatus),
+                    ModifiedDate = GETDATE(),
+                    ModifiedBy   = @ModifiedBy
+                WHERE AssetId = @AssetId";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@AssetId", assetId);
+                        cmd.Parameters.AddWithValue("@AssetStatus", nuevoEstado?.ToUpper() ?? "ACTIVO");
+                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+                        return cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar estado del activo: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

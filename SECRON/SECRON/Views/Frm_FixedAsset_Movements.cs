@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Drawing.Printing;
+using System.Net;
+using System.Net.Mail;
 
 namespace SECRON.Views
 {
@@ -16,6 +19,7 @@ namespace SECRON.Views
         private bool _modoEdicion = false;
         private List<Mdl_FixedAssetTransfer> _trasladosList;
 
+
         // Lista temporal de activos agregados al traslado actual (antes de guardar)
         private List<Mdl_FixedAssetTransferDetail> _detallesTemporales = new List<Mdl_FixedAssetTransferDetail>();
 
@@ -25,6 +29,23 @@ namespace SECRON.Views
         private int? _selectedFromEmployeeId = null;
 
         public Mdl_Security_UserInfo UserData { get; set; }
+
+        // Detalles para generar carta de responsabilidad
+        private PrintDocument _printDocument;
+        private PrintPreviewDialog _printPreviewDialog;
+        private DatosTraslado _datosTraslado;
+
+        public class DatosTraslado
+        {
+            public string CodigoTraslado { get; set; }
+            public string Fecha { get; set; }
+            public string SedeDestino { get; set; }
+            public string BodegaDestino { get; set; }
+            public string EmpleadoDestino { get; set; }
+            public string Motivo { get; set; }
+            public string EmitidoPor { get; set; }
+            public List<Mdl_FixedAssetTransferDetail> Detalles { get; set; }
+        }
 
         #endregion
 
@@ -169,6 +190,316 @@ namespace SECRON.Views
             CargarProximoCodigo();
         }
 
+        #endregion
+
+        #region ConfigImpresion
+        private void InicializarImpresion()
+        {
+            _datosTraslado = new DatosTraslado();
+
+            _printDocument = new PrintDocument();
+            _printDocument.PrintPage += PrintDocument_PrintPage;
+            _printDocument.DefaultPageSettings.PaperSize = new PaperSize("Letter", 850, 1100);
+            _printDocument.DefaultPageSettings.Margins = new Margins(40, 40, 40, 40);
+
+            _printPreviewDialog = new PrintPreviewDialog();
+            _printPreviewDialog.Document = _printDocument;
+            _printPreviewDialog.UseAntiAlias = true;
+            _printPreviewDialog.ShowIcon = false;
+            _printPreviewDialog.WindowState = FormWindowState.Maximized;
+            _printPreviewDialog.Load += PrintPreviewDialog_Load;
+        }
+
+        private void PrintPreviewDialog_Load(object sender, EventArgs e)
+        {
+            PrintPreviewDialog dialog = sender as PrintPreviewDialog;
+            if (dialog == null) return;
+
+            foreach (Control control in dialog.Controls)
+            {
+                if (control is ToolStrip toolStrip)
+                {
+                    foreach (ToolStripItem item in toolStrip.Items)
+                    {
+                        if (item is ToolStripButton button &&
+                            (button.Text.Contains("Imprimir") || button.Text.Contains("Print")))
+                        {
+                            var customPrintButton = new ToolStripButton
+                            {
+                                Image = button.Image,
+                                Text = button.Text,
+                                ToolTipText = button.ToolTipText,
+                                DisplayStyle = button.DisplayStyle
+                            };
+                            customPrintButton.Click += (s, ev) => ImprimirConDialogo();
+
+                            int index = toolStrip.Items.IndexOf(button);
+                            toolStrip.Items.RemoveAt(index);
+                            toolStrip.Items.Insert(index, customPrintButton);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ImprimirConDialogo()
+        {
+            try
+            {
+                PrintDialog printDialog = new PrintDialog
+                {
+                    Document = _printDocument,
+                    UseEXDialog = true,
+                    AllowPrintToFile = true
+                };
+
+                if (printDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _printPreviewDialog.Hide();
+                    _printDocument.Print();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR AL IMPRIMIR: {ex.Message}", "ERROR",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Brush brush = Brushes.Black;
+            Pen pen = new Pen(Color.Black, 1);
+            Pen penGris = new Pen(Color.Gray, 0.5f);
+
+            Font fontTitulo = new Font("Calibri", 13, FontStyle.Bold);
+            Font fontBold = new Font("Calibri", 10, FontStyle.Bold);
+            Font fontNormal = new Font("Calibri", 10);
+            Font fontSmall = new Font("Calibri", 9);
+            Font fontSmallBold = new Font("Calibri", 9, FontStyle.Bold);
+            Font fontTable = new Font("Calibri", 8);
+            Font fontTableBold = new Font("Calibri", 8, FontStyle.Bold);
+
+            int leftMargin = 50;
+            int rightMargin = 760;
+            int pageWidth = rightMargin - leftMargin;
+            int currentY = 20;
+
+            // ===== ENCABEZADO — Logo =====
+            try
+            {
+                Image logoEncabezado = Properties.Resources.LogoMembretadoEncabezado;
+                int logoW = 160;
+                int logoH = 60;
+                g.DrawImage(logoEncabezado, rightMargin - logoW, currentY, logoW, logoH);
+            }
+            catch { }
+
+            // ===== REFERENCIA Y FECHA (arriba derecha) =====
+            string refTexto = $"Ref. {_datosTraslado.CodigoTraslado}";
+            g.DrawString(refTexto, fontSmallBold, brush, rightMargin - 200, currentY + 65);
+            g.DrawString($"Guatemala, {_datosTraslado.Fecha}", fontSmall, brush, rightMargin - 200, currentY + 80);
+
+            currentY += 100;
+
+            // ===== TÍTULO =====
+            string titulo = "NOTA DE TRASLADO DE ACTIVOS FIJOS";
+            SizeF tituloSize = g.MeasureString(titulo, fontTitulo);
+            float tituloX = leftMargin + (pageWidth - tituloSize.Width) / 2;
+            g.DrawString(titulo, fontTitulo, brush, tituloX, currentY);
+            currentY += 30;
+
+            // Línea separadora
+            g.DrawLine(new Pen(Color.FromArgb(230, 115, 40), 2), leftMargin, currentY, rightMargin, currentY);
+            currentY += 15;
+
+            // ===== DATOS DEL TRASLADO =====
+            g.DrawString("A:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(_datosTraslado.SedeDestino?.ToUpper() ?? "", fontNormal, brush, leftMargin + 80, currentY);
+            currentY += 20;
+
+            g.DrawString("BODEGA:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(_datosTraslado.BodegaDestino?.ToUpper() ?? "NO ESPECIFICADA", fontNormal, brush, leftMargin + 80, currentY);
+            currentY += 20;
+
+            if (!string.IsNullOrEmpty(_datosTraslado.EmpleadoDestino))
+            {
+                g.DrawString("ASIGNADO A:", fontBold, brush, leftMargin, currentY);
+                g.DrawString(_datosTraslado.EmpleadoDestino.ToUpper(), fontNormal, brush, leftMargin + 80, currentY);
+                currentY += 20;
+            }
+
+            currentY += 5;
+            g.DrawString("De:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(_datosTraslado.EmitidoPor?.ToUpper() ?? "", fontNormal, brush, leftMargin + 80, currentY);
+            currentY += 20;
+
+            g.DrawString("Coordinador General, Región 2", fontNormal, brush, leftMargin + 80, currentY);
+            currentY += 15;
+            g.DrawString("Universidad Regional de Guatemala", fontNormal, brush, leftMargin + 80, currentY);
+            currentY += 25;
+
+            g.DrawString("Asunto:", fontBold, brush, leftMargin, currentY);
+            RectangleF rectMotivo = new RectangleF(leftMargin + 80, currentY, pageWidth - 80, 40);
+            g.DrawString(_datosTraslado.Motivo?.ToUpper() ?? "", fontNormal, brush, rectMotivo);
+            currentY += 50;
+
+            // Línea separadora
+            g.DrawLine(penGris, leftMargin, currentY, rightMargin, currentY);
+            currentY += 15;
+
+            // ===== TABLA DE ACTIVOS =====
+            int[] colWidths = { 90, 180, 160, 160 };
+            string[] headers = { "CÓDIGO", "NOMBRE DEL ACTIVO", "UBICACIÓN ORIGEN", "DESTINO" };
+
+            int tableX = leftMargin;
+            int rowH = 20;
+
+            // Header de tabla
+            g.FillRectangle(new SolidBrush(Color.FromArgb(30, 80, 160)), tableX, currentY, pageWidth, rowH);
+            int colX = tableX;
+            foreach (var h in headers)
+            {
+                g.DrawString(h, fontTableBold, Brushes.White, colX + 3, currentY + 4);
+                colX += colWidths[System.Array.IndexOf(headers, h)];
+            }
+            g.DrawRectangle(pen, tableX, currentY, pageWidth, rowH);
+            currentY += rowH;
+
+            // Filas de activos
+            bool altRow = false;
+            foreach (var detalle in _datosTraslado.Detalles)
+            {
+                if (altRow)
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 248)), tableX, currentY, pageWidth, rowH);
+
+                colX = tableX;
+                g.DrawString(detalle.AssetCode ?? "", fontTable, brush, colX + 3, currentY + 4);
+                colX += colWidths[0];
+                g.DrawString(detalle.AssetName ?? "", fontTable, brush, colX + 3, currentY + 4);
+                colX += colWidths[1];
+                string origen = !string.IsNullOrEmpty(detalle.FromWarehouseName)
+                    ? detalle.FromWarehouseName
+                    : detalle.FromEmployeeName ?? "";
+                g.DrawString(origen, fontTable, brush, colX + 3, currentY + 4);
+                colX += colWidths[2];
+                string destino = !string.IsNullOrEmpty(_datosTraslado.BodegaDestino)
+                    ? _datosTraslado.BodegaDestino
+                    : _datosTraslado.EmpleadoDestino ?? "";
+                g.DrawString(destino, fontTable, brush, colX + 3, currentY + 4);
+
+                g.DrawRectangle(penGris, tableX, currentY, pageWidth, rowH);
+                currentY += rowH;
+                altRow = !altRow;
+            }
+
+            // Borde exterior tabla
+            int tableStartY = currentY - (rowH * _datosTraslado.Detalles.Count) - rowH;
+            g.DrawRectangle(pen, tableX, tableStartY, pageWidth, rowH * (_datosTraslado.Detalles.Count + 1));
+
+            currentY += 20;
+
+            // ===== TOTAL DE ACTIVOS =====
+            g.DrawString($"TOTAL DE ACTIVOS TRASLADADOS: {_datosTraslado.Detalles.Count}",
+                fontBold, brush, leftMargin, currentY);
+            currentY += 30;
+
+            // ===== FIRMA =====
+            g.DrawLine(pen, leftMargin, currentY + 30, leftMargin + 200, currentY + 30);
+            g.DrawString("FIRMA Y SELLO", fontSmall, brush, leftMargin + 50, currentY + 35);
+            g.DrawString(_datosTraslado.EmitidoPor?.ToUpper() ?? "", fontSmallBold, brush, leftMargin, currentY + 50);
+            g.DrawString("COORDINADOR GENERAL, REGIÓN 2", fontSmall, brush, leftMargin, currentY + 65);
+
+            currentY = e.PageBounds.Height - 100;
+
+            // ===== PIE DE PÁGINA =====
+            try
+            {
+                Image piePagina = Properties.Resources.MembretadoPiePagina;
+                g.DrawImage(piePagina, leftMargin - 10, currentY, pageWidth + 20, 70);
+            }
+            catch { }
+
+            // Liberar recursos
+            fontTitulo.Dispose();
+            fontBold.Dispose();
+            fontNormal.Dispose();
+            fontSmall.Dispose();
+            fontSmallBold.Dispose();
+            fontTable.Dispose();
+            fontTableBold.Dispose();
+            pen.Dispose();
+            penGris.Dispose();
+        }
+
+        private void EnviarCorreoTraslado(int transferId, DatosTraslado datos)
+        {
+            try
+            {
+                string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
+                string contraseña = "F0rza01.";
+
+                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(correoEmisor, contraseña),
+                    EnableSsl = true
+                };
+
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress(correoEmisor, "Notificaciones URegional"),
+                    Subject = $"TRASLADO INICIADO - {datos.CodigoTraslado}",
+                    IsBodyHtml = true
+                };
+
+                string detallesHtml = "";
+                foreach (var d in datos.Detalles)
+                {
+                    string origen = !string.IsNullOrEmpty(d.FromWarehouseName)
+                        ? d.FromWarehouseName : d.FromEmployeeName ?? "";
+                    detallesHtml += $"<tr><td>{d.AssetCode}</td><td>{d.AssetName}</td><td>{origen}</td></tr>";
+                }
+
+                mail.Body = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; color: #333;'>
+            <h2 style='color: #1E50A0;'>PROCESO DE TRASLADO INICIADO</h2>
+            <p><strong>Código de Traslado:</strong> {datos.CodigoTraslado}</p>
+            <p><strong>Fecha:</strong> {datos.Fecha}</p>
+            <p><strong>Sede Destino:</strong> {datos.SedeDestino}</p>
+            <p><strong>Bodega Destino:</strong> {datos.BodegaDestino}</p>
+            <p><strong>Empleado Destino:</strong> {(string.IsNullOrEmpty(datos.EmpleadoDestino) ? "NO ASIGNADO" : datos.EmpleadoDestino)}</p>
+            <p><strong>Motivo:</strong> {datos.Motivo}</p>
+            <p><strong>Emitido por:</strong> {datos.EmitidoPor}</p>
+            <br/>
+            <table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse; width:100%;'>
+                <tr style='background-color:#1E50A0; color:white;'>
+                    <th>CÓDIGO ACTIVO</th><th>NOMBRE</th><th>UBICACIÓN ORIGEN</th>
+                </tr>
+                {detallesHtml}
+            </table>
+            <br/>
+            <p style='color:#555;'>Servicio automático de notificaciones, <strong>SECRON</strong></p>
+        </body>
+        </html>";
+
+                // Enviar al correo del usuario que creó el traslado
+                if (!string.IsNullOrEmpty(UserData?.InstitutionalEmail))
+                    mail.To.Add(UserData.InstitutionalEmail);
+                else
+                    mail.To.Add(correoEmisor);
+
+                smtpClient.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR AL ENVIAR CORREO: {ex.Message}", "ADVERTENCIA",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
         #endregion
 
         #region Carga de datos
@@ -678,9 +1009,25 @@ namespace SECRON.Views
                 return;
             }
 
+            // Validar que ningún activo esté en estado TRASLADADO
+            foreach (var detalle in _detallesTemporales)
+            {
+                var activo = Ctrl_FixedAssets.ObtenerActivoPorId(detalle.AssetId);
+                if (activo != null && activo.AssetStatus?.ToUpper() == "TRASLADADO")
+                {
+                    MessageBox.Show(
+                        $"EL ACTIVO '{detalle.AssetCode} - {detalle.AssetName}' YA SE ENCUENTRA EN ESTADO TRASLADADO Y NO PUEDE INCLUIRSE EN UN NUEVO TRASLADO.",
+                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             bool esBodega = ComboBox_SelectTo.SelectedItem?.ToString() == "BODEGA";
             int? toWarehouseId = null;
             int? toEmployeeId = null;
+            string bodegaDestino = "";
+            string empleadoDestino = "";
+            string sedeDestino = ComboBox_Location.Text;
 
             if (esBodega)
             {
@@ -691,26 +1038,60 @@ namespace SECRON.Views
                     return;
                 }
                 toWarehouseId = (int)ComboBox_ToWarehouse.SelectedValue;
+                bodegaDestino = ComboBox_ToWarehouse.Text;
             }
             else
             {
-                if (ComboBox_ToEmployee.SelectedValue == null || !(ComboBox_ToEmployee.SelectedValue is int))
+                if (ComboBox_ToEmployee.SelectedValue is int empId)
                 {
-                    MessageBox.Show("DEBE SELECCIONAR UN EMPLEADO DE DESTINO.",
-                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    toEmployeeId = empId;
+                    empleadoDestino = ComboBox_ToEmployee.Text;
                 }
-                toEmployeeId = (int)ComboBox_ToEmployee.SelectedValue;
             }
 
             int pendingStatusId = ObtenerStatusPending();
             if (pendingStatusId == 0)
             {
-                MessageBox.Show("NO SE PUDO OBTENER EL ESTADO PENDIENTE. VERIFIQUE LA CONFIGURACIÓN.",
+                MessageBox.Show("NO SE PUDO OBTENER EL ESTADO PENDIENTE.",
                     "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            // Preparar datos para impresión
+            _datosTraslado = new DatosTraslado
+            {
+                CodigoTraslado = Txt_TransferId.Text.Trim().ToUpper(),
+                Fecha = DateTime.Now.ToString("dd 'de' MMMM 'de' yyyy",
+                                    new System.Globalization.CultureInfo("es-GT")).ToUpper(),
+                SedeDestino = sedeDestino,
+                BodegaDestino = bodegaDestino,
+                EmpleadoDestino = empleadoDestino,
+                Motivo = Txt_Reason.Text.Trim(),
+                EmitidoPor = UserData?.FullName ?? "",
+                Detalles = new List<Mdl_FixedAssetTransferDetail>(_detallesTemporales)
+            };
+
+            // Mostrar vista previa
+            InicializarImpresion();
+
+            _printDocument = new PrintDocument();
+            _printDocument.PrintPage += PrintDocument_PrintPage;
+            _printDocument.DefaultPageSettings.PaperSize = new PaperSize("Letter", 850, 1100);
+            _printDocument.DefaultPageSettings.Margins = new Margins(40, 40, 40, 40);
+            _printPreviewDialog.Document = _printDocument;
+
+            _printPreviewDialog.ShowDialog(this);
+
+            // Confirmación para guardar
+            var confirmacion = MessageBox.Show(
+                "¿DESEA FINALIZAR Y GUARDAR EL TRASLADO EN EL SISTEMA?",
+                "CONFIRMAR FINALIZACIÓN",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirmacion == DialogResult.No) return;
+
+            // Guardar maestro
             var transfer = new Mdl_FixedAssetTransfer
             {
                 TransferCode = Txt_TransferId.Text.Trim().ToUpper(),
@@ -733,7 +1114,7 @@ namespace SECRON.Views
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     case -2:
-                        MessageBox.Show("DEBE DEFINIR UN DESTINO (BODEGA O EMPLEADO).", "AVISO",
+                        MessageBox.Show("DEBE DEFINIR UN DESTINO.", "AVISO",
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     default:
@@ -744,20 +1125,28 @@ namespace SECRON.Views
                 return;
             }
 
+            // Guardar detalles y cambiar estado de activos a TRASLADADO
             bool hayErrores = false;
             foreach (var detalle in _detallesTemporales)
             {
                 detalle.TransferId = transferId;
                 detalle.CreatedBy = UserData?.UserId;
 
-                int resultado = Ctrl_FixedAssetTransfers.AgregarDetalle(detalle);
-                if (resultado <= 0)
+                int resDetalle = Ctrl_FixedAssetTransfers.AgregarDetalle(detalle);
+                if (resDetalle <= 0)
                 {
                     hayErrores = true;
-                    MessageBox.Show($"ERROR AL AGREGAR EL ACTIVO '{detalle.AssetCode}' AL TRASLADO.",
+                    MessageBox.Show($"ERROR AL AGREGAR EL ACTIVO '{detalle.AssetCode}'.",
                         "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    continue;
                 }
+
+                // Cambiar estado del activo a TRASLADADO
+                Ctrl_FixedAssets.ActualizarEstadoActivo(detalle.AssetId, "TRASLADADO", UserData?.UserId);
             }
+
+            // Enviar correo de notificación
+            EnviarCorreoTraslado(transferId, _datosTraslado);
 
             if (hayErrores)
                 MessageBox.Show("TRASLADO GUARDADO CON ALGUNOS ERRORES EN LOS DETALLES.", "AVISO",

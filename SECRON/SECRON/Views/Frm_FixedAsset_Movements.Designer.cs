@@ -36,6 +36,8 @@
             this.Lbl_Formulario = new System.Windows.Forms.Label();
             this.Panel_Derecho = new System.Windows.Forms.Panel();
             this.Panel_1 = new System.Windows.Forms.Panel();
+            this.ComboBox_Location = new System.Windows.Forms.ComboBox();
+            this.Lbl_Location = new System.Windows.Forms.Label();
             this.Btn_EndTransfer = new System.Windows.Forms.Button();
             this.Txt_Reason = new System.Windows.Forms.TextBox();
             this.DTP_TransferDate = new System.Windows.Forms.DateTimePicker();
@@ -74,8 +76,6 @@
             this.Lbl_FromWarehouse = new System.Windows.Forms.Label();
             this.Txt_FromWarehouse = new System.Windows.Forms.TextBox();
             this.vScrollBar = new System.Windows.Forms.VScrollBar();
-            this.Lbl_Location = new System.Windows.Forms.Label();
-            this.ComboBox_Location = new System.Windows.Forms.ComboBox();
             this.Panel_Superior.SuspendLayout();
             this.Panel_Derecho.SuspendLayout();
             this.Panel_1.SuspendLayout();
@@ -193,6 +193,25 @@
             this.Panel_1.Name = "Panel_1";
             this.Panel_1.Size = new System.Drawing.Size(634, 300);
             this.Panel_1.TabIndex = 64;
+            // 
+            // ComboBox_Location
+            // 
+            this.ComboBox_Location.FormattingEnabled = true;
+            this.ComboBox_Location.Location = new System.Drawing.Point(16, 140);
+            this.ComboBox_Location.Name = "ComboBox_Location";
+            this.ComboBox_Location.Size = new System.Drawing.Size(605, 28);
+            this.ComboBox_Location.TabIndex = 81;
+            // 
+            // Lbl_Location
+            // 
+            this.Lbl_Location.AutoSize = true;
+            this.Lbl_Location.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Location.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Location.Location = new System.Drawing.Point(12, 117);
+            this.Lbl_Location.Name = "Lbl_Location";
+            this.Lbl_Location.Size = new System.Drawing.Size(135, 20);
+            this.Lbl_Location.TabIndex = 72;
+            this.Lbl_Location.Text = "SEDE DE DESTINO";
             // 
             // Btn_EndTransfer
             // 
@@ -357,7 +376,7 @@
             this.Panel_CRUD.Controls.Add(this.Btn_AddAsset);
             this.Panel_CRUD.Location = new System.Drawing.Point(13, 13);
             this.Panel_CRUD.Name = "Panel_CRUD";
-            this.Panel_CRUD.Size = new System.Drawing.Size(376, 47);
+            this.Panel_CRUD.Size = new System.Drawing.Size(411, 47);
             this.Panel_CRUD.TabIndex = 81;
             // 
             // Btn_RemoveAsset
@@ -367,11 +386,11 @@
             this.Btn_RemoveAsset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_RemoveAsset.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
             this.Btn_RemoveAsset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_RemoveAsset.Location = new System.Drawing.Point(123, 3);
+            this.Btn_RemoveAsset.Location = new System.Drawing.Point(131, 4);
             this.Btn_RemoveAsset.Name = "Btn_RemoveAsset";
             this.Btn_RemoveAsset.Size = new System.Drawing.Size(99, 37);
             this.Btn_RemoveAsset.TabIndex = 58;
-            this.Btn_RemoveAsset.Text = "EDITAR";
+            this.Btn_RemoveAsset.Text = "QUITAR";
             this.Btn_RemoveAsset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_RemoveAsset.UseVisualStyleBackColor = true;
             this.Btn_RemoveAsset.Click += new System.EventHandler(this.Btn_RemoveAsset_Click);
@@ -383,7 +402,7 @@
             this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_Clear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Clear.Location = new System.Drawing.Point(333, 3);
+            this.Btn_Clear.Location = new System.Drawing.Point(373, 3);
             this.Btn_Clear.Name = "Btn_Clear";
             this.Btn_Clear.Size = new System.Drawing.Size(33, 37);
             this.Btn_Clear.TabIndex = 57;
@@ -398,11 +417,11 @@
             this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Update.Location = new System.Drawing.Point(228, 3);
+            this.Btn_Update.Location = new System.Drawing.Point(236, 3);
             this.Btn_Update.Name = "Btn_Update";
-            this.Btn_Update.Size = new System.Drawing.Size(99, 37);
+            this.Btn_Update.Size = new System.Drawing.Size(131, 37);
             this.Btn_Update.TabIndex = 55;
-            this.Btn_Update.Text = "EDITAR";
+            this.Btn_Update.Text = "MODIFICAR";
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Update.UseVisualStyleBackColor = true;
             this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
@@ -414,7 +433,7 @@
             this.Btn_AddAsset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_AddAsset.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_AddAsset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_AddAsset.Location = new System.Drawing.Point(4, 3);
+            this.Btn_AddAsset.Location = new System.Drawing.Point(12, 4);
             this.Btn_AddAsset.Name = "Btn_AddAsset";
             this.Btn_AddAsset.Size = new System.Drawing.Size(113, 37);
             this.Btn_AddAsset.TabIndex = 54;
@@ -649,25 +668,6 @@
             this.vScrollBar.Name = "vScrollBar";
             this.vScrollBar.Size = new System.Drawing.Size(10, 632);
             this.vScrollBar.TabIndex = 80;
-            // 
-            // Lbl_Location
-            // 
-            this.Lbl_Location.AutoSize = true;
-            this.Lbl_Location.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Location.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Location.Location = new System.Drawing.Point(12, 117);
-            this.Lbl_Location.Name = "Lbl_Location";
-            this.Lbl_Location.Size = new System.Drawing.Size(135, 20);
-            this.Lbl_Location.TabIndex = 72;
-            this.Lbl_Location.Text = "SEDE DE DESTINO";
-            // 
-            // ComboBox_Location
-            // 
-            this.ComboBox_Location.FormattingEnabled = true;
-            this.ComboBox_Location.Location = new System.Drawing.Point(16, 140);
-            this.ComboBox_Location.Name = "ComboBox_Location";
-            this.ComboBox_Location.Size = new System.Drawing.Size(605, 28);
-            this.ComboBox_Location.TabIndex = 81;
             // 
             // Frm_FixedAsset_Movements
             // 
