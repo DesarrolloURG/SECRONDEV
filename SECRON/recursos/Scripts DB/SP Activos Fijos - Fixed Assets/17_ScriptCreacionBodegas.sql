@@ -25,3 +25,6 @@ GO
 -- 4. Rehabilitar FK
 EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';
 GO
+
+SELECT WarehouseId, WarehouseCode, WarehouseName, LocationId 
+FROM Warehouses;
