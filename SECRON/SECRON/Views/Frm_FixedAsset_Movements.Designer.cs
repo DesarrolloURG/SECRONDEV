@@ -36,6 +36,11 @@
             this.Lbl_Formulario = new System.Windows.Forms.Label();
             this.Panel_Derecho = new System.Windows.Forms.Panel();
             this.Panel_1 = new System.Windows.Forms.Panel();
+            this.ComboBox_Speciality = new System.Windows.Forms.ComboBox();
+            this.Lbl_Speciality = new System.Windows.Forms.Label();
+            this.ComboBox_Coordinator = new System.Windows.Forms.ComboBox();
+            this.Lbl_Coordinator = new System.Windows.Forms.Label();
+            this.Btn_Cancel = new System.Windows.Forms.Button();
             this.ComboBox_Location = new System.Windows.Forms.ComboBox();
             this.Lbl_Location = new System.Windows.Forms.Label();
             this.Btn_EndTransfer = new System.Windows.Forms.Button();
@@ -179,6 +184,11 @@
             this.Panel_1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_1.BackColor = System.Drawing.Color.White;
+            this.Panel_1.Controls.Add(this.ComboBox_Speciality);
+            this.Panel_1.Controls.Add(this.Lbl_Speciality);
+            this.Panel_1.Controls.Add(this.ComboBox_Coordinator);
+            this.Panel_1.Controls.Add(this.Lbl_Coordinator);
+            this.Panel_1.Controls.Add(this.Btn_Cancel);
             this.Panel_1.Controls.Add(this.ComboBox_Location);
             this.Panel_1.Controls.Add(this.Lbl_Location);
             this.Panel_1.Controls.Add(this.Btn_EndTransfer);
@@ -189,15 +199,74 @@
             this.Panel_1.Controls.Add(this.Txt_TransferId);
             this.Panel_1.Controls.Add(this.Lbl_TransferId);
             this.Panel_1.Controls.Add(this.Lbl_Subtitulo1);
-            this.Panel_1.Location = new System.Drawing.Point(22, 323);
+            this.Panel_1.Location = new System.Drawing.Point(22, 260);
             this.Panel_1.Name = "Panel_1";
-            this.Panel_1.Size = new System.Drawing.Size(634, 300);
+            this.Panel_1.Size = new System.Drawing.Size(634, 363);
             this.Panel_1.TabIndex = 64;
+            // 
+            // ComboBox_Speciality
+            // 
+            this.ComboBox_Speciality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboBox_Speciality.FormattingEnabled = true;
+            this.ComboBox_Speciality.Location = new System.Drawing.Point(309, 180);
+            this.ComboBox_Speciality.Name = "ComboBox_Speciality";
+            this.ComboBox_Speciality.Size = new System.Drawing.Size(312, 28);
+            this.ComboBox_Speciality.TabIndex = 86;
+            // 
+            // Lbl_Speciality
+            // 
+            this.Lbl_Speciality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Lbl_Speciality.AutoSize = true;
+            this.Lbl_Speciality.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Speciality.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Speciality.Location = new System.Drawing.Point(305, 157);
+            this.Lbl_Speciality.Name = "Lbl_Speciality";
+            this.Lbl_Speciality.Size = new System.Drawing.Size(283, 20);
+            this.Lbl_Speciality.TabIndex = 85;
+            this.Lbl_Speciality.Text = "ESPECIALIDAD DEL COORDINAD(A)R *";
+            // 
+            // ComboBox_Coordinator
+            // 
+            this.ComboBox_Coordinator.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ComboBox_Coordinator.FormattingEnabled = true;
+            this.ComboBox_Coordinator.Location = new System.Drawing.Point(16, 180);
+            this.ComboBox_Coordinator.Name = "ComboBox_Coordinator";
+            this.ComboBox_Coordinator.Size = new System.Drawing.Size(271, 28);
+            this.ComboBox_Coordinator.TabIndex = 84;
+            // 
+            // Lbl_Coordinator
+            // 
+            this.Lbl_Coordinator.AutoSize = true;
+            this.Lbl_Coordinator.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Coordinator.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Coordinator.Location = new System.Drawing.Point(12, 157);
+            this.Lbl_Coordinator.Name = "Lbl_Coordinator";
+            this.Lbl_Coordinator.Size = new System.Drawing.Size(276, 20);
+            this.Lbl_Coordinator.TabIndex = 83;
+            this.Lbl_Coordinator.Text = "COORDINAD(A)R DEPARTAMENTAL *";
+            // 
+            // Btn_Cancel
+            // 
+            this.Btn_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Cancel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Cancel.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
+            this.Btn_Cancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Cancel.Location = new System.Drawing.Point(200, 325);
+            this.Btn_Cancel.Name = "Btn_Cancel";
+            this.Btn_Cancel.Size = new System.Drawing.Size(206, 31);
+            this.Btn_Cancel.TabIndex = 82;
+            this.Btn_Cancel.Text = "CANCELAR TRASLADO";
+            this.Btn_Cancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Cancel.UseVisualStyleBackColor = true;
+            this.Btn_Cancel.Click += new System.EventHandler(this.Btn_Cancel_Click);
             // 
             // ComboBox_Location
             // 
+            this.ComboBox_Location.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ComboBox_Location.FormattingEnabled = true;
-            this.ComboBox_Location.Location = new System.Drawing.Point(16, 140);
+            this.ComboBox_Location.Location = new System.Drawing.Point(16, 121);
             this.ComboBox_Location.Name = "ComboBox_Location";
             this.ComboBox_Location.Size = new System.Drawing.Size(605, 28);
             this.ComboBox_Location.TabIndex = 81;
@@ -207,7 +276,7 @@
             this.Lbl_Location.AutoSize = true;
             this.Lbl_Location.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Location.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Location.Location = new System.Drawing.Point(12, 117);
+            this.Lbl_Location.Location = new System.Drawing.Point(12, 98);
             this.Lbl_Location.Name = "Lbl_Location";
             this.Lbl_Location.Size = new System.Drawing.Size(135, 20);
             this.Lbl_Location.TabIndex = 72;
@@ -219,7 +288,7 @@
             this.Btn_EndTransfer.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_EndTransfer.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_EndTransfer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_EndTransfer.Location = new System.Drawing.Point(412, 6);
+            this.Btn_EndTransfer.Location = new System.Drawing.Point(412, 326);
             this.Btn_EndTransfer.Name = "Btn_EndTransfer";
             this.Btn_EndTransfer.Size = new System.Drawing.Size(209, 30);
             this.Btn_EndTransfer.TabIndex = 57;
@@ -233,7 +302,7 @@
             this.Txt_Reason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Txt_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Reason.Location = new System.Drawing.Point(16, 209);
+            this.Txt_Reason.Location = new System.Drawing.Point(16, 237);
             this.Txt_Reason.MaxLength = 500;
             this.Txt_Reason.Multiline = true;
             this.Txt_Reason.Name = "Txt_Reason";
@@ -244,7 +313,7 @@
             // 
             this.DTP_TransferDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DTP_TransferDate.Location = new System.Drawing.Point(309, 68);
+            this.DTP_TransferDate.Location = new System.Drawing.Point(309, 62);
             this.DTP_TransferDate.Name = "DTP_TransferDate";
             this.DTP_TransferDate.Size = new System.Drawing.Size(312, 27);
             this.DTP_TransferDate.TabIndex = 11;
@@ -254,7 +323,7 @@
             this.Lbl_Reason.AutoSize = true;
             this.Lbl_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Reason.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Reason.Location = new System.Drawing.Point(12, 180);
+            this.Lbl_Reason.Location = new System.Drawing.Point(12, 214);
             this.Lbl_Reason.Name = "Lbl_Reason";
             this.Lbl_Reason.Size = new System.Drawing.Size(79, 20);
             this.Lbl_Reason.TabIndex = 71;
@@ -265,7 +334,7 @@
             this.Lbl_TransferDate.AutoSize = true;
             this.Lbl_TransferDate.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_TransferDate.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_TransferDate.Location = new System.Drawing.Point(305, 45);
+            this.Lbl_TransferDate.Location = new System.Drawing.Point(305, 41);
             this.Lbl_TransferDate.Name = "Lbl_TransferDate";
             this.Lbl_TransferDate.Size = new System.Drawing.Size(173, 20);
             this.Lbl_TransferDate.TabIndex = 11;
@@ -274,7 +343,7 @@
             // Txt_TransferId
             // 
             this.Txt_TransferId.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_TransferId.Location = new System.Drawing.Point(14, 68);
+            this.Txt_TransferId.Location = new System.Drawing.Point(14, 64);
             this.Txt_TransferId.MaxLength = 15;
             this.Txt_TransferId.Name = "Txt_TransferId";
             this.Txt_TransferId.Size = new System.Drawing.Size(273, 27);
@@ -285,7 +354,7 @@
             this.Lbl_TransferId.AutoSize = true;
             this.Lbl_TransferId.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_TransferId.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_TransferId.Location = new System.Drawing.Point(10, 45);
+            this.Lbl_TransferId.Location = new System.Drawing.Point(10, 41);
             this.Lbl_TransferId.Name = "Lbl_TransferId";
             this.Lbl_TransferId.Size = new System.Drawing.Size(173, 20);
             this.Lbl_TransferId.TabIndex = 6;
@@ -338,7 +407,7 @@
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(22, 53);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(634, 257);
+            this.PanelTabla.Size = new System.Drawing.Size(634, 197);
             this.PanelTabla.TabIndex = 75;
             // 
             // Tabla
@@ -348,7 +417,7 @@
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
             this.Tabla.RowHeadersWidth = 51;
-            this.Tabla.Size = new System.Drawing.Size(634, 257);
+            this.Tabla.Size = new System.Drawing.Size(634, 197);
             this.Tabla.TabIndex = 1;
             this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
             // 
@@ -748,5 +817,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label Lbl_Location;
         private System.Windows.Forms.ComboBox ComboBox_Location;
+        private System.Windows.Forms.Button Btn_Cancel;
+        private System.Windows.Forms.ComboBox ComboBox_Coordinator;
+        private System.Windows.Forms.Label Lbl_Coordinator;
+        private System.Windows.Forms.ComboBox ComboBox_Speciality;
+        private System.Windows.Forms.Label Lbl_Speciality;
     }
 }

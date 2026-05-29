@@ -70,7 +70,7 @@ namespace SECRON.Models
     {
         #region Propiedades
 
-        public int TransferDetailId { get; set; }
+        public int TransferDetailId { get; set; } 
         public int TransferId { get; set; }
         public int AssetId { get; set; }
 
@@ -87,6 +87,8 @@ namespace SECRON.Models
         public string AssetName { get; set; }
         public string FromWarehouseName { get; set; }
         public string FromEmployeeName { get; set; }
+        public string ToWarehouseName { get; set; }
+        public string ToEmployeeName { get; set; }
         public string CreatedByName { get; set; }
 
         #endregion

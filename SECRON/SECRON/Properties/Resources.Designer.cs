@@ -19,7 +19,7 @@ namespace SECRON.Properties {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -473,6 +473,16 @@ namespace SECRON.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap LogoMembretadoEncabezado {
+            get {
+                object obj = ResourceManager.GetObject("LogoMembretadoEncabezado", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap LogoModificadoURG {
             get {
                 object obj = ResourceManager.GetObject("LogoModificadoURG", resourceCulture);
@@ -516,6 +526,16 @@ namespace SECRON.Properties {
         internal static System.Drawing.Bitmap MegafonoNegro20x20 {
             get {
                 object obj = ResourceManager.GetObject("MegafonoNegro20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MembretadoPiePagina {
+            get {
+                object obj = ResourceManager.GetObject("MembretadoPiePagina", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -626,6 +646,16 @@ namespace SECRON.Properties {
         internal static System.Drawing.Bitmap SeleccionarNegro20x20 {
             get {
                 object obj = ResourceManager.GetObject("SeleccionarNegro20x20", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SelloCoordinacion_Black {
+            get {
+                object obj = ResourceManager.GetObject("SelloCoordinacion_Black", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

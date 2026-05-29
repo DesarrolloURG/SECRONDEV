@@ -44,7 +44,9 @@ namespace SECRON.Views
             public string EmpleadoDestino { get; set; }
             public string Motivo { get; set; }
             public string EmitidoPor { get; set; }
-            public List<Mdl_FixedAssetTransferDetail> Detalles { get; set; }
+            public string CoordinadorNombre { get; set; }
+            public string CoordinadorEspecialidad { get; set; }
+            public List<Mdl_FixedAssetTransferDetail> Detalles { get; set; } = new List<Mdl_FixedAssetTransferDetail>();
         }
 
         #endregion
@@ -68,15 +70,14 @@ namespace SECRON.Views
             InicializarScroll();
             ConfigurarEventosScroll();
             ComboBox_Location.SelectedIndexChanged += ComboBox_Location_SelectedIndexChanged;
+            InicializarImpresion();
         }
 
         #endregion
 
         #region Configuración
-
         private void ConfigurarTablaDetalles()
         {
-            // Tabla izquierda: activos del traslado actual (temporal o guardado)
             Tabla.Columns.Clear();
             Tabla.AutoGenerateColumns = false;
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -89,9 +90,9 @@ namespace SECRON.Views
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colAssetId", HeaderText = "ASSET_ID", DataPropertyName = "AssetId", Visible = false });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCodActivo", HeaderText = "CÓDIGO", DataPropertyName = "AssetCode", Width = 100 });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colNombreActivo", HeaderText = "ACTIVO", DataPropertyName = "AssetName", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
-            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colOrigen", HeaderText = "ORIGEN", DataPropertyName = "FromWarehouseName", Width = 140 });
+            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colOrigen", HeaderText = "ORIGEN", DataPropertyName = "FromWarehouseName", Width = 130 });
+            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colDestino", HeaderText = "DESTINO", DataPropertyName = "ToWarehouseName", Width = 130 });
         }
-
 
         private void CargarComboBoxDestino()
         {
@@ -120,9 +121,8 @@ namespace SECRON.Views
             ComboBox_ToWarehouse.AutoCompleteSource = AutoCompleteSource.ListItems;
             ComboBox_ToWarehouse.DropDownStyle = ComboBoxStyle.DropDown;
 
-            // ComboBox_ToEmployee con AutoComplete
+            // ComboBox_ToEmployee
             var empleados = Ctrl_Employees.ObtenerEmpleadosParaCombo();
-            ComboBox_ToEmployee.DataSource = null;
             ComboBox_ToEmployee.DataSource = empleados;
             ComboBox_ToEmployee.DisplayMember = "Value";
             ComboBox_ToEmployee.ValueMember = "Key";
@@ -134,8 +134,56 @@ namespace SECRON.Views
             ComboBox_Location.Enabled = true;
             ComboBox_ToWarehouse.Enabled = false;
             ComboBox_ToEmployee.Enabled = false;
-        }
 
+            // ComboBox_Coordinator — lista INDEPENDIENTE
+            var empleadosCoord = Ctrl_Employees.ObtenerEmpleadosParaCombo();
+            ComboBox_Coordinator.DataSource = empleadosCoord;
+            ComboBox_Coordinator.DisplayMember = "Value";
+            ComboBox_Coordinator.ValueMember = "Key";
+            ComboBox_Coordinator.SelectedIndex = -1;
+            ComboBox_Coordinator.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            ComboBox_Coordinator.AutoCompleteSource = AutoCompleteSource.ListItems;
+            ComboBox_Coordinator.DropDownStyle = ComboBoxStyle.DropDown;
+
+            // ComboBox_Speciality — especialidades fijas
+            ComboBox_Speciality.Items.Clear();
+            ComboBox_Speciality.Items.Add("N/A");
+            ComboBox_Speciality.Items.Add("DR.");
+            ComboBox_Speciality.Items.Add("DRA.");
+            ComboBox_Speciality.Items.Add("LIC.");
+            ComboBox_Speciality.Items.Add("LICDA.");
+            ComboBox_Speciality.Items.Add("ING.");
+            ComboBox_Speciality.Items.Add("INGA.");
+            ComboBox_Speciality.Items.Add("ARQ.");
+            ComboBox_Speciality.Items.Add("M.A.");
+            ComboBox_Speciality.Items.Add("M.SC.");
+            ComboBox_Speciality.Items.Add("PEM.");
+            ComboBox_Speciality.Items.Add("PROF.");
+            ComboBox_Speciality.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Speciality.SelectedIndex = 0;
+
+            ComboBox_ToEmployee.Leave += ComboBox_ValidarSeleccion_Leave;
+            ComboBox_ToWarehouse.Leave += ComboBox_ValidarSeleccion_Leave;
+            ComboBox_Coordinator.Leave += ComboBox_ValidarSeleccion_Leave;
+        }
+        private void ComboBox_ValidarSeleccion_Leave(object sender, EventArgs e)
+        {
+            ComboBox combo = sender as ComboBox;
+            if (combo == null) return;
+
+            if (string.IsNullOrWhiteSpace(combo.Text))
+            {
+                combo.SelectedIndex = -1;
+                return;
+            }
+
+            // Si tiene texto pero no tiene un valor seleccionado válido, limpiar
+            if (combo.SelectedValue == null || !(combo.SelectedValue is int))
+            {
+                combo.SelectedIndex = -1;
+                combo.Text = "";
+            }
+        }
         private void CargarProximoCodigo()
         {
             try
@@ -161,6 +209,7 @@ namespace SECRON.Views
             _modoEdicion = false;
             _detallesTemporales.Clear();
 
+            Lbl_Paginas.Text = "SIN ACTIVOS EN EL TRASLADO";
             DTP_TransferDate.Value = DateTime.Today;
             Txt_Asset.Clear();
             Txt_AssetId.Clear();
@@ -195,8 +244,6 @@ namespace SECRON.Views
         #region ConfigImpresion
         private void InicializarImpresion()
         {
-            _datosTraslado = new DatosTraslado();
-
             _printDocument = new PrintDocument();
             _printDocument.PrintPage += PrintDocument_PrintPage;
             _printDocument.DefaultPageSettings.PaperSize = new PaperSize("Letter", 850, 1100);
@@ -286,90 +333,75 @@ namespace SECRON.Views
             int rightMargin = 760;
             int pageWidth = rightMargin - leftMargin;
             int currentY = 20;
+            float valorX = leftMargin + 200;
 
-            // ===== ENCABEZADO — Logo =====
+            // ===== ENCABEZADO — Logo centrado =====
             try
             {
                 Image logoEncabezado = Properties.Resources.LogoMembretadoEncabezado;
-                int logoW = 160;
-                int logoH = 60;
-                g.DrawImage(logoEncabezado, rightMargin - logoW, currentY, logoW, logoH);
+                int logoW = 240;
+                int logoH = 80;
+                int logoX = leftMargin + (pageWidth - logoW) / 2;
+                g.DrawImage(logoEncabezado, logoX, currentY + 15, logoW, logoH);
             }
             catch { }
 
-            // ===== REFERENCIA Y FECHA (arriba derecha) =====
-            string refTexto = $"Ref. {_datosTraslado.CodigoTraslado}";
-            g.DrawString(refTexto, fontSmallBold, brush, rightMargin - 200, currentY + 65);
+            currentY += 50;
+            // ===== REFERENCIA Y FECHA =====
+            g.DrawString($"Ref. {_datosTraslado.CodigoTraslado}", fontSmallBold, brush, rightMargin - 200, currentY + 65);
             g.DrawString($"Guatemala, {_datosTraslado.Fecha}", fontSmall, brush, rightMargin - 200, currentY + 80);
 
-            currentY += 100;
+            currentY += 105;
 
             // ===== TÍTULO =====
             string titulo = "NOTA DE TRASLADO DE ACTIVOS FIJOS";
             SizeF tituloSize = g.MeasureString(titulo, fontTitulo);
             float tituloX = leftMargin + (pageWidth - tituloSize.Width) / 2;
             g.DrawString(titulo, fontTitulo, brush, tituloX, currentY);
-            currentY += 30;
+            currentY += 28;
 
-            // Línea separadora
+            // Línea naranja
             g.DrawLine(new Pen(Color.FromArgb(230, 115, 40), 2), leftMargin, currentY, rightMargin, currentY);
-            currentY += 15;
+            currentY += 18;
 
             // ===== DATOS DEL TRASLADO =====
-            g.DrawString("A:", fontBold, brush, leftMargin, currentY);
-            g.DrawString(_datosTraslado.SedeDestino?.ToUpper() ?? "", fontNormal, brush, leftMargin + 80, currentY);
-            currentY += 20;
+            g.DrawString("TRASLADO HACIA LA SEDE:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(_datosTraslado.SedeDestino?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
+            currentY += 27;
 
-            g.DrawString("BODEGA:", fontBold, brush, leftMargin, currentY);
-            g.DrawString(_datosTraslado.BodegaDestino?.ToUpper() ?? "NO ESPECIFICADA", fontNormal, brush, leftMargin + 80, currentY);
-            currentY += 20;
+            g.DrawString("DE:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(_datosTraslado.EmitidoPor?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
+            currentY += 18;
+            g.DrawString("UNIVERSIDAD REGIONAL DE GUATEMALA", fontNormal, brush, valorX, currentY);
+            currentY += 28;
 
-            if (!string.IsNullOrEmpty(_datosTraslado.EmpleadoDestino))
-            {
-                g.DrawString("ASIGNADO A:", fontBold, brush, leftMargin, currentY);
-                g.DrawString(_datosTraslado.EmpleadoDestino.ToUpper(), fontNormal, brush, leftMargin + 80, currentY);
-                currentY += 20;
-            }
-
-            currentY += 5;
-            g.DrawString("De:", fontBold, brush, leftMargin, currentY);
-            g.DrawString(_datosTraslado.EmitidoPor?.ToUpper() ?? "", fontNormal, brush, leftMargin + 80, currentY);
-            currentY += 20;
-
-            g.DrawString("Coordinador General, Región 2", fontNormal, brush, leftMargin + 80, currentY);
-            currentY += 15;
-            g.DrawString("Universidad Regional de Guatemala", fontNormal, brush, leftMargin + 80, currentY);
-            currentY += 25;
-
-            g.DrawString("Asunto:", fontBold, brush, leftMargin, currentY);
-            RectangleF rectMotivo = new RectangleF(leftMargin + 80, currentY, pageWidth - 80, 40);
+            g.DrawString("ASUNTO:", fontBold, brush, leftMargin, currentY);
+            RectangleF rectMotivo = new RectangleF(valorX, currentY, pageWidth - 160, 40);
             g.DrawString(_datosTraslado.Motivo?.ToUpper() ?? "", fontNormal, brush, rectMotivo);
-            currentY += 50;
+            currentY += 52;
 
-            // Línea separadora
+            // Línea gris
             g.DrawLine(penGris, leftMargin, currentY, rightMargin, currentY);
-            currentY += 15;
+            currentY += 18;
 
-            // ===== TABLA DE ACTIVOS =====
+            // ===== TABLA =====
             int[] colWidths = { 90, 180, 160, 160 };
             string[] headers = { "CÓDIGO", "NOMBRE DEL ACTIVO", "UBICACIÓN ORIGEN", "DESTINO" };
-
             int tableX = leftMargin;
             int rowH = 20;
 
-            // Header de tabla
             g.FillRectangle(new SolidBrush(Color.FromArgb(30, 80, 160)), tableX, currentY, pageWidth, rowH);
             int colX = tableX;
-            foreach (var h in headers)
+            for (int i = 0; i < headers.Length; i++)
             {
-                g.DrawString(h, fontTableBold, Brushes.White, colX + 3, currentY + 4);
-                colX += colWidths[System.Array.IndexOf(headers, h)];
+                g.DrawString(headers[i], fontTableBold, Brushes.White, colX + 3, currentY + 4);
+                colX += colWidths[i];
             }
             g.DrawRectangle(pen, tableX, currentY, pageWidth, rowH);
             currentY += rowH;
 
-            // Filas de activos
             bool altRow = false;
+            int tableBodyStart = currentY;
             foreach (var detalle in _datosTraslado.Detalles)
             {
                 if (altRow)
@@ -381,46 +413,93 @@ namespace SECRON.Views
                 g.DrawString(detalle.AssetName ?? "", fontTable, brush, colX + 3, currentY + 4);
                 colX += colWidths[1];
                 string origen = !string.IsNullOrEmpty(detalle.FromWarehouseName)
-                    ? detalle.FromWarehouseName
-                    : detalle.FromEmployeeName ?? "";
+                    ? detalle.FromWarehouseName : detalle.FromEmployeeName ?? "";
                 g.DrawString(origen, fontTable, brush, colX + 3, currentY + 4);
                 colX += colWidths[2];
-                string destino = !string.IsNullOrEmpty(_datosTraslado.BodegaDestino)
-                    ? _datosTraslado.BodegaDestino
-                    : _datosTraslado.EmpleadoDestino ?? "";
-                g.DrawString(destino, fontTable, brush, colX + 3, currentY + 4);
+                g.DrawString(detalle.ToWarehouseName ?? "", fontTable, brush, colX + 3, currentY + 4);
 
                 g.DrawRectangle(penGris, tableX, currentY, pageWidth, rowH);
                 currentY += rowH;
                 altRow = !altRow;
             }
 
-            // Borde exterior tabla
-            int tableStartY = currentY - (rowH * _datosTraslado.Detalles.Count) - rowH;
-            g.DrawRectangle(pen, tableX, tableStartY, pageWidth, rowH * (_datosTraslado.Detalles.Count + 1));
+            g.DrawRectangle(pen, tableX, tableBodyStart - rowH, pageWidth,
+                rowH * (_datosTraslado.Detalles.Count + 1));
 
-            currentY += 20;
+            currentY += 15;
 
-            // ===== TOTAL DE ACTIVOS =====
+            // ===== TOTAL =====
             g.DrawString($"TOTAL DE ACTIVOS TRASLADADOS: {_datosTraslado.Detalles.Count}",
                 fontBold, brush, leftMargin, currentY);
-            currentY += 30;
 
-            // ===== FIRMA =====
-            g.DrawLine(pen, leftMargin, currentY + 30, leftMargin + 200, currentY + 30);
-            g.DrawString("FIRMA Y SELLO", fontSmall, brush, leftMargin + 50, currentY + 35);
-            g.DrawString(_datosTraslado.EmitidoPor?.ToUpper() ?? "", fontSmallBold, brush, leftMargin, currentY + 50);
-            g.DrawString("COORDINADOR GENERAL, REGIÓN 2", fontSmall, brush, leftMargin, currentY + 65);
-
-            currentY = e.PageBounds.Height - 100;
-
-            // ===== PIE DE PÁGINA =====
+            // ===== PIE DE PÁGINA — posición fija desde abajo =====
+            int pieY = e.PageBounds.Height - 130;
             try
             {
                 Image piePagina = Properties.Resources.MembretadoPiePagina;
-                g.DrawImage(piePagina, leftMargin - 10, currentY, pageWidth + 20, 70);
+                g.DrawImage(piePagina, leftMargin - 10, pieY, pageWidth + 20, 110);
             }
             catch { }
+
+            // ===== FIRMAS — justo encima del pie =====
+            string nombreFirma = "";
+            try
+            {
+                var usuario = Ctrl_Users.ObtenerUsuarioPorId(UserData.UserId);
+                nombreFirma = usuario?.FullName?.ToUpper() ?? _datosTraslado.EmitidoPor?.ToUpper() ?? "";
+            }
+            catch
+            {
+                nombreFirma = _datosTraslado.EmitidoPor?.ToUpper() ?? "";
+            }
+
+            string coordinadorNombre = _datosTraslado.CoordinadorNombre ?? "";
+            string coordinadorEspecialidad = _datosTraslado.CoordinadorEspecialidad ?? "";
+            string coordinadorDisplay = string.IsNullOrEmpty(coordinadorEspecialidad) || coordinadorEspecialidad == "N/A"
+                ? coordinadorNombre
+                : $"{coordinadorEspecialidad} {coordinadorNombre}";
+
+            int firmaLineaY = pieY - 75;
+            int firma1X = leftMargin;
+            int firma2X = leftMargin + 240;
+            int firma3X = leftMargin + 480;
+            int firmaAncho = 200;
+
+            // Sello sobre firma 3
+            try
+            {
+                Image sello = Properties.Resources.SelloCoordinacion_Black;
+                g.DrawImage(sello, firma3X, firmaLineaY - 200, firmaAncho, 200);
+            }
+            catch { }
+
+            // Líneas de firma
+            g.DrawLine(pen, firma1X, firmaLineaY, firma1X + firmaAncho, firmaLineaY);
+            g.DrawLine(pen, firma2X, firmaLineaY, firma2X + firmaAncho, firmaLineaY);
+            g.DrawLine(pen, firma3X, firmaLineaY, firma3X + firmaAncho, firmaLineaY);
+
+            int textoFirmaY = firmaLineaY + 5;
+
+            // Firma 1 — centrada
+            SizeF sizeF1 = g.MeasureString(nombreFirma, fontSmallBold);
+            float f1CentroX = firma1X + (firmaAncho / 2f) - (sizeF1.Width / 2f);
+            g.DrawString(nombreFirma, fontSmallBold, brush, f1CentroX, textoFirmaY);
+
+            // Firma 2 — coordinador centrado
+            SizeF sizeF2Nombre = g.MeasureString(coordinadorDisplay.ToUpper(), fontSmallBold);
+            SizeF sizeF2Puesto = g.MeasureString("COORDINADOR DEPARTAMENTAL", fontSmall);
+            float f2CentroNombre = firma2X + (firmaAncho / 2f) - (sizeF2Nombre.Width / 2f);
+            float f2CentroPuesto = firma2X + (firmaAncho / 2f) - (sizeF2Puesto.Width / 2f);
+            g.DrawString(coordinadorDisplay.ToUpper(), fontSmallBold, brush, f2CentroNombre, textoFirmaY);
+            g.DrawString("COORDINADOR DEPARTAMENTAL", fontSmall, brush, f2CentroPuesto, textoFirmaY + 14);
+
+            // Firma 3 — coordinación general centrada
+            SizeF sizeF3Titulo = g.MeasureString("COORDINACIÓN GENERAL", fontSmallBold);
+            SizeF sizeF3Oficina = g.MeasureString("OFICINAS CENTRALES", fontSmall);
+            float f3CentroTitulo = firma3X + (firmaAncho / 2f) - (sizeF3Titulo.Width / 2f);
+            float f3CentroOficina = firma3X + (firmaAncho / 2f) - (sizeF3Oficina.Width / 2f);
+            g.DrawString("COORDINACIÓN GENERAL", fontSmallBold, brush, f3CentroTitulo, textoFirmaY);
+            g.DrawString("OFICINAS CENTRALES", fontSmall, brush, f3CentroOficina, textoFirmaY + 14);
 
             // Liberar recursos
             fontTitulo.Dispose();
@@ -460,33 +539,49 @@ namespace SECRON.Views
                 {
                     string origen = !string.IsNullOrEmpty(d.FromWarehouseName)
                         ? d.FromWarehouseName : d.FromEmployeeName ?? "";
-                    detallesHtml += $"<tr><td>{d.AssetCode}</td><td>{d.AssetName}</td><td>{origen}</td></tr>";
+                    string destino = d.ToWarehouseName ?? "";
+                    detallesHtml += $@"
+                <tr>
+                    <td style='padding:5px;'>{d.AssetCode}</td>
+                    <td style='padding:5px;'>{d.AssetName}</td>
+                    <td style='padding:5px;'>{origen}</td>
+                    <td style='padding:5px;'>{destino}</td>
+                </tr>";
                 }
 
                 mail.Body = $@"
         <html>
-        <body style='font-family: Arial, sans-serif; color: #333;'>
-            <h2 style='color: #1E50A0;'>PROCESO DE TRASLADO INICIADO</h2>
-            <p><strong>Código de Traslado:</strong> {datos.CodigoTraslado}</p>
-            <p><strong>Fecha:</strong> {datos.Fecha}</p>
-            <p><strong>Sede Destino:</strong> {datos.SedeDestino}</p>
-            <p><strong>Bodega Destino:</strong> {datos.BodegaDestino}</p>
-            <p><strong>Empleado Destino:</strong> {(string.IsNullOrEmpty(datos.EmpleadoDestino) ? "NO ASIGNADO" : datos.EmpleadoDestino)}</p>
-            <p><strong>Motivo:</strong> {datos.Motivo}</p>
-            <p><strong>Emitido por:</strong> {datos.EmitidoPor}</p>
-            <br/>
-            <table border='1' cellpadding='5' cellspacing='0' style='border-collapse:collapse; width:100%;'>
+        <body style='font-family: Arial, sans-serif; color: #333; max-width:700px;'>
+            <h2 style='color: #1E50A0; border-bottom: 2px solid #E07328; padding-bottom:8px;'>
+                PROCESO DE TRASLADO INICIADO
+            </h2>
+            <table style='width:100%; margin-bottom:15px;'>
+                <tr><td><strong>Código de Traslado:</strong></td><td>{datos.CodigoTraslado}</td></tr>
+                <tr><td><strong>Fecha:</strong></td><td>{datos.Fecha}</td></tr>
+                <tr><td><strong>Sede Destino:</strong></td><td>{datos.SedeDestino}</td></tr>
+                <tr><td><strong>Motivo:</strong></td><td>{datos.Motivo}</td></tr>
+                <tr><td><strong>Emitido por:</strong></td><td>{datos.EmitidoPor}</td></tr>
+            </table>
+            <table border='1' cellpadding='5' cellspacing='0'
+                   style='border-collapse:collapse; width:100%; font-size:13px;'>
                 <tr style='background-color:#1E50A0; color:white;'>
-                    <th>CÓDIGO ACTIVO</th><th>NOMBRE</th><th>UBICACIÓN ORIGEN</th>
+                    <th>CÓDIGO ACTIVO</th>
+                    <th>NOMBRE</th>
+                    <th>UBICACIÓN ORIGEN</th>
+                    <th>DESTINO</th>
                 </tr>
                 {detallesHtml}
             </table>
             <br/>
-            <p style='color:#555;'>Servicio automático de notificaciones, <strong>SECRON</strong></p>
+            <p style='color:#555; font-size:12px;'>
+                Servicio automático de notificaciones, <strong>SECRON</strong>
+            </p>
+            <p style='color:#000; font-size:11px; font-weight:bold; border-top:1px solid #ccc; padding-top:8px;'>
+                NO RESPONDER A ESTE MENSAJE
+            </p>
         </body>
         </html>";
 
-                // Enviar al correo del usuario que creó el traslado
                 if (!string.IsNullOrEmpty(UserData?.InstitutionalEmail))
                     mail.To.Add(UserData.InstitutionalEmail);
                 else
@@ -549,6 +644,12 @@ namespace SECRON.Views
         {
             Tabla.DataSource = null;
             Tabla.DataSource = new List<Mdl_FixedAssetTransferDetail>(_detallesTemporales);
+
+            int total = _detallesTemporales.Count;
+            int mostrando = Math.Min(total, 100);
+            Lbl_Paginas.Text = total == 0
+                ? "SIN ACTIVOS EN EL TRASLADO"
+                : $"MOSTRANDO 1-{mostrando} DE {total} EN DETALLE DEL TRASLADO";
         }
 
         #endregion
@@ -625,6 +726,25 @@ namespace SECRON.Views
 
         #endregion
 
+        #region Validaciones
+        private bool ValidarComboBoxSeleccion(ComboBox combo, string nombreCampo)
+        {
+            if (combo.SelectedValue == null || !(combo.SelectedValue is int))
+            {
+                if (!string.IsNullOrWhiteSpace(combo.Text))
+                {
+                    MessageBox.Show(
+                        $"EL VALOR INGRESADO EN '{nombreCampo}' NO CORRESPONDE A UN REGISTRO VÁLIDO. " +
+                        $"SELECCIONE UNA OPCIÓN DE LA LISTA.",
+                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    combo.Focus();
+                }
+                return false;
+            }
+            return true;
+        }
+        #endregion Validaciones
+
         #region CRUD
 
 
@@ -644,6 +764,27 @@ namespace SECRON.Views
                 return;
             }
 
+            bool esBodega = ComboBox_SelectTo.SelectedItem?.ToString() == "BODEGA";
+
+            if (esBodega)
+            {
+                if (!ValidarComboBoxSeleccion(ComboBox_ToWarehouse, "BODEGA DE DESTINO"))
+                {
+                    MessageBox.Show("DEBE SELECCIONAR UNA BODEGA DE DESTINO ANTES DE AGREGAR EL ACTIVO.",
+                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            else
+            {
+                if (!ValidarComboBoxSeleccion(ComboBox_ToEmployee, "EMPLEADO DE DESTINO"))
+                {
+                    MessageBox.Show("DEBE SELECCIONAR UN EMPLEADO DE DESTINO ANTES DE AGREGAR EL ACTIVO.",
+                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             _detallesTemporales.Add(new Mdl_FixedAssetTransferDetail
             {
                 AssetId = _selectedAssetId,
@@ -652,12 +793,15 @@ namespace SECRON.Views
                 AssetCode = Txt_AssetId.Text,
                 AssetName = Txt_Asset.Text,
                 FromWarehouseName = Txt_FromWarehouse.Text,
-                FromEmployeeName = Txt_FromEmployee.Text
+                FromEmployeeName = Txt_FromEmployee.Text,
+                ToWarehouseName = esBodega ? ComboBox_ToWarehouse.Text : ComboBox_ToEmployee.Text
             });
 
             RefrescarTablaDetallesTemporales();
 
-            // Limpiar selección de activo para el siguiente
+            if (_detallesTemporales.Count == 1)
+                ComboBox_Location.Enabled = false;
+
             _selectedAssetId = 0;
             _selectedFromWarehouseId = null;
             _selectedFromEmployeeId = null;
@@ -1009,6 +1153,30 @@ namespace SECRON.Views
                 return;
             }
 
+            // Validar sede
+            if (ComboBox_Location.SelectedValue == null)
+            {
+                MessageBox.Show("DEBE SELECCIONAR LA SEDE DE DESTINO.",
+                    "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validar motivo
+            if (string.IsNullOrWhiteSpace(Txt_Reason.Text.Trim()))
+            {
+                MessageBox.Show("EL MOTIVO DEL TRASLADO ES OBLIGATORIO.",
+                    "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validar coordinador
+            if (!ValidarComboBoxSeleccion(ComboBox_Coordinator, "COORDINADOR DEPARTAMENTAL"))
+            {
+                MessageBox.Show("DEBE SELECCIONAR UN COORDINADOR DEPARTAMENTAL VÁLIDO.",
+                    "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             // Validar que ningún activo esté en estado TRASLADADO
             foreach (var detalle in _detallesTemporales)
             {
@@ -1027,13 +1195,12 @@ namespace SECRON.Views
             int? toEmployeeId = null;
             string bodegaDestino = "";
             string empleadoDestino = "";
-            string sedeDestino = ComboBox_Location.Text;
 
             if (esBodega)
             {
-                if (ComboBox_ToWarehouse.SelectedValue == null || !(ComboBox_ToWarehouse.SelectedValue is int))
+                if (!ValidarComboBoxSeleccion(ComboBox_ToWarehouse, "BODEGA DE DESTINO"))
                 {
-                    MessageBox.Show("DEBE SELECCIONAR UNA BODEGA DE DESTINO.",
+                    MessageBox.Show("DEBE SELECCIONAR UNA BODEGA DE DESTINO VÁLIDA.",
                         "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -1057,29 +1224,37 @@ namespace SECRON.Views
                 return;
             }
 
+            // Obtener nombre del coordinador
+            string coordinadorNombre = "";
+            if (ComboBox_Coordinator.SelectedValue is int coordId)
+            {
+                var listaEmpleados = Ctrl_Employees.ObtenerEmpleadosParaCombo();
+                var coord = listaEmpleados.Find(emp => emp.Key == coordId);
+                coordinadorNombre = coord.Value ?? "";
+            }
+
             // Preparar datos para impresión
             _datosTraslado = new DatosTraslado
             {
                 CodigoTraslado = Txt_TransferId.Text.Trim().ToUpper(),
                 Fecha = DateTime.Now.ToString("dd 'de' MMMM 'de' yyyy",
-                                    new System.Globalization.CultureInfo("es-GT")).ToUpper(),
-                SedeDestino = sedeDestino,
+                                            new System.Globalization.CultureInfo("es-GT")).ToUpper(),
+                SedeDestino = ComboBox_Location.Text,
                 BodegaDestino = bodegaDestino,
                 EmpleadoDestino = empleadoDestino,
                 Motivo = Txt_Reason.Text.Trim(),
                 EmitidoPor = UserData?.FullName ?? "",
+                CoordinadorNombre = coordinadorNombre,
+                CoordinadorEspecialidad = ComboBox_Speciality.SelectedItem?.ToString() ?? "N/A",
                 Detalles = new List<Mdl_FixedAssetTransferDetail>(_detallesTemporales)
             };
 
             // Mostrar vista previa
-            InicializarImpresion();
-
             _printDocument = new PrintDocument();
             _printDocument.PrintPage += PrintDocument_PrintPage;
             _printDocument.DefaultPageSettings.PaperSize = new PaperSize("Letter", 850, 1100);
             _printDocument.DefaultPageSettings.Margins = new Margins(40, 40, 40, 40);
             _printPreviewDialog.Document = _printDocument;
-
             _printPreviewDialog.ShowDialog(this);
 
             // Confirmación para guardar
@@ -1141,11 +1316,9 @@ namespace SECRON.Views
                     continue;
                 }
 
-                // Cambiar estado del activo a TRASLADADO
                 Ctrl_FixedAssets.ActualizarEstadoActivo(detalle.AssetId, "TRASLADADO", UserData?.UserId);
             }
 
-            // Enviar correo de notificación
             EnviarCorreoTraslado(transferId, _datosTraslado);
 
             if (hayErrores)
@@ -1173,6 +1346,9 @@ namespace SECRON.Views
             int locationId = (int)ComboBox_Location.SelectedValue;
             var bodegas = Ctrl_Warehouses.ObtenerBodegasPorLocation(locationId);
 
+            // Desuscribir para evitar que el cambio de DataSource dispare el evento nuevamente
+            ComboBox_Location.SelectedIndexChanged -= ComboBox_Location_SelectedIndexChanged;
+
             ComboBox_ToWarehouse.DataSource = null;
             ComboBox_ToWarehouse.DataSource = bodegas;
             ComboBox_ToWarehouse.DisplayMember = "Value";
@@ -1182,7 +1358,24 @@ namespace SECRON.Views
 
             bool esBodega = ComboBox_SelectTo.SelectedItem?.ToString() == "BODEGA";
             ComboBox_ToWarehouse.Enabled = esBodega;
+
+            // Resuscribir
+            ComboBox_Location.SelectedIndexChanged += ComboBox_Location_SelectedIndexChanged;
         }
         #endregion
+
+        private void Btn_Cancel_Click(object sender, EventArgs e)
+        {
+            if (_detallesTemporales.Count > 0)
+            {
+                DialogResult confirm = MessageBox.Show(
+                    "¿ESTÁ SEGURO QUE DESEA CANCELAR EL TRASLADO EN CURSO? SE PERDERÁN TODOS LOS ACTIVOS AGREGADOS.",
+                    "CONFIRMAR CANCELACIÓN", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (confirm != DialogResult.Yes) return;
+            }
+
+            EstadoInicial();
+        }
     }
 }

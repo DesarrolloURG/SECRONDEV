@@ -804,6 +804,9 @@
     <None Include="Resources\KardexNegro20x20.png" />
     <None Include="Resources\LocationBlanco20x20.png" />
     <None Include="Resources\LocationNegro20x20.png" />
+    <None Include="Img\LogoMembretadoEncabezado.png" />
+    <None Include="Img\MembretadoPiePagina.png" />
+    <None Include="Img\SelloCoordinacion_Black.png" />
     <Content Include="SECRON-Logotipo.ico" />
   </ItemGroup>
   <ItemGroup>
