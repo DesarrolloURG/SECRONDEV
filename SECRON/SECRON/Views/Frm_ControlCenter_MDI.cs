@@ -1962,6 +1962,7 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             Frm_FixedAsset frm = new Frm_FixedAsset();
+            frm.UserData = this.UserData;
             frm.Text = "Catálogo General de Activos";
             frm.BackColor = Color.White;
             //frm.UserData = this.UserData;
