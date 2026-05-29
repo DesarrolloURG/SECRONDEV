@@ -17,9 +17,6 @@ CREATE OR ALTER PROCEDURE SP_FixedAssets_Insert
     @DisposalReason         VARCHAR(255)  = NULL,
     @DisposalValue          DECIMAL(18,2) = NULL,
     @Notes                  VARCHAR(1000) = NULL,
-    @Brand                  VARCHAR(100)  = NULL,
-    @Model                  VARCHAR(100)  = NULL,
-    @Serial                 VARCHAR(100)  = NULL,
     @CreatedBy              INT           = NULL
 AS
 BEGIN
@@ -67,24 +64,7 @@ BEGIN
              @AssetStatus, @DisposalDate, UPPER(@DisposalReason), @DisposalValue,
              UPPER(@Notes), 1, @CreatedBy)
 
-        DECLARE @NewAssetId INT = SCOPE_IDENTITY()
-
-        SELECT @NewAssetId
-
-        DECLARE @AttrDefId INT
-
-        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'BRAND',  'Marca',  @AttrDefId OUTPUT
-        EXEC SP_FixedAssetAttributeValues_Insert @NewAssetId, @AttrDefId, @Brand,  @CreatedBy
-        SET @AttrDefId = NULL
-
-        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'MODEL',  'Modelo', @AttrDefId OUTPUT
-        EXEC SP_FixedAssetAttributeValues_Insert @NewAssetId, @AttrDefId, @Model,  @CreatedBy
-        SET @AttrDefId = NULL
-
-        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'SERIAL', 'Serie',  @AttrDefId OUTPUT
-        EXEC SP_FixedAssetAttributeValues_Insert @NewAssetId, @AttrDefId, @Serial, @CreatedBy
-        SET @AttrDefId = NULL
-
+        SELECT SCOPE_IDENTITY()
         COMMIT TRANSACTION
 
     END TRY
