@@ -1964,7 +1964,7 @@ namespace SECRON.Views
             Frm_FixedAsset frm = new Frm_FixedAsset();
             frm.Text = "Catálogo General de Activos";
             frm.BackColor = Color.White;
-            //frm.UserData = this.UserData;
+            frm.UserData = this.UserData;
 
             AbrirFormularioConPestana(frm, "Catálogo General de Activos", "StaticItemsManagment");
         }
