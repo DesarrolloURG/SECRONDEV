@@ -1,9 +1,15 @@
+-- ============================================================
+-- SP_FixedAssets_Update
+-- ============================================================
 CREATE OR ALTER PROCEDURE SP_FixedAssets_Update
     @AssetId                INT,
     @AssetCode              VARCHAR(30),
     @AssetName              VARCHAR(150),
     @Description            VARCHAR(500)  = NULL,
     @AssetCategoryId        INT,
+    @Brand                  VARCHAR(100)  = NULL,
+    @Model                  VARCHAR(100)  = NULL,
+    @Serial                 VARCHAR(100)  = NULL,
     @PurchaseDate           DATE          = NULL,
     @PurchaseValue          DECIMAL(18,2),
     @ResidualValue          DECIMAL(18,2) = 0,
@@ -50,6 +56,7 @@ BEGIN
             RETURN
         END
 
+        -- Si cambió la categoría, eliminar todos los atributos anteriores del activo
         DECLARE @CategoriaAnterior INT
         SELECT @CategoriaAnterior = AssetCategoryId FROM FixedAssets WHERE AssetId = @AssetId
 
@@ -85,6 +92,20 @@ BEGIN
             ModifiedDate           = GETDATE(),
             ModifiedBy             = @ModifiedBy
         WHERE AssetId = @AssetId
+
+        DECLARE @AttrDefId INT
+
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'BRAND',  'Marca',  @AttrDefId OUTPUT
+        EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Brand,  @ModifiedBy
+        SET @AttrDefId = NULL
+
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'MODEL',  'Modelo', @AttrDefId OUTPUT
+        EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Model,  @ModifiedBy
+        SET @AttrDefId = NULL
+
+        EXEC SP_FA_ObtenerOCrearAtributoSistema @AssetCategoryId, 'SERIAL', 'Serie',  @AttrDefId OUTPUT
+        EXEC SP_FixedAssetAttributeValues_Insert @AssetId, @AttrDefId, @Serial, @ModifiedBy
+        SET @AttrDefId = NULL
 
         COMMIT TRANSACTION
         SELECT 1

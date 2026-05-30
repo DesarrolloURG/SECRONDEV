@@ -62,26 +62,18 @@ namespace SECRON.Views
                 ConfigurarFiltros();
                 ConfigurarCombos();
                 CrearToolStripPaginacion();
+                CargarActivos();
                 LimpiarTablaAtributos();
                 ConfigurarTablaAtributos();
                 AjustarColumnasAtributos();
                 ConfigurarFiltrosAtributos();
 
+                ActualizarInfoPaginacion();
+
                 if (UserData != null)
                 {
                     await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
                     ConfigurarControlesPorPermisos();
-                }
-
-                // Solo cargar datos si tiene permiso de lectura
-                if (TienePermiso("FA_ASSETS_READ"))
-                {
-                    CargarActivos();
-                    ActualizarInfoPaginacion();
-                }
-                else
-                {
-                    Lbl_Paginas.Text = "SIN PERMISOS PARA VER ACTIVOS FIJOS";
                 }
 
                 this.Cursor = Cursors.Default;
@@ -110,6 +102,9 @@ namespace SECRON.Views
             Txt_AssetCode.MaxLength = 30;
             Txt_AssetName.MaxLength = 150;
             Txt_Description.MaxLength = 500;
+            Txt_Brand.MaxLength = 100;
+            Txt_Model.MaxLength = 100;
+            Txt_Serial.MaxLength = 100;
             Txt_PurchaseValue.MaxLength = 18;
             Txt_ResidualValue.MaxLength = 5;
             Txt_ResidualValueAct.MaxLength = 18;
@@ -141,6 +136,9 @@ namespace SECRON.Views
             ConfigurarPlaceHolder(Txt_AssetCode, "CÓDIGO DEL ACTIVO");
             ConfigurarPlaceHolder(Txt_AssetName, "NOMBRE DEL ACTIVO");
             ConfigurarPlaceHolder(Txt_Description, "DESCRIPCIÓN");
+            ConfigurarPlaceHolder(Txt_Brand, "MARCA");
+            ConfigurarPlaceHolder(Txt_Model, "MODELO");
+            ConfigurarPlaceHolder(Txt_Serial, "NÚMERO DE SERIE");
             ConfigurarPlaceHolder(Txt_PurchaseValue, "0.00");
             ConfigurarPlaceHolder(Txt_ResidualValue, "0.00");
             ConfigurarPlaceHolder(Txt_ResidualValueAct, "0.00");
@@ -229,21 +227,6 @@ namespace SECRON.Views
                 LimpiarFormulario();
 
             Tabla.SelectionChanged += Tabla_SelectionChanged;
-        }
-
-        private void EjecutarBusqueda()
-        {
-            _assetsList = string.IsNullOrEmpty(_ultimoTextoBusqueda)
-                ? Ctrl_FixedAssets.MostrarActivos(paginaActual, registrosPorPagina)
-                : Ctrl_FixedAssets.BuscarActivos(_ultimoTextoBusqueda, _ultimoFiltro1,
-                    _ultimoFiltroEstado, _ultimoCategoriaId, paginaActual, registrosPorPagina);
-
-            AsignarDataSourceActivos();
-            ConfigurarTabla();
-            AjustarColumnas();
-
-            totalRegistros = Ctrl_FixedAssets.ContarTotalActivos(
-                _ultimoTextoBusqueda, _ultimoFiltroEstado, _ultimoCategoriaId);
         }
 
         #endregion Filtros
@@ -440,6 +423,10 @@ namespace SECRON.Views
                 _categoriaAnteriorId = _activoSeleccionado.AssetCategoryId;
                 SetTextBoxFromValue(Txt_Category, _activoSeleccionado.CategoryName, "SELECCIONAR CATEGORÍA");
 
+                SetTextBoxFromValue(Txt_Brand, _activoSeleccionado.Brand, "MARCA");
+                SetTextBoxFromValue(Txt_Model, _activoSeleccionado.Model, "MODELO");
+                SetTextBoxFromValue(Txt_Serial, _activoSeleccionado.Serial, "NÚMERO DE SERIE");
+
                 DTP_PurchaseDate.Checked = _activoSeleccionado.PurchaseDate.HasValue;
                 if (_activoSeleccionado.PurchaseDate.HasValue)
                     DTP_PurchaseDate.Value = _activoSeleccionado.PurchaseDate.Value;
@@ -530,7 +517,7 @@ namespace SECRON.Views
                 if (Tabla.Rows.Count > 0)
                     CargarDatosActivoSeleccionado();
 
-                totalRegistros = Ctrl_FixedAssets.ContarTotalActivos(_ultimoTextoBusqueda, _ultimoFiltroEstado, _ultimoCategoriaId);
+                totalRegistros = Ctrl_FixedAssets.ContarTotalActivos(valorBusqueda, _ultimoCategoriaId);
                 ActualizarInfoPaginacion();
 
                 this.Cursor = Cursors.Default;
@@ -654,7 +641,7 @@ namespace SECRON.Views
         private void ActualizarInfoPaginacion()
         {
             if (totalRegistros == 0)
-                totalRegistros = Ctrl_FixedAssets.ContarTotalActivos(_ultimoTextoBusqueda, _ultimoFiltroEstado, _ultimoCategoriaId);
+                totalRegistros = Ctrl_FixedAssets.ContarTotalActivos(_ultimoTextoBusqueda, _ultimoCategoriaId);
 
             totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
 
@@ -684,6 +671,10 @@ namespace SECRON.Views
             Txt_AssetName.TabIndex = 6;
             Txt_Description.TabIndex = 7;
             Btn_SearchCategory.TabIndex = 8;
+
+            Txt_Brand.TabIndex = 9;
+            Txt_Model.TabIndex = 10;
+            Txt_Serial.TabIndex = 11;
 
             DTP_PurchaseDate.TabIndex = 12;
             Txt_PurchaseValue.TabIndex = 13;
@@ -824,9 +815,9 @@ namespace SECRON.Views
                     AssetName = Txt_AssetName.Text.Trim(),
                     Description = TienePlaceholder(Txt_Description, "DESCRIPCIÓN") ? null : Txt_Description.Text.Trim(),
                     AssetCategoryId = _categoriaSeleccionadaId ?? 0,
-                    Brand = null,
-                    Model = null,
-                    Serial = null,
+                    Brand = TienePlaceholder(Txt_Brand, "MARCA") ? null : Txt_Brand.Text.Trim(),
+                    Model = TienePlaceholder(Txt_Model, "MODELO") ? null : Txt_Model.Text.Trim(),
+                    Serial = TienePlaceholder(Txt_Serial, "NÚMERO DE SERIE") ? null : Txt_Serial.Text.Trim(),
                     PurchaseDate = DTP_PurchaseDate.Checked ? DTP_PurchaseDate.Value.Date : (DateTime?)null,
                     PurchaseValue = ObtenerDecimal(Txt_PurchaseValue, "0.00"),
                     ResidualValue = ObtenerDecimal(Txt_ResidualValue, "0.00"),
@@ -853,6 +844,7 @@ namespace SECRON.Views
 
                     if (frmAttr.ShowDialog(this) != DialogResult.OK) return;
 
+                    // Usuario confirmó características — ahora insertar el activo
                     int resultado = Ctrl_FixedAssets.RegistrarActivo(nuevo);
 
                     switch (resultado)
@@ -862,7 +854,7 @@ namespace SECRON.Views
                             MessageBox.Show("Activo registrado exitosamente.", "Éxito",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
                             LimpiarFormulario();
-                            EjecutarBusqueda();
+                            RefrescarListado();
                             ActualizarInfoPaginacion();
                             break;
                         case -1:
@@ -895,47 +887,46 @@ namespace SECRON.Views
                 if (_activoSeleccionado == null || _activoSeleccionado.AssetId == 0)
                 {
                     MessageBox.Show("Debe seleccionar un activo para actualizar.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
                 }
 
                 if (!ValidarCamposObligatorios()) return;
 
-                // Validar si intentó cambiar la categoría
+                // Alerta si cambió la categoría
                 bool cambioCategoría = _categoriaSeleccionadaId.HasValue &&
                                        _categoriaAnteriorId.HasValue &&
                                        _categoriaSeleccionadaId != _categoriaAnteriorId;
 
                 if (cambioCategoría)
                 {
-                    MessageBox.Show(
-                        "No es posible cambiar la categoría de un activo fijo existente.\n\n" +
-                        "Si necesita asignarlo a una categoría diferente, deberá eliminar este activo " +
-                        "y registrarlo nuevamente en la categoría correcta.\n\n" +
-                        "Los demás campos del activo serán actualizados normalmente, " +
-                        "pero la categoría se mantendrá sin cambios.",
-                        "Cambio de categoría no permitido",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Revertir la categoría al valor original
-                    _categoriaSeleccionadaId = _categoriaAnteriorId;
-                    SetTextBoxFromValue(Txt_Category, _activoSeleccionado.CategoryName, "SELECCIONAR CATEGORÍA");
+                    if (MessageBox.Show(
+                        "Ha cambiado la CATEGORÍA del activo.\n\n" +
+                        "Las características actuales del activo se ELIMINARÁN y deberá ingresar " +
+                        "nuevas características correspondientes a la nueva categoría.\n\n" +
+                        "¿Desea continuar?",
+                        "Advertencia — Cambio de Categoría",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
                 }
-
-                if (MessageBox.Show($"¿Actualizar el activo {_activoSeleccionado.AssetName}?",
-                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+                else
+                {
+                    if (MessageBox.Show($"¿Actualizar el activo {_activoSeleccionado.AssetName}?",
+                        "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+                }
 
                 _activoSeleccionado.AssetName = Txt_AssetName.Text.Trim();
                 _activoSeleccionado.Description = TienePlaceholder(Txt_Description, "DESCRIPCIÓN") ? null : Txt_Description.Text.Trim();
-                _activoSeleccionado.AssetCategoryId = _categoriaAnteriorId ?? _activoSeleccionado.AssetCategoryId;
-                _activoSeleccionado.PurchaseDate = DTP_PurchaseDate.Checked ? DTP_PurchaseDate.Value.Date : (DateTime?)null;
+                _activoSeleccionado.AssetCategoryId = _categoriaSeleccionadaId ?? _activoSeleccionado.AssetCategoryId;
+                _activoSeleccionado.Brand = TienePlaceholder(Txt_Brand, "MARCA") ? null : Txt_Brand.Text.Trim();
+                _activoSeleccionado.Model = TienePlaceholder(Txt_Model, "MODELO") ? null : Txt_Model.Text.Trim();
+                _activoSeleccionado.Serial = TienePlaceholder(Txt_Serial, "NÚMERO DE SERIE") ? null : Txt_Serial.Text.Trim();
+                _activoSeleccionado.PurchaseDate = DTP_PurchaseDate.Value.Date;
                 _activoSeleccionado.PurchaseValue = ObtenerDecimal(Txt_PurchaseValue, "0.00");
                 _activoSeleccionado.ResidualValue = ObtenerDecimal(Txt_ResidualValue, "0.00");
                 _activoSeleccionado.InvoiceNumber = TienePlaceholder(Txt_InvoiceNumber, "NÚMERO DE FACTURA") ? null : Txt_InvoiceNumber.Text.Trim();
                 _activoSeleccionado.SupplierId = _proveedorSeleccionadoId;
                 _activoSeleccionado.WarrantyDocumentPath = TienePlaceholder(Txt_WarrantyDocumentPath, "RUTA DEL DOCUMENTO") ? null : Txt_WarrantyDocumentPath.Text.Trim();
-                _activoSeleccionado.WarrantyExpirationDate = DTP_WarrantyExpirationDate.Checked ? DTP_WarrantyExpirationDate.Value.Date : (DateTime?)null;
-                _activoSeleccionado.DepreciationStartDate = DTP_DepreciationStartDate.Checked ? DTP_DepreciationStartDate.Value.Date : (DateTime?)null;
+                _activoSeleccionado.WarrantyExpirationDate = DTP_WarrantyExpirationDate.Value.Date;
+                _activoSeleccionado.DepreciationStartDate = DTP_DepreciationStartDate.Value.Date;
                 _activoSeleccionado.CurrentWarehouseId = _bodegaSeleccionadaId;
                 _activoSeleccionado.AssignedToEmployeeId = _empleadoSeleccionadoId;
                 _activoSeleccionado.AssetStatus = ComboBox_AssetStatus.SelectedItem?.ToString() ?? "ACTIVO";
@@ -944,19 +935,25 @@ namespace SECRON.Views
                 _activoSeleccionado.DisposalDate = estado == "BAJA" ? DTP_DisposalDate.Value.Date : (DateTime?)null;
                 _activoSeleccionado.DisposalReason = estado == "BAJA" && !TienePlaceholder(Txt_DisposalReason, "MOTIVO DE BAJA") ? Txt_DisposalReason.Text.Trim() : null;
                 _activoSeleccionado.DisposalValue = estado == "BAJA" && !TienePlaceholder(Txt_DisposalValue, "0.00") ? ObtenerDecimal(Txt_DisposalValue, "0.00") : (decimal?)null;
+
+                _activoSeleccionado.DisposalReason = TienePlaceholder(Txt_DisposalReason, "MOTIVO DE BAJA") ? null : Txt_DisposalReason.Text.Trim();
                 _activoSeleccionado.Notes = TienePlaceholder(Txt_Notes, "NOTAS") ? null : Txt_Notes.Text.Trim();
                 _activoSeleccionado.ModifiedDate = DateTime.Now;
                 _activoSeleccionado.ModifiedBy = UserData?.UserId ?? 1;
+
 
                 int resultado = Ctrl_FixedAssets.ActualizarActivo(_activoSeleccionado);
 
                 switch (resultado)
                 {
                     case 1:
+                        if (cambioCategoría)
+                            AbrirVentanaCaracteristicas(_activoSeleccionado.AssetId, _categoriaSeleccionadaId ?? 0, UserData?.UserId ?? 1);
+
                         MessageBox.Show("Activo actualizado exitosamente.", "Éxito",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LimpiarFormulario();
-                        EjecutarBusqueda();
+                        RefrescarListado();
                         ActualizarInfoPaginacion();
                         break;
                     case -1:
@@ -1063,59 +1060,6 @@ namespace SECRON.Views
             Txt_AssetName.Focus();
         }
 
-        private void Btn_Delete_Click(object sender, EventArgs e)
-        {
-            if (!Btn_Delete.Enabled) return;
-            try
-            {
-                if (_activoSeleccionado == null || _activoSeleccionado.AssetId == 0)
-                {
-                    MessageBox.Show("Debe seleccionar un activo para eliminar.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                string mensaje =
-                    $"ADVERTENCIA — Esta acción es IRREVERSIBLE.\n\n" +
-                    $"Está a punto de eliminar permanentemente el activo:\n" +
-                    $"  {_activoSeleccionado.AssetCode} — {_activoSeleccionado.AssetName}\n\n" +
-                    $"Esto también eliminará:\n" +
-                    $"  • Todas sus características registradas\n" +
-                    $"  • Todos sus registros contables asociados\n\n" +
-                    $"¿Está completamente seguro de que desea continuar?";
-
-                if (MessageBox.Show(mensaje, "Confirmar eliminación permanente",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
-
-                int resultado = Ctrl_FixedAssets.EliminarActivo(
-                    _activoSeleccionado.AssetId, UserData?.UserId ?? 1);
-
-                switch (resultado)
-                {
-                    case 1:
-                        MessageBox.Show("Activo eliminado exitosamente.", "Éxito",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LimpiarFormulario();
-                        EjecutarBusqueda();
-                        ActualizarInfoPaginacion();
-                        break;
-                    case -1:
-                        MessageBox.Show("El activo no fue encontrado.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    default:
-                        MessageBox.Show("No se pudo eliminar el activo.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al eliminar: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         #endregion CRUD
 
         #region VentanaCaracteristicas
@@ -1162,6 +1106,20 @@ namespace SECRON.Views
 
         public void ActualizarCategoria(int categoryId, string categoryName)
         {
+            // Si ya había una categoría distinta, alertar
+            if (_categoriaAnteriorId.HasValue &&
+                _categoriaAnteriorId > 0 &&
+                _categoriaAnteriorId != categoryId &&
+                _activoSeleccionado != null)
+            {
+                if (MessageBox.Show(
+                    "Está cambiando la CATEGORÍA del activo.\n\n" +
+                    "Las características actuales se ELIMINARÁN y deberá ingresar nuevas.\n\n" +
+                    "¿Desea continuar?",
+                    "Advertencia", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    return;
+            }
+
             _categoriaSeleccionadaId = categoryId;
             SetTextBoxFromValue(Txt_Category, categoryName, "SELECCIONAR CATEGORÍA");
         }
@@ -1311,18 +1269,13 @@ namespace SECRON.Views
         protected void ConfigurarControlesPorPermisos()
         {
             AplicarEstadoBotonPorPermiso(Btn_Save, "FA_ASSETS_CREATE");
-            AplicarEstadoBotonPorPermiso(Btn_Delete, "FA_ASSETS_DELETE");
+            
             AplicarEstadoBotonPorPermiso(Btn_Update, "FA_ASSETS_UPDATE");
             AplicarEstadoBotonPorPermiso(Btn_UpdateAtributo, "FA_ASSETS_UPDATE");
+
             AplicarEstadoBotonPorPermiso(Btn_Inactive, "FA_ASSETS_INACTIVE");
             AplicarEstadoBotonPorPermiso(Btn_Export, "FA_ASSETS_EXPORT");
-
-
             AplicarEstadoBotonPorPermiso(Btn_Search, "FA_ASSETS_READ");
-
-            AplicarEstadoBotonPorPermiso(Btn_SearchAtributo, "FA_ASSETS_READ");
-            AplicarEstadoBotonPorPermiso(Btn_CleanSearchAtributo, "FA_ASSETS_READ");
-            AplicarEstadoBotonPorPermiso(Btn_CleanSearch, "FA_ASSETS_READ");
         }
 
         #endregion SistemaDePermisos
@@ -1577,12 +1530,14 @@ namespace SECRON.Views
                 var atrib = _atributosValoresList.FirstOrDefault(a => a.AttributeDefId == defId);
                 if (atrib == null) return;
 
+                // Obtener valor según tipo
                 string valor;
                 if (atrib.DataType?.ToUpper() == "FECHA" && _dtpAtributo != null && _dtpAtributo.Visible)
                     valor = _dtpAtributo.Value.ToString("yyyy-MM-dd");
                 else
                     valor = Txt_AttributeValue.Text.Trim();
 
+                // Validar obligatorio
                 if (atrib.IsRequired && string.IsNullOrWhiteSpace(valor))
                 {
                     MessageBox.Show($"El campo '{atrib.AttributeLabel}' es obligatorio.", "Validación",
@@ -1590,6 +1545,7 @@ namespace SECRON.Views
                     return;
                 }
 
+                // Validar tipo si tiene valor
                 if (!string.IsNullOrWhiteSpace(valor))
                 {
                     switch (atrib.DataType?.ToUpper())
@@ -1633,10 +1589,13 @@ namespace SECRON.Views
                     case 1:
                         MessageBox.Show("Característica actualizada exitosamente.", "Éxito",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        EjecutarBusqueda();
-                        ActualizarInfoPaginacion();
-                        CargarAtributosDelActivoSeleccionado(
-                            _activoSeleccionado.AssetId, _activoSeleccionado.AssetCategoryId);
+                        AsignarDataSourceAtributos();
+                        ConfigurarTablaAtributos();
+                        AjustarColumnasAtributos();
+                        int conValor = _atributosValoresList.Count(a => !string.IsNullOrWhiteSpace(a.Value));
+                        Lbl_AtributosHeader.Text =
+                            $"CARACTERÍSTICAS DE: {_activoSeleccionado.AssetName.ToUpper()} " +
+                            $"— {conValor}/{_atributosValoresList.Count} COMPLETADAS";
                         break;
                     case -1:
                         MessageBox.Show("El registro no fue encontrado.", "Error",
@@ -1654,6 +1613,16 @@ namespace SECRON.Views
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /*
+        private void Btn_ClearAtributo_Click(object sender, EventArgs e)
+        {
+            Txt_AttributeKey.Text = string.Empty;
+            Txt_AttributeLabel.Text = string.Empty;
+            Txt_AttributeType.Text = string.Empty;
+            Txt_AttributeValue.Text = string.Empty;
+            TablaAtributos.ClearSelection();
+        }*/
 
         private void Btn_ClearAtributo_Click(object sender, EventArgs e)
         {

@@ -807,6 +807,9 @@
     <None Include="Img\LogoMembretadoEncabezado.png" />
     <None Include="Img\MembretadoPiePagina.png" />
     <None Include="Img\SelloCoordinacion_Black.png" />
+    <None Include="Resources\SelloCoordinacion_Black.png" />
+    <None Include="Resources\MembretadoPiePagina.png" />
+    <None Include="Resources\LogoMembretadoEncabezado.png" />
     <Content Include="SECRON-Logotipo.ico" />
   </ItemGroup>
   <ItemGroup>

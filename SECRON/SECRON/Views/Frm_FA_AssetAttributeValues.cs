@@ -59,8 +59,10 @@ namespace SECRON.Views
         {
             _controles = new Dictionary<int, (Mdl_FixedAssetAttributeValue, Control)>();
 
+            // Obtener plantilla de atributos de la categoría
             var plantilla = Ctrl_FixedAssetAttributeValues.ObtenerPlantillaPorCategoria(_categoryId);
 
+            // Si el activo ya existe, obtener los valores guardados
             List<Mdl_FixedAssetAttributeValue> valoresGuardados = new List<Mdl_FixedAssetAttributeValue>();
             if (_assetId > 0)
                 valoresGuardados = Ctrl_FixedAssetAttributeValues.ObtenerValoresPorActivo(_assetId);
@@ -74,14 +76,17 @@ namespace SECRON.Views
 
             Lbl_Info.Text = $"Complete las características del activo ({plantilla.Count} campos):";
 
+            // Limpiar panel de campos dinámicos
             Panel_Campos.Controls.Clear();
 
             int yPos = 10;
 
             foreach (var attr in plantilla.OrderBy(a => a.AttributeDefId))
             {
+                // Buscar si ya tiene valor guardado
                 var valorGuardado = valoresGuardados.FirstOrDefault(v => v.AttributeDefId == attr.AttributeDefId);
 
+                // Unir la info de definición con el valor guardado
                 var atributo = new Mdl_FixedAssetAttributeValue
                 {
                     AttributeValueId = valorGuardado?.AttributeValueId ?? 0,
@@ -95,19 +100,21 @@ namespace SECRON.Views
                     CreatedBy = _userId
                 };
 
+                // Label del atributo
                 var lbl = new Label
                 {
                     Text = attr.IsRequired
-                        ? $"{attr.AttributeLabel.ToUpper()} *"
-                        : attr.AttributeLabel.ToUpper(),
+                    ? $"{attr.AttributeLabel.ToUpper()} *"
+                    : attr.AttributeLabel.ToUpper(),
                     Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                    ForeColor = Color.Black,
+                    ForeColor = Color.Black,  // siempre negro
                     Location = new Point(15, yPos),
                     AutoSize = true
                 };
                 Panel_Campos.Controls.Add(lbl);
                 yPos += 24;
 
+                // Control de entrada según DataType
                 Control entrada = CrearControl(attr.DataType, atributo.Value);
                 entrada.Location = new Point(15, yPos);
                 entrada.Width = 565;
@@ -117,7 +124,6 @@ namespace SECRON.Views
                 yPos += entrada.Height + 15;
             }
 
-            Panel_Campos.AutoScrollMinSize = new Size(0, yPos + 10);
         }
 
         private Control CrearControl(string dataType, string valorActual)

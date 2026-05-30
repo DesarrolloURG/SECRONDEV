@@ -24,7 +24,8 @@ namespace SECRON.Controllers
                             FROM   FixedAssetAttributeValues av
                             INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
                             WHERE  av.AssetId = @AssetId
-                            ORDER  BY av.AttributeValueId";
+                            AND    ad.IsSystem = 0
+                            ORDER  BY ad.AttributeDefId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -62,7 +63,8 @@ namespace SECRON.Controllers
                         FROM   FixedAssetAttributeDefinitions ad
                         WHERE  ad.AssetCategoryId = @CategoryId
                         AND    ad.IsActive = 1
-                        ORDER  BY ad.AttributeDefId";
+                        AND    ad.IsSystem = 0
+                        ORDER  BY ad.AttributeKey";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {

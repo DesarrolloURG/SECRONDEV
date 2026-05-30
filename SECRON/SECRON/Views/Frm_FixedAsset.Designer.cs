@@ -16,7 +16,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_FixedAsset));
             this.Panel_Superior = new System.Windows.Forms.Panel();
-            this.Btn_Delete = new System.Windows.Forms.Button();
             this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
             this.Panel_Izquierdo = new System.Windows.Forms.Panel();
@@ -43,6 +42,14 @@
             this.Lbl_Category = new System.Windows.Forms.Label();
             this.Txt_Category = new System.Windows.Forms.TextBox();
             this.Btn_SearchCategory = new System.Windows.Forms.Button();
+            this.Panel_2 = new System.Windows.Forms.Panel();
+            this.Lbl_Sub2 = new System.Windows.Forms.Label();
+            this.Lbl_Brand = new System.Windows.Forms.Label();
+            this.Txt_Brand = new System.Windows.Forms.TextBox();
+            this.Lbl_Model = new System.Windows.Forms.Label();
+            this.Txt_Model = new System.Windows.Forms.TextBox();
+            this.Lbl_Serial = new System.Windows.Forms.Label();
+            this.Txt_Serial = new System.Windows.Forms.TextBox();
             this.Panel_3 = new System.Windows.Forms.Panel();
             this.Lbl_Sub3 = new System.Windows.Forms.Label();
             this.Lbl_PurchaseDate = new System.Windows.Forms.Label();
@@ -122,6 +129,7 @@
             this.Panel_8.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
             this.Panel_1.SuspendLayout();
+            this.Panel_2.SuspendLayout();
             this.Panel_3.SuspendLayout();
             this.Panel_4.SuspendLayout();
             this.Panel_5.SuspendLayout();
@@ -142,7 +150,6 @@
             // Panel_Superior
             // 
             this.Panel_Superior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
-            this.Panel_Superior.Controls.Add(this.Btn_Delete);
             this.Panel_Superior.Controls.Add(this.Btn_Export);
             this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
             this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
@@ -151,32 +158,16 @@
             this.Panel_Superior.Size = new System.Drawing.Size(1579, 68);
             this.Panel_Superior.TabIndex = 6;
             // 
-            // Btn_Delete
-            // 
-            this.Btn_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Delete.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Delete.Image = global::SECRON.Properties.Resources.trash25x25;
-            this.Btn_Delete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Delete.Location = new System.Drawing.Point(1247, 16);
-            this.Btn_Delete.Name = "Btn_Delete";
-            this.Btn_Delete.Size = new System.Drawing.Size(155, 37);
-            this.Btn_Delete.TabIndex = 2;
-            this.Btn_Delete.Text = "ELIMINAR";
-            this.Btn_Delete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Delete.UseVisualStyleBackColor = true;
-            this.Btn_Delete.Click += new System.EventHandler(this.Btn_Delete_Click);
-            // 
             // Btn_Export
             // 
             this.Btn_Export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Btn_Export.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Export.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Export.Image")));
+            this.Btn_Export.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
             this.Btn_Export.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Export.Location = new System.Drawing.Point(1407, 16);
+            this.Btn_Export.Location = new System.Drawing.Point(1404, 16);
             this.Btn_Export.Name = "Btn_Export";
-            this.Btn_Export.Size = new System.Drawing.Size(155, 37);
+            this.Btn_Export.Size = new System.Drawing.Size(159, 37);
             this.Btn_Export.TabIndex = 0;
             this.Btn_Export.Text = "EXPORTAR";
             this.Btn_Export.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -203,6 +194,7 @@
             this.Panel_Izquierdo.Controls.Add(this.Lbl_Titulo);
             this.Panel_Izquierdo.Controls.Add(this.Panel_CRUD);
             this.Panel_Izquierdo.Controls.Add(this.Panel_1);
+            this.Panel_Izquierdo.Controls.Add(this.Panel_2);
             this.Panel_Izquierdo.Controls.Add(this.Panel_3);
             this.Panel_Izquierdo.Controls.Add(this.Panel_4);
             this.Panel_Izquierdo.Controls.Add(this.Panel_5);
@@ -223,7 +215,7 @@
             this.Panel_8.Controls.Add(this.Lbl_AssetStatus);
             this.Panel_8.Controls.Add(this.Lbl_Notes);
             this.Panel_8.Controls.Add(this.ComboBox_AssetStatus);
-            this.Panel_8.Location = new System.Drawing.Point(4, 1328);
+            this.Panel_8.Location = new System.Drawing.Point(4, 1553);
             this.Panel_8.Name = "Panel_8";
             this.Panel_8.Size = new System.Drawing.Size(560, 294);
             this.Panel_8.TabIndex = 86;
@@ -232,7 +224,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
+            this.label1.Image = global::SECRON.Properties.Resources.AjustesNegro25x25;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label1.Location = new System.Drawing.Point(13, 9);
             this.label1.Name = "label1";
@@ -302,7 +294,7 @@
             // Btn_Save
             // 
             this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Save.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Save.Image")));
+            this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Save.Location = new System.Drawing.Point(3, 6);
             this.Btn_Save.Name = "Btn_Save";
@@ -316,7 +308,7 @@
             // Btn_Update
             // 
             this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Update.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Update.Image")));
+            this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Update.Location = new System.Drawing.Point(167, 6);
             this.Btn_Update.Name = "Btn_Update";
@@ -330,7 +322,7 @@
             // Btn_Inactive
             // 
             this.Btn_Inactive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Inactive.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Inactive.Image")));
+            this.Btn_Inactive.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
             this.Btn_Inactive.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Inactive.Location = new System.Drawing.Point(326, 6);
             this.Btn_Inactive.Name = "Btn_Inactive";
@@ -344,7 +336,7 @@
             // Btn_Clear
             // 
             this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Clear.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Clear.Image")));
+            this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_Clear.Location = new System.Drawing.Point(503, 6);
             this.Btn_Clear.Name = "Btn_Clear";
             this.Btn_Clear.Size = new System.Drawing.Size(44, 46);
@@ -374,7 +366,7 @@
             // 
             this.Lbl_Sub1.AutoSize = true;
             this.Lbl_Sub1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Sub1.Image = ((System.Drawing.Image)(resources.GetObject("Lbl_Sub1.Image")));
+            this.Lbl_Sub1.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
             this.Lbl_Sub1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Lbl_Sub1.Location = new System.Drawing.Point(13, 9);
             this.Lbl_Sub1.Name = "Lbl_Sub1";
@@ -458,13 +450,94 @@
             // Btn_SearchCategory
             // 
             this.Btn_SearchCategory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchCategory.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchCategory.Image")));
+            this.Btn_SearchCategory.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_SearchCategory.Location = new System.Drawing.Point(499, 363);
             this.Btn_SearchCategory.Name = "Btn_SearchCategory";
             this.Btn_SearchCategory.Size = new System.Drawing.Size(47, 45);
             this.Btn_SearchCategory.TabIndex = 9;
             this.Btn_SearchCategory.UseVisualStyleBackColor = true;
             this.Btn_SearchCategory.Click += new System.EventHandler(this.Btn_SearchCategory_Click);
+            // 
+            // Panel_2
+            // 
+            this.Panel_2.BackColor = System.Drawing.Color.White;
+            this.Panel_2.Controls.Add(this.Lbl_Sub2);
+            this.Panel_2.Controls.Add(this.Lbl_Brand);
+            this.Panel_2.Controls.Add(this.Txt_Brand);
+            this.Panel_2.Controls.Add(this.Lbl_Model);
+            this.Panel_2.Controls.Add(this.Txt_Model);
+            this.Panel_2.Controls.Add(this.Lbl_Serial);
+            this.Panel_2.Controls.Add(this.Txt_Serial);
+            this.Panel_2.Location = new System.Drawing.Point(4, 522);
+            this.Panel_2.Name = "Panel_2";
+            this.Panel_2.Size = new System.Drawing.Size(555, 219);
+            this.Panel_2.TabIndex = 80;
+            // 
+            // Lbl_Sub2
+            // 
+            this.Lbl_Sub2.AutoSize = true;
+            this.Lbl_Sub2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Sub2.Image = global::SECRON.Properties.Resources.CheckNegro25x25;
+            this.Lbl_Sub2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Sub2.Location = new System.Drawing.Point(13, 9);
+            this.Lbl_Sub2.Name = "Lbl_Sub2";
+            this.Lbl_Sub2.Size = new System.Drawing.Size(169, 20);
+            this.Lbl_Sub2.TabIndex = 0;
+            this.Lbl_Sub2.Text = "      DATOS GENERALES";
+            // 
+            // Lbl_Brand
+            // 
+            this.Lbl_Brand.AutoSize = true;
+            this.Lbl_Brand.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Brand.Location = new System.Drawing.Point(13, 38);
+            this.Lbl_Brand.Name = "Lbl_Brand";
+            this.Lbl_Brand.Size = new System.Drawing.Size(64, 20);
+            this.Lbl_Brand.TabIndex = 1;
+            this.Lbl_Brand.Text = "MARCA";
+            // 
+            // Txt_Brand
+            // 
+            this.Txt_Brand.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_Brand.Location = new System.Drawing.Point(19, 62);
+            this.Txt_Brand.Name = "Txt_Brand";
+            this.Txt_Brand.Size = new System.Drawing.Size(522, 27);
+            this.Txt_Brand.TabIndex = 2;
+            // 
+            // Lbl_Model
+            // 
+            this.Lbl_Model.AutoSize = true;
+            this.Lbl_Model.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Model.Location = new System.Drawing.Point(13, 101);
+            this.Lbl_Model.Name = "Lbl_Model";
+            this.Lbl_Model.Size = new System.Drawing.Size(72, 20);
+            this.Lbl_Model.TabIndex = 3;
+            this.Lbl_Model.Text = "MODELO";
+            // 
+            // Txt_Model
+            // 
+            this.Txt_Model.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_Model.Location = new System.Drawing.Point(19, 125);
+            this.Txt_Model.Name = "Txt_Model";
+            this.Txt_Model.Size = new System.Drawing.Size(522, 27);
+            this.Txt_Model.TabIndex = 4;
+            // 
+            // Lbl_Serial
+            // 
+            this.Lbl_Serial.AutoSize = true;
+            this.Lbl_Serial.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Serial.Location = new System.Drawing.Point(13, 162);
+            this.Lbl_Serial.Name = "Lbl_Serial";
+            this.Lbl_Serial.Size = new System.Drawing.Size(141, 20);
+            this.Lbl_Serial.TabIndex = 5;
+            this.Lbl_Serial.Text = "NÚMERO DE SERIE";
+            // 
+            // Txt_Serial
+            // 
+            this.Txt_Serial.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_Serial.Location = new System.Drawing.Point(19, 186);
+            this.Txt_Serial.Name = "Txt_Serial";
+            this.Txt_Serial.Size = new System.Drawing.Size(525, 27);
+            this.Txt_Serial.TabIndex = 6;
             // 
             // Panel_3
             // 
@@ -481,7 +554,7 @@
             this.Panel_3.Controls.Add(this.Lbl_Supplier);
             this.Panel_3.Controls.Add(this.Txt_Supplier);
             this.Panel_3.Controls.Add(this.Btn_SearchSupplier);
-            this.Panel_3.Location = new System.Drawing.Point(4, 522);
+            this.Panel_3.Location = new System.Drawing.Point(4, 746);
             this.Panel_3.Name = "Panel_3";
             this.Panel_3.Size = new System.Drawing.Size(555, 297);
             this.Panel_3.TabIndex = 81;
@@ -490,7 +563,7 @@
             // 
             this.Lbl_Sub3.AutoSize = true;
             this.Lbl_Sub3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Sub3.Image = ((System.Drawing.Image)(resources.GetObject("Lbl_Sub3.Image")));
+            this.Lbl_Sub3.Image = global::SECRON.Properties.Resources.CuentasNegro25x25;
             this.Lbl_Sub3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Lbl_Sub3.Location = new System.Drawing.Point(13, 9);
             this.Lbl_Sub3.Name = "Lbl_Sub3";
@@ -593,7 +666,7 @@
             // Btn_SearchSupplier
             // 
             this.Btn_SearchSupplier.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchSupplier.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchSupplier.Image")));
+            this.Btn_SearchSupplier.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_SearchSupplier.Location = new System.Drawing.Point(499, 239);
             this.Btn_SearchSupplier.Name = "Btn_SearchSupplier";
             this.Btn_SearchSupplier.Size = new System.Drawing.Size(47, 45);
@@ -610,7 +683,7 @@
             this.Panel_4.Controls.Add(this.Btn_SelectWarrantyDoc);
             this.Panel_4.Controls.Add(this.Lbl_WarrantyExpDate);
             this.Panel_4.Controls.Add(this.DTP_WarrantyExpirationDate);
-            this.Panel_4.Location = new System.Drawing.Point(4, 824);
+            this.Panel_4.Location = new System.Drawing.Point(4, 1048);
             this.Panel_4.Name = "Panel_4";
             this.Panel_4.Size = new System.Drawing.Size(555, 167);
             this.Panel_4.TabIndex = 82;
@@ -619,7 +692,7 @@
             // 
             this.Lbl_Sub4.AutoSize = true;
             this.Lbl_Sub4.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Sub4.Image = ((System.Drawing.Image)(resources.GetObject("Lbl_Sub4.Image")));
+            this.Lbl_Sub4.Image = global::SECRON.Properties.Resources.DescripcionItemBlanco25x25;
             this.Lbl_Sub4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Lbl_Sub4.Location = new System.Drawing.Point(13, 9);
             this.Lbl_Sub4.Name = "Lbl_Sub4";
@@ -647,9 +720,8 @@
             // 
             // Btn_SelectWarrantyDoc
             // 
-            this.Btn_SelectWarrantyDoc.Enabled = false;
             this.Btn_SelectWarrantyDoc.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SelectWarrantyDoc.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SelectWarrantyDoc.Image")));
+            this.Btn_SelectWarrantyDoc.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_SelectWarrantyDoc.Location = new System.Drawing.Point(499, 50);
             this.Btn_SelectWarrantyDoc.Name = "Btn_SelectWarrantyDoc";
             this.Btn_SelectWarrantyDoc.Size = new System.Drawing.Size(47, 45);
@@ -685,7 +757,7 @@
             this.Panel_5.Controls.Add(this.DTP_DepreciationStartDate);
             this.Panel_5.Controls.Add(this.Lbl_ResidualValueAct);
             this.Panel_5.Controls.Add(this.Txt_ResidualValueAct);
-            this.Panel_5.Location = new System.Drawing.Point(4, 996);
+            this.Panel_5.Location = new System.Drawing.Point(4, 1220);
             this.Panel_5.Name = "Panel_5";
             this.Panel_5.Size = new System.Drawing.Size(555, 163);
             this.Panel_5.TabIndex = 83;
@@ -694,7 +766,7 @@
             // 
             this.Lbl_Sub5.AutoSize = true;
             this.Lbl_Sub5.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Sub5.Image = ((System.Drawing.Image)(resources.GetObject("Lbl_Sub5.Image")));
+            this.Lbl_Sub5.Image = global::SECRON.Properties.Resources.GastosNegro25x25;
             this.Lbl_Sub5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Lbl_Sub5.Location = new System.Drawing.Point(13, 9);
             this.Lbl_Sub5.Name = "Lbl_Sub5";
@@ -750,7 +822,7 @@
             this.Panel_6.Controls.Add(this.Lbl_Employee);
             this.Panel_6.Controls.Add(this.Txt_Employee);
             this.Panel_6.Controls.Add(this.Btn_SearchEmployee);
-            this.Panel_6.Location = new System.Drawing.Point(4, 1164);
+            this.Panel_6.Location = new System.Drawing.Point(4, 1388);
             this.Panel_6.Name = "Panel_6";
             this.Panel_6.Size = new System.Drawing.Size(555, 160);
             this.Panel_6.TabIndex = 84;
@@ -759,7 +831,7 @@
             // 
             this.Lbl_Sub6.AutoSize = true;
             this.Lbl_Sub6.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Sub6.Image = ((System.Drawing.Image)(resources.GetObject("Lbl_Sub6.Image")));
+            this.Lbl_Sub6.Image = global::SECRON.Properties.Resources.EmployeesNegro25x25;
             this.Lbl_Sub6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Lbl_Sub6.Location = new System.Drawing.Point(13, 9);
             this.Lbl_Sub6.Name = "Lbl_Sub6";
@@ -788,7 +860,7 @@
             // Btn_SearchWarehouse
             // 
             this.Btn_SearchWarehouse.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchWarehouse.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchWarehouse.Image")));
+            this.Btn_SearchWarehouse.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_SearchWarehouse.Location = new System.Drawing.Point(499, 52);
             this.Btn_SearchWarehouse.Name = "Btn_SearchWarehouse";
             this.Btn_SearchWarehouse.Size = new System.Drawing.Size(47, 45);
@@ -817,7 +889,7 @@
             // Btn_SearchEmployee
             // 
             this.Btn_SearchEmployee.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchEmployee.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchEmployee.Image")));
+            this.Btn_SearchEmployee.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_SearchEmployee.Location = new System.Drawing.Point(499, 113);
             this.Btn_SearchEmployee.Name = "Btn_SearchEmployee";
             this.Btn_SearchEmployee.Size = new System.Drawing.Size(47, 45);
@@ -835,7 +907,7 @@
             this.Panel_7.Controls.Add(this.Lbl_DisposalReason);
             this.Panel_7.Controls.Add(this.Lbl_DisposalValue);
             this.Panel_7.Controls.Add(this.Txt_DisposalValue);
-            this.Panel_7.Location = new System.Drawing.Point(4, 1628);
+            this.Panel_7.Location = new System.Drawing.Point(4, 1852);
             this.Panel_7.Name = "Panel_7";
             this.Panel_7.Size = new System.Drawing.Size(555, 358);
             this.Panel_7.TabIndex = 85;
@@ -853,7 +925,7 @@
             // 
             this.Lbl_Sub7.AutoSize = true;
             this.Lbl_Sub7.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Sub7.Image = ((System.Drawing.Image)(resources.GetObject("Lbl_Sub7.Image")));
+            this.Lbl_Sub7.Image = global::SECRON.Properties.Resources.AjustesNegro25x25;
             this.Lbl_Sub7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Lbl_Sub7.Location = new System.Drawing.Point(13, 9);
             this.Lbl_Sub7.Name = "Lbl_Sub7";
@@ -921,7 +993,7 @@
             this.Panel_Busqueda.Controls.Add(this.FiltroEstado);
             this.Panel_Busqueda.Location = new System.Drawing.Point(16, 8);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(793, 109);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(912, 109);
             this.Panel_Busqueda.TabIndex = 2;
             // 
             // Txt_ValorBuscado
@@ -931,7 +1003,7 @@
             this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(21, 18);
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(545, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(664, 27);
             this.Txt_ValorBuscado.TabIndex = 0;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
@@ -939,9 +1011,9 @@
             // 
             this.Btn_Search.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Search.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Search.Image")));
+            this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(583, 11);
+            this.Btn_Search.Location = new System.Drawing.Point(702, 11);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(135, 38);
             this.Btn_Search.TabIndex = 1;
@@ -954,8 +1026,8 @@
             // 
             this.Btn_CleanSearch.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_CleanSearch.Image = ((System.Drawing.Image)(resources.GetObject("Btn_CleanSearch.Image")));
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(726, 11);
+            this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(845, 11);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(40, 38);
             this.Btn_CleanSearch.TabIndex = 2;
@@ -986,7 +1058,7 @@
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(16, 118);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(793, 40);
+            this.PanelToolStrip.Size = new System.Drawing.Size(912, 40);
             this.PanelToolStrip.TabIndex = 1;
             // 
             // Lbl_Paginas
@@ -1010,7 +1082,7 @@
             this.Panel_BusquedaAtributos.Controls.Add(this.Btn_CleanSearchAtributo);
             this.Panel_BusquedaAtributos.Location = new System.Drawing.Point(16, 447);
             this.Panel_BusquedaAtributos.Name = "Panel_BusquedaAtributos";
-            this.Panel_BusquedaAtributos.Size = new System.Drawing.Size(793, 90);
+            this.Panel_BusquedaAtributos.Size = new System.Drawing.Size(912, 90);
             this.Panel_BusquedaAtributos.TabIndex = 5;
             // 
             // Txt_BuscarAtributo
@@ -1020,7 +1092,7 @@
             this.Txt_BuscarAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Txt_BuscarAtributo.Location = new System.Drawing.Point(4, 9);
             this.Txt_BuscarAtributo.Name = "Txt_BuscarAtributo";
-            this.Txt_BuscarAtributo.Size = new System.Drawing.Size(507, 27);
+            this.Txt_BuscarAtributo.Size = new System.Drawing.Size(626, 27);
             this.Txt_BuscarAtributo.TabIndex = 0;
             this.Txt_BuscarAtributo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_BuscarAtributo_KeyDown);
             // 
@@ -1037,9 +1109,9 @@
             // 
             this.Btn_SearchAtributo.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Btn_SearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchAtributo.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchAtributo.Image")));
+            this.Btn_SearchAtributo.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_SearchAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_SearchAtributo.Location = new System.Drawing.Point(517, 9);
+            this.Btn_SearchAtributo.Location = new System.Drawing.Point(636, 9);
             this.Btn_SearchAtributo.Name = "Btn_SearchAtributo";
             this.Btn_SearchAtributo.Size = new System.Drawing.Size(135, 36);
             this.Btn_SearchAtributo.TabIndex = 2;
@@ -1052,8 +1124,8 @@
             // 
             this.Btn_CleanSearchAtributo.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Btn_CleanSearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_CleanSearchAtributo.Image = ((System.Drawing.Image)(resources.GetObject("Btn_CleanSearchAtributo.Image")));
-            this.Btn_CleanSearchAtributo.Location = new System.Drawing.Point(660, 9);
+            this.Btn_CleanSearchAtributo.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_CleanSearchAtributo.Location = new System.Drawing.Point(779, 9);
             this.Btn_CleanSearchAtributo.Name = "Btn_CleanSearchAtributo";
             this.Btn_CleanSearchAtributo.Size = new System.Drawing.Size(40, 36);
             this.Btn_CleanSearchAtributo.TabIndex = 3;
@@ -1068,7 +1140,7 @@
             this.Lbl_AtributosHeader.Location = new System.Drawing.Point(16, 419);
             this.Lbl_AtributosHeader.Name = "Lbl_AtributosHeader";
             this.Lbl_AtributosHeader.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.Lbl_AtributosHeader.Size = new System.Drawing.Size(961, 28);
+            this.Lbl_AtributosHeader.Size = new System.Drawing.Size(929, 28);
             this.Lbl_AtributosHeader.TabIndex = 3;
             this.Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UN ACTIVO FIJO";
             this.Lbl_AtributosHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1081,7 +1153,7 @@
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(16, 164);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(793, 250);
+            this.PanelTabla.Size = new System.Drawing.Size(912, 250);
             this.PanelTabla.TabIndex = 0;
             // 
             // Tabla
@@ -1091,7 +1163,7 @@
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
             this.Tabla.RowTemplate.Height = 24;
-            this.Tabla.Size = new System.Drawing.Size(793, 250);
+            this.Tabla.Size = new System.Drawing.Size(912, 250);
             this.Tabla.TabIndex = 0;
             // 
             // panel1
@@ -1102,7 +1174,7 @@
             this.panel1.Controls.Add(this.TablaAtributos);
             this.panel1.Location = new System.Drawing.Point(16, 541);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(793, 288);
+            this.panel1.Size = new System.Drawing.Size(912, 288);
             this.panel1.TabIndex = 6;
             // 
             // TablaAtributos
@@ -1112,7 +1184,7 @@
             this.TablaAtributos.Location = new System.Drawing.Point(0, 0);
             this.TablaAtributos.Name = "TablaAtributos";
             this.TablaAtributos.RowTemplate.Height = 24;
-            this.TablaAtributos.Size = new System.Drawing.Size(793, 288);
+            this.TablaAtributos.Size = new System.Drawing.Size(912, 288);
             this.TablaAtributos.TabIndex = 0;
             // 
             // Panel_AtributosCRUD
@@ -1231,7 +1303,7 @@
             // Btn_UpdateAtributo
             // 
             this.Btn_UpdateAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_UpdateAtributo.Image = ((System.Drawing.Image)(resources.GetObject("Btn_UpdateAtributo.Image")));
+            this.Btn_UpdateAtributo.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_UpdateAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_UpdateAtributo.Location = new System.Drawing.Point(4, 10);
             this.Btn_UpdateAtributo.Name = "Btn_UpdateAtributo";
@@ -1245,7 +1317,7 @@
             // Btn_ClearAtributo
             // 
             this.Btn_ClearAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_ClearAtributo.Image = ((System.Drawing.Image)(resources.GetObject("Btn_ClearAtributo.Image")));
+            this.Btn_ClearAtributo.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_ClearAtributo.Location = new System.Drawing.Point(140, 10);
             this.Btn_ClearAtributo.Name = "Btn_ClearAtributo";
             this.Btn_ClearAtributo.Size = new System.Drawing.Size(44, 42);
@@ -1291,6 +1363,8 @@
             this.Panel_CRUD.ResumeLayout(false);
             this.Panel_1.ResumeLayout(false);
             this.Panel_1.PerformLayout();
+            this.Panel_2.ResumeLayout(false);
+            this.Panel_2.PerformLayout();
             this.Panel_3.ResumeLayout(false);
             this.Panel_3.PerformLayout();
             this.Panel_4.ResumeLayout(false);
@@ -1342,6 +1416,14 @@
         private System.Windows.Forms.Label Lbl_Category;
         private System.Windows.Forms.TextBox Txt_Category;
         private System.Windows.Forms.Button Btn_SearchCategory;
+        private System.Windows.Forms.Panel Panel_2;
+        private System.Windows.Forms.Label Lbl_Sub2;
+        private System.Windows.Forms.Label Lbl_Brand;
+        private System.Windows.Forms.TextBox Txt_Brand;
+        private System.Windows.Forms.Label Lbl_Model;
+        private System.Windows.Forms.TextBox Txt_Model;
+        private System.Windows.Forms.Label Lbl_Serial;
+        private System.Windows.Forms.TextBox Txt_Serial;
         private System.Windows.Forms.Panel Panel_3;
         private System.Windows.Forms.Label Lbl_Sub3;
         private System.Windows.Forms.Label Lbl_PurchaseDate;
@@ -1422,6 +1504,5 @@
         private System.Windows.Forms.Button Btn_UpdateAtributo;
         private System.Windows.Forms.Button Btn_ClearAtributo;
         private System.Windows.Forms.Panel Panel_Derecho;
-        private System.Windows.Forms.Button Btn_Delete;
     }
 }
