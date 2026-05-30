@@ -181,25 +181,35 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        
-        public static int ContarTotalActivos(string textoBusqueda = "", int? categoriaId = null)
+
+        public static int ContarTotalActivos(string textoBusqueda = "", string filtroEstado = "SOLO ACTIVOS", int? categoriaId = null)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT COUNT(*) FROM FixedAssets WHERE IsActive = 1";
+                    string query = "SELECT COUNT(*) FROM FixedAssets fa WHERE 1=1";
                     List<SqlParameter> parametros = new List<SqlParameter>();
+
+                    if (filtroEstado == "SOLO ACTIVOS")
+                        query += " AND fa.IsActive = 1";
+                    else if (filtroEstado == "SOLO INACTIVOS")
+                        query += " AND fa.IsActive = 0";
 
                     if (categoriaId.HasValue)
                     {
-                        query += " AND AssetCategoryId = @categoriaId";
+                        query += " AND fa.AssetCategoryId = @categoriaId";
                         parametros.Add(new SqlParameter("@categoriaId", categoriaId.Value));
                     }
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
-                        query += " AND (AssetCode LIKE @texto OR AssetName LIKE @texto OR Serial LIKE @texto)";
+                        query += @" AND (fa.AssetCode LIKE @texto OR fa.AssetName LIKE @texto
+                    OR EXISTS (
+                        SELECT 1 FROM FixedAssetAttributeValues av
+                        INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                        WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1
+                        AND av.Value LIKE @texto))";
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 
@@ -308,9 +318,6 @@ namespace SECRON.Controllers
                         cmd.Parameters.AddWithValue("@AssetName", asset.AssetName?.ToUpper() ?? "");
                         cmd.Parameters.AddWithValue("@Description", string.IsNullOrWhiteSpace(asset.Description) ? (object)DBNull.Value : asset.Description.ToUpper());
                         cmd.Parameters.AddWithValue("@AssetCategoryId", asset.AssetCategoryId);
-                        cmd.Parameters.AddWithValue("@Brand", string.IsNullOrWhiteSpace(asset.Brand) ? (object)DBNull.Value : asset.Brand.ToUpper());
-                        cmd.Parameters.AddWithValue("@Model", string.IsNullOrWhiteSpace(asset.Model) ? (object)DBNull.Value : asset.Model.ToUpper());
-                        cmd.Parameters.AddWithValue("@Serial", string.IsNullOrWhiteSpace(asset.Serial) ? (object)DBNull.Value : asset.Serial.ToUpper());
                         cmd.Parameters.AddWithValue("@PurchaseDate", asset.PurchaseDate.HasValue ? (object)asset.PurchaseDate.Value : DBNull.Value);
                         cmd.Parameters.AddWithValue("@PurchaseValue", asset.PurchaseValue);
                         cmd.Parameters.AddWithValue("@ResidualValue", asset.ResidualValue);
@@ -340,6 +347,28 @@ namespace SECRON.Controllers
             }
         }
 
+        public static int EliminarActivo(int assetId, int deletedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_FixedAssets_Delete", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@AssetId", assetId);
+                        return (int)cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar activo: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
         private static void AgregarParametros(SqlCommand cmd, Mdl_FixedAsset asset)
         {
             cmd.Parameters.AddWithValue("@AssetName", asset.AssetName?.ToUpper() ?? "");
@@ -347,7 +376,7 @@ namespace SECRON.Controllers
             cmd.Parameters.AddWithValue("@AssetCategoryId", asset.AssetCategoryId);
             cmd.Parameters.AddWithValue("@PurchaseDate", asset.PurchaseDate.HasValue ? (object)asset.PurchaseDate.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@PurchaseValue", asset.PurchaseValue);
-            cmd.Parameters.AddWithValue("@ResidualValue", asset.ResidualValue);  // NOT NULL DEFAULT 0
+            cmd.Parameters.AddWithValue("@ResidualValue", asset.ResidualValue);
             cmd.Parameters.AddWithValue("@InvoiceNumber", string.IsNullOrWhiteSpace(asset.InvoiceNumber) ? (object)DBNull.Value : asset.InvoiceNumber.ToUpper());
             cmd.Parameters.AddWithValue("@SupplierId", asset.SupplierId.HasValue ? (object)asset.SupplierId.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@WarrantyDocumentPath", string.IsNullOrWhiteSpace(asset.WarrantyDocumentPath) ? (object)DBNull.Value : asset.WarrantyDocumentPath);
@@ -361,9 +390,6 @@ namespace SECRON.Controllers
             cmd.Parameters.AddWithValue("@DisposalValue", asset.DisposalValue.HasValue ? (object)asset.DisposalValue.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@Notes", string.IsNullOrWhiteSpace(asset.Notes) ? (object)DBNull.Value : asset.Notes.ToUpper());
             cmd.Parameters.AddWithValue("@CreatedBy", asset.CreatedBy.HasValue ? (object)asset.CreatedBy.Value : DBNull.Value);
-            cmd.Parameters.AddWithValue("@Brand", string.IsNullOrWhiteSpace(asset.Brand) ? (object)DBNull.Value : asset.Brand.ToUpper());
-            cmd.Parameters.AddWithValue("@Model", string.IsNullOrWhiteSpace(asset.Model) ? (object)DBNull.Value : asset.Model.ToUpper());
-            cmd.Parameters.AddWithValue("@Serial", string.IsNullOrWhiteSpace(asset.Serial) ? (object)DBNull.Value : asset.Serial.ToUpper());
         }
 
         private static Mdl_FixedAsset MapearActivo(SqlDataReader reader)
