@@ -33,7 +33,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_FixedAsset_StatusMovements));
             this.panel2 = new System.Windows.Forms.Panel();
-            this.Btn_Inactive = new System.Windows.Forms.Button();
+            this.Btn_Delete = new System.Windows.Forms.Button();
             this.Panel_CRUD = new System.Windows.Forms.Panel();
             this.Btn_Clear = new System.Windows.Forms.Button();
             this.Btn_Update = new System.Windows.Forms.Button();
@@ -78,27 +78,27 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panel2.Controls.Add(this.Btn_Inactive);
+            this.panel2.Controls.Add(this.Btn_Delete);
             this.panel2.Location = new System.Drawing.Point(7, 557);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(294, 47);
             this.panel2.TabIndex = 99;
             // 
-            // Btn_Inactive
+            // Btn_Delete
             // 
-            this.Btn_Inactive.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Btn_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.Btn_Inactive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Inactive.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
-            this.Btn_Inactive.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Inactive.Location = new System.Drawing.Point(6, 3);
-            this.Btn_Inactive.Name = "Btn_Inactive";
-            this.Btn_Inactive.Size = new System.Drawing.Size(124, 37);
-            this.Btn_Inactive.TabIndex = 56;
-            this.Btn_Inactive.Text = "ELIMINAR";
-            this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Inactive.UseVisualStyleBackColor = true;
-            this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
+            this.Btn_Delete.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Delete.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
+            this.Btn_Delete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Delete.Location = new System.Drawing.Point(6, 3);
+            this.Btn_Delete.Name = "Btn_Delete";
+            this.Btn_Delete.Size = new System.Drawing.Size(124, 37);
+            this.Btn_Delete.TabIndex = 56;
+            this.Btn_Delete.Text = "INACTIVAR";
+            this.Btn_Delete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Delete.UseVisualStyleBackColor = true;
+            this.Btn_Delete.Click += new System.EventHandler(this.Btn_Delete_Click);
             // 
             // Panel_CRUD
             // 
@@ -223,7 +223,7 @@
             // 
             this.Txt_Description.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Txt_Description.Location = new System.Drawing.Point(14, 248);
-            this.Txt_Description.MaxLength = 15;
+            this.Txt_Description.MaxLength = 300;
             this.Txt_Description.Multiline = true;
             this.Txt_Description.Name = "Txt_Description";
             this.Txt_Description.Size = new System.Drawing.Size(267, 154);
@@ -322,7 +322,7 @@
             this.Btn_TransferStatusTransition.Text = "ORDEN DE LOS ESTADOS DE TRASLADOS";
             this.Btn_TransferStatusTransition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_TransferStatusTransition.UseVisualStyleBackColor = true;
-            this.Btn_TransferStatusTransition.Click += new System.EventHandler(this.Btn_TransferStatusTransition_Click_1);
+            this.Btn_TransferStatusTransition.Click += new System.EventHandler(this.Btn_TransferStatusTransition_Click);
             // 
             // Lbl_Beneficiario
             // 
@@ -532,7 +532,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button Btn_Inactive;
+        private System.Windows.Forms.Button Btn_Delete;
         private System.Windows.Forms.Panel Panel_CRUD;
         private System.Windows.Forms.Button Btn_Clear;
         private System.Windows.Forms.Button Btn_Update;

@@ -38,6 +38,7 @@ namespace SECRON.Views
             ConfigurarTabla();
             ConfigurarFiltros();
             CargarActivos();
+            InhabilitarTextBox();
 
             // Eventos de botones
             Btn_Yes.Click += Btn_Yes_Click;
@@ -90,6 +91,10 @@ namespace SECRON.Views
 
             Txt_Selected.ReadOnly = true;
             Btn_Yes.Enabled = false;
+        }
+        private void InhabilitarTextBox()
+        {
+            Txt_Selected.Enabled = false;
         }
 
         #endregion

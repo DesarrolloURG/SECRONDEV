@@ -31,6 +31,16 @@ namespace SECRON.Views
 
         #endregion
 
+        #region ComponentesDeshabilitados
+
+        private void ConfigurarComponentesDeshabilitados()
+        {
+            // Componentes que nunca deben ser editables por el usuario
+            Txt_Selected.Enabled = false;
+        }
+
+        #endregion
+
         #region TamañoFormulario
 
         private void ConfigurarTamañoFormulario()
@@ -52,6 +62,7 @@ namespace SECRON.Views
             ConfigurarComboBoxBuscarPor();
             ConfigurarTabla();
             CargarEstados();
+            ConfigurarComponentesDeshabilitados();
             EstadoInicial();
             ConfigurarComboBoxes();
             ConfigurarTabIndexYFocus();
@@ -108,22 +119,24 @@ namespace SECRON.Views
 
             Btn_Save.Visible = true;
             Btn_Update.Visible = true;
-            Btn_Inactive.Visible = true;
+            Btn_Delete.Visible = true;
             Btn_TransferStatusTransition.Visible = true;
             Lbl_Beneficiario.Visible = true;
             Txt_Selected.Visible = true;
 
-            // Botones dependientes de selección
+            // Botones dependientes de selección — siempre deshabilitados al limpiar
             Btn_Update.Enabled = false;
-            Btn_Inactive.Enabled = false;
+            Btn_Delete.Enabled = false;
             Lbl_Beneficiario.Enabled = false;
-            Txt_Selected.Enabled = false;
 
-            // Estos respetan permisos ya cargados
+            // Btn_Save y Btn_TransferStatusTransition respetan permisos ya cargados
             Btn_Save.Enabled = TienePermiso("FA_MOVEMENTSSTATES_CREATE");
             Btn_TransferStatusTransition.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
 
             Txt_StatusCode.ReadOnly = _modoEdicion;
+
+            // Reasegurar componentes que deben permanecer deshabilitados
+            ConfigurarComponentesDeshabilitados();
         }
 
         private void ConfigurarTabIndexYFocus()
@@ -148,7 +161,7 @@ namespace SECRON.Views
             Btn_Clear.TabIndex = 12;
 
             // Botones de acción secundaria
-            Btn_Inactive.TabIndex = 13;
+            Btn_Delete.TabIndex = 13;
             Btn_TransferStatusTransition.TabIndex = 14;
 
             // Foco inicial
@@ -236,7 +249,7 @@ namespace SECRON.Views
             // Enabled respetando permisos ya cargados
             Btn_Save.Enabled = TienePermiso("FA_MOVEMENTSSTATES_CREATE");
             Btn_Update.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
-            Btn_Inactive.Enabled = TienePermiso("FA_MOVEMENTSSTATES_INACTIVE");
+            Btn_Delete.Enabled = TienePermiso("FA_MOVEMENTSSTATES_INACTIVE");
             Btn_TransferStatusTransition.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
         }
 
@@ -326,29 +339,45 @@ namespace SECRON.Views
                     break;
             }
         }
-        private void Btn_TransferStatusTransition_Click_1(object sender, EventArgs e)
+
+
+        private void Btn_Delete_Click(object sender, EventArgs e)
         {
             if (_selectedStatusId == 0) return;
 
-            Frm_FixedAsset_TransferStatusTransitions frm = new Frm_FixedAsset_TransferStatusTransitions
+            string nombreEstado = Txt_StatusName.Text.Trim();
+
+            DialogResult confirmacion = MessageBox.Show(
+                $"¿Está seguro de que desea inactivar el estado \"{nombreEstado}\"?\n\nEl estado dejará de estar disponible para nuevos traslados.",
+                "Confirmar inactivación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirmacion != DialogResult.Yes) return;
+
+            int resultado = Ctrl_FixedAssetTransferStatus.InactivarEstado(_selectedStatusId, UserData?.UserId);
+
+            switch (resultado)
             {
-                UserData = UserData,
-                FromStatusId = _selectedStatusId,
-                FromStatusName = Txt_StatusName.Text.Trim(),
-                IsFinalStatus = CheckBox_IsFinal.Checked
-            };
-            frm.ShowDialog();
-
-            // Recargar por si hubo cambios
-            CargarEstados();
-        }
-        private void Btn_Inactive_Click(object sender, EventArgs e)
-        {
-            if (_selectedStatusId == 0) return;
-
-            Lbl_Beneficiario.Text = "¿ELIMINAR ESTADO?";
-            Btn_Inactive.Enabled = false;
-            Btn_Update.Enabled = false;
+                case 1:
+                    MessageBox.Show("Estado inactivado correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarEstados();
+                    EstadoInicial();
+                    break;
+                case -1:
+                    MessageBox.Show("El estado no existe o ya fue eliminado.", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                case -2:
+                    MessageBox.Show("No se puede inactivar: el estado tiene traslados asociados.", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                default:
+                    MessageBox.Show("Ocurrió un error al inactivar el estado.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
         }
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
@@ -358,12 +387,22 @@ namespace SECRON.Views
         #endregion
 
         #region Transiciones
-
         private void Btn_TransferStatusTransition_Click(object sender, EventArgs e)
         {
+            // Abre el formulario de transiciones; si no hay estado seleccionado
+            // FromStatusId llega en 0 y el formulario lo maneja en modo general
+            Frm_FixedAsset_TransferStatusTransitions frm = new Frm_FixedAsset_TransferStatusTransitions
+            {
+                UserData = UserData,
+                FromStatusId = _selectedStatusId,
+                FromStatusName = _selectedStatusId > 0 ? Txt_StatusName.Text.Trim() : string.Empty,
+                IsFinalStatus = _selectedStatusId > 0 && CheckBox_IsFinal.Checked
+            };
+            frm.ShowDialog();
 
+            // Recargar por si hubo cambios en transiciones
+            CargarEstados();
         }
-
         #endregion
 
         #region Validaciones
@@ -429,7 +468,7 @@ namespace SECRON.Views
 
             // FA_021 - Modificar / FA_022 - Eliminar: se habilitan al seleccionar fila
             Btn_Update.Enabled = false;
-            Btn_Inactive.Enabled = false;
+            Btn_Delete.Enabled = false;
 
             // FA_021 - Transiciones: siempre activo si tiene permiso
             Btn_TransferStatusTransition.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
@@ -439,6 +478,9 @@ namespace SECRON.Views
             Btn_ClearSearch.Enabled = TienePermiso("FA_MOVEMENTSSTATES_READ");
         }
 
+
         #endregion
+
+        
     }
 }
