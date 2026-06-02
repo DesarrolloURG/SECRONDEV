@@ -17,6 +17,7 @@ namespace SECRON.Views
         private List<Mdl_FixedAssetTransfer> _trasladosList;
         private int _selectedTransferId = 0;
         private int _selectedTransferStatusId = 0;
+        private int _selectedDetailId = 0;
 
         #endregion
 
@@ -25,6 +26,7 @@ namespace SECRON.Views
         public Frm_FixedAsset_Movements_Tracking()
         {
             InitializeComponent();
+            Btn_RemoveAsset.Click += new EventHandler(Btn_RemoveAsset_Click);
         }
 
         #endregion
@@ -33,12 +35,37 @@ namespace SECRON.Views
 
         private void Frm_FixedAsset_Movements_Tracking_Load(object sender, EventArgs e)
         {
+            ConfigurarTamañoFormulario();
             ConfigurarTabla();
             ConfigurarTablaDetalles();
             ConfigurarFiltros();
             ConfigurarFechas();
+            ConfigurarComponentesDeshabilitados();
             CargarTraslados();
             LimpiarSeleccion();
+        }
+
+        #endregion
+
+        #region TamañoFormulario
+
+        private void ConfigurarTamañoFormulario()
+        {
+            this.Size = new System.Drawing.Size(1200, 880);
+            this.MinimumSize = new System.Drawing.Size(1200, 880);
+            this.MaximumSize = new System.Drawing.Size(1200, 880);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.MaximizeBox = false;
+        }
+
+        #endregion
+
+        #region ComponentesDeshabilitados
+
+        private void ConfigurarComponentesDeshabilitados()
+        {
+            Txt_Reason.Enabled = false;
         }
 
         #endregion
@@ -57,6 +84,7 @@ namespace SECRON.Views
 
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colId", HeaderText = "ID", DataPropertyName = "TransferId", Visible = false });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colStatusId", HeaderText = "STATUS_ID", DataPropertyName = "TransferStatusId", Visible = false });
+            Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colStatusCode", HeaderText = "STATUS_CODE", DataPropertyName = "StatusCode", Visible = false });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCodigo", HeaderText = "CÓDIGO", DataPropertyName = "TransferCode", Width = 120 });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colEstado", HeaderText = "ESTADO", DataPropertyName = "StatusName", Width = 120 });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colFecha", HeaderText = "FECHA", DataPropertyName = "TransferDate", Width = 100 });
@@ -83,6 +111,8 @@ namespace SECRON.Views
             TablaDetalles.Columns.Add(new DataGridViewTextBoxColumn { Name = "colNombreActivo", HeaderText = "NOMBRE ACTIVO", DataPropertyName = "AssetName", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
             TablaDetalles.Columns.Add(new DataGridViewTextBoxColumn { Name = "colOrigenBodega", HeaderText = "BODEGA ORIGEN", DataPropertyName = "FromWarehouseName", Width = 150 });
             TablaDetalles.Columns.Add(new DataGridViewTextBoxColumn { Name = "colOrigenEmp", HeaderText = "EMPLEADO ORIGEN", DataPropertyName = "FromEmployeeName", Width = 150 });
+
+            TablaDetalles.CellClick += TablaDetalles_CellClick;
         }
 
         private void ConfigurarFiltros()
@@ -92,7 +122,6 @@ namespace SECRON.Views
             Filtro1.SelectedIndex = 0;
             Filtro1.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // Filtro2 — bodega destino (opcional, vacío = todos)
             Filtro2.Items.Clear();
             Filtro2.Items.Add("TODAS LAS BODEGAS");
             var bodegas = Ctrl_Warehouses.ObtenerBodegasParaCombo();
@@ -102,20 +131,18 @@ namespace SECRON.Views
             Filtro2.DisplayMember = "Value";
             Filtro2.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // Filtro3 — sin uso por ahora, ocultarlo
             Filtro3.Visible = false;
 
-            // ComboBox_Estado — filtro por estado
+            // ComboBox_Estado — binding correcto con KeyValuePair
             ComboBox_Estado.Items.Clear();
-            ComboBox_Estado.Items.Add("TODOS LOS ESTADOS");
+            ComboBox_Estado.Items.Add(new KeyValuePair<int, string>(0, "TODOS LOS ESTADOS"));
             var estados = Ctrl_FixedAssetTransferStatus.ObtenerEstadosParaCombo(soloActivos: false);
             foreach (var est in estados)
                 ComboBox_Estado.Items.Add(est);
-            ComboBox_Estado.SelectedIndex = 0;
             ComboBox_Estado.DisplayMember = "Value";
             ComboBox_Estado.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Estado.SelectedIndex = 0;
 
-            // ComboBox_NewState — estados disponibles para transición (se carga al seleccionar un traslado)
             ComboBox_NewState.Items.Clear();
             ComboBox_NewState.DisplayMember = "Value";
             ComboBox_NewState.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -126,13 +153,13 @@ namespace SECRON.Views
         {
             DTP_FechaInicio.Value = DateTime.Today.AddMonths(-1);
             DTP_FechaFin.Value = DateTime.Today;
-            DTP_FechaInicio.Enabled = false;
-            DTP_FechaFin.Enabled = false;
+            DTP_FechaInicio.Enabled = CheckBox_FiltroFechas.Checked;
+            DTP_FechaFin.Enabled = CheckBox_FiltroFechas.Checked;
         }
 
         #endregion
 
-        #region Carga de datos
+        #region CargaDeDatos
 
         private void CargarTraslados(
             string transferCode = null,
@@ -188,14 +215,11 @@ namespace SECRON.Views
 
                 if (transiciones.Count == 0)
                 {
-                    ComboBox_NewState.Items.Add("SIN TRANSICIONES DISPONIBLES");
-                    ComboBox_NewState.SelectedIndex = 0;
                     ComboBox_NewState.Enabled = false;
                     Btn_Yes.Enabled = false;
                     return;
                 }
 
-                // Obtener los estados destino disponibles
                 var estados = Ctrl_FixedAssetTransferStatus.MostrarEstados(isActive: true);
 
                 foreach (var t in transiciones)
@@ -224,7 +248,7 @@ namespace SECRON.Views
 
         #endregion
 
-        #region Selección en tabla
+        #region SelecciónEnTabla
 
         private void Tabla_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -234,30 +258,44 @@ namespace SECRON.Views
 
             _selectedTransferId = Convert.ToInt32(row.Cells["colId"].Value);
             _selectedTransferStatusId = Convert.ToInt32(row.Cells["colStatusId"].Value);
+            _selectedDetailId = 0;
 
             string codigo = row.Cells["colCodigo"].Value?.ToString();
             string estado = row.Cells["colEstado"].Value?.ToString();
             string motivo = row.Cells["colMotivo"].Value?.ToString();
 
             Txt_Reason.Text = motivo ?? "";
-            Txt_Reason.ReadOnly = true;
 
             Lbl_Info.Text = $"TRASLADO SELECCIONADO: {codigo} | ESTADO ACTUAL: {estado}";
 
-            // Cargar activos del traslado
             CargarDetalles(_selectedTransferId);
-
-            // Cargar transiciones disponibles desde el estado actual
             CargarTransicionesDisponibles(_selectedTransferStatusId);
 
-            // Habilitar cancelación solo si el traslado está en PENDING
+            // Cancelar solo si el traslado no está en estado final
             var traslado = _trasladosList?.Find(t => t.TransferId == _selectedTransferId);
-            Btn_CancelTransfer.Enabled = traslado != null && traslado.StatusCode == "PENDING";
+            bool esFinal = traslado != null &&
+                Ctrl_FixedAssetTransferStatus.MostrarEstados()
+                    .Exists(s => s.TransferStatusId == traslado.TransferStatusId && s.IsFinal);
+
+            Btn_CancelTransfer.Enabled = traslado != null && !esFinal;
+            Btn_RemoveAsset.Enabled = false;
+        }
+
+        private void TablaDetalles_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow row = TablaDetalles.Rows[e.RowIndex];
+            _selectedDetailId = Convert.ToInt32(row.Cells["colDetId"].Value);
+
+            // Solo permitir quitar activos si el traslado está en PENDING
+            var traslado = _trasladosList?.Find(t => t.TransferId == _selectedTransferId);
+            Btn_RemoveAsset.Enabled = traslado != null && traslado.StatusCode == "PENDING";
         }
 
         #endregion
 
-        #region Búsqueda y filtros
+        #region BúsquedaYFiltros
 
         private void Btn_Search_Click(object sender, EventArgs e)
         {
@@ -266,13 +304,11 @@ namespace SECRON.Views
             string transferCode = filtro == "POR CÓDIGO" ? valor : null;
 
             int? statusId = null;
-            if (ComboBox_Estado.SelectedIndex > 0 &&
-                ComboBox_Estado.SelectedItem is KeyValuePair<int, string> kvpEstado)
+            if (ComboBox_Estado.SelectedItem is KeyValuePair<int, string> kvpEstado && kvpEstado.Key > 0)
                 statusId = kvpEstado.Key;
 
             int? warehouseId = null;
-            if (Filtro2.SelectedIndex > 0 &&
-                Filtro2.SelectedItem is KeyValuePair<int, string> kvpBodega)
+            if (Filtro2.SelectedIndex > 0 && Filtro2.SelectedItem is KeyValuePair<int, string> kvpBodega)
                 warehouseId = kvpBodega.Key;
 
             DateTime? fechaInicio = null;
@@ -323,15 +359,13 @@ namespace SECRON.Views
                 return;
             }
 
-            if (ComboBox_NewState.SelectedItem == null ||
-                !(ComboBox_NewState.SelectedItem is KeyValuePair<int, string>))
+            if (!(ComboBox_NewState.SelectedItem is KeyValuePair<int, string> kvp))
             {
                 MessageBox.Show("DEBE SELECCIONAR UN NUEVO ESTADO PARA EL TRASLADO.",
                     "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var kvp = (KeyValuePair<int, string>)ComboBox_NewState.SelectedItem;
             int nuevoStatusId = kvp.Key;
             string nuevoStatusNombre = kvp.Value;
 
@@ -341,16 +375,16 @@ namespace SECRON.Views
 
             if (confirm != DialogResult.Yes) return;
 
-            // Obtener el traslado actual para conservar sus datos
             var traslado = _trasladosList?.Find(t => t.TransferId == _selectedTransferId);
             if (traslado == null) return;
 
             traslado.TransferStatusId = nuevoStatusId;
             traslado.ModifiedBy = UserData?.UserId;
 
-            // Si el nuevo estado es APPROVED, registrar aprobación
+            // Registrar aprobación o completado si aplica
             var estados = Ctrl_FixedAssetTransferStatus.MostrarEstados(isActive: true);
             var estadoNuevo = estados.Find(s => s.TransferStatusId == nuevoStatusId);
+
             if (estadoNuevo?.StatusCode == "APPROVED")
             {
                 traslado.ApprovedByUserId = UserData?.UserId;
@@ -375,6 +409,18 @@ namespace SECRON.Views
                     MessageBox.Show("EL TRASLADO NO EXISTE.", "AVISO",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
+                case -2:
+                    MessageBox.Show("EL CÓDIGO DE TRASLADO YA EXISTE EN OTRO REGISTRO.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                case -3:
+                    MessageBox.Show("DEBE DEFINIR UN DESTINO PARA EL TRASLADO.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                case -4:
+                    MessageBox.Show("LA TRANSICIÓN DE ESTADO NO ESTÁ PERMITIDA.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
                 default:
                     MessageBox.Show("ERROR AL ACTUALIZAR EL ESTADO.", "ERROR",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -391,8 +437,10 @@ namespace SECRON.Views
                 return;
             }
 
+            string codigo = _trasladosList?.Find(t => t.TransferId == _selectedTransferId)?.TransferCode ?? "";
+
             DialogResult confirm = MessageBox.Show(
-                "¿CONFIRMA CANCELAR ESTE TRASLADO? ESTA ACCIÓN NO SE PUEDE DESHACER.",
+                $"¿CONFIRMA CANCELAR EL TRASLADO '{codigo}'?\n\nTodos los activos del traslado regresarán a estado ACTIVO.\nESTA ACCIÓN NO SE PUEDE DESHACER.",
                 "CONFIRMAR CANCELACIÓN", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirm != DialogResult.Yes) return;
@@ -403,17 +451,67 @@ namespace SECRON.Views
             switch (resultado)
             {
                 case 1:
-                    MessageBox.Show("TRASLADO CANCELADO CORRECTAMENTE.",
+                    MessageBox.Show("TRASLADO CANCELADO CORRECTAMENTE. LOS ACTIVOS HAN SIDO RESTAURADOS A ESTADO ACTIVO.",
                         "ÉXITO", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarTraslados();
                     LimpiarSeleccion();
                     break;
+                case -1:
+                    MessageBox.Show("EL TRASLADO NO EXISTE.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
                 case -2:
-                    MessageBox.Show("SOLO SE PUEDEN CANCELAR TRASLADOS EN ESTADO PENDIENTE.",
-                        "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("NO SE PUEDE CANCELAR UN TRASLADO QUE YA ESTÁ EN ESTADO FINAL.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
                 default:
                     MessageBox.Show("ERROR AL CANCELAR EL TRASLADO.", "ERROR",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+        }
+
+        private void Btn_RemoveAsset_Click(object sender, EventArgs e)
+        {
+            if (_selectedDetailId == 0)
+            {
+                MessageBox.Show("DEBE SELECCIONAR UN ACTIVO DE LA LISTA DE DETALLES.",
+                    "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Obtener nombre del activo para el mensaje
+            string nombreActivo = "";
+            if (TablaDetalles.CurrentRow != null)
+                nombreActivo = TablaDetalles.CurrentRow.Cells["colNombreActivo"].Value?.ToString() ?? "";
+
+            DialogResult confirm = MessageBox.Show(
+                $"¿CONFIRMA QUITAR EL ACTIVO '{nombreActivo}' DEL TRASLADO?\n\nEl activo regresará a estado ACTIVO.",
+                "CONFIRMAR", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes) return;
+
+            int resultado = Ctrl_FixedAssetTransfers.EliminarDetalle(_selectedDetailId, UserData?.UserId);
+
+            switch (resultado)
+            {
+                case 1:
+                    MessageBox.Show("ACTIVO QUITADO DEL TRASLADO CORRECTAMENTE.",
+                        "ÉXITO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarDetalles(_selectedTransferId);
+                    _selectedDetailId = 0;
+                    Btn_RemoveAsset.Enabled = false;
+                    break;
+                case -1:
+                    MessageBox.Show("EL DETALLE NO EXISTE.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                case -2:
+                    MessageBox.Show("SOLO SE PUEDEN QUITAR ACTIVOS DE TRASLADOS EN ESTADO PENDIENTE.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                default:
+                    MessageBox.Show("ERROR AL QUITAR EL ACTIVO DEL TRASLADO.", "ERROR",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
@@ -432,6 +530,7 @@ namespace SECRON.Views
         {
             _selectedTransferId = 0;
             _selectedTransferStatusId = 0;
+            _selectedDetailId = 0;
 
             Txt_Reason.Clear();
             TablaDetalles.DataSource = null;
@@ -439,13 +538,14 @@ namespace SECRON.Views
             ComboBox_NewState.Enabled = false;
             Btn_Yes.Enabled = false;
             Btn_CancelTransfer.Enabled = false;
+            Btn_RemoveAsset.Enabled = false;
 
             Lbl_Info.Text = "SELECCIONE UN TRASLADO DE LA LISTA PARA VER SUS DETALLES.";
         }
 
         #endregion
 
-        #region Exportar Excel
+        #region ExportarExcel
 
         private void Btn_Export_Click(object sender, EventArgs e)
         {
@@ -484,10 +584,8 @@ namespace SECRON.Views
                 worksheet.Range["A1:G1"].Font.Size = 16;
                 worksheet.Range["A1:G1"].Font.Bold = true;
                 worksheet.Range["A1:G1"].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                worksheet.Range["A1:G1"].Interior.Color =
-                    System.Drawing.ColorTranslator.ToOle(Color.FromArgb(51, 140, 255));
-                worksheet.Range["A1:G1"].Font.Color =
-                    System.Drawing.ColorTranslator.ToOle(Color.White);
+                worksheet.Range["A1:G1"].Interior.Color = System.Drawing.ColorTranslator.ToOle(Color.FromArgb(51, 140, 255));
+                worksheet.Range["A1:G1"].Font.Color = System.Drawing.ColorTranslator.ToOle(Color.White);
 
                 worksheet.Cells[2, 1] = $"GENERADO POR: {UserData?.FullName?.ToUpper() ?? "SECRON"}";
                 worksheet.Cells[3, 1] = $"FECHA: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
@@ -501,8 +599,7 @@ namespace SECRON.Views
                 var headerRange = worksheet.Range[$"A{headerRow}:G{headerRow}"];
                 headerRange.Font.Bold = true;
                 headerRange.Font.Color = System.Drawing.ColorTranslator.ToOle(Color.White);
-                headerRange.Interior.Color =
-                    System.Drawing.ColorTranslator.ToOle(Color.FromArgb(51, 140, 255));
+                headerRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(Color.FromArgb(51, 140, 255));
                 headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
 
                 int row = headerRow + 1;

@@ -65,6 +65,7 @@
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Panel_Superior = new System.Windows.Forms.Panel();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
+            this.Btn_Activate = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
             this.Panel_1.SuspendLayout();
@@ -78,6 +79,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.panel2.Controls.Add(this.Btn_Activate);
             this.panel2.Controls.Add(this.Btn_Delete);
             this.panel2.Location = new System.Drawing.Point(7, 557);
             this.panel2.Name = "panel2";
@@ -147,7 +149,7 @@
             this.Btn_Save.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_Save.Image = global::SECRON.Properties.Resources.AddNegro25x25;
             this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Save.Location = new System.Drawing.Point(6, 5);
             this.Btn_Save.Name = "Btn_Save";
@@ -496,6 +498,21 @@
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "ESTADOS DE TRASLADOS DE LOS ACTIVOS";
             // 
+            // Btn_Activate
+            // 
+            this.Btn_Activate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Btn_Activate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Activate.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_Activate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Activate.Location = new System.Drawing.Point(136, 3);
+            this.Btn_Activate.Name = "Btn_Activate";
+            this.Btn_Activate.Size = new System.Drawing.Size(106, 37);
+            this.Btn_Activate.TabIndex = 57;
+            this.Btn_Activate.Text = "ACTIVAR";
+            this.Btn_Activate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Activate.UseVisualStyleBackColor = true;
+            // 
             // Frm_FixedAsset_StatusMovements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -564,5 +581,6 @@
         private System.Windows.Forms.Label Lbl_Order;
         private System.Windows.Forms.CheckBox CheckBox_IsActive;
         private System.Windows.Forms.CheckBox CheckBox_IsFinal;
+        private System.Windows.Forms.Button Btn_Activate;
     }
 }

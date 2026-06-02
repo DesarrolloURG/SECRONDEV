@@ -280,7 +280,7 @@ namespace SECRON.Controllers
 
         #region DELETE Detalle
 
-        public static int EliminarDetalle(int transferDetailId)
+        public static int EliminarDetalle(int transferDetailId, int? modifiedBy = null)
         {
             try
             {
@@ -290,7 +290,7 @@ namespace SECRON.Controllers
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@TransferDetailId", transferDetailId);
-
+                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
                         return (int)cmd.ExecuteScalar();
                     }
                 }

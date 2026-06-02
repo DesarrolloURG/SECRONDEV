@@ -61,15 +61,6 @@ BEGIN
             RETURN
         END
 
-        -- Orden duplicado
-        IF EXISTS (SELECT 1 FROM [dbo].[FixedAssetTransferStatus]
-                   WHERE [Order] = @Order)
-        BEGIN
-            ROLLBACK TRANSACTION
-            SELECT -2  -- Orden ya existe
-            RETURN
-        END
-
         INSERT INTO [dbo].[FixedAssetTransferStatus]
             ([StatusCode],[StatusName],[Description],[Order],[IsFinal],[IsActive],[CreatedBy])
         VALUES
@@ -105,11 +96,12 @@ BEGIN
     BEGIN TRANSACTION
     BEGIN TRY
 
+        -- No existe
         IF NOT EXISTS (SELECT 1 FROM [dbo].[FixedAssetTransferStatus]
                        WHERE [TransferStatusId] = @TransferStatusId)
         BEGIN
             ROLLBACK TRANSACTION
-            SELECT -1  -- No existe
+            SELECT -1
             RETURN
         END
 
@@ -120,16 +112,6 @@ BEGIN
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -2  -- Código duplicado
-            RETURN
-        END
-
-        -- Orden duplicado en otro registro
-        IF EXISTS (SELECT 1 FROM [dbo].[FixedAssetTransferStatus]
-                   WHERE [Order] = @Order
-                   AND   [TransferStatusId] <> @TransferStatusId)
-        BEGIN
-            ROLLBACK TRANSACTION
-            SELECT -3  -- Orden duplicado
             RETURN
         END
 

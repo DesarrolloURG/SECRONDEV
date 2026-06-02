@@ -264,6 +264,11 @@ CREATE TABLE [dbo].[FixedAssetTransferStatus](
 );
 GO
 
+ALTER TABLE [dbo].[FixedAssetTransferStatus]
+DROP CONSTRAINT UK_FATS_Order;
+
+GO
+
 INSERT INTO [dbo].[FixedAssetTransferStatus]
     ([StatusCode],[StatusName],[Description],[Order],[IsFinal],[IsActive])
 VALUES

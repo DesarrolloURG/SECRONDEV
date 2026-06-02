@@ -285,10 +285,6 @@ namespace SECRON.Views
                     MessageBox.Show("El código de estado ya existe.", "Aviso",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
-                case -2:
-                    MessageBox.Show("El número de orden ya está en uso.", "Aviso",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    break;
                 default:
                     MessageBox.Show("Ocurrió un error al registrar el estado.", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -327,10 +323,6 @@ namespace SECRON.Views
                     break;
                 case -2:
                     MessageBox.Show("El código de estado ya está en uso por otro registro.", "Aviso",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    break;
-                case -3:
-                    MessageBox.Show("El número de orden ya está en uso por otro registro.", "Aviso",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
                 default:
