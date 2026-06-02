@@ -94,6 +94,7 @@
             this.Tabla.Name = "Tabla";
             this.Tabla.Size = new System.Drawing.Size(1163, 144);
             this.Tabla.TabIndex = 87;
+            this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
             // 
             // PanelEncabezadoTabla
             // 
@@ -452,6 +453,7 @@
             this.TablaDetalles.Name = "TablaDetalles";
             this.TablaDetalles.Size = new System.Drawing.Size(1163, 300);
             this.TablaDetalles.TabIndex = 85;
+            this.TablaDetalles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TablaDetalles_CellClick);
             // 
             // PanelEncabezadoTablaDetalle
             // 

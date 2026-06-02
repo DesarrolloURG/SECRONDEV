@@ -93,7 +93,6 @@ namespace SECRON.Views
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMotivo", HeaderText = "MOTIVO", DataPropertyName = "Reason", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCreadoPor", HeaderText = "CREADO POR", DataPropertyName = "CreatedByName", Width = 140 });
 
-            Tabla.CellClick += Tabla_CellClick;
         }
 
         private void ConfigurarTablaDetalles()
@@ -112,7 +111,6 @@ namespace SECRON.Views
             TablaDetalles.Columns.Add(new DataGridViewTextBoxColumn { Name = "colOrigenBodega", HeaderText = "BODEGA ORIGEN", DataPropertyName = "FromWarehouseName", Width = 150 });
             TablaDetalles.Columns.Add(new DataGridViewTextBoxColumn { Name = "colOrigenEmp", HeaderText = "EMPLEADO ORIGEN", DataPropertyName = "FromEmployeeName", Width = 150 });
 
-            TablaDetalles.CellClick += TablaDetalles_CellClick;
         }
 
         private void ConfigurarFiltros()
@@ -254,31 +252,34 @@ namespace SECRON.Views
         {
             if (e.RowIndex < 0) return;
 
-            DataGridViewRow row = Tabla.Rows[e.RowIndex];
+            try
+            {
+                DataGridViewRow row = Tabla.Rows[e.RowIndex];
 
-            _selectedTransferId = Convert.ToInt32(row.Cells["colId"].Value);
-            _selectedTransferStatusId = Convert.ToInt32(row.Cells["colStatusId"].Value);
-            _selectedDetailId = 0;
+                _selectedTransferId = Convert.ToInt32(row.Cells["colId"].Value);
+                _selectedTransferStatusId = Convert.ToInt32(row.Cells["colStatusId"].Value);
+                _selectedDetailId = 0;
 
-            string codigo = row.Cells["colCodigo"].Value?.ToString();
-            string estado = row.Cells["colEstado"].Value?.ToString();
-            string motivo = row.Cells["colMotivo"].Value?.ToString();
+                string codigo = row.Cells["colCodigo"].Value?.ToString();
+                string estado = row.Cells["colEstado"].Value?.ToString();
+                string motivo = row.Cells["colMotivo"].Value?.ToString();
+                string statusCode = row.Cells["colStatusCode"].Value?.ToString();
 
-            Txt_Reason.Text = motivo ?? "";
+                Txt_Reason.Text = motivo ?? "";
+                Lbl_Info.Text = $"TRASLADO SELECCIONADO: {codigo} | ESTADO ACTUAL: {estado}";
 
-            Lbl_Info.Text = $"TRASLADO SELECCIONADO: {codigo} | ESTADO ACTUAL: {estado}";
+                CargarDetalles(_selectedTransferId);
+                CargarTransicionesDisponibles(_selectedTransferStatusId);
 
-            CargarDetalles(_selectedTransferId);
-            CargarTransicionesDisponibles(_selectedTransferStatusId);
-
-            // Cancelar solo si el traslado no está en estado final
-            var traslado = _trasladosList?.Find(t => t.TransferId == _selectedTransferId);
-            bool esFinal = traslado != null &&
-                Ctrl_FixedAssetTransferStatus.MostrarEstados()
-                    .Exists(s => s.TransferStatusId == traslado.TransferStatusId && s.IsFinal);
-
-            Btn_CancelTransfer.Enabled = traslado != null && !esFinal;
-            Btn_RemoveAsset.Enabled = false;
+                bool esFinal = statusCode == "COMPLETED" || statusCode == "REJECTED";
+                Btn_CancelTransfer.Enabled = !esFinal;
+                Btn_RemoveAsset.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR EN SELECCIÓN: {ex.Message}", "ERROR",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void TablaDetalles_CellClick(object sender, DataGridViewCellEventArgs e)
