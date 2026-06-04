@@ -37,7 +37,6 @@ BEGIN
         IF @ToWarehouseId IS NULL AND @ToEmployeeId IS NULL
         BEGIN ROLLBACK TRANSACTION; SELECT -3; RETURN; END
 
-        -- Validar que la transición de estado sea permitida
         DECLARE @CurrentStatusId INT;
         SELECT @CurrentStatusId = [TransferStatusId]
         FROM [dbo].[FixedAssetTransfers]
@@ -49,7 +48,7 @@ BEGIN
                 SELECT 1 FROM [dbo].[FixedAssetTransferStatusTransitions]
                 WHERE [FromStatusId] = @CurrentStatusId
                   AND [ToStatusId]   = @TransferStatusId)
-            BEGIN ROLLBACK TRANSACTION; SELECT -4; RETURN; END -- Transición no permitida
+            BEGIN ROLLBACK TRANSACTION; SELECT -4; RETURN; END
         END
 
         UPDATE [dbo].[FixedAssetTransfers] SET
@@ -66,13 +65,13 @@ BEGIN
             [ModifiedBy]        = @ModifiedBy
         WHERE [TransferId] = @TransferId;
 
-        -- Si nuevo estado = REJECTED → restaurar activos a ACTIVE
+        -- Si nuevo estado es final → restaurar activos a ACTIVE
         IF EXISTS (SELECT 1 FROM [dbo].[FixedAssetTransferStatus]
                    WHERE [TransferStatusId] = @TransferStatusId
-                     AND [StatusCode] = 'REJECTED')
+                     AND [IsFinal] = 1)
         BEGIN
             UPDATE fa SET
-                fa.[AssetStatus]  = 'ACTIVE',
+                fa.[AssetStatus]  = 'ACTIVO',
                 fa.[ModifiedDate] = GETDATE(),
                 fa.[ModifiedBy]   = @ModifiedBy
             FROM [dbo].[FixedAssets] fa
@@ -129,7 +128,7 @@ BEGIN
 
         -- Restaurar AssetStatus = ACTIVE en todos los activos del traslado
         UPDATE fa SET
-            fa.[AssetStatus]  = 'ACTIVE',
+            fa.[AssetStatus]  = 'ACTIVO',
             fa.[ModifiedDate] = GETDATE(),
             fa.[ModifiedBy]   = @ModifiedBy
         FROM [dbo].[FixedAssets] fa
@@ -175,7 +174,7 @@ BEGIN
 
         -- Restaurar AssetStatus = ACTIVE antes de eliminar
         UPDATE fa SET
-            fa.[AssetStatus]  = 'ACTIVE',
+            fa.[AssetStatus]  = 'ACTIVO',
             fa.[ModifiedDate] = GETDATE(),
             fa.[ModifiedBy]   = @ModifiedBy
         FROM [dbo].[FixedAssets] fa

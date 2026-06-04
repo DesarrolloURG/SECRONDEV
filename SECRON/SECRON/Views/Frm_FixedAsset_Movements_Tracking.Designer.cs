@@ -45,10 +45,8 @@
             this.Lbl_DTPFin = new System.Windows.Forms.Label();
             this.Lbl_DTPInicio = new System.Windows.Forms.Label();
             this.DTP_FechaInicio = new System.Windows.Forms.DateTimePicker();
-            this.Filtro3 = new System.Windows.Forms.ComboBox();
-            this.Filtro2 = new System.Windows.Forms.ComboBox();
             this.ComboBox_Estado = new System.Windows.Forms.ComboBox();
-            this.LblEstado = new System.Windows.Forms.Label();
+            this.Filtro2 = new System.Windows.Forms.ComboBox();
             this.Filtro1 = new System.Windows.Forms.ComboBox();
             this.Lbl_BuscarPor = new System.Windows.Forms.Label();
             this.Btn_Clear = new System.Windows.Forms.Button();
@@ -64,6 +62,8 @@
             this.PanelEncabezadoTablaDetalle = new System.Windows.Forms.Panel();
             this.Btn_RemoveAsset = new System.Windows.Forms.Button();
             this.EncabezadoTablaDetalle = new System.Windows.Forms.Label();
+            this.Lbl_NewComment = new System.Windows.Forms.Label();
+            this.Panel_Seguimiento = new System.Windows.Forms.Panel();
             this.PanelTabla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
             this.PanelEncabezadoTabla.SuspendLayout();
@@ -95,6 +95,7 @@
             this.Tabla.Size = new System.Drawing.Size(1163, 144);
             this.Tabla.TabIndex = 87;
             this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
+            this.Tabla.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tabla_KeyDown);
             // 
             // PanelEncabezadoTabla
             // 
@@ -163,6 +164,8 @@
             this.Panel_DetalleTabla.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_DetalleTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_DetalleTabla.Controls.Add(this.Panel_Seguimiento);
+            this.Panel_DetalleTabla.Controls.Add(this.Lbl_NewComment);
             this.Panel_DetalleTabla.Controls.Add(this.Txt_Reason);
             this.Panel_DetalleTabla.Controls.Add(this.Lbl_Reason);
             this.Panel_DetalleTabla.Controls.Add(this.Lbl_Info);
@@ -171,10 +174,8 @@
             this.Panel_DetalleTabla.Controls.Add(this.Lbl_DTPFin);
             this.Panel_DetalleTabla.Controls.Add(this.Lbl_DTPInicio);
             this.Panel_DetalleTabla.Controls.Add(this.DTP_FechaInicio);
-            this.Panel_DetalleTabla.Controls.Add(this.Filtro3);
-            this.Panel_DetalleTabla.Controls.Add(this.Filtro2);
             this.Panel_DetalleTabla.Controls.Add(this.ComboBox_Estado);
-            this.Panel_DetalleTabla.Controls.Add(this.LblEstado);
+            this.Panel_DetalleTabla.Controls.Add(this.Filtro2);
             this.Panel_DetalleTabla.Controls.Add(this.Filtro1);
             this.Panel_DetalleTabla.Controls.Add(this.Lbl_BuscarPor);
             this.Panel_DetalleTabla.Controls.Add(this.Btn_Clear);
@@ -188,14 +189,14 @@
             // 
             // Txt_Reason
             // 
-            this.Txt_Reason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.Txt_Reason.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Txt_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Reason.Location = new System.Drawing.Point(95, 65);
-            this.Txt_Reason.MaxLength = 15;
+            this.Txt_Reason.Location = new System.Drawing.Point(710, 75);
+            this.Txt_Reason.MaxLength = 2000;
             this.Txt_Reason.Multiline = true;
             this.Txt_Reason.Name = "Txt_Reason";
-            this.Txt_Reason.Size = new System.Drawing.Size(1053, 78);
+            this.Txt_Reason.Size = new System.Drawing.Size(438, 68);
             this.Txt_Reason.TabIndex = 91;
             // 
             // Lbl_Reason
@@ -203,11 +204,11 @@
             this.Lbl_Reason.AutoSize = true;
             this.Lbl_Reason.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Reason.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Reason.Location = new System.Drawing.Point(10, 65);
+            this.Lbl_Reason.Location = new System.Drawing.Point(10, 6);
             this.Lbl_Reason.Name = "Lbl_Reason";
-            this.Lbl_Reason.Size = new System.Drawing.Size(79, 20);
+            this.Lbl_Reason.Size = new System.Drawing.Size(121, 20);
             this.Lbl_Reason.TabIndex = 92;
-            this.Lbl_Reason.Text = "MOTIVO *";
+            this.Lbl_Reason.Text = "SEGUIMIENTO *";
             // 
             // Lbl_Info
             // 
@@ -216,7 +217,7 @@
             this.Lbl_Info.AutoSize = true;
             this.Lbl_Info.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Info.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Info.Location = new System.Drawing.Point(860, 197);
+            this.Lbl_Info.Location = new System.Drawing.Point(860, 199);
             this.Lbl_Info.Name = "Lbl_Info";
             this.Lbl_Info.Size = new System.Drawing.Size(288, 20);
             this.Lbl_Info.TabIndex = 89;
@@ -228,19 +229,19 @@
             this.CheckBox_FiltroFechas.Checked = true;
             this.CheckBox_FiltroFechas.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CheckBox_FiltroFechas.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.CheckBox_FiltroFechas.Location = new System.Drawing.Point(401, 6);
+            this.CheckBox_FiltroFechas.Location = new System.Drawing.Point(542, 6);
             this.CheckBox_FiltroFechas.Name = "CheckBox_FiltroFechas";
             this.CheckBox_FiltroFechas.Size = new System.Drawing.Size(162, 23);
             this.CheckBox_FiltroFechas.TabIndex = 82;
             this.CheckBox_FiltroFechas.Text = "FILTRO POR FECHAS";
             this.CheckBox_FiltroFechas.UseVisualStyleBackColor = true;
-            this.CheckBox_FiltroFechas.CheckedChanged += new System.EventHandler(this.CheckBox_FiltroFechas_CheckedChanged);
+            this.CheckBox_FiltroFechas.Click += new System.EventHandler(this.CheckBox_FiltroFechas_CheckedChanged);
             // 
             // DTP_FechaFin
             // 
-            this.DTP_FechaFin.Location = new System.Drawing.Point(873, 29);
+            this.DTP_FechaFin.Location = new System.Drawing.Point(934, 29);
             this.DTP_FechaFin.Name = "DTP_FechaFin";
-            this.DTP_FechaFin.Size = new System.Drawing.Size(275, 20);
+            this.DTP_FechaFin.Size = new System.Drawing.Size(214, 20);
             this.DTP_FechaFin.TabIndex = 81;
             // 
             // Lbl_DTPFin
@@ -248,7 +249,7 @@
             this.Lbl_DTPFin.AutoSize = true;
             this.Lbl_DTPFin.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_DTPFin.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_DTPFin.Location = new System.Drawing.Point(869, 6);
+            this.Lbl_DTPFin.Location = new System.Drawing.Point(930, 6);
             this.Lbl_DTPFin.Name = "Lbl_DTPFin";
             this.Lbl_DTPFin.Size = new System.Drawing.Size(157, 20);
             this.Lbl_DTPFin.TabIndex = 80;
@@ -259,7 +260,7 @@
             this.Lbl_DTPInicio.AutoSize = true;
             this.Lbl_DTPInicio.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_DTPInicio.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_DTPInicio.Location = new System.Drawing.Point(583, 6);
+            this.Lbl_DTPInicio.Location = new System.Drawing.Point(706, 6);
             this.Lbl_DTPInicio.Name = "Lbl_DTPInicio";
             this.Lbl_DTPInicio.Size = new System.Drawing.Size(168, 20);
             this.Lbl_DTPInicio.TabIndex = 78;
@@ -267,19 +268,19 @@
             // 
             // DTP_FechaInicio
             // 
-            this.DTP_FechaInicio.Location = new System.Drawing.Point(587, 29);
+            this.DTP_FechaInicio.Location = new System.Drawing.Point(710, 29);
             this.DTP_FechaInicio.Name = "DTP_FechaInicio";
-            this.DTP_FechaInicio.Size = new System.Drawing.Size(275, 20);
+            this.DTP_FechaInicio.Size = new System.Drawing.Size(218, 20);
             this.DTP_FechaInicio.TabIndex = 79;
             // 
-            // Filtro3
+            // ComboBox_Estado
             // 
-            this.Filtro3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.Filtro3.FormattingEnabled = true;
-            this.Filtro3.Location = new System.Drawing.Point(576, 197);
-            this.Filtro3.Name = "Filtro3";
-            this.Filtro3.Size = new System.Drawing.Size(275, 26);
-            this.Filtro3.TabIndex = 77;
+            this.ComboBox_Estado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.ComboBox_Estado.FormattingEnabled = true;
+            this.ComboBox_Estado.Location = new System.Drawing.Point(576, 197);
+            this.ComboBox_Estado.Name = "ComboBox_Estado";
+            this.ComboBox_Estado.Size = new System.Drawing.Size(275, 26);
+            this.ComboBox_Estado.TabIndex = 77;
             // 
             // Filtro2
             // 
@@ -289,26 +290,6 @@
             this.Filtro2.Name = "Filtro2";
             this.Filtro2.Size = new System.Drawing.Size(275, 26);
             this.Filtro2.TabIndex = 76;
-            // 
-            // ComboBox_Estado
-            // 
-            this.ComboBox_Estado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.ComboBox_Estado.FormattingEnabled = true;
-            this.ComboBox_Estado.Location = new System.Drawing.Point(14, 28);
-            this.ComboBox_Estado.Name = "ComboBox_Estado";
-            this.ComboBox_Estado.Size = new System.Drawing.Size(325, 26);
-            this.ComboBox_Estado.TabIndex = 74;
-            // 
-            // LblEstado
-            // 
-            this.LblEstado.AutoSize = true;
-            this.LblEstado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.LblEstado.ForeColor = System.Drawing.Color.Black;
-            this.LblEstado.Location = new System.Drawing.Point(10, 6);
-            this.LblEstado.Name = "LblEstado";
-            this.LblEstado.Size = new System.Drawing.Size(265, 20);
-            this.LblEstado.TabIndex = 73;
-            this.LblEstado.Text = "CAMBIAR A ESTADO DE TRASLADO:";
             // 
             // Filtro1
             // 
@@ -454,6 +435,7 @@
             this.TablaDetalles.Size = new System.Drawing.Size(1163, 300);
             this.TablaDetalles.TabIndex = 85;
             this.TablaDetalles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TablaDetalles_CellClick);
+            this.TablaDetalles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TablaDetalles_KeyDown);
             // 
             // PanelEncabezadoTablaDetalle
             // 
@@ -494,6 +476,24 @@
             this.EncabezadoTablaDetalle.TabIndex = 50;
             this.EncabezadoTablaDetalle.Text = "DETALLES DEL TRASLADO - ACTIVOS MOVILIZADOS";
             // 
+            // Lbl_NewComment
+            // 
+            this.Lbl_NewComment.AutoSize = true;
+            this.Lbl_NewComment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_NewComment.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_NewComment.Location = new System.Drawing.Point(706, 52);
+            this.Lbl_NewComment.Name = "Lbl_NewComment";
+            this.Lbl_NewComment.Size = new System.Drawing.Size(175, 20);
+            this.Lbl_NewComment.TabIndex = 93;
+            this.Lbl_NewComment.Text = "NUEVO COMENTARIO *";
+            // 
+            // Panel_Seguimiento
+            // 
+            this.Panel_Seguimiento.Location = new System.Drawing.Point(14, 29);
+            this.Panel_Seguimiento.Name = "Panel_Seguimiento";
+            this.Panel_Seguimiento.Size = new System.Drawing.Size(686, 114);
+            this.Panel_Seguimiento.TabIndex = 94;
+            // 
             // Frm_FixedAsset_Movements_Tracking
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -533,10 +533,8 @@
         private System.Windows.Forms.Label Lbl_DTPFin;
         private System.Windows.Forms.Label Lbl_DTPInicio;
         private System.Windows.Forms.DateTimePicker DTP_FechaInicio;
-        private System.Windows.Forms.ComboBox Filtro3;
-        private System.Windows.Forms.ComboBox Filtro2;
         private System.Windows.Forms.ComboBox ComboBox_Estado;
-        private System.Windows.Forms.Label LblEstado;
+        private System.Windows.Forms.ComboBox Filtro2;
         private System.Windows.Forms.ComboBox Filtro1;
         private System.Windows.Forms.Label Lbl_BuscarPor;
         private System.Windows.Forms.Button Btn_Clear;
@@ -560,5 +558,7 @@
         private System.Windows.Forms.Button Btn_Yes;
         private System.Windows.Forms.ComboBox ComboBox_NewState;
         private System.Windows.Forms.Button Btn_RemoveAsset;
+        private System.Windows.Forms.Label Lbl_NewComment;
+        private System.Windows.Forms.Panel Panel_Seguimiento;
     }
 }
