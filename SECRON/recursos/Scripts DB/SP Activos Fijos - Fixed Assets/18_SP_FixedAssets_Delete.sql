@@ -20,8 +20,13 @@ BEGIN
         WHERE AssetId = @AssetId
 
         -- Eliminar registros contables asociados
-        --DELETE FROM AccountingEntryFixedAssets
-        --WHERE AssetId = @AssetId
+        delete from AccountingEntryFixedAssetsDetail 
+        where EntryMasterId in (select b.EntryMasterId
+        from AccountingEntryFixedAssets b
+        where b.assetid = @AssetId)
+
+        delete from AccountingEntryFixedAssets
+        where assetid = @AssetId
 
         -- Eliminar el activo
         DELETE FROM FixedAssets

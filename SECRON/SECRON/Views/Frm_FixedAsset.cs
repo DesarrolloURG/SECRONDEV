@@ -23,6 +23,8 @@ namespace SECRON.Views
         private string _ultimoFiltroEstado = "SOLO ACTIVOS";
         private int? _ultimoCategoriaId = null;
 
+        private int? _subCategoriaSeleccionadaId = null;
+
         // Selección actual
         private List<Mdl_FixedAsset> _assetsList;
         private Mdl_FixedAsset _activoSeleccionado = null;
@@ -133,6 +135,7 @@ namespace SECRON.Views
             Txt_Warehouse.Enabled = false;
             Txt_Employee.Enabled = false;
             Txt_WarrantyDocumentPath.Enabled = false;
+            ComboBox_SubCategoria.Enabled = false;
         }
 
         private void ConfigurarPlaceHoldersTextbox()
@@ -440,6 +443,18 @@ namespace SECRON.Views
                 _categoriaAnteriorId = _activoSeleccionado.AssetCategoryId;
                 SetTextBoxFromValue(Txt_Category, _activoSeleccionado.CategoryName, "SELECCIONAR CATEGORÍA");
 
+                // Cargar subcategorías de la categoría y seleccionar la del activo
+                _subCategoriaSeleccionadaId = _activoSeleccionado.SubCategoryId;
+                var subs = Ctrl_FixedAssetSubCategories.MostrarSubCategorias(
+                    _activoSeleccionado.AssetCategoryId, "", "TODOS");
+                ComboBox_SubCategoria.DisplayMember = "SubCategoryName";
+                ComboBox_SubCategoria.ValueMember = "SubCategoryId";
+                ComboBox_SubCategoria.DataSource = subs;
+                ComboBox_SubCategoria.SelectedValue = _activoSeleccionado.SubCategoryId;
+                ComboBox_SubCategoria.Enabled = false; 
+                // No editable igual que la categoría
+
+
                 DTP_PurchaseDate.Checked = _activoSeleccionado.PurchaseDate.HasValue;
                 if (_activoSeleccionado.PurchaseDate.HasValue)
                     DTP_PurchaseDate.Value = _activoSeleccionado.PurchaseDate.Value;
@@ -721,6 +736,15 @@ namespace SECRON.Views
             ActualizarCamposBaja();
         }
 
+        private void ComboBox_SubCategoria_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ComboBox_SubCategoria.SelectedValue != null &&
+                int.TryParse(ComboBox_SubCategoria.SelectedValue.ToString(), out int subId))
+                _subCategoriaSeleccionadaId = subId;
+            else
+                _subCategoriaSeleccionadaId = null;
+        }
+
         private void ActualizarCamposBaja()
         {
             bool esBaja = ComboBox_AssetStatus.SelectedItem?.ToString() == "BAJA";
@@ -771,6 +795,14 @@ namespace SECRON.Views
                 MessageBox.Show("Ingrese un VALOR DE COMPRA válido.", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Txt_PurchaseValue.Focus(); return false;
+            }
+
+            if (!_subCategoriaSeleccionadaId.HasValue || _subCategoriaSeleccionadaId <= 0 ||
+                ComboBox_SubCategoria.SelectedValue == null)
+            {
+                MessageBox.Show("Debe seleccionar una SUBCATEGORÍA.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ComboBox_SubCategoria.Focus(); return false;
             }
 
             if (ComboBox_AssetStatus.SelectedItem?.ToString() == "BAJA")
@@ -824,6 +856,7 @@ namespace SECRON.Views
                     AssetName = Txt_AssetName.Text.Trim(),
                     Description = TienePlaceholder(Txt_Description, "DESCRIPCIÓN") ? null : Txt_Description.Text.Trim(),
                     AssetCategoryId = _categoriaSeleccionadaId ?? 0,
+                    SubCategoryId = _subCategoriaSeleccionadaId ?? 0,
                     Brand = null,
                     Model = null,
                     Serial = null,
@@ -901,25 +934,36 @@ namespace SECRON.Views
 
                 if (!ValidarCamposObligatorios()) return;
 
-                // Validar si intentó cambiar la categoría
                 bool cambioCategoría = _categoriaSeleccionadaId.HasValue &&
                                        _categoriaAnteriorId.HasValue &&
                                        _categoriaSeleccionadaId != _categoriaAnteriorId;
 
-                if (cambioCategoría)
+                bool cambioSubCategoria = _subCategoriaSeleccionadaId.HasValue &&
+                                          _subCategoriaSeleccionadaId != _activoSeleccionado.SubCategoryId;
+
+                if (cambioCategoría || cambioSubCategoria)
                 {
+                    string campo = cambioCategoría ? "CATEGORÍA" : "SUBCATEGORÍA";
                     MessageBox.Show(
-                        "No es posible cambiar la categoría de un activo fijo existente.\n\n" +
-                        "Si necesita asignarlo a una categoría diferente, deberá eliminar este activo " +
-                        "y registrarlo nuevamente en la categoría correcta.\n\n" +
+                        $"⚠ No es posible cambiar la {campo} de un activo fijo existente.\n\n" +
+                        "Si necesita asignarlo a una diferente, deberá eliminar este activo " +
+                        "y registrarlo nuevamente.\n\n" +
                         "Los demás campos del activo serán actualizados normalmente, " +
-                        "pero la categoría se mantendrá sin cambios.",
-                        "Cambio de categoría no permitido",
+                        $"pero la {campo} se mantendrá sin cambios.",
+                        $"Cambio de {campo} no permitido",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Revertir la categoría al valor original
                     _categoriaSeleccionadaId = _categoriaAnteriorId;
                     SetTextBoxFromValue(Txt_Category, _activoSeleccionado.CategoryName, "SELECCIONAR CATEGORÍA");
+
+                    _subCategoriaSeleccionadaId = _activoSeleccionado.SubCategoryId;
+                    var subs = Ctrl_FixedAssetSubCategories.MostrarSubCategorias(
+                        _activoSeleccionado.AssetCategoryId, "", "TODOS");
+                    ComboBox_SubCategoria.DataSource = subs;
+                    ComboBox_SubCategoria.DisplayMember = "SubCategoryName";
+                    ComboBox_SubCategoria.ValueMember = "SubCategoryId";
+                    ComboBox_SubCategoria.SelectedValue = _activoSeleccionado.SubCategoryId;
+                    ComboBox_SubCategoria.Enabled = false;
                 }
 
                 if (MessageBox.Show($"¿Actualizar el activo {_activoSeleccionado.AssetName}?",
@@ -928,6 +972,7 @@ namespace SECRON.Views
                 _activoSeleccionado.AssetName = Txt_AssetName.Text.Trim();
                 _activoSeleccionado.Description = TienePlaceholder(Txt_Description, "DESCRIPCIÓN") ? null : Txt_Description.Text.Trim();
                 _activoSeleccionado.AssetCategoryId = _categoriaAnteriorId ?? _activoSeleccionado.AssetCategoryId;
+                _activoSeleccionado.SubCategoryId = _activoSeleccionado.SubCategoryId; // no se modifica
                 _activoSeleccionado.PurchaseDate = DTP_PurchaseDate.Checked ? DTP_PurchaseDate.Value.Date : (DateTime?)null;
                 _activoSeleccionado.PurchaseValue = ObtenerDecimal(Txt_PurchaseValue, "0.00");
                 _activoSeleccionado.ResidualValue = ObtenerDecimal(Txt_ResidualValue, "0.00");
@@ -1060,6 +1105,11 @@ namespace SECRON.Views
             DTP_DisposalDate.Value = DateTime.Today;
             LimpiarTablaAtributos();
 
+            _subCategoriaSeleccionadaId = null;
+            ComboBox_SubCategoria.DataSource = null;
+            ComboBox_SubCategoria.Items.Clear();
+            ComboBox_SubCategoria.Enabled = false;
+
             Txt_AssetName.Focus();
         }
 
@@ -1164,6 +1214,21 @@ namespace SECRON.Views
         {
             _categoriaSeleccionadaId = categoryId;
             SetTextBoxFromValue(Txt_Category, categoryName, "SELECCIONAR CATEGORÍA");
+
+            // Limpiar y recargar subcategorías
+            _subCategoriaSeleccionadaId = null;
+            ComboBox_SubCategoria.Items.Clear();
+            ComboBox_SubCategoria.Enabled = false;
+
+            var subs = Ctrl_FixedAssetSubCategories.MostrarSubCategorias(categoryId, "", "SOLO ACTIVOS");
+            if (subs != null && subs.Count > 0)
+            {
+                ComboBox_SubCategoria.DisplayMember = "SubCategoryName";
+                ComboBox_SubCategoria.ValueMember = "SubCategoryId";
+                ComboBox_SubCategoria.DataSource = subs;
+                ComboBox_SubCategoria.Enabled = true;
+                ComboBox_SubCategoria.SelectedIndex = -1;
+            }
         }
 
         private void Btn_SearchSupplier_Click(object sender, EventArgs e)
