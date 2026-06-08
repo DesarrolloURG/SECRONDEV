@@ -66,6 +66,3 @@ SELECT * FROM (VALUES
 )AS nuevos(PermissionCode, PermissionName, Description, ModuleName, ActionType)
 WHERE NOT EXISTS (SELECT 1 FROM Permissions p WHERE p.PermissionCode = nuevos.PermissionCode);
 
-
-
-SELECT * FROM Permissions WHERE ModuleName = 'FIXEDASSETS'
