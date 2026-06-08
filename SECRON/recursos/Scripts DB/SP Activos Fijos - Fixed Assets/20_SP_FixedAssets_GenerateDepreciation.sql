@@ -35,6 +35,11 @@ BEGIN
     DECLARE @NewEntryMasterId   INT
     DECLARE @ResidualValueTemp  DECIMAL(18,2)
 
+    DECLARE @SignoExpense        VARCHAR(1)
+    DECLARE @SignoAccumDep       VARCHAR(1)
+    DECLARE @MontoExpense        DECIMAL(18,2)
+    DECLARE @MontoAccumDep       DECIMAL(18,2)
+
     DECLARE cur CURSOR FOR
         SELECT
             fa.AssetId,
@@ -91,6 +96,10 @@ BEGIN
         END
         -- AQUÍ SE AGREGARÁN OTROS MÉTODOS EN EL FUTURO
 
+        -- Obtener signos de las cuentas una sola vez por activo
+        SELECT @SignoExpense  = Sign FROM Accounts WHERE AccountId = @AccountExpenseId
+        SELECT @SignoAccumDep = Sign FROM Accounts WHERE AccountId = @AccountAccumDepId
+
         SET @ResidualValueTemp = @ResidualValueAct
 
         SET @PeriodFirstDay = DATEADD(MONTH, 1, DATEFROMPARTS(
@@ -112,14 +121,13 @@ BEGIN
 
                     SET @DepMensual = @DepMensualBase
 
-                    -- Último período: usar saldo exacto para absorber diferencias de redondeo
                     IF @ResidualValueTemp - @DepMensualBase <= @DepMensualBase
                         SET @DepMensual = @ResidualValueTemp - @ResidualValue
 
-                    -- Validación de seguridad: nunca bajar del valor residual
                     IF @ResidualValueTemp - @DepMensual < @ResidualValue
                         SET @DepMensual = @ResidualValueTemp - @ResidualValue
 
+                    -- Insertar maestro
                     INSERT INTO AccountingEntryFixedAssets
                         (AssetId, EntryDate, Period, MovementType, Concept,
                          TotalAmount, StatusId, IsActive, CreatedDate)
@@ -144,6 +152,25 @@ BEGIN
                         (@NewEntryMasterId, @AccountAccumDepId, 0, @DepMensual,
                          'Depreciación acumulada ' + @Period)
 
+                    -- Actualizar saldo Gasto Depreciación
+                    -- Cargo en cuenta de signo +: suma | Cargo en cuenta de signo -: resta
+                    SET @MontoExpense = CASE
+                        WHEN @SignoExpense = '+' THEN  @DepMensual
+                        ELSE                         -@DepMensual
+                    END
+                    UPDATE Accounts SET Balance = Balance + @MontoExpense
+                    WHERE AccountId = @AccountExpenseId
+
+                    -- Actualizar saldo Depreciación Acumulada
+                    -- Abono en cuenta de signo -: suma | Abono en cuenta de signo +: resta
+                    SET @MontoAccumDep = CASE
+                        WHEN @SignoAccumDep = '-' THEN  @DepMensual
+                        ELSE                           -@DepMensual
+                    END
+                    UPDATE Accounts SET Balance = Balance + @MontoAccumDep
+                    WHERE AccountId = @AccountAccumDepId
+
+                    -- Actualizar ResidualValueAct
                     UPDATE FixedAssets
                     SET ResidualValueAct = ResidualValueAct - @DepMensual,
                         ModifiedDate     = GETDATE()
