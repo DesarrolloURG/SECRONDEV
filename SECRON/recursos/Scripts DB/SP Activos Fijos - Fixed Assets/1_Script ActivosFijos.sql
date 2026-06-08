@@ -257,11 +257,25 @@ CREATE TABLE [dbo].[FixedAssetTransferStatus] (
 );
 GO
 
-INSERT INTO [dbo].[FixedAssetTransferStatus] ([StatusCode],[StatusName],[Description],[Order],[IsFinal],[IsActive]) VALUES
-('PENDING',   'PENDIENTE',  'SE REALIZA LA SOLICITUD PARA EL TRASLADO DE UN ACTIVO', 1, 0, 1),
-('APPROVED',  'APROBADO',   'SE APRUEBA LA SOLICITUD PARA EL TRASLADO DEL ACTIVO',   2, 0, 1),
-('REJECTED',  'RECHAZADO',  'SE RECHAZO LA SOLICITUD PARA EL TRASLADO DEL ACTIVO',   3, 1, 1),
-('COMPLETED', 'COMPLETADO', 'SE COMPLETO EL TRASLADO',                               4, 1, 1);
+-- ============================================================
+-- ESTADOS DE TRASLADOS
+-- ============================================================
+SET IDENTITY_INSERT [dbo].[FixedAssetTransferStatus] ON;
+
+INSERT INTO [dbo].[FixedAssetTransferStatus] 
+    (TransferStatusId, StatusCode, StatusName, Description, [Order], IsFinal, IsActive, CreatedBy)
+VALUES
+    (1,  'PENDING',    'PENDIENTE',    'TRASLADO CREADO, PENDIENTE DE APROBACIÓN',  1, 0, 1, 1),
+    (2,  'APPROVED',   'APROBADO',     'TRASLADO APROBADO, LISTO PARA EMPAQUETAR',  2, 0, 1, 1),
+    (3,  'REJECTED',   'RECHAZADO',    'TRASLADO RECHAZADO',                        2, 1, 1, 1),
+    (4,  'PACKING',    'EMPAQUETADO',  'ACTIVOS EMPAQUETADOS LISTOS PARA ENVÍO',    3, 0, 1, 1),
+    (5,  'SHIPPED',    'ENVIADO',      'ACTIVOS EN TRÁNSITO HACIA EL DESTINO',      4, 0, 1, 1),
+    (6,  'INCIDENT',   'INCIDENCIA',   'SE REPORTÓ UNA INCIDENCIA EN EL TRASLADO',  4, 0, 1, 1),
+    (7,  'ONDESTINY',  'EN DESTINO',   'ACTIVOS LLEGARON AL DESTINO',               5, 0, 1, 1),
+    (8,  'RECEIVED',   'RECIBIDO',     'ACTIVOS RECIBIDOS Y VERIFICADOS',           6, 0, 1, 1),
+    (9,  'COMPLETED',  'COMPLETADO',   'TRASLADO COMPLETADO EXITOSAMENTE',          7, 1, 1, 1);
+
+SET IDENTITY_INSERT [dbo].[FixedAssetTransferStatus] OFF;
 GO
 
 -- -------------------------------------------------------
@@ -281,10 +295,22 @@ CREATE TABLE [dbo].[FixedAssetTransferStatusTransitions] (
 );
 GO
 
-INSERT INTO [dbo].[FixedAssetTransferStatusTransitions] ([FromStatusId],[ToStatusId]) VALUES
-(1, 2),  -- PENDING  → APPROVED
-(1, 3),  -- PENDING  → REJECTED
-(2, 4);  -- APPROVED → COMPLETED
+-- ============================================================
+-- TRANSICIONES PERMITIDAS
+-- ============================================================
+INSERT INTO [dbo].[FixedAssetTransferStatusTransitions]
+    (FromStatusId, ToStatusId, CreatedBy)
+VALUES
+    (1, 2, 1),  -- PENDIENTE    → APROBADO
+    (1, 3, 1),  -- PENDIENTE    → RECHAZADO
+    (2, 4, 1),  -- APROBADO     → EMPAQUETADO
+    (4, 5, 1),  -- EMPAQUETADO  → ENVIADO
+    (5, 7, 1),  -- ENVIADO      → EN DESTINO
+    (5, 6, 1),  -- ENVIADO      → INCIDENCIA
+    (6, 3, 1),  -- INCIDENCIA   → RECHAZADO
+    (7, 8, 1),  -- EN DESTINO   → RECIBIDO
+    (8, 9, 1),  -- RECIBIDO     → COMPLETADO
+    (8, 6, 1);  -- RECIBIDO     → INCIDENCIA
 GO
 
 -- -------------------------------------------------------
