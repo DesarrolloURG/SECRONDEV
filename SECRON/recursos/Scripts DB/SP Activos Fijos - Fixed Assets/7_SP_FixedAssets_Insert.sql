@@ -25,7 +25,8 @@ BEGIN
     BEGIN TRANSACTION
     BEGIN TRY
 
-        IF NOT EXISTS (SELECT 1 FROM FixedAssetCategories WHERE AssetCategoryId = @AssetCategoryId AND IsActive = 1)
+        IF NOT EXISTS (SELECT 1 FROM FixedAssetCategories
+                       WHERE AssetCategoryId = @AssetCategoryId AND IsActive = 1)
         BEGIN
             ROLLBACK TRANSACTION
             SELECT -2
@@ -33,7 +34,9 @@ BEGIN
         END
 
         DECLARE @CategoryCode VARCHAR(20)
-        SELECT @CategoryCode = CategoryCode FROM FixedAssetCategories WHERE AssetCategoryId = @AssetCategoryId
+        SELECT @CategoryCode = CategoryCode
+        FROM FixedAssetCategories
+        WHERE AssetCategoryId = @AssetCategoryId
 
         DECLARE @Correlativo INT
         SELECT @Correlativo = ISNULL(MAX(
@@ -42,7 +45,7 @@ BEGIN
         FROM FixedAssets
         WHERE AssetCode LIKE @CategoryCode + '-%'
 
-        DECLARE @AssetCode VARCHAR(30)
+        DECLARE @AssetCode VARCHAR(50)
         SET @AssetCode = @CategoryCode + '-' + RIGHT('000000' + CAST(@Correlativo AS VARCHAR), 6)
 
         INSERT INTO FixedAssets
@@ -59,7 +62,7 @@ BEGIN
              @PurchaseDate, @PurchaseValue, @ResidualValue,
              UPPER(@InvoiceNumber), @SupplierId,
              @WarrantyDocumentPath, @WarrantyExpirationDate,
-             @DepreciationStartDate, @PurchaseValue - @ResidualValue,
+             @DepreciationStartDate, @PurchaseValue,
              @CurrentWarehouseId, @AssignedToEmployeeId,
              @AssetStatus, @DisposalDate, UPPER(@DisposalReason), @DisposalValue,
              UPPER(@Notes), 1, @CreatedBy)
