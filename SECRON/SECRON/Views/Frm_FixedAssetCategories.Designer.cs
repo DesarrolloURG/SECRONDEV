@@ -48,17 +48,7 @@
             this.Btn_SearchAccountExpense = new System.Windows.Forms.Button();
             this.Txt_AccountExpense = new System.Windows.Forms.TextBox();
             this.Panel_Derecho = new System.Windows.Forms.Panel();
-            this.TabControl_Detalle = new System.Windows.Forms.TabControl();
-            this.Tab_Atributos = new System.Windows.Forms.TabPage();
             this.Lbl_AtributosHeader = new System.Windows.Forms.Label();
-            this.Panel_BusquedaAtributos = new System.Windows.Forms.Panel();
-            this.Txt_BuscarAtributo = new System.Windows.Forms.TextBox();
-            this.Btn_SearchAtributo = new System.Windows.Forms.Button();
-            this.Btn_CleanSearchAtributo = new System.Windows.Forms.Button();
-            this.FiltroAtributoTipo = new System.Windows.Forms.ComboBox();
-            this.FiltroAtributoEstado = new System.Windows.Forms.ComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.TablaAtributos = new System.Windows.Forms.DataGridView();
             this.Panel_AtributosCRUD = new System.Windows.Forms.Panel();
             this.Lbl_SubtituloAtributos = new System.Windows.Forms.Label();
             this.Lbl_AttributeKey = new System.Windows.Forms.Label();
@@ -74,28 +64,14 @@
             this.Btn_UpdateAtributo = new System.Windows.Forms.Button();
             this.Btn_InactiveAtributo = new System.Windows.Forms.Button();
             this.Btn_ClearAtributo = new System.Windows.Forms.Button();
-            this.Tab_SubCategorias = new System.Windows.Forms.TabPage();
-            this.Lbl_SubCategoriasHeader = new System.Windows.Forms.Label();
-            this.Panel_BusquedaSubCategorias = new System.Windows.Forms.Panel();
-            this.Txt_BuscarSubCategoria = new System.Windows.Forms.TextBox();
-            this.Btn_SearchSubCategoria = new System.Windows.Forms.Button();
-            this.Btn_CleanSearchSubCategoria = new System.Windows.Forms.Button();
-            this.FiltroSubCategoriaEstado = new System.Windows.Forms.ComboBox();
-            this.Panel_TablaSubCategorias = new System.Windows.Forms.Panel();
-            this.TablaSubCategorias = new System.Windows.Forms.DataGridView();
-            this.Panel_SubCategoriasCRUD = new System.Windows.Forms.Panel();
-            this.Lbl_SubtituloSubCategorias = new System.Windows.Forms.Label();
-            this.Lbl_SubCategoryCode = new System.Windows.Forms.Label();
-            this.Txt_SubCategoryCode = new System.Windows.Forms.TextBox();
-            this.Lbl_SubCategoryName = new System.Windows.Forms.Label();
-            this.Txt_SubCategoryName = new System.Windows.Forms.TextBox();
-            this.Lbl_SubCategoryIsActive = new System.Windows.Forms.Label();
-            this.ComboBox_SubCategoryIsActive = new System.Windows.Forms.ComboBox();
-            this.Panel_SubCategoriasBotones = new System.Windows.Forms.Panel();
-            this.Btn_SaveSubCategoria = new System.Windows.Forms.Button();
-            this.Btn_UpdateSubCategoria = new System.Windows.Forms.Button();
-            this.Btn_InactiveSubCategoria = new System.Windows.Forms.Button();
-            this.Btn_ClearSubCategoria = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.TablaAtributos = new System.Windows.Forms.DataGridView();
+            this.Panel_BusquedaAtributos = new System.Windows.Forms.Panel();
+            this.Txt_BuscarAtributo = new System.Windows.Forms.TextBox();
+            this.Btn_SearchAtributo = new System.Windows.Forms.Button();
+            this.Btn_CleanSearchAtributo = new System.Windows.Forms.Button();
+            this.FiltroAtributoTipo = new System.Windows.Forms.ComboBox();
+            this.FiltroAtributoEstado = new System.Windows.Forms.ComboBox();
             this.PanelTabla = new System.Windows.Forms.Panel();
             this.Tabla = new System.Windows.Forms.DataGridView();
             this.PanelToolStrip = new System.Windows.Forms.Panel();
@@ -113,19 +89,11 @@
             this.Panel_1.SuspendLayout();
             this.Panel_2.SuspendLayout();
             this.Panel_Derecho.SuspendLayout();
-            this.TabControl_Detalle.SuspendLayout();
-            this.Tab_Atributos.SuspendLayout();
-            this.Panel_BusquedaAtributos.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).BeginInit();
             this.Panel_AtributosCRUD.SuspendLayout();
             this.Panel_AtributosBotones.SuspendLayout();
-            this.Tab_SubCategorias.SuspendLayout();
-            this.Panel_BusquedaSubCategorias.SuspendLayout();
-            this.Panel_TablaSubCategorias.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TablaSubCategorias)).BeginInit();
-            this.Panel_SubCategoriasCRUD.SuspendLayout();
-            this.Panel_SubCategoriasBotones.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).BeginInit();
+            this.Panel_BusquedaAtributos.SuspendLayout();
             this.PanelTabla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
             this.PanelToolStrip.SuspendLayout();
@@ -492,7 +460,10 @@
             // Panel_Derecho
             // 
             this.Panel_Derecho.AutoScroll = true;
-            this.Panel_Derecho.Controls.Add(this.TabControl_Detalle);
+            this.Panel_Derecho.Controls.Add(this.Lbl_AtributosHeader);
+            this.Panel_Derecho.Controls.Add(this.Panel_AtributosCRUD);
+            this.Panel_Derecho.Controls.Add(this.panel1);
+            this.Panel_Derecho.Controls.Add(this.Panel_BusquedaAtributos);
             this.Panel_Derecho.Controls.Add(this.PanelTabla);
             this.Panel_Derecho.Controls.Add(this.PanelToolStrip);
             this.Panel_Derecho.Controls.Add(this.Panel_Busqueda);
@@ -503,33 +474,6 @@
             this.Panel_Derecho.Size = new System.Drawing.Size(998, 987);
             this.Panel_Derecho.TabIndex = 0;
             // 
-            // TabControl_Detalle
-            // 
-            this.TabControl_Detalle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TabControl_Detalle.Controls.Add(this.Tab_Atributos);
-            this.TabControl_Detalle.Controls.Add(this.Tab_SubCategorias);
-            this.TabControl_Detalle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.TabControl_Detalle.Location = new System.Drawing.Point(5, 435);
-            this.TabControl_Detalle.Name = "TabControl_Detalle";
-            this.TabControl_Detalle.SelectedIndex = 0;
-            this.TabControl_Detalle.Size = new System.Drawing.Size(981, 540);
-            this.TabControl_Detalle.TabIndex = 77;
-            // 
-            // Tab_Atributos
-            // 
-            this.Tab_Atributos.BackColor = System.Drawing.Color.White;
-            this.Tab_Atributos.Controls.Add(this.Lbl_AtributosHeader);
-            this.Tab_Atributos.Controls.Add(this.Panel_BusquedaAtributos);
-            this.Tab_Atributos.Controls.Add(this.panel1);
-            this.Tab_Atributos.Controls.Add(this.Panel_AtributosCRUD);
-            this.Tab_Atributos.Location = new System.Drawing.Point(4, 26);
-            this.Tab_Atributos.Name = "Tab_Atributos";
-            this.Tab_Atributos.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Atributos.Size = new System.Drawing.Size(973, 510);
-            this.Tab_Atributos.TabIndex = 0;
-            this.Tab_Atributos.Text = "  CARACTERÍSTICAS  ";
-            // 
             // Lbl_AtributosHeader
             // 
             this.Lbl_AtributosHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -537,104 +481,13 @@
             this.Lbl_AtributosHeader.BackColor = System.Drawing.Color.White;
             this.Lbl_AtributosHeader.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.Lbl_AtributosHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
-            this.Lbl_AtributosHeader.Location = new System.Drawing.Point(5, 6);
+            this.Lbl_AtributosHeader.Location = new System.Drawing.Point(5, 433);
             this.Lbl_AtributosHeader.Name = "Lbl_AtributosHeader";
             this.Lbl_AtributosHeader.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.Lbl_AtributosHeader.Size = new System.Drawing.Size(960, 24);
+            this.Lbl_AtributosHeader.Size = new System.Drawing.Size(981, 28);
             this.Lbl_AtributosHeader.TabIndex = 80;
-            this.Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UNA CATEGORÍA";
+            this.Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UN ACTIVO FIJO";
             this.Lbl_AtributosHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // Panel_BusquedaAtributos
-            // 
-            this.Panel_BusquedaAtributos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_BusquedaAtributos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.Panel_BusquedaAtributos.Controls.Add(this.Txt_BuscarAtributo);
-            this.Panel_BusquedaAtributos.Controls.Add(this.Btn_SearchAtributo);
-            this.Panel_BusquedaAtributos.Controls.Add(this.Btn_CleanSearchAtributo);
-            this.Panel_BusquedaAtributos.Controls.Add(this.FiltroAtributoTipo);
-            this.Panel_BusquedaAtributos.Controls.Add(this.FiltroAtributoEstado);
-            this.Panel_BusquedaAtributos.Location = new System.Drawing.Point(5, 34);
-            this.Panel_BusquedaAtributos.Name = "Panel_BusquedaAtributos";
-            this.Panel_BusquedaAtributos.Size = new System.Drawing.Size(960, 100);
-            this.Panel_BusquedaAtributos.TabIndex = 77;
-            // 
-            // Txt_BuscarAtributo
-            // 
-            this.Txt_BuscarAtributo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Txt_BuscarAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_BuscarAtributo.Location = new System.Drawing.Point(21, 18);
-            this.Txt_BuscarAtributo.Name = "Txt_BuscarAtributo";
-            this.Txt_BuscarAtributo.Size = new System.Drawing.Size(697, 27);
-            this.Txt_BuscarAtributo.TabIndex = 0;
-            this.Txt_BuscarAtributo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_BuscarAtributo_KeyDown);
-            // 
-            // Btn_SearchAtributo
-            // 
-            this.Btn_SearchAtributo.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.Btn_SearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchAtributo.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
-            this.Btn_SearchAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_SearchAtributo.Location = new System.Drawing.Point(728, 12);
-            this.Btn_SearchAtributo.Name = "Btn_SearchAtributo";
-            this.Btn_SearchAtributo.Size = new System.Drawing.Size(135, 38);
-            this.Btn_SearchAtributo.TabIndex = 1;
-            this.Btn_SearchAtributo.Text = "BUSCAR";
-            this.Btn_SearchAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_SearchAtributo.UseVisualStyleBackColor = true;
-            this.Btn_SearchAtributo.Click += new System.EventHandler(this.Btn_SearchAtributo_Click);
-            // 
-            // Btn_CleanSearchAtributo
-            // 
-            this.Btn_CleanSearchAtributo.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.Btn_CleanSearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_CleanSearchAtributo.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_CleanSearchAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearchAtributo.Location = new System.Drawing.Point(871, 12);
-            this.Btn_CleanSearchAtributo.Name = "Btn_CleanSearchAtributo";
-            this.Btn_CleanSearchAtributo.Size = new System.Drawing.Size(40, 38);
-            this.Btn_CleanSearchAtributo.TabIndex = 2;
-            this.Btn_CleanSearchAtributo.UseVisualStyleBackColor = true;
-            this.Btn_CleanSearchAtributo.Click += new System.EventHandler(this.Btn_CleanSearchAtributo_Click);
-            // 
-            // FiltroAtributoTipo
-            // 
-            this.FiltroAtributoTipo.FormattingEnabled = true;
-            this.FiltroAtributoTipo.Location = new System.Drawing.Point(21, 62);
-            this.FiltroAtributoTipo.Name = "FiltroAtributoTipo";
-            this.FiltroAtributoTipo.Size = new System.Drawing.Size(200, 25);
-            this.FiltroAtributoTipo.TabIndex = 3;
-            // 
-            // FiltroAtributoEstado
-            // 
-            this.FiltroAtributoEstado.FormattingEnabled = true;
-            this.FiltroAtributoEstado.Location = new System.Drawing.Point(231, 62);
-            this.FiltroAtributoEstado.Name = "FiltroAtributoEstado";
-            this.FiltroAtributoEstado.Size = new System.Drawing.Size(200, 25);
-            this.FiltroAtributoEstado.TabIndex = 4;
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.TablaAtributos);
-            this.panel1.Location = new System.Drawing.Point(5, 138);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(960, 130);
-            this.panel1.TabIndex = 78;
-            // 
-            // TablaAtributos
-            // 
-            this.TablaAtributos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TablaAtributos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TablaAtributos.Location = new System.Drawing.Point(0, 0);
-            this.TablaAtributos.Name = "TablaAtributos";
-            this.TablaAtributos.RowTemplate.Height = 24;
-            this.TablaAtributos.Size = new System.Drawing.Size(960, 130);
-            this.TablaAtributos.TabIndex = 0;
             // 
             // Panel_AtributosCRUD
             // 
@@ -651,9 +504,9 @@
             this.Panel_AtributosCRUD.Controls.Add(this.Lbl_IsRequired);
             this.Panel_AtributosCRUD.Controls.Add(this.ComboBox_IsRequired);
             this.Panel_AtributosCRUD.Controls.Add(this.Panel_AtributosBotones);
-            this.Panel_AtributosCRUD.Location = new System.Drawing.Point(5, 272);
+            this.Panel_AtributosCRUD.Location = new System.Drawing.Point(5, 728);
             this.Panel_AtributosCRUD.Name = "Panel_AtributosCRUD";
-            this.Panel_AtributosCRUD.Size = new System.Drawing.Size(960, 230);
+            this.Panel_AtributosCRUD.Size = new System.Drawing.Size(981, 245);
             this.Panel_AtributosCRUD.TabIndex = 79;
             // 
             // Lbl_SubtituloAtributos
@@ -747,9 +600,9 @@
             this.Panel_AtributosBotones.Controls.Add(this.Btn_UpdateAtributo);
             this.Panel_AtributosBotones.Controls.Add(this.Btn_InactiveAtributo);
             this.Panel_AtributosBotones.Controls.Add(this.Btn_ClearAtributo);
-            this.Panel_AtributosBotones.Location = new System.Drawing.Point(8, 100);
+            this.Panel_AtributosBotones.Location = new System.Drawing.Point(8, 94);
             this.Panel_AtributosBotones.Name = "Panel_AtributosBotones";
-            this.Panel_AtributosBotones.Size = new System.Drawing.Size(944, 56);
+            this.Panel_AtributosBotones.Size = new System.Drawing.Size(968, 56);
             this.Panel_AtributosBotones.TabIndex = 11;
             // 
             // Btn_SaveAtributo
@@ -757,7 +610,7 @@
             this.Btn_SaveAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_SaveAtributo.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_SaveAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_SaveAtributo.Location = new System.Drawing.Point(4, 7);
+            this.Btn_SaveAtributo.Location = new System.Drawing.Point(4, 10);
             this.Btn_SaveAtributo.Name = "Btn_SaveAtributo";
             this.Btn_SaveAtributo.Size = new System.Drawing.Size(162, 42);
             this.Btn_SaveAtributo.TabIndex = 0;
@@ -771,7 +624,7 @@
             this.Btn_UpdateAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_UpdateAtributo.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_UpdateAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_UpdateAtributo.Location = new System.Drawing.Point(174, 7);
+            this.Btn_UpdateAtributo.Location = new System.Drawing.Point(174, 10);
             this.Btn_UpdateAtributo.Name = "Btn_UpdateAtributo";
             this.Btn_UpdateAtributo.Size = new System.Drawing.Size(130, 42);
             this.Btn_UpdateAtributo.TabIndex = 1;
@@ -785,7 +638,7 @@
             this.Btn_InactiveAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_InactiveAtributo.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
             this.Btn_InactiveAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_InactiveAtributo.Location = new System.Drawing.Point(312, 7);
+            this.Btn_InactiveAtributo.Location = new System.Drawing.Point(312, 10);
             this.Btn_InactiveAtributo.Name = "Btn_InactiveAtributo";
             this.Btn_InactiveAtributo.Size = new System.Drawing.Size(170, 42);
             this.Btn_InactiveAtributo.TabIndex = 2;
@@ -798,272 +651,103 @@
             // 
             this.Btn_ClearAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Btn_ClearAtributo.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_ClearAtributo.Location = new System.Drawing.Point(490, 7);
+            this.Btn_ClearAtributo.Location = new System.Drawing.Point(488, 10);
             this.Btn_ClearAtributo.Name = "Btn_ClearAtributo";
             this.Btn_ClearAtributo.Size = new System.Drawing.Size(44, 42);
             this.Btn_ClearAtributo.TabIndex = 3;
             this.Btn_ClearAtributo.UseVisualStyleBackColor = true;
             this.Btn_ClearAtributo.Click += new System.EventHandler(this.Btn_ClearAtributo_Click);
             // 
-            // Tab_SubCategorias
+            // panel1
             // 
-            this.Tab_SubCategorias.BackColor = System.Drawing.Color.White;
-            this.Tab_SubCategorias.Controls.Add(this.Lbl_SubCategoriasHeader);
-            this.Tab_SubCategorias.Controls.Add(this.Panel_BusquedaSubCategorias);
-            this.Tab_SubCategorias.Controls.Add(this.Panel_TablaSubCategorias);
-            this.Tab_SubCategorias.Controls.Add(this.Panel_SubCategoriasCRUD);
-            this.Tab_SubCategorias.Location = new System.Drawing.Point(4, 26);
-            this.Tab_SubCategorias.Name = "Tab_SubCategorias";
-            this.Tab_SubCategorias.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_SubCategorias.Size = new System.Drawing.Size(973, 510);
-            this.Tab_SubCategorias.TabIndex = 1;
-            this.Tab_SubCategorias.Text = "  SUBCATEGORÍAS  ";
-            // 
-            // Lbl_SubCategoriasHeader
-            // 
-            this.Lbl_SubCategoriasHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Lbl_SubCategoriasHeader.BackColor = System.Drawing.Color.White;
-            this.Lbl_SubCategoriasHeader.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.Lbl_SubCategoriasHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
-            this.Lbl_SubCategoriasHeader.Location = new System.Drawing.Point(5, 6);
-            this.Lbl_SubCategoriasHeader.Name = "Lbl_SubCategoriasHeader";
-            this.Lbl_SubCategoriasHeader.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.Lbl_SubCategoriasHeader.Size = new System.Drawing.Size(960, 24);
-            this.Lbl_SubCategoriasHeader.TabIndex = 80;
-            this.Lbl_SubCategoriasHeader.Text = "SUBCATEGORÍAS — SELECCIONE UNA CATEGORÍA";
-            this.Lbl_SubCategoriasHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.TablaAtributos);
+            this.panel1.Location = new System.Drawing.Point(5, 567);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(981, 156);
+            this.panel1.TabIndex = 78;
             // 
-            // Panel_BusquedaSubCategorias
+            // TablaAtributos
             // 
-            this.Panel_BusquedaSubCategorias.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.TablaAtributos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaAtributos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TablaAtributos.Location = new System.Drawing.Point(0, 0);
+            this.TablaAtributos.Name = "TablaAtributos";
+            this.TablaAtributos.RowTemplate.Height = 24;
+            this.TablaAtributos.Size = new System.Drawing.Size(981, 156);
+            this.TablaAtributos.TabIndex = 0;
+            // 
+            // Panel_BusquedaAtributos
+            // 
+            this.Panel_BusquedaAtributos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_BusquedaSubCategorias.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.Panel_BusquedaSubCategorias.Controls.Add(this.Txt_BuscarSubCategoria);
-            this.Panel_BusquedaSubCategorias.Controls.Add(this.Btn_SearchSubCategoria);
-            this.Panel_BusquedaSubCategorias.Controls.Add(this.Btn_CleanSearchSubCategoria);
-            this.Panel_BusquedaSubCategorias.Controls.Add(this.FiltroSubCategoriaEstado);
-            this.Panel_BusquedaSubCategorias.Location = new System.Drawing.Point(5, 34);
-            this.Panel_BusquedaSubCategorias.Name = "Panel_BusquedaSubCategorias";
-            this.Panel_BusquedaSubCategorias.Size = new System.Drawing.Size(960, 100);
-            this.Panel_BusquedaSubCategorias.TabIndex = 77;
+            this.Panel_BusquedaAtributos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_BusquedaAtributos.Controls.Add(this.Txt_BuscarAtributo);
+            this.Panel_BusquedaAtributos.Controls.Add(this.Btn_SearchAtributo);
+            this.Panel_BusquedaAtributos.Controls.Add(this.Btn_CleanSearchAtributo);
+            this.Panel_BusquedaAtributos.Controls.Add(this.FiltroAtributoTipo);
+            this.Panel_BusquedaAtributos.Controls.Add(this.FiltroAtributoEstado);
+            this.Panel_BusquedaAtributos.Location = new System.Drawing.Point(5, 464);
+            this.Panel_BusquedaAtributos.Name = "Panel_BusquedaAtributos";
+            this.Panel_BusquedaAtributos.Size = new System.Drawing.Size(981, 100);
+            this.Panel_BusquedaAtributos.TabIndex = 77;
             // 
-            // Txt_BuscarSubCategoria
+            // Txt_BuscarAtributo
             // 
-            this.Txt_BuscarSubCategoria.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Txt_BuscarAtributo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Txt_BuscarSubCategoria.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_BuscarSubCategoria.Location = new System.Drawing.Point(21, 18);
-            this.Txt_BuscarSubCategoria.Name = "Txt_BuscarSubCategoria";
-            this.Txt_BuscarSubCategoria.Size = new System.Drawing.Size(697, 27);
-            this.Txt_BuscarSubCategoria.TabIndex = 0;
-            this.Txt_BuscarSubCategoria.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_BuscarSubCategoria_KeyDown);
+            this.Txt_BuscarAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_BuscarAtributo.Location = new System.Drawing.Point(21, 18);
+            this.Txt_BuscarAtributo.Name = "Txt_BuscarAtributo";
+            this.Txt_BuscarAtributo.Size = new System.Drawing.Size(697, 27);
+            this.Txt_BuscarAtributo.TabIndex = 0;
+            this.Txt_BuscarAtributo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_BuscarAtributo_KeyDown);
             // 
-            // Btn_SearchSubCategoria
+            // Btn_SearchAtributo
             // 
-            this.Btn_SearchSubCategoria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.Btn_SearchSubCategoria.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchSubCategoria.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
-            this.Btn_SearchSubCategoria.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_SearchSubCategoria.Location = new System.Drawing.Point(728, 12);
-            this.Btn_SearchSubCategoria.Name = "Btn_SearchSubCategoria";
-            this.Btn_SearchSubCategoria.Size = new System.Drawing.Size(135, 38);
-            this.Btn_SearchSubCategoria.TabIndex = 1;
-            this.Btn_SearchSubCategoria.Text = "BUSCAR";
-            this.Btn_SearchSubCategoria.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_SearchSubCategoria.UseVisualStyleBackColor = true;
-            this.Btn_SearchSubCategoria.Click += new System.EventHandler(this.Btn_SearchSubCategoria_Click);
+            this.Btn_SearchAtributo.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_SearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SearchAtributo.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_SearchAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_SearchAtributo.Location = new System.Drawing.Point(728, 12);
+            this.Btn_SearchAtributo.Name = "Btn_SearchAtributo";
+            this.Btn_SearchAtributo.Size = new System.Drawing.Size(135, 38);
+            this.Btn_SearchAtributo.TabIndex = 1;
+            this.Btn_SearchAtributo.Text = "BUSCAR";
+            this.Btn_SearchAtributo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_SearchAtributo.UseVisualStyleBackColor = true;
+            this.Btn_SearchAtributo.Click += new System.EventHandler(this.Btn_SearchAtributo_Click);
             // 
-            // Btn_CleanSearchSubCategoria
+            // Btn_CleanSearchAtributo
             // 
-            this.Btn_CleanSearchSubCategoria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.Btn_CleanSearchSubCategoria.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_CleanSearchSubCategoria.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_CleanSearchSubCategoria.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearchSubCategoria.Location = new System.Drawing.Point(871, 12);
-            this.Btn_CleanSearchSubCategoria.Name = "Btn_CleanSearchSubCategoria";
-            this.Btn_CleanSearchSubCategoria.Size = new System.Drawing.Size(40, 38);
-            this.Btn_CleanSearchSubCategoria.TabIndex = 2;
-            this.Btn_CleanSearchSubCategoria.UseVisualStyleBackColor = true;
-            this.Btn_CleanSearchSubCategoria.Click += new System.EventHandler(this.Btn_CleanSearchSubCategoria_Click);
+            this.Btn_CleanSearchAtributo.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_CleanSearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_CleanSearchAtributo.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_CleanSearchAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_CleanSearchAtributo.Location = new System.Drawing.Point(871, 12);
+            this.Btn_CleanSearchAtributo.Name = "Btn_CleanSearchAtributo";
+            this.Btn_CleanSearchAtributo.Size = new System.Drawing.Size(40, 38);
+            this.Btn_CleanSearchAtributo.TabIndex = 2;
+            this.Btn_CleanSearchAtributo.UseVisualStyleBackColor = true;
+            this.Btn_CleanSearchAtributo.Click += new System.EventHandler(this.Btn_CleanSearchAtributo_Click);
             // 
-            // FiltroSubCategoriaEstado
+            // FiltroAtributoTipo
             // 
-            this.FiltroSubCategoriaEstado.FormattingEnabled = true;
-            this.FiltroSubCategoriaEstado.Location = new System.Drawing.Point(21, 62);
-            this.FiltroSubCategoriaEstado.Name = "FiltroSubCategoriaEstado";
-            this.FiltroSubCategoriaEstado.Size = new System.Drawing.Size(200, 25);
-            this.FiltroSubCategoriaEstado.TabIndex = 3;
+            this.FiltroAtributoTipo.FormattingEnabled = true;
+            this.FiltroAtributoTipo.Location = new System.Drawing.Point(21, 62);
+            this.FiltroAtributoTipo.Name = "FiltroAtributoTipo";
+            this.FiltroAtributoTipo.Size = new System.Drawing.Size(200, 28);
+            this.FiltroAtributoTipo.TabIndex = 3;
             // 
-            // Panel_TablaSubCategorias
+            // FiltroAtributoEstado
             // 
-            this.Panel_TablaSubCategorias.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_TablaSubCategorias.BackColor = System.Drawing.Color.White;
-            this.Panel_TablaSubCategorias.Controls.Add(this.TablaSubCategorias);
-            this.Panel_TablaSubCategorias.Location = new System.Drawing.Point(5, 138);
-            this.Panel_TablaSubCategorias.Name = "Panel_TablaSubCategorias";
-            this.Panel_TablaSubCategorias.Size = new System.Drawing.Size(960, 130);
-            this.Panel_TablaSubCategorias.TabIndex = 78;
-            // 
-            // TablaSubCategorias
-            // 
-            this.TablaSubCategorias.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TablaSubCategorias.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TablaSubCategorias.Location = new System.Drawing.Point(0, 0);
-            this.TablaSubCategorias.Name = "TablaSubCategorias";
-            this.TablaSubCategorias.RowTemplate.Height = 24;
-            this.TablaSubCategorias.Size = new System.Drawing.Size(960, 130);
-            this.TablaSubCategorias.TabIndex = 0;
-            // 
-            // Panel_SubCategoriasCRUD
-            // 
-            this.Panel_SubCategoriasCRUD.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_SubCategoriasCRUD.BackColor = System.Drawing.Color.White;
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.Lbl_SubtituloSubCategorias);
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.Lbl_SubCategoryCode);
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.Txt_SubCategoryCode);
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.Lbl_SubCategoryName);
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.Txt_SubCategoryName);
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.Lbl_SubCategoryIsActive);
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.ComboBox_SubCategoryIsActive);
-            this.Panel_SubCategoriasCRUD.Controls.Add(this.Panel_SubCategoriasBotones);
-            this.Panel_SubCategoriasCRUD.Location = new System.Drawing.Point(5, 272);
-            this.Panel_SubCategoriasCRUD.Name = "Panel_SubCategoriasCRUD";
-            this.Panel_SubCategoriasCRUD.Size = new System.Drawing.Size(960, 230);
-            this.Panel_SubCategoriasCRUD.TabIndex = 79;
-            // 
-            // Lbl_SubtituloSubCategorias
-            // 
-            this.Lbl_SubtituloSubCategorias.AutoSize = true;
-            this.Lbl_SubtituloSubCategorias.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_SubtituloSubCategorias.Location = new System.Drawing.Point(8, 6);
-            this.Lbl_SubtituloSubCategorias.Name = "Lbl_SubtituloSubCategorias";
-            this.Lbl_SubtituloSubCategorias.Size = new System.Drawing.Size(266, 20);
-            this.Lbl_SubtituloSubCategorias.TabIndex = 0;
-            this.Lbl_SubtituloSubCategorias.Text = "AGREGAR / EDITAR SUBCATEGORÍA";
-            // 
-            // Lbl_SubCategoryCode
-            // 
-            this.Lbl_SubCategoryCode.AutoSize = true;
-            this.Lbl_SubCategoryCode.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_SubCategoryCode.Location = new System.Drawing.Point(8, 36);
-            this.Lbl_SubCategoryCode.Name = "Lbl_SubCategoryCode";
-            this.Lbl_SubCategoryCode.Size = new System.Drawing.Size(78, 20);
-            this.Lbl_SubCategoryCode.TabIndex = 1;
-            this.Lbl_SubCategoryCode.Text = "CÓDIGO *";
-            // 
-            // Txt_SubCategoryCode
-            // 
-            this.Txt_SubCategoryCode.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_SubCategoryCode.Location = new System.Drawing.Point(8, 60);
-            this.Txt_SubCategoryCode.Name = "Txt_SubCategoryCode";
-            this.Txt_SubCategoryCode.Size = new System.Drawing.Size(166, 27);
-            this.Txt_SubCategoryCode.TabIndex = 2;
-            // 
-            // Lbl_SubCategoryName
-            // 
-            this.Lbl_SubCategoryName.AutoSize = true;
-            this.Lbl_SubCategoryName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_SubCategoryName.Location = new System.Drawing.Point(178, 36);
-            this.Lbl_SubCategoryName.Name = "Lbl_SubCategoryName";
-            this.Lbl_SubCategoryName.Size = new System.Drawing.Size(85, 20);
-            this.Lbl_SubCategoryName.TabIndex = 3;
-            this.Lbl_SubCategoryName.Text = "NOMBRE *";
-            // 
-            // Txt_SubCategoryName
-            // 
-            this.Txt_SubCategoryName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_SubCategoryName.Location = new System.Drawing.Point(178, 60);
-            this.Txt_SubCategoryName.Name = "Txt_SubCategoryName";
-            this.Txt_SubCategoryName.Size = new System.Drawing.Size(400, 27);
-            this.Txt_SubCategoryName.TabIndex = 4;
-            // 
-            // Lbl_SubCategoryIsActive
-            // 
-            this.Lbl_SubCategoryIsActive.AutoSize = true;
-            this.Lbl_SubCategoryIsActive.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_SubCategoryIsActive.Location = new System.Drawing.Point(584, 36);
-            this.Lbl_SubCategoryIsActive.Name = "Lbl_SubCategoryIsActive";
-            this.Lbl_SubCategoryIsActive.Size = new System.Drawing.Size(77, 20);
-            this.Lbl_SubCategoryIsActive.TabIndex = 5;
-            this.Lbl_SubCategoryIsActive.Text = "ESTADO *";
-            // 
-            // ComboBox_SubCategoryIsActive
-            // 
-            this.ComboBox_SubCategoryIsActive.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.ComboBox_SubCategoryIsActive.Location = new System.Drawing.Point(584, 60);
-            this.ComboBox_SubCategoryIsActive.Name = "ComboBox_SubCategoryIsActive";
-            this.ComboBox_SubCategoryIsActive.Size = new System.Drawing.Size(150, 28);
-            this.ComboBox_SubCategoryIsActive.TabIndex = 6;
-            // 
-            // Panel_SubCategoriasBotones
-            // 
-            this.Panel_SubCategoriasBotones.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_SubCategoriasBotones.BackColor = System.Drawing.Color.White;
-            this.Panel_SubCategoriasBotones.Controls.Add(this.Btn_SaveSubCategoria);
-            this.Panel_SubCategoriasBotones.Controls.Add(this.Btn_UpdateSubCategoria);
-            this.Panel_SubCategoriasBotones.Controls.Add(this.Btn_InactiveSubCategoria);
-            this.Panel_SubCategoriasBotones.Controls.Add(this.Btn_ClearSubCategoria);
-            this.Panel_SubCategoriasBotones.Location = new System.Drawing.Point(8, 100);
-            this.Panel_SubCategoriasBotones.Name = "Panel_SubCategoriasBotones";
-            this.Panel_SubCategoriasBotones.Size = new System.Drawing.Size(944, 56);
-            this.Panel_SubCategoriasBotones.TabIndex = 11;
-            // 
-            // Btn_SaveSubCategoria
-            // 
-            this.Btn_SaveSubCategoria.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_SaveSubCategoria.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
-            this.Btn_SaveSubCategoria.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_SaveSubCategoria.Location = new System.Drawing.Point(4, 7);
-            this.Btn_SaveSubCategoria.Name = "Btn_SaveSubCategoria";
-            this.Btn_SaveSubCategoria.Size = new System.Drawing.Size(162, 42);
-            this.Btn_SaveSubCategoria.TabIndex = 0;
-            this.Btn_SaveSubCategoria.Text = "GUARDAR";
-            this.Btn_SaveSubCategoria.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_SaveSubCategoria.UseVisualStyleBackColor = true;
-            this.Btn_SaveSubCategoria.Click += new System.EventHandler(this.Btn_SaveSubCategoria_Click);
-            // 
-            // Btn_UpdateSubCategoria
-            // 
-            this.Btn_UpdateSubCategoria.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_UpdateSubCategoria.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
-            this.Btn_UpdateSubCategoria.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_UpdateSubCategoria.Location = new System.Drawing.Point(174, 7);
-            this.Btn_UpdateSubCategoria.Name = "Btn_UpdateSubCategoria";
-            this.Btn_UpdateSubCategoria.Size = new System.Drawing.Size(130, 42);
-            this.Btn_UpdateSubCategoria.TabIndex = 1;
-            this.Btn_UpdateSubCategoria.Text = "EDITAR";
-            this.Btn_UpdateSubCategoria.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_UpdateSubCategoria.UseVisualStyleBackColor = true;
-            this.Btn_UpdateSubCategoria.Click += new System.EventHandler(this.Btn_UpdateSubCategoria_Click);
-            // 
-            // Btn_InactiveSubCategoria
-            // 
-            this.Btn_InactiveSubCategoria.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_InactiveSubCategoria.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
-            this.Btn_InactiveSubCategoria.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_InactiveSubCategoria.Location = new System.Drawing.Point(312, 7);
-            this.Btn_InactiveSubCategoria.Name = "Btn_InactiveSubCategoria";
-            this.Btn_InactiveSubCategoria.Size = new System.Drawing.Size(170, 42);
-            this.Btn_InactiveSubCategoria.TabIndex = 2;
-            this.Btn_InactiveSubCategoria.Text = "INACTIVAR";
-            this.Btn_InactiveSubCategoria.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_InactiveSubCategoria.UseVisualStyleBackColor = true;
-            this.Btn_InactiveSubCategoria.Click += new System.EventHandler(this.Btn_InactiveSubCategoria_Click);
-            // 
-            // Btn_ClearSubCategoria
-            // 
-            this.Btn_ClearSubCategoria.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_ClearSubCategoria.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_ClearSubCategoria.Location = new System.Drawing.Point(490, 7);
-            this.Btn_ClearSubCategoria.Name = "Btn_ClearSubCategoria";
-            this.Btn_ClearSubCategoria.Size = new System.Drawing.Size(44, 42);
-            this.Btn_ClearSubCategoria.TabIndex = 3;
-            this.Btn_ClearSubCategoria.UseVisualStyleBackColor = true;
-            this.Btn_ClearSubCategoria.Click += new System.EventHandler(this.Btn_ClearSubCategoria_Click);
+            this.FiltroAtributoEstado.FormattingEnabled = true;
+            this.FiltroAtributoEstado.Location = new System.Drawing.Point(231, 62);
+            this.FiltroAtributoEstado.Name = "FiltroAtributoEstado";
+            this.FiltroAtributoEstado.Size = new System.Drawing.Size(200, 28);
+            this.FiltroAtributoEstado.TabIndex = 4;
             // 
             // PanelTabla
             // 
@@ -1208,23 +892,13 @@
             this.Panel_2.ResumeLayout(false);
             this.Panel_2.PerformLayout();
             this.Panel_Derecho.ResumeLayout(false);
-            this.TabControl_Detalle.ResumeLayout(false);
-            this.Tab_Atributos.ResumeLayout(false);
-            this.Panel_BusquedaAtributos.ResumeLayout(false);
-            this.Panel_BusquedaAtributos.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).EndInit();
             this.Panel_AtributosCRUD.ResumeLayout(false);
             this.Panel_AtributosCRUD.PerformLayout();
             this.Panel_AtributosBotones.ResumeLayout(false);
-            this.Tab_SubCategorias.ResumeLayout(false);
-            this.Panel_BusquedaSubCategorias.ResumeLayout(false);
-            this.Panel_BusquedaSubCategorias.PerformLayout();
-            this.Panel_TablaSubCategorias.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TablaSubCategorias)).EndInit();
-            this.Panel_SubCategoriasCRUD.ResumeLayout(false);
-            this.Panel_SubCategoriasCRUD.PerformLayout();
-            this.Panel_SubCategoriasBotones.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TablaAtributos)).EndInit();
+            this.Panel_BusquedaAtributos.ResumeLayout(false);
+            this.Panel_BusquedaAtributos.PerformLayout();
             this.PanelTabla.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();
             this.PanelToolStrip.ResumeLayout(false);
@@ -1280,13 +954,6 @@
         private System.Windows.Forms.Panel PanelToolStrip;
         private System.Windows.Forms.Label Lbl_Paginas;
         private System.Windows.Forms.Panel PanelTabla;
-        private System.Windows.Forms.DataGridView Tabla;
-        // TabControl
-        private System.Windows.Forms.TabControl TabControl_Detalle;
-        private System.Windows.Forms.TabPage Tab_Atributos;
-        private System.Windows.Forms.TabPage Tab_SubCategorias;
-        // Tab Atributos
-        private System.Windows.Forms.Label Lbl_AtributosHeader;
         private System.Windows.Forms.Panel Panel_BusquedaAtributos;
         private System.Windows.Forms.TextBox Txt_BuscarAtributo;
         private System.Windows.Forms.Button Btn_SearchAtributo;
@@ -1294,7 +961,6 @@
         private System.Windows.Forms.ComboBox FiltroAtributoTipo;
         private System.Windows.Forms.ComboBox FiltroAtributoEstado;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView TablaAtributos;
         private System.Windows.Forms.Panel Panel_AtributosCRUD;
         private System.Windows.Forms.Label Lbl_SubtituloAtributos;
         private System.Windows.Forms.Label Lbl_AttributeKey;
@@ -1310,27 +976,8 @@
         private System.Windows.Forms.Button Btn_UpdateAtributo;
         private System.Windows.Forms.Button Btn_InactiveAtributo;
         private System.Windows.Forms.Button Btn_ClearAtributo;
-        // Tab SubCategorias
-        private System.Windows.Forms.Label Lbl_SubCategoriasHeader;
-        private System.Windows.Forms.Panel Panel_BusquedaSubCategorias;
-        private System.Windows.Forms.TextBox Txt_BuscarSubCategoria;
-        private System.Windows.Forms.Button Btn_SearchSubCategoria;
-        private System.Windows.Forms.Button Btn_CleanSearchSubCategoria;
-        private System.Windows.Forms.ComboBox FiltroSubCategoriaEstado;
-        private System.Windows.Forms.Panel Panel_TablaSubCategorias;
-        private System.Windows.Forms.DataGridView TablaSubCategorias;
-        private System.Windows.Forms.Panel Panel_SubCategoriasCRUD;
-        private System.Windows.Forms.Label Lbl_SubtituloSubCategorias;
-        private System.Windows.Forms.Label Lbl_SubCategoryCode;
-        private System.Windows.Forms.TextBox Txt_SubCategoryCode;
-        private System.Windows.Forms.Label Lbl_SubCategoryName;
-        private System.Windows.Forms.TextBox Txt_SubCategoryName;
-        private System.Windows.Forms.Label Lbl_SubCategoryIsActive;
-        private System.Windows.Forms.ComboBox ComboBox_SubCategoryIsActive;
-        private System.Windows.Forms.Panel Panel_SubCategoriasBotones;
-        private System.Windows.Forms.Button Btn_SaveSubCategoria;
-        private System.Windows.Forms.Button Btn_UpdateSubCategoria;
-        private System.Windows.Forms.Button Btn_InactiveSubCategoria;
-        private System.Windows.Forms.Button Btn_ClearSubCategoria;
+        private System.Windows.Forms.Label Lbl_AtributosHeader;
+        private System.Windows.Forms.DataGridView TablaAtributos;
+        private System.Windows.Forms.DataGridView Tabla;
     }
 }

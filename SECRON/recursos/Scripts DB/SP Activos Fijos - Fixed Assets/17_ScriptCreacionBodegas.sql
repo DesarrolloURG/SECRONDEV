@@ -6,12 +6,7 @@ GO
 DELETE FROM Warehouses;
 GO
 
--- 3. Agregamos el campo de LocationId al warehouse
-ALTER TABLE Warehouses
-ADD LocationId INT NULL
-CONSTRAINT FK_Warehouses_Locations FOREIGN KEY (LocationId) REFERENCES Locations(LocationId);
-
--- 4. Reinsertar con LocationId
+-- 3. Reinsertar con LocationId
 INSERT INTO Warehouses (WarehouseCode, WarehouseName, Description, Address, WarehouseType, LocationId, IsActive, CreatedBy)
 SELECT 
     'WH-' + RIGHT('0000' + CAST(LocationCode AS VARCHAR), 3),
@@ -27,7 +22,7 @@ WHERE IsActive = 1
 AND LocationId NOT IN (SELECT ISNULL(PrimaryWarehouseId, 0) FROM Locations WHERE PrimaryWarehouseId IS NOT NULL);
 GO
 
--- 5. Rehabilitar FK
+-- 4. Rehabilitar FK
 EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';
 GO
 
