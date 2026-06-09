@@ -27,12 +27,6 @@ namespace SECRON.Views
         private List<Mdl_FixedAssetCategory> _categoriesList;
         private Mdl_FixedAssetCategory _categoriaSeleccionada = null;
 
-        // SubCategorías (detalle)
-        private List<Mdl_FixedAssetSubCategory> _subCategoriasList;
-        private Mdl_FixedAssetSubCategory _subCategoriaSeleccionada = null;
-        private string _ultimoTextoBusquedaSubCategoria = "";
-        private string _ultimoFiltroEstadoSubCategoria = "SOLO ACTIVOS";
-
         // Cuentas contables
         private int? _accountAccumDepId = null;
         private int? _accountExpenseId = null;
@@ -135,9 +129,6 @@ namespace SECRON.Views
             Txt_AccountExpense.MaxLength = 200;
             Txt_AttributeKey.MaxLength = 50;
             Txt_AttributeLabel.MaxLength = 100;
-            Txt_SubCategoryCode.MaxLength = 10;
-            Txt_SubCategoryName.MaxLength = 200;
-            Txt_BuscarSubCategoria.MaxLength = 100;
         }
 
         private void ConfigurarComponentesDeshabilitados()
@@ -221,6 +212,8 @@ namespace SECRON.Views
             ComboBox_DepreciationMethod.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_DepreciationMethod.Items.Clear();
             ComboBox_DepreciationMethod.Items.Add("LINEA_RECTA");
+            //ComboBox_DepreciationMethod.Items.Add("DECLINING_BALANCE");
+            //ComboBox_DepreciationMethod.Items.Add("SUM_OF_YEARS");
             ComboBox_DepreciationMethod.SelectedIndex = 0;
 
             ComboBox_DataType.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -257,23 +250,7 @@ namespace SECRON.Views
             FiltroAtributoEstado.Items.Add("SOLO INACTIVOS");
             FiltroAtributoEstado.SelectedIndex = 1;
 
-            FiltroSubCategoriaEstado.DropDownStyle = ComboBoxStyle.DropDownList;
-            FiltroSubCategoriaEstado.Items.Clear();
-            FiltroSubCategoriaEstado.Items.Add("TODOS");
-            FiltroSubCategoriaEstado.Items.Add("SOLO ACTIVOS");
-            FiltroSubCategoriaEstado.Items.Add("SOLO INACTIVOS");
-            FiltroSubCategoriaEstado.SelectedIndex = 1;
-
-            ComboBox_SubCategoryIsActive.DropDownStyle = ComboBoxStyle.DropDownList;
-            ComboBox_SubCategoryIsActive.Items.Clear();
-            ComboBox_SubCategoryIsActive.Items.Add("ACTIVO");
-            ComboBox_SubCategoryIsActive.Items.Add("INACTIVO");
-            ComboBox_SubCategoryIsActive.SelectedIndex = 0;
-
             ConfigurarPlaceHolder(Txt_BuscarAtributo, "BUSCAR CARACTERÍSTICA...");
-            ConfigurarPlaceHolder(Txt_BuscarSubCategoria, "BUSCAR SUBCATEGORÍA...");
-            ConfigurarPlaceHolder(Txt_SubCategoryCode, "CÓDIGO (ej. AUTO, MOTO)");
-            ConfigurarPlaceHolder(Txt_SubCategoryName, "NOMBRE DE SUBCATEGORÍA");
         }
 
         #endregion ConfigurarCombos
@@ -429,9 +406,6 @@ namespace SECRON.Views
 
                 CargarAtributosDeCategoriaSeleccionada(categoryId);
                 Lbl_AtributosHeader.Text = $"CARACTERÍSTICAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_atributosList.Count} CARACTERÍSTICAS";
-
-                CargarSubCategoriasDeCategoriaSeleccionada(categoryId);
-                Lbl_SubCategoriasHeader.Text = $"SUBCATEGORÍAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_subCategoriasList.Count} SUBCATEGORÍAS";
             }
             catch (Exception ex)
             {
@@ -568,326 +542,6 @@ namespace SECRON.Views
         }
 
         #endregion ConfiguracionesTabla_Atributos
-
-        #region CRUD_SubCategorias
-
-        private bool ValidarCamposSubCategoria()
-        {
-            if (_categoriaSeleccionada == null || _categoriaSeleccionada.AssetCategoryId == 0)
-            {
-                MessageBox.Show("Seleccione una CATEGORÍA antes de gestionar subcategorías.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (TienePlaceholder(Txt_SubCategoryCode, "CÓDIGO (ej. AUTO, MOTO)"))
-            {
-                MessageBox.Show("El campo CÓDIGO es obligatorio.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Txt_SubCategoryCode.Focus(); return false;
-            }
-            if (TienePlaceholder(Txt_SubCategoryName, "NOMBRE DE SUBCATEGORÍA"))
-            {
-                MessageBox.Show("El campo NOMBRE es obligatorio.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Txt_SubCategoryName.Focus(); return false;
-            }
-            return true;
-        }
-
-        private void Btn_SaveSubCategoria_Click(object sender, EventArgs e)
-        {
-            if (!Btn_SaveSubCategoria.Enabled) return;
-            try
-            {
-                if (!ValidarCamposSubCategoria()) return;
-                if (MessageBox.Show("¿Registrar esta subcategoría?", "Confirmar",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-
-                var nueva = new Mdl_FixedAssetSubCategory
-                {
-                    AssetCategoryId = _categoriaSeleccionada.AssetCategoryId,
-                    SubCategoryCode = Txt_SubCategoryCode.Text.Trim().ToUpper(),
-                    SubCategoryName = Txt_SubCategoryName.Text.Trim().ToUpper(),
-                    IsActive = true,
-                    CreatedBy = UserData?.UserId ?? 1
-                };
-
-                int resultado = Ctrl_FixedAssetSubCategories.RegistrarSubCategoria(nueva);
-
-                switch (resultado)
-                {
-                    case 1:
-                        MessageBox.Show("Subcategoría registrada exitosamente.", "Éxito",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LimpiarPanelSubCategorias();
-                        CargarSubCategoriasDeCategoriaSeleccionada(_categoriaSeleccionada.AssetCategoryId);
-                        Lbl_SubCategoriasHeader.Text = $"SUBCATEGORÍAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_subCategoriasList.Count} SUBCATEGORÍAS";
-                        break;
-                    case -1:
-                        MessageBox.Show("Ya existe una subcategoría con ese código en esta categoría.", "Duplicado",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        Txt_SubCategoryCode.Focus();
-                        break;
-                    case -2:
-                        MessageBox.Show("La categoría seleccionada no es válida.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    default:
-                        MessageBox.Show("No se pudo registrar la subcategoría.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al guardar subcategoría: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void Btn_UpdateSubCategoria_Click(object sender, EventArgs e)
-        {
-            if (!Btn_UpdateSubCategoria.Enabled) return;
-            try
-            {
-                if (_subCategoriaSeleccionada == null || _subCategoriaSeleccionada.SubCategoryId == 0)
-                {
-                    MessageBox.Show("Debe seleccionar una subcategoría para actualizar.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
-                }
-                if (!ValidarCamposSubCategoria()) return;
-                if (MessageBox.Show($"¿Actualizar la subcategoría {_subCategoriaSeleccionada.SubCategoryName}?",
-                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-
-                _subCategoriaSeleccionada.SubCategoryCode = Txt_SubCategoryCode.Text.Trim().ToUpper();
-                _subCategoriaSeleccionada.SubCategoryName = Txt_SubCategoryName.Text.Trim().ToUpper();
-                _subCategoriaSeleccionada.IsActive = ComboBox_SubCategoryIsActive.SelectedItem?.ToString() == "ACTIVO";
-                _subCategoriaSeleccionada.ModifiedBy = UserData?.UserId ?? 1;
-
-                int resultado = Ctrl_FixedAssetSubCategories.ActualizarSubCategoria(_subCategoriaSeleccionada);
-
-                switch (resultado)
-                {
-                    case 1:
-                        MessageBox.Show("Subcategoría actualizada exitosamente.", "Éxito",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LimpiarPanelSubCategorias();
-                        CargarSubCategoriasDeCategoriaSeleccionada(_categoriaSeleccionada.AssetCategoryId);
-                        Lbl_SubCategoriasHeader.Text = $"SUBCATEGORÍAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_subCategoriasList.Count} SUBCATEGORÍAS";
-                        break;
-                    case -1:
-                        MessageBox.Show("La subcategoría no fue encontrada.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    case -2:
-                        MessageBox.Show("Ya existe otra subcategoría con ese código en esta categoría.", "Duplicado",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        Txt_SubCategoryCode.Focus();
-                        break;
-                    default:
-                        MessageBox.Show("No se pudo actualizar la subcategoría.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al actualizar subcategoría: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void Btn_InactiveSubCategoria_Click(object sender, EventArgs e)
-        {
-            if (!Btn_InactiveSubCategoria.Enabled) return;
-            try
-            {
-                if (_subCategoriaSeleccionada == null || _subCategoriaSeleccionada.SubCategoryId == 0)
-                {
-                    MessageBox.Show("Debe seleccionar una subcategoría para inactivar.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
-                }
-                if (!_subCategoriaSeleccionada.IsActive)
-                {
-                    MessageBox.Show("Esta subcategoría ya se encuentra inactiva.", "Información",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information); return;
-                }
-                if (MessageBox.Show($"¿INACTIVAR la subcategoría {_subCategoriaSeleccionada.SubCategoryName}?",
-                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
-
-                _subCategoriaSeleccionada.IsActive = false;
-                _subCategoriaSeleccionada.ModifiedBy = UserData?.UserId ?? 1;
-
-                int resultado = Ctrl_FixedAssetSubCategories.ActualizarSubCategoria(_subCategoriaSeleccionada);
-
-                switch (resultado)
-                {
-                    case 1:
-                        MessageBox.Show("Subcategoría inactivada exitosamente.", "Éxito",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LimpiarPanelSubCategorias();
-                        CargarSubCategoriasDeCategoriaSeleccionada(_categoriaSeleccionada.AssetCategoryId);
-                        Lbl_SubCategoriasHeader.Text = $"SUBCATEGORÍAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_subCategoriasList.Count} SUBCATEGORÍAS";
-                        break;
-                    case -1:
-                        MessageBox.Show("La subcategoría no fue encontrada.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    default:
-                        MessageBox.Show("No se pudo inactivar la subcategoría.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al inactivar subcategoría: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void Btn_ClearSubCategoria_Click(object sender, EventArgs e)
-        {
-            LimpiarPanelSubCategorias();
-        }
-
-        #endregion CRUD_SubCategorias
-
-        #region ConfiguracionesTabla_SubCategorias
-
-        private void CargarSubCategoriasDeCategoriaSeleccionada(int categoryId)
-        {
-            _ultimoTextoBusquedaSubCategoria = "";
-            _ultimoFiltroEstadoSubCategoria = "SOLO ACTIVOS";
-            _subCategoriasList = Ctrl_FixedAssetSubCategories.MostrarSubCategorias(
-                categoryId, "", "SOLO ACTIVOS");
-            AsignarDataSourceSubCategorias();
-            ConfigurarTablaSubCategorias();
-            AjustarColumnasSubCategorias();
-            LimpiarPanelSubCategorias();
-        }
-
-        private void AsignarDataSourceSubCategorias()
-        {
-            if (_subCategoriasList == null) { TablaSubCategorias.DataSource = null; return; }
-
-            var data = _subCategoriasList.Select(s => new
-            {
-                s.SubCategoryId,
-                s.AssetCategoryId,
-                s.SubCategoryCode,
-                s.SubCategoryName,
-                IsActive = s.IsActive ? "ACTIVO" : "INACTIVO"
-            }).ToList();
-
-            TablaSubCategorias.DataSource = data;
-            ConfigurarTablaSubCategorias();
-            AjustarColumnasSubCategorias();
-        }
-
-        private void ConfigurarTablaSubCategorias()
-        {
-            if (TablaSubCategorias.Columns.Count > 0)
-            {
-                TablaSubCategorias.Columns["SubCategoryCode"].HeaderText = "CÓDIGO";
-                TablaSubCategorias.Columns["SubCategoryName"].HeaderText = "NOMBRE";
-                TablaSubCategorias.Columns["IsActive"].HeaderText = "ESTADO";
-                TablaSubCategorias.Columns["SubCategoryId"].Visible = false;
-                TablaSubCategorias.Columns["AssetCategoryId"].Visible = false;
-            }
-
-            TablaSubCategorias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            TablaSubCategorias.MultiSelect = false;
-            TablaSubCategorias.ReadOnly = true;
-            TablaSubCategorias.AllowUserToResizeRows = false;
-            TablaSubCategorias.RowHeadersVisible = false;
-            TablaSubCategorias.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(94, 53, 177);
-            TablaSubCategorias.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            TablaSubCategorias.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            TablaSubCategorias.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            TablaSubCategorias.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 143, 109);
-            TablaSubCategorias.DefaultCellStyle.SelectionForeColor = Color.White;
-            TablaSubCategorias.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
-            TablaSubCategorias.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-            TablaSubCategorias.RowTemplate.Height = 35;
-            TablaSubCategorias.ColumnHeadersHeight = 40;
-
-            TablaSubCategorias.SelectionChanged -= TablaSubCategorias_SelectionChanged;
-            TablaSubCategorias.SelectionChanged += TablaSubCategorias_SelectionChanged;
-        }
-
-        private void AjustarColumnasSubCategorias()
-        {
-            if (TablaSubCategorias.Columns.Count == 0) return;
-            SetFillWeight(TablaSubCategorias, "SubCategoryCode", 20);
-            SetFillWeight(TablaSubCategorias, "SubCategoryName", 60);
-            SetFillWeight(TablaSubCategorias, "IsActive", 20);
-        }
-
-        private void TablaSubCategorias_SelectionChanged(object sender, EventArgs e)
-        {
-            if (TablaSubCategorias.SelectedRows.Count > 0)
-                CargarDatosSubCategoriaSeleccionada();
-        }
-
-        private void CargarDatosSubCategoriaSeleccionada()
-        {
-            try
-            {
-                if (TablaSubCategorias.SelectedRows.Count == 0) return;
-
-                int subId = Convert.ToInt32(TablaSubCategorias.SelectedRows[0].Cells["SubCategoryId"].Value);
-                _subCategoriaSeleccionada = _subCategoriasList.FirstOrDefault(s => s.SubCategoryId == subId);
-                if (_subCategoriaSeleccionada == null) return;
-
-                SetTextBoxFromValue(Txt_SubCategoryCode, _subCategoriaSeleccionada.SubCategoryCode, "CÓDIGO (ej. AUTO, MOTO)");
-                SetTextBoxFromValue(Txt_SubCategoryName, _subCategoriaSeleccionada.SubCategoryName, "NOMBRE DE SUBCATEGORÍA");
-                ComboBox_SubCategoryIsActive.SelectedItem = _subCategoriaSeleccionada.IsActive ? "ACTIVO" : "INACTIVO";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar subcategoría: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void LimpiarPanelSubCategorias()
-        {
-            _subCategoriaSeleccionada = null;
-            SetTextBoxFromValue(Txt_SubCategoryCode, "", "CÓDIGO (ej. AUTO, MOTO)");
-            SetTextBoxFromValue(Txt_SubCategoryName, "", "NOMBRE DE SUBCATEGORÍA");
-            ComboBox_SubCategoryIsActive.SelectedIndex = 0;
-        }
-
-        private void Btn_SearchSubCategoria_Click(object sender, EventArgs e)
-        {
-            if (_categoriaSeleccionada == null) return;
-
-            string texto = TienePlaceholder(Txt_BuscarSubCategoria, "BUSCAR SUBCATEGORÍA...") ? "" : Txt_BuscarSubCategoria.Text.Trim();
-            string filtroEstado = FiltroSubCategoriaEstado.SelectedItem?.ToString() ?? "TODOS";
-
-            _ultimoTextoBusquedaSubCategoria = texto;
-            _ultimoFiltroEstadoSubCategoria = filtroEstado;
-
-            _subCategoriasList = Ctrl_FixedAssetSubCategories.MostrarSubCategorias(
-                _categoriaSeleccionada.AssetCategoryId, texto, filtroEstado);
-            AsignarDataSourceSubCategorias();
-        }
-
-        private void Txt_BuscarSubCategoria_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; Btn_SearchSubCategoria_Click(sender, e); }
-        }
-
-        private void Btn_CleanSearchSubCategoria_Click(object sender, EventArgs e)
-        {
-            SetTextBoxFromValue(Txt_BuscarSubCategoria, "", "BUSCAR SUBCATEGORÍA...");
-            FiltroSubCategoriaEstado.SelectedIndex = 1;
-            if (_categoriaSeleccionada != null)
-                CargarSubCategoriasDeCategoriaSeleccionada(_categoriaSeleccionada.AssetCategoryId);
-        }
-
-        #endregion ConfiguracionesTabla_SubCategorias
 
         #region Search
 
@@ -1468,10 +1122,6 @@ namespace SECRON.Views
             Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UNA CATEGORÍA";
             LimpiarPanelAtributos();
 
-            TablaSubCategorias.DataSource = null;
-            Lbl_SubCategoriasHeader.Text = "SUBCATEGORÍAS — SELECCIONE UNA CATEGORÍA";
-            LimpiarPanelSubCategorias();
-
             Txt_CategoryCode.Focus();
         }
 
@@ -1895,10 +1545,6 @@ namespace SECRON.Views
             AplicarEstadoBotonPorPermiso(Btn_SaveAtributo, "FA_ATTRIBUTES_CREATE");
             AplicarEstadoBotonPorPermiso(Btn_UpdateAtributo, "FA_ATTRIBUTES_UPDATE");
             AplicarEstadoBotonPorPermiso(Btn_InactiveAtributo, "FA_ATTRIBUTES_INACTIVE");
-
-            //AplicarEstadoBotonPorPermiso(Btn_SaveSubCategoria, "FA_SUBCATEGORIES_CREATE");
-            //AplicarEstadoBotonPorPermiso(Btn_UpdateSubCategoria, "FA_SUBCATEGORIES_UPDATE");
-            //AplicarEstadoBotonPorPermiso(Btn_InactiveSubCategoria, "FA_SUBCATEGORIES_INACTIVE");
         }
 
         #endregion SistemaDePermisos

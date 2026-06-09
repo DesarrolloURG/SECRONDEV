@@ -22,7 +22,7 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                         SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
-                               fa.AssetCategoryId, fa.SubCategoryId,fsc.SubCategoryName,
+                               fa.AssetCategoryId, 
                                (SELECT av.Value FROM FixedAssetAttributeValues av
                                  INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
                                  WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
@@ -47,7 +47,6 @@ namespace SECRON.Controllers
                                ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName
                         FROM   FixedAssets fa
                         LEFT JOIN FixedAssetCategories      fac ON fa.AssetCategoryId     = fac.AssetCategoryId
-                        LEFT JOIN FixedAssetSubCategories fsc ON fa.SubCategoryId = fsc.SubCategoryId
                         LEFT JOIN Suppliers                 s   ON fa.SupplierId           = s.SupplierId
                         LEFT JOIN Warehouses                w   ON fa.CurrentWarehouseId   = w.WarehouseId
                         LEFT JOIN Employees                 e   ON fa.AssignedToEmployeeId = e.EmployeeId
@@ -93,7 +92,7 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                         SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
-                               fa.AssetCategoryId, fa.SubCategoryId,fsc.SubCategoryName,
+                               fa.AssetCategoryId, 
                                (SELECT av.Value FROM FixedAssetAttributeValues av
                                  INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
                                  WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
@@ -118,7 +117,6 @@ namespace SECRON.Controllers
                                ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName
                         FROM   FixedAssets fa
                         LEFT JOIN FixedAssetCategories      fac ON fa.AssetCategoryId     = fac.AssetCategoryId
-                        LEFT JOIN FixedAssetSubCategories   fsc ON fa.SubCategoryId        = fsc.SubCategoryId
                         LEFT JOIN Suppliers                 s   ON fa.SupplierId           = s.SupplierId
                         LEFT JOIN Warehouses                w   ON fa.CurrentWarehouseId   = w.WarehouseId
                         LEFT JOIN Employees                 e   ON fa.AssignedToEmployeeId = e.EmployeeId
@@ -376,7 +374,6 @@ namespace SECRON.Controllers
             cmd.Parameters.AddWithValue("@AssetName", asset.AssetName?.ToUpper() ?? "");
             cmd.Parameters.AddWithValue("@Description", string.IsNullOrWhiteSpace(asset.Description) ? (object)DBNull.Value : asset.Description.ToUpper());
             cmd.Parameters.AddWithValue("@AssetCategoryId", asset.AssetCategoryId);
-            cmd.Parameters.AddWithValue("@SubCategoryId", asset.SubCategoryId);
             cmd.Parameters.AddWithValue("@PurchaseDate", asset.PurchaseDate.HasValue ? (object)asset.PurchaseDate.Value : DBNull.Value);
             cmd.Parameters.AddWithValue("@PurchaseValue", asset.PurchaseValue);
             cmd.Parameters.AddWithValue("@ResidualValue", asset.ResidualValue);
@@ -404,7 +401,6 @@ namespace SECRON.Controllers
                 AssetName = reader["AssetName"].ToString(),
                 Description = reader["Description"] == DBNull.Value ? null : reader["Description"].ToString(),
                 AssetCategoryId = reader.GetInt32(reader.GetOrdinal("AssetCategoryId")),
-                SubCategoryId = reader["SubCategoryId"] == DBNull.Value ? 0 : reader.GetInt32(reader.GetOrdinal("SubCategoryId")),
                 Brand = reader["Brand"] == DBNull.Value ? null : reader["Brand"].ToString(),
                 Model = reader["Model"] == DBNull.Value ? null : reader["Model"].ToString(),
                 Serial = reader["Serial"] == DBNull.Value ? null : reader["Serial"].ToString(),
@@ -430,7 +426,6 @@ namespace SECRON.Controllers
                 ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("ModifiedDate")),
                 ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy")),
                 CategoryName = reader["CategoryName"] == DBNull.Value ? null : reader["CategoryName"].ToString(),
-                SubCategoryName = reader["SubCategoryName"] == DBNull.Value ? null : reader["SubCategoryName"].ToString(),
                 SupplierName = reader["SupplierName"] == DBNull.Value ? null : reader["SupplierName"].ToString(),
                 WarehouseName = reader["WarehouseName"] == DBNull.Value ? null : reader["WarehouseName"].ToString(),
                 EmployeeName = reader["EmployeeName"] == DBNull.Value ? null : reader["EmployeeName"].ToString()

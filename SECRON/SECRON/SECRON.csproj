@@ -110,7 +110,6 @@
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeDefinitions.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeValues.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetCategories.cs" />
-    <Compile Include="Controllers\Ctrl_FixedAssetSubCategories.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetTransfers.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssets.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetTransferStatus.cs" />
@@ -170,7 +169,6 @@
     <Compile Include="Models\Mdl_FixedAssetAttributeValue.cs" />
     <Compile Include="Models\Mdl_FixedAssetCategory.cs" />
     <Compile Include="Models\Mdl_FixedAssets.cs" />
-    <Compile Include="Models\Mdl_FixedAssetSubCategory.cs" />
     <Compile Include="Models\Mdl_FixedAssetTransfers.cs" />
     <Compile Include="Models\Mdl_FixedAssetTransferStatus.cs" />
     <Compile Include="Models\Mdl_FixedAssetTransferStatusTransition.cs" />

@@ -1,6 +1,5 @@
 -- ============================================================
 -- SECRON - Script Módulo de Activos Fijos
--- Drop y recreación completa en orden correcto
 -- ============================================================
 
 -- ============================================================
@@ -22,7 +21,6 @@ IF OBJECT_ID('dbo.FixedAssetTransferStatus',         'U') IS NOT NULL DROP TABLE
 IF OBJECT_ID('dbo.FixedAssetAttributeValues',        'U') IS NOT NULL DROP TABLE dbo.FixedAssetAttributeValues;
 IF OBJECT_ID('dbo.FixedAssets',                      'U') IS NOT NULL DROP TABLE dbo.FixedAssets;
 IF OBJECT_ID('dbo.FixedAssetAttributeDefinitions',   'U') IS NOT NULL DROP TABLE dbo.FixedAssetAttributeDefinitions;
-IF OBJECT_ID('dbo.FixedAssetSubCategories',          'U') IS NOT NULL DROP TABLE dbo.FixedAssetSubCategories;
 IF OBJECT_ID('dbo.FixedAssetCategories',             'U') IS NOT NULL DROP TABLE dbo.FixedAssetCategories;
 GO
 
@@ -84,26 +82,7 @@ CREATE TABLE [dbo].[FixedAssetCategories] (
 GO
 
 -- -------------------------------------------------------
--- 2. SUBCATEGORÍAS DE ACTIVOS
--- -------------------------------------------------------
-CREATE TABLE [dbo].[FixedAssetSubCategories] (
-    [SubCategoryId]   [int]           IDENTITY(1,1) NOT NULL,
-    [AssetCategoryId] [int]           NOT NULL,
-    [SubCategoryCode] [varchar](10)   NOT NULL,
-    [SubCategoryName] [varchar](200)  NOT NULL,
-    [IsActive]        [bit]           NOT NULL CONSTRAINT DF_FASC_Active DEFAULT 1,
-    [CreatedDate]     [datetime]      NULL CONSTRAINT DF_FASC_Created DEFAULT GETDATE(),
-    [CreatedBy]       [int]           NULL,
-    [ModifiedDate]    [datetime]      NULL,
-    [ModifiedBy]      [int]           NULL,
-    CONSTRAINT PK_FixedAssetSubCategories PRIMARY KEY ([SubCategoryId]),
-    CONSTRAINT UK_FASC_Code UNIQUE ([AssetCategoryId], [SubCategoryCode]),
-    CONSTRAINT FK_FASC_Category FOREIGN KEY ([AssetCategoryId]) REFERENCES [dbo].[FixedAssetCategories]([AssetCategoryId])
-);
-GO
-
--- -------------------------------------------------------
--- 3. DEFINICIÓN DE ATRIBUTOS POR CATEGORÍA (EAV)
+-- 2. DEFINICIÓN DE ATRIBUTOS POR CATEGORÍA (EAV)
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetAttributeDefinitions] (
     [AttributeDefId]  [int]           IDENTITY(1,1) NOT NULL,
@@ -121,7 +100,7 @@ CREATE TABLE [dbo].[FixedAssetAttributeDefinitions] (
 GO
 
 -- -------------------------------------------------------
--- 4. CATÁLOGO MAESTRO DE ACTIVOS FIJOS
+-- 3. CATÁLOGO MAESTRO DE ACTIVOS FIJOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssets] (
     [AssetId]               [int]           IDENTITY(1,1) NOT NULL,
@@ -129,7 +108,6 @@ CREATE TABLE [dbo].[FixedAssets] (
     [AssetName]             [varchar](150)  NOT NULL,
     [Description]           [varchar](500)  NULL,
     [AssetCategoryId]       [int]           NOT NULL,
-    [SubCategoryId]         [int]           NOT NULL,
     [PurchaseDate]          [date]          NULL,
     [PurchaseValue]         [decimal](18,2) NOT NULL,
     [ResidualValue]         [decimal](18,2) NOT NULL CONSTRAINT DF_FAC_Residual DEFAULT 0,
@@ -153,16 +131,15 @@ CREATE TABLE [dbo].[FixedAssets] (
     [ModifiedBy]            [int]           NULL,
     CONSTRAINT PK_FixedAssets PRIMARY KEY CLUSTERED ([AssetId] ASC),
     CONSTRAINT UK_FA_Code UNIQUE ([AssetCode]),
-    CONSTRAINT FK_FA_Category    FOREIGN KEY ([AssetCategoryId])     REFERENCES [dbo].[FixedAssetCategories]([AssetCategoryId]),
-    CONSTRAINT FK_FA_SubCategory FOREIGN KEY ([SubCategoryId])       REFERENCES [dbo].[FixedAssetSubCategories]([SubCategoryId]),
-    CONSTRAINT FK_FA_Warehouse   FOREIGN KEY ([CurrentWarehouseId])  REFERENCES [dbo].[Warehouses]([WarehouseId]),
-    CONSTRAINT FK_FA_Employee    FOREIGN KEY ([AssignedToEmployeeId])REFERENCES [dbo].[Employees]([EmployeeId]),
-    CONSTRAINT FK_FA_Supplier    FOREIGN KEY ([SupplierId])          REFERENCES [dbo].[Suppliers]([SupplierId])
+    CONSTRAINT FK_FA_Category    FOREIGN KEY ([AssetCategoryId])      REFERENCES [dbo].[FixedAssetCategories]([AssetCategoryId]),
+    CONSTRAINT FK_FA_Warehouse   FOREIGN KEY ([CurrentWarehouseId])   REFERENCES [dbo].[Warehouses]([WarehouseId]),
+    CONSTRAINT FK_FA_Employee    FOREIGN KEY ([AssignedToEmployeeId]) REFERENCES [dbo].[Employees]([EmployeeId]),
+    CONSTRAINT FK_FA_Supplier    FOREIGN KEY ([SupplierId])           REFERENCES [dbo].[Suppliers]([SupplierId])
 );
 GO
 
 -- -------------------------------------------------------
--- 5. VALORES EAV (atributos específicos por activo)
+-- 4. VALORES EAV (atributos específicos por activo)
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetAttributeValues] (
     [AttributeValueId] [int]           IDENTITY(1,1) NOT NULL,
@@ -181,7 +158,7 @@ CREATE TABLE [dbo].[FixedAssetAttributeValues] (
 GO
 
 -- -------------------------------------------------------
--- 6. ESTADOS DE PARTIDAS CONTABLES DE ACTIVOS FIJOS
+-- 5. ESTADOS DE PARTIDAS CONTABLES DE ACTIVOS FIJOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[AccountingFixedAssetStatus] (
     [StatusId]    [int]          NOT NULL IDENTITY(1,1),
@@ -201,7 +178,7 @@ INSERT INTO [dbo].[AccountingFixedAssetStatus] ([StatusCode], [StatusName], [Des
 GO
 
 -- -------------------------------------------------------
--- 7. PARTIDAS CONTABLES DE ACTIVOS FIJOS — MAESTRO
+-- 6. PARTIDAS CONTABLES DE ACTIVOS FIJOS — MAESTRO
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[AccountingEntryFixedAssets] (
     [EntryMasterId] [int]           NOT NULL IDENTITY(1,1),
@@ -222,7 +199,7 @@ CREATE TABLE [dbo].[AccountingEntryFixedAssets] (
 GO
 
 -- -------------------------------------------------------
--- 8. PARTIDAS CONTABLES DE ACTIVOS FIJOS — DETALLE
+-- 7. PARTIDAS CONTABLES DE ACTIVOS FIJOS — DETALLE
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[AccountingEntryFixedAssetsDetail] (
     [EntryDetailId]  [int]           NOT NULL IDENTITY(1,1),
@@ -238,7 +215,7 @@ CREATE TABLE [dbo].[AccountingEntryFixedAssetsDetail] (
 GO
 
 -- -------------------------------------------------------
--- 9. ESTADOS DE TRASLADOS
+-- 8. ESTADOS DE TRASLADOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransferStatus] (
     [TransferStatusId] [int]          IDENTITY(1,1) NOT NULL,
@@ -279,7 +256,7 @@ SET IDENTITY_INSERT [dbo].[FixedAssetTransferStatus] OFF;
 GO
 
 -- -------------------------------------------------------
--- 10. TRANSICIONES PERMITIDAS ENTRE ESTADOS
+-- 9. TRANSICIONES PERMITIDAS ENTRE ESTADOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransferStatusTransitions] (
     [TransitionId] [int]      IDENTITY(1,1) NOT NULL,
@@ -314,7 +291,7 @@ VALUES
 GO
 
 -- -------------------------------------------------------
--- 11. TRASLADOS — MAESTRO
+-- 10. TRASLADOS — MAESTRO
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransfers] (
     [TransferId]       [int]           IDENTITY(1,1) NOT NULL,
@@ -332,7 +309,7 @@ CREATE TABLE [dbo].[FixedAssetTransfers] (
     [ModifiedDate]     [datetime]      NULL,
     [ModifiedBy]       [int]           NULL,
     CONSTRAINT PK_FixedAssetTransfers PRIMARY KEY CLUSTERED ([TransferId] ASC),
-    CONSTRAINT UK_FAT_Code      UNIQUE ([TransferCode]),
+    CONSTRAINT UK_FAT_Code        UNIQUE ([TransferCode]),
     CONSTRAINT FK_FAT_ToWarehouse FOREIGN KEY ([ToWarehouseId])    REFERENCES [dbo].[Warehouses]([WarehouseId]),
     CONSTRAINT FK_FAT_ToEmployee  FOREIGN KEY ([ToEmployeeId])     REFERENCES [dbo].[Employees]([EmployeeId]),
     CONSTRAINT FK_FAT_Status      FOREIGN KEY ([TransferStatusId]) REFERENCES [dbo].[FixedAssetTransferStatus]([TransferStatusId])
@@ -340,7 +317,7 @@ CREATE TABLE [dbo].[FixedAssetTransfers] (
 GO
 
 -- -------------------------------------------------------
--- 12. TRASLADOS — DETALLE
+-- 11. TRASLADOS — DETALLE
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransferDetails] (
     [TransferDetailId] [int]      IDENTITY(1,1) NOT NULL,
@@ -351,33 +328,32 @@ CREATE TABLE [dbo].[FixedAssetTransferDetails] (
     [CreatedDate]      [datetime] NULL CONSTRAINT DF_FATD_Created DEFAULT GETDATE(),
     [CreatedBy]        [int]      NULL,
     CONSTRAINT PK_FixedAssetTransferDetails PRIMARY KEY CLUSTERED ([TransferDetailId] ASC),
-    CONSTRAINT UK_FATD_Transfer_Asset UNIQUE ([TransferId], [AssetId]),
-    CONSTRAINT FK_FATD_Transfer     FOREIGN KEY ([TransferId])      REFERENCES [dbo].[FixedAssetTransfers]([TransferId]) ON DELETE CASCADE,
-    CONSTRAINT FK_FATD_Asset        FOREIGN KEY ([AssetId])         REFERENCES [dbo].[FixedAssets]([AssetId]),
-    CONSTRAINT FK_FATD_FromWarehouse FOREIGN KEY ([FromWarehouseId]) REFERENCES [dbo].[Warehouses]([WarehouseId]),
-    CONSTRAINT FK_FATD_FromEmployee  FOREIGN KEY ([FromEmployeeId])  REFERENCES [dbo].[Employees]([EmployeeId])
+    CONSTRAINT UK_FATD_Transfer_Asset  UNIQUE ([TransferId], [AssetId]),
+    CONSTRAINT FK_FATD_Transfer        FOREIGN KEY ([TransferId])       REFERENCES [dbo].[FixedAssetTransfers]([TransferId]) ON DELETE CASCADE,
+    CONSTRAINT FK_FATD_Asset           FOREIGN KEY ([AssetId])          REFERENCES [dbo].[FixedAssets]([AssetId]),
+    CONSTRAINT FK_FATD_FromWarehouse   FOREIGN KEY ([FromWarehouseId])  REFERENCES [dbo].[Warehouses]([WarehouseId]),
+    CONSTRAINT FK_FATD_FromEmployee    FOREIGN KEY ([FromEmployeeId])   REFERENCES [dbo].[Employees]([EmployeeId])
 );
 GO
 
 -- ============================================================
 -- SECCIÓN 3: ÍNDICES
 -- ============================================================
-CREATE INDEX IX_FA_Category    ON [dbo].[FixedAssets]([AssetCategoryId]);
-CREATE INDEX IX_FA_SubCategory ON [dbo].[FixedAssets]([SubCategoryId]);
-CREATE INDEX IX_FA_Warehouse   ON [dbo].[FixedAssets]([CurrentWarehouseId]);
-CREATE INDEX IX_FA_Employee    ON [dbo].[FixedAssets]([AssignedToEmployeeId]);
-CREATE INDEX IX_FA_Status      ON [dbo].[FixedAssets]([AssetStatus]);
-CREATE INDEX IX_FA_Supplier    ON [dbo].[FixedAssets]([SupplierId]);
+CREATE INDEX IX_FA_Category  ON [dbo].[FixedAssets]([AssetCategoryId]);
+CREATE INDEX IX_FA_Warehouse ON [dbo].[FixedAssets]([CurrentWarehouseId]);
+CREATE INDEX IX_FA_Employee  ON [dbo].[FixedAssets]([AssignedToEmployeeId]);
+CREATE INDEX IX_FA_Status    ON [dbo].[FixedAssets]([AssetStatus]);
+CREATE INDEX IX_FA_Supplier  ON [dbo].[FixedAssets]([SupplierId]);
 
-CREATE INDEX IX_FAAV_Asset     ON [dbo].[FixedAssetAttributeValues]([AssetId]);
-CREATE INDEX IX_FAAV_AttrDef   ON [dbo].[FixedAssetAttributeValues]([AttributeDefId]);
+CREATE INDEX IX_FAAV_Asset   ON [dbo].[FixedAssetAttributeValues]([AssetId]);
+CREATE INDEX IX_FAAV_AttrDef ON [dbo].[FixedAssetAttributeValues]([AttributeDefId]);
 
-CREATE INDEX IX_AEFA_Asset     ON [dbo].[AccountingEntryFixedAssets]([AssetId]);
-CREATE INDEX IX_AEFA_Period    ON [dbo].[AccountingEntryFixedAssets]([Period]);
+CREATE INDEX IX_AEFA_Asset   ON [dbo].[AccountingEntryFixedAssets]([AssetId]);
+CREATE INDEX IX_AEFA_Period  ON [dbo].[AccountingEntryFixedAssets]([Period]);
 
-CREATE INDEX IX_FAT_Status     ON [dbo].[FixedAssetTransfers]([TransferStatusId]);
-CREATE INDEX IX_FAT_Date       ON [dbo].[FixedAssetTransfers]([TransferDate]);
+CREATE INDEX IX_FAT_Status   ON [dbo].[FixedAssetTransfers]([TransferStatusId]);
+CREATE INDEX IX_FAT_Date     ON [dbo].[FixedAssetTransfers]([TransferDate]);
 
-CREATE INDEX IX_FATST_From     ON [dbo].[FixedAssetTransferStatusTransitions]([FromStatusId]);
-CREATE INDEX IX_FATST_To       ON [dbo].[FixedAssetTransferStatusTransitions]([ToStatusId]);
+CREATE INDEX IX_FATST_From   ON [dbo].[FixedAssetTransferStatusTransitions]([FromStatusId]);
+CREATE INDEX IX_FATST_To     ON [dbo].[FixedAssetTransferStatusTransitions]([ToStatusId]);
 GO

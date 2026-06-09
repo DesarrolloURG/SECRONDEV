@@ -33,8 +33,6 @@
             this.Btn_Inactive = new System.Windows.Forms.Button();
             this.Btn_Clear = new System.Windows.Forms.Button();
             this.Panel_1 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ComboBox_SubCategoria = new System.Windows.Forms.ComboBox();
             this.Lbl_Sub1 = new System.Windows.Forms.Label();
             this.Lbl_AssetCode = new System.Windows.Forms.Label();
             this.Txt_AssetCode = new System.Windows.Forms.TextBox();
@@ -225,7 +223,7 @@
             this.Panel_8.Controls.Add(this.Lbl_AssetStatus);
             this.Panel_8.Controls.Add(this.Lbl_Notes);
             this.Panel_8.Controls.Add(this.ComboBox_AssetStatus);
-            this.Panel_8.Location = new System.Drawing.Point(4, 1414);
+            this.Panel_8.Location = new System.Drawing.Point(4, 1328);
             this.Panel_8.Name = "Panel_8";
             this.Panel_8.Size = new System.Drawing.Size(560, 294);
             this.Panel_8.TabIndex = 86;
@@ -357,8 +355,6 @@
             // Panel_1
             // 
             this.Panel_1.BackColor = System.Drawing.Color.White;
-            this.Panel_1.Controls.Add(this.label2);
-            this.Panel_1.Controls.Add(this.ComboBox_SubCategoria);
             this.Panel_1.Controls.Add(this.Lbl_Sub1);
             this.Panel_1.Controls.Add(this.Lbl_AssetCode);
             this.Panel_1.Controls.Add(this.Txt_AssetCode);
@@ -371,29 +367,8 @@
             this.Panel_1.Controls.Add(this.Btn_SearchCategory);
             this.Panel_1.Location = new System.Drawing.Point(4, 105);
             this.Panel_1.Name = "Panel_1";
-            this.Panel_1.Size = new System.Drawing.Size(555, 497);
+            this.Panel_1.Size = new System.Drawing.Size(555, 412);
             this.Panel_1.TabIndex = 52;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(15, 412);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(137, 20);
-            this.label2.TabIndex = 68;
-            this.label2.Text = "SUB CATEGORIA *";
-            // 
-            // ComboBox_SubCategoria
-            // 
-            this.ComboBox_SubCategoria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ComboBox_SubCategoria.FormattingEnabled = true;
-            this.ComboBox_SubCategoria.Location = new System.Drawing.Point(19, 445);
-            this.ComboBox_SubCategoria.Margin = new System.Windows.Forms.Padding(4);
-            this.ComboBox_SubCategoria.Name = "ComboBox_SubCategoria";
-            this.ComboBox_SubCategoria.Size = new System.Drawing.Size(525, 28);
-            this.ComboBox_SubCategoria.TabIndex = 67;
-            this.ComboBox_SubCategoria.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SubCategoria_SelectedIndexChanged);
             // 
             // Lbl_Sub1
             // 
@@ -506,7 +481,7 @@
             this.Panel_3.Controls.Add(this.Lbl_Supplier);
             this.Panel_3.Controls.Add(this.Txt_Supplier);
             this.Panel_3.Controls.Add(this.Btn_SearchSupplier);
-            this.Panel_3.Location = new System.Drawing.Point(4, 608);
+            this.Panel_3.Location = new System.Drawing.Point(4, 522);
             this.Panel_3.Name = "Panel_3";
             this.Panel_3.Size = new System.Drawing.Size(555, 297);
             this.Panel_3.TabIndex = 81;
@@ -635,7 +610,7 @@
             this.Panel_4.Controls.Add(this.Btn_SelectWarrantyDoc);
             this.Panel_4.Controls.Add(this.Lbl_WarrantyExpDate);
             this.Panel_4.Controls.Add(this.DTP_WarrantyExpirationDate);
-            this.Panel_4.Location = new System.Drawing.Point(4, 910);
+            this.Panel_4.Location = new System.Drawing.Point(4, 824);
             this.Panel_4.Name = "Panel_4";
             this.Panel_4.Size = new System.Drawing.Size(555, 167);
             this.Panel_4.TabIndex = 82;
@@ -710,7 +685,7 @@
             this.Panel_5.Controls.Add(this.DTP_DepreciationStartDate);
             this.Panel_5.Controls.Add(this.Lbl_ResidualValueAct);
             this.Panel_5.Controls.Add(this.Txt_ResidualValueAct);
-            this.Panel_5.Location = new System.Drawing.Point(4, 1082);
+            this.Panel_5.Location = new System.Drawing.Point(4, 996);
             this.Panel_5.Name = "Panel_5";
             this.Panel_5.Size = new System.Drawing.Size(555, 163);
             this.Panel_5.TabIndex = 83;
@@ -775,7 +750,7 @@
             this.Panel_6.Controls.Add(this.Lbl_Employee);
             this.Panel_6.Controls.Add(this.Txt_Employee);
             this.Panel_6.Controls.Add(this.Btn_SearchEmployee);
-            this.Panel_6.Location = new System.Drawing.Point(4, 1250);
+            this.Panel_6.Location = new System.Drawing.Point(4, 1164);
             this.Panel_6.Name = "Panel_6";
             this.Panel_6.Size = new System.Drawing.Size(555, 160);
             this.Panel_6.TabIndex = 84;
@@ -860,7 +835,7 @@
             this.Panel_7.Controls.Add(this.Lbl_DisposalReason);
             this.Panel_7.Controls.Add(this.Lbl_DisposalValue);
             this.Panel_7.Controls.Add(this.Txt_DisposalValue);
-            this.Panel_7.Location = new System.Drawing.Point(4, 1714);
+            this.Panel_7.Location = new System.Drawing.Point(4, 1628);
             this.Panel_7.Name = "Panel_7";
             this.Panel_7.Size = new System.Drawing.Size(555, 358);
             this.Panel_7.TabIndex = 85;
@@ -946,7 +921,7 @@
             this.Panel_Busqueda.Controls.Add(this.FiltroEstado);
             this.Panel_Busqueda.Location = new System.Drawing.Point(16, 8);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(742, 109);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(793, 109);
             this.Panel_Busqueda.TabIndex = 2;
             // 
             // Txt_ValorBuscado
@@ -956,7 +931,7 @@
             this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(21, 18);
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(494, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(545, 27);
             this.Txt_ValorBuscado.TabIndex = 0;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
@@ -966,7 +941,7 @@
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = ((System.Drawing.Image)(resources.GetObject("Btn_Search.Image")));
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(532, 11);
+            this.Btn_Search.Location = new System.Drawing.Point(583, 11);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(135, 38);
             this.Btn_Search.TabIndex = 1;
@@ -980,7 +955,7 @@
             this.Btn_CleanSearch.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearch.Image = ((System.Drawing.Image)(resources.GetObject("Btn_CleanSearch.Image")));
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(675, 11);
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(726, 11);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(40, 38);
             this.Btn_CleanSearch.TabIndex = 2;
@@ -1011,7 +986,7 @@
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(16, 118);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(742, 40);
+            this.PanelToolStrip.Size = new System.Drawing.Size(793, 40);
             this.PanelToolStrip.TabIndex = 1;
             // 
             // Lbl_Paginas
@@ -1035,7 +1010,7 @@
             this.Panel_BusquedaAtributos.Controls.Add(this.Btn_CleanSearchAtributo);
             this.Panel_BusquedaAtributos.Location = new System.Drawing.Point(16, 447);
             this.Panel_BusquedaAtributos.Name = "Panel_BusquedaAtributos";
-            this.Panel_BusquedaAtributos.Size = new System.Drawing.Size(742, 90);
+            this.Panel_BusquedaAtributos.Size = new System.Drawing.Size(793, 90);
             this.Panel_BusquedaAtributos.TabIndex = 5;
             // 
             // Txt_BuscarAtributo
@@ -1045,7 +1020,7 @@
             this.Txt_BuscarAtributo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Txt_BuscarAtributo.Location = new System.Drawing.Point(4, 9);
             this.Txt_BuscarAtributo.Name = "Txt_BuscarAtributo";
-            this.Txt_BuscarAtributo.Size = new System.Drawing.Size(456, 27);
+            this.Txt_BuscarAtributo.Size = new System.Drawing.Size(507, 27);
             this.Txt_BuscarAtributo.TabIndex = 0;
             this.Txt_BuscarAtributo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_BuscarAtributo_KeyDown);
             // 
@@ -1064,7 +1039,7 @@
             this.Btn_SearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_SearchAtributo.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchAtributo.Image")));
             this.Btn_SearchAtributo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_SearchAtributo.Location = new System.Drawing.Point(466, 9);
+            this.Btn_SearchAtributo.Location = new System.Drawing.Point(517, 9);
             this.Btn_SearchAtributo.Name = "Btn_SearchAtributo";
             this.Btn_SearchAtributo.Size = new System.Drawing.Size(135, 36);
             this.Btn_SearchAtributo.TabIndex = 2;
@@ -1078,7 +1053,7 @@
             this.Btn_CleanSearchAtributo.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.Btn_CleanSearchAtributo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearchAtributo.Image = ((System.Drawing.Image)(resources.GetObject("Btn_CleanSearchAtributo.Image")));
-            this.Btn_CleanSearchAtributo.Location = new System.Drawing.Point(609, 9);
+            this.Btn_CleanSearchAtributo.Location = new System.Drawing.Point(660, 9);
             this.Btn_CleanSearchAtributo.Name = "Btn_CleanSearchAtributo";
             this.Btn_CleanSearchAtributo.Size = new System.Drawing.Size(40, 36);
             this.Btn_CleanSearchAtributo.TabIndex = 3;
@@ -1106,7 +1081,7 @@
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(16, 164);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(742, 250);
+            this.PanelTabla.Size = new System.Drawing.Size(793, 250);
             this.PanelTabla.TabIndex = 0;
             // 
             // Tabla
@@ -1116,7 +1091,7 @@
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
             this.Tabla.RowTemplate.Height = 24;
-            this.Tabla.Size = new System.Drawing.Size(742, 250);
+            this.Tabla.Size = new System.Drawing.Size(793, 250);
             this.Tabla.TabIndex = 0;
             // 
             // panel1
@@ -1127,7 +1102,7 @@
             this.panel1.Controls.Add(this.TablaAtributos);
             this.panel1.Location = new System.Drawing.Point(16, 541);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(742, 288);
+            this.panel1.Size = new System.Drawing.Size(793, 288);
             this.panel1.TabIndex = 6;
             // 
             // TablaAtributos
@@ -1137,7 +1112,7 @@
             this.TablaAtributos.Location = new System.Drawing.Point(0, 0);
             this.TablaAtributos.Name = "TablaAtributos";
             this.TablaAtributos.RowTemplate.Height = 24;
-            this.TablaAtributos.Size = new System.Drawing.Size(742, 288);
+            this.TablaAtributos.Size = new System.Drawing.Size(793, 288);
             this.TablaAtributos.TabIndex = 0;
             // 
             // Panel_AtributosCRUD
@@ -1448,7 +1423,5 @@
         private System.Windows.Forms.Button Btn_ClearAtributo;
         private System.Windows.Forms.Panel Panel_Derecho;
         private System.Windows.Forms.Button Btn_Delete;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox ComboBox_SubCategoria;
     }
 }
