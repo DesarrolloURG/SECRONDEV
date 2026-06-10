@@ -40,7 +40,7 @@ namespace SECRON.Views
                 ConfigurarComponentesDeshabilitados();
 
                 CargarCategorias();
-                CargarProximoCodigoCategoria();
+                //CargarProximoCodigoCategoria();
             }
             catch (Exception ex)
             {
@@ -72,13 +72,13 @@ namespace SECRON.Views
 
         private void ConfigurarComponentesDeshabilitados()
         {
-            Txt_Codigo.Enabled = false;    // Código automático
             Txt_Selected.Enabled = false;  // Solo muestra la selección
         }
 
         #endregion ConfigurarTextBox
         #region CodigoCategoriaAutomatico
 
+        /*
         // MÉTODO PARA CARGAR EL PRÓXIMO CÓDIGO DE CATEGORÍA
         private void CargarProximoCodigoCategoria()
         {
@@ -95,7 +95,7 @@ namespace SECRON.Views
                 Txt_Codigo.Text = "ERROR";
             }
         }
-
+        */
         #endregion CodigoCategoriaAutomatico
         #region ConfiguracionInicial
 
@@ -383,7 +383,8 @@ namespace SECRON.Views
 
                 var nuevaCategoria = new Mdl_ItemCategories
                 {
-                    CategoryCode = Ctrl_ItemCategories.ObtenerProximoCodigoCategoria(),
+                    //CategoryCode = Ctrl_ItemCategories.ObtenerProximoCodigoCategoria(),
+                    CategoryCode = Txt_Codigo.Text.Trim().ToUpper(),
                     CategoryName = Txt_UnitName.Text.Trim().ToUpper(),
                     Description = Txt_Description.Text.Trim().ToUpper(),
                     IsActive = true,
@@ -398,7 +399,7 @@ namespace SECRON.Views
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarDetalle();
                     CargarCategorias();
-                    CargarProximoCodigoCategoria();
+                    //CargarProximoCodigoCategoria();
                 }
                 else
                 {
@@ -435,6 +436,14 @@ namespace SECRON.Views
                 if (confirm != DialogResult.Yes)
                     return;
 
+                if(SelectedCategoryCode != Txt_Codigo.Text.Trim().ToUpper())
+                {
+                    MessageBox.Show("No se puede modificar el código de la categoría", "VALIDACIÓN",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Txt_Codigo.Focus();
+                    return;
+                }
+            
                 var categoria = new Mdl_ItemCategories
                 {
                     CategoryId = SelectedCategoryId.Value,
@@ -452,7 +461,7 @@ namespace SECRON.Views
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarDetalle();
                     CargarCategorias();
-                    CargarProximoCodigoCategoria();
+                    //CargarProximoCodigoCategoria();
                 }
                 else
                 {
@@ -494,7 +503,7 @@ namespace SECRON.Views
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarDetalle();
                     CargarCategorias();
-                    CargarProximoCodigoCategoria();
+                    //CargarProximoCodigoCategoria();
                 }
                 else
                 {
@@ -512,7 +521,7 @@ namespace SECRON.Views
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
             LimpiarDetalle();
-            CargarProximoCodigoCategoria();
+            //CargarProximoCodigoCategoria();
         }
 
         private void LimpiarDetalle()

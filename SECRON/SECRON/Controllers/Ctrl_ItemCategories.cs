@@ -225,5 +225,28 @@ namespace SECRON.Controllers
                 return "ERROR";
             }
         }
+
+        public static string ObtenerCodigoPorId(int categoryId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT CategoryCode FROM ItemCategories WHERE CategoryId = @CategoryId";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                        object resultado = cmd.ExecuteScalar();
+                        return resultado != null ? resultado.ToString() : "";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener código de categoría: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "";
+            }
+        }
     }
 }
