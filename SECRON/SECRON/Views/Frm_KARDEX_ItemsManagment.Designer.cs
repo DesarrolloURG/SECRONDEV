@@ -65,6 +65,9 @@
             this.Lbl_UnitCost = new System.Windows.Forms.Label();
             this.Lbl_Subtitulo6 = new System.Windows.Forms.Label();
             this.Panel_1 = new System.Windows.Forms.Panel();
+            this.Txt_SubCategory = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Btn_SearchSubCategory = new System.Windows.Forms.Button();
             this.Btn_SearchMeasurementUnits = new System.Windows.Forms.Button();
             this.Txt_MeasurementUnits = new System.Windows.Forms.TextBox();
             this.Txt_Category = new System.Windows.Forms.TextBox();
@@ -247,6 +250,7 @@
             // 
             // Panel_Izquierdo
             // 
+            this.Panel_Izquierdo.AutoScroll = true;
             this.Panel_Izquierdo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.Panel_Izquierdo.Controls.Add(this.Lbl_Titulo);
             this.Panel_Izquierdo.Controls.Add(this.Panel_CRUD);
@@ -282,7 +286,7 @@
             this.Panel_CRUD.Controls.Add(this.Btn_Inactive);
             this.Panel_CRUD.Controls.Add(this.Btn_Update);
             this.Panel_CRUD.Controls.Add(this.Btn_Save);
-            this.Panel_CRUD.Location = new System.Drawing.Point(16, 49);
+            this.Panel_CRUD.Location = new System.Drawing.Point(7, 49);
             this.Panel_CRUD.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_CRUD.Name = "Panel_CRUD";
             this.Panel_CRUD.Size = new System.Drawing.Size(555, 58);
@@ -373,7 +377,7 @@
             this.Panel_2.Controls.Add(this.Lbl_MinimumStock);
             this.Panel_2.Controls.Add(this.Lbl_UnitCost);
             this.Panel_2.Controls.Add(this.Lbl_Subtitulo6);
-            this.Panel_2.Location = new System.Drawing.Point(16, 571);
+            this.Panel_2.Location = new System.Drawing.Point(7, 655);
             this.Panel_2.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_2.Name = "Panel_2";
             this.Panel_2.Size = new System.Drawing.Size(555, 406);
@@ -551,6 +555,9 @@
             // Panel_1
             // 
             this.Panel_1.BackColor = System.Drawing.Color.White;
+            this.Panel_1.Controls.Add(this.Txt_SubCategory);
+            this.Panel_1.Controls.Add(this.label1);
+            this.Panel_1.Controls.Add(this.Btn_SearchSubCategory);
             this.Panel_1.Controls.Add(this.Btn_SearchMeasurementUnits);
             this.Panel_1.Controls.Add(this.Txt_MeasurementUnits);
             this.Panel_1.Controls.Add(this.Txt_Category);
@@ -564,18 +571,56 @@
             this.Panel_1.Controls.Add(this.Lbl_Descripcion);
             this.Panel_1.Controls.Add(this.Lbl_Articulo);
             this.Panel_1.Controls.Add(this.Lbl_Codigo);
-            this.Panel_1.Location = new System.Drawing.Point(16, 114);
+            this.Panel_1.Location = new System.Drawing.Point(7, 114);
             this.Panel_1.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_1.Name = "Panel_1";
-            this.Panel_1.Size = new System.Drawing.Size(555, 449);
+            this.Panel_1.Size = new System.Drawing.Size(555, 536);
             this.Panel_1.TabIndex = 52;
+            // 
+            // Txt_SubCategory
+            // 
+            this.Txt_SubCategory.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_SubCategory.Location = new System.Drawing.Point(17, 406);
+            this.Txt_SubCategory.Margin = new System.Windows.Forms.Padding(4);
+            this.Txt_SubCategory.MaxLength = 15;
+            this.Txt_SubCategory.Name = "Txt_SubCategory";
+            this.Txt_SubCategory.Size = new System.Drawing.Size(472, 27);
+            this.Txt_SubCategory.TabIndex = 75;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label1.Location = new System.Drawing.Point(13, 378);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(244, 20);
+            this.label1.TabIndex = 73;
+            this.label1.Text = "SELECCIONA LA SUB-CATEGORÍA";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // Btn_SearchSubCategory
+            // 
+            this.Btn_SearchSubCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_SearchSubCategory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SearchSubCategory.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_SearchSubCategory.Location = new System.Drawing.Point(499, 389);
+            this.Btn_SearchSubCategory.Margin = new System.Windows.Forms.Padding(4);
+            this.Btn_SearchSubCategory.Name = "Btn_SearchSubCategory";
+            this.Btn_SearchSubCategory.Size = new System.Drawing.Size(47, 55);
+            this.Btn_SearchSubCategory.TabIndex = 74;
+            this.Btn_SearchSubCategory.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_SearchSubCategory.UseVisualStyleBackColor = true;
+            this.Btn_SearchSubCategory.Click += new System.EventHandler(this.Btn_SearchSubCategory_Click);
             // 
             // Btn_SearchMeasurementUnits
             // 
             this.Btn_SearchMeasurementUnits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Btn_SearchMeasurementUnits.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_SearchMeasurementUnits.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
-            this.Btn_SearchMeasurementUnits.Location = new System.Drawing.Point(499, 386);
+            this.Btn_SearchMeasurementUnits.Location = new System.Drawing.Point(499, 459);
             this.Btn_SearchMeasurementUnits.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_SearchMeasurementUnits.Name = "Btn_SearchMeasurementUnits";
             this.Btn_SearchMeasurementUnits.Size = new System.Drawing.Size(47, 55);
@@ -587,7 +632,7 @@
             // Txt_MeasurementUnits
             // 
             this.Txt_MeasurementUnits.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_MeasurementUnits.Location = new System.Drawing.Point(19, 406);
+            this.Txt_MeasurementUnits.Location = new System.Drawing.Point(17, 479);
             this.Txt_MeasurementUnits.Margin = new System.Windows.Forms.Padding(4);
             this.Txt_MeasurementUnits.MaxLength = 15;
             this.Txt_MeasurementUnits.Name = "Txt_MeasurementUnits";
@@ -610,7 +655,7 @@
             this.Lbl_MeasurementUnits.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_MeasurementUnits.ForeColor = System.Drawing.Color.Black;
             this.Lbl_MeasurementUnits.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Lbl_MeasurementUnits.Location = new System.Drawing.Point(13, 377);
+            this.Lbl_MeasurementUnits.Location = new System.Drawing.Point(13, 450);
             this.Lbl_MeasurementUnits.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_MeasurementUnits.Name = "Lbl_MeasurementUnits";
             this.Lbl_MeasurementUnits.Size = new System.Drawing.Size(273, 20);
@@ -689,7 +734,7 @@
             this.Txt_Codigo.Margin = new System.Windows.Forms.Padding(4);
             this.Txt_Codigo.MaxLength = 15;
             this.Txt_Codigo.Name = "Txt_Codigo";
-            this.Txt_Codigo.Size = new System.Drawing.Size(225, 27);
+            this.Txt_Codigo.Size = new System.Drawing.Size(525, 27);
             this.Txt_Codigo.TabIndex = 1;
             // 
             // Lbl_Descripcion
@@ -877,5 +922,8 @@
         private System.Windows.Forms.Label Lbl_Titulo;
         private System.Windows.Forms.Button Btn_Import;
         private System.Windows.Forms.Button Btn_Export;
+        private System.Windows.Forms.TextBox Txt_SubCategory;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button Btn_SearchSubCategory;
     }
 }

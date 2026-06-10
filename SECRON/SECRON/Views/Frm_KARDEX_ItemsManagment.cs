@@ -31,6 +31,8 @@ namespace SECRON.Views
         // Categoría y unidad seleccionadas en el detalle
         private int? _categoriaSeleccionadaId = null;
         private int? _unidadSeleccionadaId = null;
+        private int? _subCategoriaSeleccionadaId = null;
+        private string _subCategoriaSeleccionadaCode = null;
 
         // Paginación
         private int paginaActual = 1;
@@ -98,6 +100,7 @@ namespace SECRON.Views
             }
         }
 
+
         #endregion PropiedadesIniciales
         #region ConfigurarTextBox
 
@@ -119,14 +122,18 @@ namespace SECRON.Views
 
             Txt_Category.MaxLength = 100;
             Txt_MeasurementUnits.MaxLength = 50;
+            Txt_SubCategory.MaxLength = 200;
+
         }
-        private void ConfigurarComponentesDeshabilitados() 
+        
+        private void ConfigurarComponentesDeshabilitados()
         {
             Txt_Codigo.Enabled = false;
-            // Estos los controla el sistema (búsqueda de formularios), normalmente estarán ReadOnly/Enabled = false
             Txt_Category.Enabled = false;
+            Txt_SubCategory.Enabled = false;
             Txt_MeasurementUnits.Enabled = false;
         }
+
         private void ConfigurarPlaceHoldersTextbox()
         {
             ConfigurarPlaceHolder(Txt_ValorBuscado, "BUSCAR POR CÓDIGO, NOMBRE O DESCRIPCIÓN...");
@@ -143,6 +150,8 @@ namespace SECRON.Views
 
             ConfigurarPlaceHolder(Txt_Category, "SELECCIONAR CATEGORÍA");
             ConfigurarPlaceHolder(Txt_MeasurementUnits, "SELECCIONAR UNIDAD DE MEDIDA");
+            ConfigurarPlaceHolder(Txt_SubCategory, "SELECCIONAR SUBCATEGORÍA");
+
         }
 
         private void ConfigurarPlaceHolder(TextBox textBox, string placeholder)
@@ -213,14 +222,21 @@ namespace SECRON.Views
         {
             try
             {
-                string proximoCodigo = Ctrl_Items.ObtenerProximoCodigoArticulo();
+                if (!_categoriaSeleccionadaId.HasValue || _subCategoriaSeleccionadaCode == null)
+                {
+                    SetTextBoxFromValue(Txt_Codigo, "", "CÓDIGO DEL ARTÍCULO");
+                    return;
+                }
+
+                string categoryCode = Ctrl_ItemCategories.ObtenerCodigoPorId(_categoriaSeleccionadaId.Value);
+                string proximoCodigo = Ctrl_Items.ObtenerProximoCodigoArticulo(categoryCode, _subCategoriaSeleccionadaCode);
                 Txt_Codigo.Text = proximoCodigo;
                 Txt_Codigo.ForeColor = Color.Black;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al generar código de artículo: {ex.Message}",
-                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al generar código de artículo: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Txt_Codigo.Text = "ERROR";
             }
         }
@@ -427,6 +443,9 @@ namespace SECRON.Views
                 // Guardar IDs para detalle
                 _categoriaSeleccionadaId = _itemSeleccionado.CategoryId;
                 _unidadSeleccionadaId = _itemSeleccionado.UnitId;
+                _subCategoriaSeleccionadaId = _itemSeleccionado.SubCategoryId;
+                _subCategoriaSeleccionadaCode = _itemSeleccionado.SubCategoryName;
+                SetTextBoxFromValue(Txt_SubCategory, _itemSeleccionado.SubCategoryName, "SELECCIONAR SUBCATEGORÍA");
 
                 // Mostrar nombres de categoría/unidad en Txt_Category / Txt_MeasurementUnits
                 // Aquí los traemos con ayuda de los controllers (búsqueda simple)
@@ -800,6 +819,11 @@ namespace SECRON.Views
             Btn_Update.TabIndex = 20;
             Btn_Inactive.TabIndex = 21;
 
+            Btn_SearchSubCategory.TabIndex = 9;
+            Txt_SubCategory.TabIndex = 10;
+            Btn_SearchMeasurementUnits.TabIndex = 11;
+            Txt_MeasurementUnits.TabIndex = 12;
+
             Txt_ValorBuscado.Focus();
         }
 
@@ -844,6 +868,14 @@ namespace SECRON.Views
                 MessageBox.Show("Debe seleccionar una CATEGORÍA", "Validación",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Btn_SearchCategory.Focus();
+                return false;
+            }
+
+            if (!_subCategoriaSeleccionadaId.HasValue || _subCategoriaSeleccionadaId <= 0)
+            {
+                MessageBox.Show("Debe seleccionar una SUBCATEGORÍA", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Btn_SearchSubCategory.Focus();
                 return false;
             }
 
@@ -908,22 +940,21 @@ namespace SECRON.Views
 
                 var nuevoItem = new Mdl_Items
                 {
-                    ItemCode = Ctrl_Items.ObtenerProximoCodigoArticulo(),
+                    ItemCode = Ctrl_Items.ObtenerProximoCodigoArticulo(
+                        Ctrl_ItemCategories.ObtenerCodigoPorId(_categoriaSeleccionadaId.Value),
+                        _subCategoriaSeleccionadaCode),
                     ItemName = Txt_Articulo.Text.Trim(),
                     Description = Txt_Descripcion.Text.Trim(),
                     CategoryId = _categoriaSeleccionadaId ?? 0,
+                    SubCategoryId = _subCategoriaSeleccionadaId ?? 0,
                     UnitId = _unidadSeleccionadaId ?? 0,
-
                     MinimumStock = ObtenerDecimalDesdeTextBox(Txt_MinimumStock, "0.00", "STOCK MÍNIMO"),
                     MaximumStock = ObtenerDecimalDesdeTextBox(Txt_MaximumStock, "0.00", "STOCK MÁXIMO"),
                     ReorderPoint = ObtenerDecimalDesdeTextBox(Txt_ReorderPoint, "0.00", "PUNTO DE REORDEN"),
-
                     UnitCost = ObtenerDecimalDesdeTextBox(Txt_UnitCost, "0.00", "COSTO UNITARIO"),
                     LastPurchasePrice = ObtenerDecimalDesdeTextBox(Txt_LastPurchasePrice, "0.00", "PRECIO ÚLTIMA COMPRA"),
-
                     HasLotControl = ComboBox_HasLotControl.SelectedItem?.ToString() == "Si",
                     HasExpiryDate = ComboBox_HasExpiryDate.SelectedItem?.ToString() == "Si",
-
                     IsActive = true,
                     CreatedDate = DateTime.Now,
                     CreatedBy = UserData?.UserId ?? 1
@@ -958,7 +989,7 @@ namespace SECRON.Views
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("El boton esta: "+ Btn_Update.Enabled);
+            System.Diagnostics.Debug.WriteLine("El boton esta: " + Btn_Update.Enabled);
             if (!Btn_Update.Enabled) return;
 
             try
@@ -973,31 +1004,58 @@ namespace SECRON.Views
                 if (!ValidarCamposObligatorios())
                     return;
 
+                // Validar cambio de categoría
+                if (_categoriaSeleccionadaId.HasValue &&
+                    _categoriaSeleccionadaId != _itemSeleccionado.CategoryId)
+                {
+                    MessageBox.Show(
+                        "No es posible cambiar la CATEGORÍA de un artículo existente.\n\n" +
+                        "Si necesita asignarlo a una categoría diferente, deberá eliminar este artículo " +
+                        "y registrarlo nuevamente." ,
+                        "Cambio de categoría no permitido",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    _categoriaSeleccionadaId = _itemSeleccionado.CategoryId;
+                    SetTextBoxFromValue(Txt_Category, _itemSeleccionado.CategoryName, "SELECCIONAR CATEGORÍA");
+                }
+
+                // Validar cambio de subcategoría
+                if (_subCategoriaSeleccionadaId.HasValue &&
+                    _subCategoriaSeleccionadaId != _itemSeleccionado.SubCategoryId)
+                {
+                    MessageBox.Show(
+                        "No es posible cambiar la SUBCATEGORÍA de un artículo existente.\n\n" +
+                        "Si necesita asignarlo a una subcategoría diferente, deberá eliminar este artículo " +
+                        "y registrarlo nuevamente.",
+                        "Cambio de subcategoría no permitido",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    _subCategoriaSeleccionadaId = _itemSeleccionado.SubCategoryId;
+                    _subCategoriaSeleccionadaCode = _itemSeleccionado.SubCategoryName;
+                    SetTextBoxFromValue(Txt_SubCategory, _itemSeleccionado.SubCategoryName, "SELECCIONAR SUBCATEGORÍA");
+                }
+
                 var confirmacion = MessageBox.Show(
                     $"¿Está seguro que desea actualizar el artículo {_itemSeleccionado.ItemName}?",
                     "Confirmar Actualización",
                     MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
+                    MessageBoxIcon.Question);
 
                 if (confirmacion != DialogResult.Yes)
                     return;
 
                 _itemSeleccionado.ItemName = Txt_Articulo.Text.Trim();
                 _itemSeleccionado.Description = Txt_Descripcion.Text.Trim();
-                _itemSeleccionado.CategoryId = _categoriaSeleccionadaId ?? 0;
-                _itemSeleccionado.UnitId = _unidadSeleccionadaId ?? 0;
-
+                _itemSeleccionado.CategoryId = _itemSeleccionado.CategoryId;   // no se modifica
+                _itemSeleccionado.SubCategoryId = _itemSeleccionado.SubCategoryId; // no se modifica
+                _itemSeleccionado.UnitId = _unidadSeleccionadaId ?? _itemSeleccionado.UnitId;
                 _itemSeleccionado.MinimumStock = ObtenerDecimalDesdeTextBox(Txt_MinimumStock, "0.00", "STOCK MÍNIMO");
                 _itemSeleccionado.MaximumStock = ObtenerDecimalDesdeTextBox(Txt_MaximumStock, "0.00", "STOCK MÁXIMO");
                 _itemSeleccionado.ReorderPoint = ObtenerDecimalDesdeTextBox(Txt_ReorderPoint, "0.00", "PUNTO DE REORDEN");
-
                 _itemSeleccionado.UnitCost = ObtenerDecimalDesdeTextBox(Txt_UnitCost, "0.00", "COSTO UNITARIO");
                 _itemSeleccionado.LastPurchasePrice = ObtenerDecimalDesdeTextBox(Txt_LastPurchasePrice, "0.00", "PRECIO ÚLTIMA COMPRA");
-
                 _itemSeleccionado.HasLotControl = ComboBox_HasLotControl.SelectedItem?.ToString() == "Si";
                 _itemSeleccionado.HasExpiryDate = ComboBox_HasExpiryDate.SelectedItem?.ToString() == "Si";
-
                 _itemSeleccionado.ModifiedBy = UserData?.UserId ?? 1;
                 _itemSeleccionado.ModifiedDate = DateTime.Now;
 
@@ -1012,8 +1070,6 @@ namespace SECRON.Views
                     LimpiarFormulario();
                     RefrescarListado();
                     ActualizarInfoPaginacion();
-
-                    // Cargar el próximo código automático
                     CargarProximoCodigoItem();
                 }
                 else
@@ -1100,6 +1156,11 @@ namespace SECRON.Views
 
             // Cargar el próximo código automático
             CargarProximoCodigoItem();
+
+            _subCategoriaSeleccionadaId = null;
+            _subCategoriaSeleccionadaCode = null;
+            SetTextBoxFromValue(Txt_SubCategory, "", "SELECCIONAR SUBCATEGORÍA");
+
             Txt_Codigo.Focus();
         }
 
@@ -1125,12 +1186,53 @@ namespace SECRON.Views
                     {
                         _categoriaSeleccionadaId = frm.SelectedCategoryId;
                         SetTextBoxFromValue(Txt_Category, frm.SelectedCategoryName, "SELECCIONAR CATEGORÍA");
+
+                        // Limpiar subcategoría al cambiar categoría
+                        _subCategoriaSeleccionadaId = null;
+                        _subCategoriaSeleccionadaCode = null;
+                        SetTextBoxFromValue(Txt_SubCategory, "", "SELECCIONAR SUBCATEGORÍA");
+                        SetTextBoxFromValue(Txt_Codigo, "", "CÓDIGO DEL ARTÍCULO");
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al buscar categoría: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Btn_SearchSubCategory_Click(object sender, EventArgs e)
+        {
+            if (!Btn_SearchSubCategory.Enabled) return;
+            try
+            {
+                if (!_categoriaSeleccionadaId.HasValue || _categoriaSeleccionadaId <= 0)
+                {
+                    MessageBox.Show("Debe seleccionar primero una CATEGORÍA.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                using (var frm = new Frm_KARDEX_SearchSubCategory(_categoriaSeleccionadaId.Value,
+                    Txt_Category.ForeColor == Color.Gray ? "" : Txt_Category.Text.Trim()))
+                {
+                    frm.UserId = UserData?.UserId;
+                    frm.StartPosition = FormStartPosition.CenterParent;
+                    if (frm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        _subCategoriaSeleccionadaId = frm.SelectedSubCategoryId;
+                        _subCategoriaSeleccionadaCode = frm.SelectedSubCategoryCode;
+                        SetTextBoxFromValue(Txt_SubCategory, frm.SelectedSubCategoryName, "SELECCIONAR SUBCATEGORÍA");
+
+                        // Generar código con el nuevo formato
+                        CargarProximoCodigoItem();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar subcategoría: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
