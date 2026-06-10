@@ -45,26 +45,26 @@
             this.Filtro1 = new System.Windows.Forms.ComboBox();
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Panel_Izquierdo = new System.Windows.Forms.Panel();
+            this.Panel_2 = new System.Windows.Forms.Panel();
+            this.Btn_Assign = new System.Windows.Forms.Button();
+            this.Lbl_TipoDestino = new System.Windows.Forms.Label();
+            this.ComboBox_TipoDestino = new System.Windows.Forms.ComboBox();
+            this.Lbl_Location = new System.Windows.Forms.Label();
+            this.ComboBox_Location = new System.Windows.Forms.ComboBox();
+            this.Lbl_ToLocation = new System.Windows.Forms.Label();
+            this.ComboBox_ToLocation = new System.Windows.Forms.ComboBox();
+            this.Lbl_ToEmployee = new System.Windows.Forms.Label();
+            this.ComboBox_ToEmployee = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.Btn_Update = new System.Windows.Forms.Button();
+            this.Lbl_Subtitulo3 = new System.Windows.Forms.Label();
             this.vScrollBar = new System.Windows.Forms.VScrollBar();
             this.Panel_Atributos = new System.Windows.Forms.Panel();
-            this.Lbl_Subtitulo3 = new System.Windows.Forms.Label();
-            this.Btn_Update = new System.Windows.Forms.Button();
             this.Panel_1 = new System.Windows.Forms.Panel();
             this.Btn_PrintLetter = new System.Windows.Forms.Button();
             this.ComboBox_Categories = new System.Windows.Forms.ComboBox();
             this.Lbl_Subtitulo2 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.Panel_2 = new System.Windows.Forms.Panel();
-            this.ComboBox_ToEmployee = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.Lbl_ToEmployee = new System.Windows.Forms.Label();
-            this.Lbl_ToLocation = new System.Windows.Forms.Label();
-            this.ComboBox_ToLocation = new System.Windows.Forms.ComboBox();
-            this.Lbl_Location = new System.Windows.Forms.Label();
-            this.ComboBox_Location = new System.Windows.Forms.ComboBox();
-            this.Lbl_TipoDestino = new System.Windows.Forms.Label();
-            this.ComboBox_TipoDestino = new System.Windows.Forms.ComboBox();
-            this.Btn_Assign = new System.Windows.Forms.Button();
             this.Panel_Superior.SuspendLayout();
             this.Panel_Derecho.SuspendLayout();
             this.PanelTabla.SuspendLayout();
@@ -72,9 +72,9 @@
             this.PanelToolStrip.SuspendLayout();
             this.Panel_Busqueda.SuspendLayout();
             this.Panel_Izquierdo.SuspendLayout();
-            this.Panel_1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.Panel_2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.Panel_1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Superior
@@ -273,35 +273,139 @@
             this.Panel_Izquierdo.Size = new System.Drawing.Size(477, 806);
             this.Panel_Izquierdo.TabIndex = 8;
             // 
-            // vScrollBar
+            // Panel_2
             // 
-            this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar.Location = new System.Drawing.Point(467, 0);
-            this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(10, 806);
-            this.vScrollBar.TabIndex = 80;
+            this.Panel_2.BackColor = System.Drawing.Color.White;
+            this.Panel_2.Controls.Add(this.Btn_Assign);
+            this.Panel_2.Controls.Add(this.Lbl_TipoDestino);
+            this.Panel_2.Controls.Add(this.ComboBox_TipoDestino);
+            this.Panel_2.Controls.Add(this.Lbl_Location);
+            this.Panel_2.Controls.Add(this.ComboBox_Location);
+            this.Panel_2.Controls.Add(this.Lbl_ToLocation);
+            this.Panel_2.Controls.Add(this.ComboBox_ToLocation);
+            this.Panel_2.Controls.Add(this.Lbl_ToEmployee);
+            this.Panel_2.Controls.Add(this.ComboBox_ToEmployee);
+            this.Panel_2.Controls.Add(this.label1);
+            this.Panel_2.Location = new System.Drawing.Point(13, 167);
+            this.Panel_2.Name = "Panel_2";
+            this.Panel_2.Size = new System.Drawing.Size(435, 278);
+            this.Panel_2.TabIndex = 82;
             // 
-            // Panel_Atributos
+            // Btn_Assign
             // 
-            this.Panel_Atributos.BackColor = System.Drawing.Color.White;
-            this.Panel_Atributos.Location = new System.Drawing.Point(13, 504);
-            this.Panel_Atributos.Name = "Panel_Atributos";
-            this.Panel_Atributos.Size = new System.Drawing.Size(435, 283);
-            this.Panel_Atributos.TabIndex = 65;
+            this.Btn_Assign.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Assign.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Assign.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_Assign.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Assign.Location = new System.Drawing.Point(313, 7);
+            this.Btn_Assign.Name = "Btn_Assign";
+            this.Btn_Assign.Size = new System.Drawing.Size(108, 34);
+            this.Btn_Assign.TabIndex = 77;
+            this.Btn_Assign.Text = "ASIGNAR";
+            this.Btn_Assign.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Assign.UseVisualStyleBackColor = true;
+            this.Btn_Assign.Click += new System.EventHandler(this.Btn_Assign_Click);
             // 
-            // Lbl_Subtitulo3
+            // Lbl_TipoDestino
             // 
-            this.Lbl_Subtitulo3.AutoSize = true;
-            this.Lbl_Subtitulo3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Subtitulo3.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Subtitulo3.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
-            this.Lbl_Subtitulo3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Lbl_Subtitulo3.Location = new System.Drawing.Point(10, 10);
-            this.Lbl_Subtitulo3.Name = "Lbl_Subtitulo3";
-            this.Lbl_Subtitulo3.Size = new System.Drawing.Size(193, 20);
-            this.Lbl_Subtitulo3.TabIndex = 6;
-            this.Lbl_Subtitulo3.Text = "      DETALLES DEL EQUIPO";
-            this.Lbl_Subtitulo3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.Lbl_TipoDestino.AutoSize = true;
+            this.Lbl_TipoDestino.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_TipoDestino.Location = new System.Drawing.Point(10, 94);
+            this.Lbl_TipoDestino.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Lbl_TipoDestino.Name = "Lbl_TipoDestino";
+            this.Lbl_TipoDestino.Size = new System.Drawing.Size(258, 20);
+            this.Lbl_TipoDestino.TabIndex = 76;
+            this.Lbl_TipoDestino.Text = "SELECCIONA EL TIPO DE DESTINO *";
+            // 
+            // ComboBox_TipoDestino
+            // 
+            this.ComboBox_TipoDestino.FormattingEnabled = true;
+            this.ComboBox_TipoDestino.Location = new System.Drawing.Point(14, 117);
+            this.ComboBox_TipoDestino.Name = "ComboBox_TipoDestino";
+            this.ComboBox_TipoDestino.Size = new System.Drawing.Size(407, 28);
+            this.ComboBox_TipoDestino.TabIndex = 75;
+            // 
+            // Lbl_Location
+            // 
+            this.Lbl_Location.AutoSize = true;
+            this.Lbl_Location.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Location.Location = new System.Drawing.Point(10, 40);
+            this.Lbl_Location.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Lbl_Location.Name = "Lbl_Location";
+            this.Lbl_Location.Size = new System.Drawing.Size(216, 20);
+            this.Lbl_Location.TabIndex = 74;
+            this.Lbl_Location.Text = "SELECCIONA SEDE DESTINO *";
+            // 
+            // ComboBox_Location
+            // 
+            this.ComboBox_Location.FormattingEnabled = true;
+            this.ComboBox_Location.Location = new System.Drawing.Point(14, 63);
+            this.ComboBox_Location.Name = "ComboBox_Location";
+            this.ComboBox_Location.Size = new System.Drawing.Size(407, 28);
+            this.ComboBox_Location.TabIndex = 73;
+            // 
+            // Lbl_ToLocation
+            // 
+            this.Lbl_ToLocation.AutoSize = true;
+            this.Lbl_ToLocation.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_ToLocation.Location = new System.Drawing.Point(10, 210);
+            this.Lbl_ToLocation.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Lbl_ToLocation.Name = "Lbl_ToLocation";
+            this.Lbl_ToLocation.Size = new System.Drawing.Size(123, 20);
+            this.Lbl_ToLocation.TabIndex = 72;
+            this.Lbl_ToLocation.Text = "SEDE DESTINO *";
+            // 
+            // ComboBox_ToLocation
+            // 
+            this.ComboBox_ToLocation.FormattingEnabled = true;
+            this.ComboBox_ToLocation.Location = new System.Drawing.Point(14, 233);
+            this.ComboBox_ToLocation.Name = "ComboBox_ToLocation";
+            this.ComboBox_ToLocation.Size = new System.Drawing.Size(407, 28);
+            this.ComboBox_ToLocation.TabIndex = 71;
+            // 
+            // Lbl_ToEmployee
+            // 
+            this.Lbl_ToEmployee.AutoSize = true;
+            this.Lbl_ToEmployee.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_ToEmployee.Location = new System.Drawing.Point(10, 150);
+            this.Lbl_ToEmployee.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Lbl_ToEmployee.Name = "Lbl_ToEmployee";
+            this.Lbl_ToEmployee.Size = new System.Drawing.Size(103, 20);
+            this.Lbl_ToEmployee.TabIndex = 70;
+            this.Lbl_ToEmployee.Text = "ASIGNAR A *";
+            // 
+            // ComboBox_ToEmployee
+            // 
+            this.ComboBox_ToEmployee.FormattingEnabled = true;
+            this.ComboBox_ToEmployee.Location = new System.Drawing.Point(14, 173);
+            this.ComboBox_ToEmployee.Name = "ComboBox_ToEmployee";
+            this.ComboBox_ToEmployee.Size = new System.Drawing.Size(407, 28);
+            this.ComboBox_ToEmployee.TabIndex = 69;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label1.Image = global::SECRON.Properties.Resources.UsersNegro25x25;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.label1.Location = new System.Drawing.Point(10, 7);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(298, 20);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "      ASIGNACIÓN INMEDIATA DE EQUIPO";
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.Btn_Update);
+            this.panel1.Controls.Add(this.Lbl_Subtitulo3);
+            this.panel1.Location = new System.Drawing.Point(13, 451);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(435, 47);
+            this.panel1.TabIndex = 81;
             // 
             // Btn_Update
             // 
@@ -317,6 +421,36 @@
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Update.UseVisualStyleBackColor = true;
             this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
+            // 
+            // Lbl_Subtitulo3
+            // 
+            this.Lbl_Subtitulo3.AutoSize = true;
+            this.Lbl_Subtitulo3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Subtitulo3.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Subtitulo3.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
+            this.Lbl_Subtitulo3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Subtitulo3.Location = new System.Drawing.Point(10, 10);
+            this.Lbl_Subtitulo3.Name = "Lbl_Subtitulo3";
+            this.Lbl_Subtitulo3.Size = new System.Drawing.Size(193, 20);
+            this.Lbl_Subtitulo3.TabIndex = 6;
+            this.Lbl_Subtitulo3.Text = "      DETALLES DEL EQUIPO";
+            this.Lbl_Subtitulo3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // vScrollBar
+            // 
+            this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vScrollBar.Location = new System.Drawing.Point(467, 0);
+            this.vScrollBar.Name = "vScrollBar";
+            this.vScrollBar.Size = new System.Drawing.Size(10, 806);
+            this.vScrollBar.TabIndex = 80;
+            // 
+            // Panel_Atributos
+            // 
+            this.Panel_Atributos.BackColor = System.Drawing.Color.White;
+            this.Panel_Atributos.Location = new System.Drawing.Point(13, 504);
+            this.Panel_Atributos.Name = "Panel_Atributos";
+            this.Panel_Atributos.Size = new System.Drawing.Size(435, 283);
+            this.Panel_Atributos.TabIndex = 65;
             // 
             // Panel_1
             // 
@@ -364,139 +498,6 @@
             this.Lbl_Subtitulo2.TabIndex = 14;
             this.Lbl_Subtitulo2.Text = "      CATEGORÍA DEL EQUIPO";
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.Btn_Update);
-            this.panel1.Controls.Add(this.Lbl_Subtitulo3);
-            this.panel1.Location = new System.Drawing.Point(13, 451);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(435, 47);
-            this.panel1.TabIndex = 81;
-            // 
-            // Panel_2
-            // 
-            this.Panel_2.BackColor = System.Drawing.Color.White;
-            this.Panel_2.Controls.Add(this.Btn_Assign);
-            this.Panel_2.Controls.Add(this.Lbl_TipoDestino);
-            this.Panel_2.Controls.Add(this.ComboBox_TipoDestino);
-            this.Panel_2.Controls.Add(this.Lbl_Location);
-            this.Panel_2.Controls.Add(this.ComboBox_Location);
-            this.Panel_2.Controls.Add(this.Lbl_ToLocation);
-            this.Panel_2.Controls.Add(this.ComboBox_ToLocation);
-            this.Panel_2.Controls.Add(this.Lbl_ToEmployee);
-            this.Panel_2.Controls.Add(this.ComboBox_ToEmployee);
-            this.Panel_2.Controls.Add(this.label1);
-            this.Panel_2.Location = new System.Drawing.Point(13, 167);
-            this.Panel_2.Name = "Panel_2";
-            this.Panel_2.Size = new System.Drawing.Size(435, 278);
-            this.Panel_2.TabIndex = 82;
-            // 
-            // ComboBox_ToEmployee
-            // 
-            this.ComboBox_ToEmployee.FormattingEnabled = true;
-            this.ComboBox_ToEmployee.Location = new System.Drawing.Point(14, 173);
-            this.ComboBox_ToEmployee.Name = "ComboBox_ToEmployee";
-            this.ComboBox_ToEmployee.Size = new System.Drawing.Size(407, 28);
-            this.ComboBox_ToEmployee.TabIndex = 69;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.label1.Image = global::SECRON.Properties.Resources.UsersNegro25x25;
-            this.label1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.label1.Location = new System.Drawing.Point(10, 7);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(298, 20);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "      ASIGNACIÓN INMEDIATA DE EQUIPO";
-            // 
-            // Lbl_ToEmployee
-            // 
-            this.Lbl_ToEmployee.AutoSize = true;
-            this.Lbl_ToEmployee.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_ToEmployee.Location = new System.Drawing.Point(10, 150);
-            this.Lbl_ToEmployee.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Lbl_ToEmployee.Name = "Lbl_ToEmployee";
-            this.Lbl_ToEmployee.Size = new System.Drawing.Size(103, 20);
-            this.Lbl_ToEmployee.TabIndex = 70;
-            this.Lbl_ToEmployee.Text = "ASIGNAR A *";
-            // 
-            // Lbl_ToLocation
-            // 
-            this.Lbl_ToLocation.AutoSize = true;
-            this.Lbl_ToLocation.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_ToLocation.Location = new System.Drawing.Point(10, 210);
-            this.Lbl_ToLocation.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Lbl_ToLocation.Name = "Lbl_ToLocation";
-            this.Lbl_ToLocation.Size = new System.Drawing.Size(123, 20);
-            this.Lbl_ToLocation.TabIndex = 72;
-            this.Lbl_ToLocation.Text = "SEDE DESTINO *";
-            // 
-            // ComboBox_ToLocation
-            // 
-            this.ComboBox_ToLocation.FormattingEnabled = true;
-            this.ComboBox_ToLocation.Location = new System.Drawing.Point(14, 233);
-            this.ComboBox_ToLocation.Name = "ComboBox_ToLocation";
-            this.ComboBox_ToLocation.Size = new System.Drawing.Size(407, 28);
-            this.ComboBox_ToLocation.TabIndex = 71;
-            // 
-            // Lbl_Location
-            // 
-            this.Lbl_Location.AutoSize = true;
-            this.Lbl_Location.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Location.Location = new System.Drawing.Point(10, 40);
-            this.Lbl_Location.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Lbl_Location.Name = "Lbl_Location";
-            this.Lbl_Location.Size = new System.Drawing.Size(216, 20);
-            this.Lbl_Location.TabIndex = 74;
-            this.Lbl_Location.Text = "SELECCIONA SEDE DESTINO *";
-            // 
-            // ComboBox_Location
-            // 
-            this.ComboBox_Location.FormattingEnabled = true;
-            this.ComboBox_Location.Location = new System.Drawing.Point(14, 63);
-            this.ComboBox_Location.Name = "ComboBox_Location";
-            this.ComboBox_Location.Size = new System.Drawing.Size(407, 28);
-            this.ComboBox_Location.TabIndex = 73;
-            // 
-            // Lbl_TipoDestino
-            // 
-            this.Lbl_TipoDestino.AutoSize = true;
-            this.Lbl_TipoDestino.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_TipoDestino.Location = new System.Drawing.Point(10, 94);
-            this.Lbl_TipoDestino.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Lbl_TipoDestino.Name = "Lbl_TipoDestino";
-            this.Lbl_TipoDestino.Size = new System.Drawing.Size(258, 20);
-            this.Lbl_TipoDestino.TabIndex = 76;
-            this.Lbl_TipoDestino.Text = "SELECCIONA EL TIPO DE DESTINO *";
-            // 
-            // ComboBox_TipoDestino
-            // 
-            this.ComboBox_TipoDestino.FormattingEnabled = true;
-            this.ComboBox_TipoDestino.Location = new System.Drawing.Point(14, 117);
-            this.ComboBox_TipoDestino.Name = "ComboBox_TipoDestino";
-            this.ComboBox_TipoDestino.Size = new System.Drawing.Size(407, 28);
-            this.ComboBox_TipoDestino.TabIndex = 75;
-            // 
-            // Btn_Assign
-            // 
-            this.Btn_Assign.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Assign.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Assign.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
-            this.Btn_Assign.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Assign.Location = new System.Drawing.Point(313, 7);
-            this.Btn_Assign.Name = "Btn_Assign";
-            this.Btn_Assign.Size = new System.Drawing.Size(108, 34);
-            this.Btn_Assign.TabIndex = 77;
-            this.Btn_Assign.Text = "ASIGNAR";
-            this.Btn_Assign.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Assign.UseVisualStyleBackColor = true;
-            // 
             // Frm_ITSM_Technology
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -520,12 +521,12 @@
             this.Panel_Busqueda.ResumeLayout(false);
             this.Panel_Busqueda.PerformLayout();
             this.Panel_Izquierdo.ResumeLayout(false);
-            this.Panel_1.ResumeLayout(false);
-            this.Panel_1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.Panel_2.ResumeLayout(false);
             this.Panel_2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.Panel_1.ResumeLayout(false);
+            this.Panel_1.PerformLayout();
             this.ResumeLayout(false);
 
         }

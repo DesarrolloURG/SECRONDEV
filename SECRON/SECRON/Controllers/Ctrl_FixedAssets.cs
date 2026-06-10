@@ -478,5 +478,37 @@ namespace SECRON.Controllers
                 return 0;
             }
         }
+        public static int ActualizarAsignacionActivo(
+        int assetId, int? empleadoId, int? bodegaId, int? modifiedBy = null)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                UPDATE FixedAssets SET
+                    AssignedToEmployeeId = @EmpleadoId,
+                    CurrentWarehouseId   = @BodegaId,
+                    ModifiedDate         = GETDATE(),
+                    ModifiedBy           = @ModifiedBy
+                WHERE AssetId = @AssetId";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@AssetId", assetId);
+                        cmd.Parameters.AddWithValue("@EmpleadoId", (object)empleadoId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@BodegaId", (object)bodegaId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+                        return cmd.ExecuteNonQuery() > 0 ? 1 : -1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar asignación: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

@@ -53,13 +53,16 @@ namespace SECRON.Views
                 ConfigurarTabla();
                 ConfigurarFiltros();
                 AplicarEstilosBotones();
-                ConfigurarVScrollBar();
+                InicializarScroll();
+                ConfigurarEventosScroll();
 
                 // Validar clasificación TECNOLOGÍA antes de cargar
                 if (!ValidarClasificacionTecnologia()) return;
 
                 ConfigurarComboBoxCategoria();
+                ConfigurarPanel2();
                 LimpiarPanelAtributos();
+                CargarActivos();
             }
             catch (Exception ex)
             {
@@ -141,57 +144,82 @@ namespace SECRON.Views
 
         #region VScrollBar
 
-        private void ConfigurarVScrollBar()
+        private void InicializarScroll()
         {
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+            {
+                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
+                    ctrl.Tag = "OrigY:" + ctrl.Top;
+            }
+
+            int maxBottom = 0;
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+                maxBottom = Math.Max(maxBottom, ctrl.Bottom);
+
+            int totalContentHeight = maxBottom + (Panel_Izquierdo.Height / 3);
+
+            if (totalContentHeight <= Panel_Izquierdo.Height)
+            {
+                vScrollBar.Enabled = false;
+                return;
+            }
+
+            vScrollBar.Enabled = true;
             vScrollBar.Minimum = 0;
-            vScrollBar.Maximum = 0;
+            vScrollBar.Maximum = totalContentHeight - Panel_Izquierdo.Height;
+            vScrollBar.SmallChange = 30;
+            vScrollBar.LargeChange = Panel_Izquierdo.Height / 4;
             vScrollBar.Value = 0;
-            vScrollBar.Visible = false;
-            vScrollBar.Scroll += VScrollBar_Scroll;
+
+            vScrollBar.Scroll -= vScrollBar_Scroll;
+            vScrollBar.Scroll += vScrollBar_Scroll;
         }
 
-        private void ActualizarVScrollBar()
+        private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            // Calcular el contenido total del Panel_Atributos
-            int alturaTotal = _controlesAtributos != null && _controlesAtributos.Count > 0
-                ? _controlesAtributos.Values
-                    .Max(kvp => kvp.Entrada.Location.Y + kvp.Entrada.Height) + 30
-                : 0;
-
-            int alturaVisible = Panel_Atributos.Height;
-
-            if (alturaTotal > alturaVisible)
-            {
-                vScrollBar.Maximum = alturaTotal - alturaVisible + 20;
-                vScrollBar.Visible = true;
-                vScrollBar.Value = 0;
-            }
-            else
-            {
-                vScrollBar.Maximum = 0;
-                vScrollBar.Visible = false;
-                vScrollBar.Value = 0;
-            }
+            MoverContenido(e.NewValue);
         }
 
-        private void VScrollBar_Scroll(object sender, ScrollEventArgs e)
+        private void MoverContenido(int scrollPosition)
         {
-            int desplazamiento = e.NewValue;
-
-            foreach (var kvp in _posicionesOriginalesY)
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
             {
-                Control ctrl = kvp.Key;
-                int yOriginal = kvp.Value;
+                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
+                    ctrl.Tag = "OrigY:" + ctrl.Top;
 
-                // No desplazar el ComboBox (es fijo en Panel_1)
-                if (ctrl.Parent == Panel_1) continue;
-
-                if (ctrl.Parent == Panel_Atributos)
-                    ctrl.Location = new Point(ctrl.Location.X, yOriginal - desplazamiento);
+                string[] parts = ctrl.Tag.ToString().Split(':');
+                int originalY = int.Parse(parts[1]);
+                ctrl.Top = originalY - scrollPosition;
             }
+            Panel_Izquierdo.Invalidate();
         }
 
-        #endregion
+        private void ConfigurarEventosScroll()
+        {
+            Panel_Izquierdo.TabStop = true;
+            Panel_Izquierdo.MouseWheel += Panel_Izquierdo_MouseWheel;
+            Panel_Izquierdo.MouseEnter += Panel_Izquierdo_MouseEnter;
+
+            foreach (Control ctrl in Panel_Izquierdo.Controls)
+                ctrl.MouseWheel += Panel_Izquierdo_MouseWheel;
+        }
+
+        private void Panel_Izquierdo_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!vScrollBar.Enabled) return;
+
+            int newValue = vScrollBar.Value - (e.Delta / 120 * 30);
+            newValue = Math.Max(0, Math.Min(newValue, vScrollBar.Maximum));
+            vScrollBar.Value = newValue;
+            MoverContenido(newValue);
+        }
+
+        private void Panel_Izquierdo_MouseEnter(object sender, EventArgs e)
+        {
+            Panel_Izquierdo.Focus();
+        }
+
+        #endregion VScrollBar
 
         #region Configuración
 
@@ -344,22 +372,20 @@ namespace SECRON.Views
         private void LimpiarPanelAtributos()
         {
             Panel_Atributos.Controls.Clear();
+            Panel_Atributos.AutoScroll = false;
             _controlesAtributos = null;
-            _posicionesOriginalesY.Clear();
             _activoSeleccionado = null;
             Btn_PrintLetter.Enabled = false;
             Btn_Update.Enabled = false;
-            vScrollBar.Visible = false;
 
-            var lbl = new Label
+            Panel_Atributos.Controls.Add(new Label
             {
                 Text = "Seleccione un equipo de la lista para ver sus detalles.",
                 Font = new Font("Segoe UI", 10F, FontStyle.Italic),
                 ForeColor = Color.Gray,
-                Location = new Point(10, 40),
+                Location = new Point(10, 10),
                 AutoSize = true
-            };
-            Panel_Atributos.Controls.Add(lbl);
+            });
         }
 
         private void CargarAtributosEditablesEnPanel(int assetId, int categoryId)
@@ -367,32 +393,30 @@ namespace SECRON.Views
             try
             {
                 Panel_Atributos.Controls.Clear();
+                Panel_Atributos.AutoScroll = true;
                 _controlesAtributos = new Dictionary<int, (Mdl_FixedAssetAttributeValue, Control)>();
-                _posicionesOriginalesY = new Dictionary<Control, int>();
 
                 var atributos = Ctrl_FixedAssetAttributeValues
                     .ObtenerValoresConPlantilla(assetId, categoryId);
 
                 if (atributos == null || atributos.Count == 0)
                 {
-                    var lblVacio = new Label
+                    Panel_Atributos.Controls.Add(new Label
                     {
                         Text = "Sin características definidas para esta categoría.",
                         Font = new Font("Segoe UI", 10F, FontStyle.Italic),
                         ForeColor = Color.Gray,
-                        Location = new Point(10, 40),
+                        Location = new Point(10, 10),
                         AutoSize = true
-                    };
-                    Panel_Atributos.Controls.Add(lblVacio);
+                    });
                     return;
                 }
 
-                int yPos = 40;
-                int ancho = Panel_Atributos.Width - 30;
+                int yPos = 10;
+                int ancho = Panel_Atributos.Width - 25;
 
                 foreach (var attr in atributos.OrderBy(a => a.AttributeDefId))
                 {
-                    // ── Label ────────────────────────────────────────────
                     var lbl = new Label
                     {
                         Text = attr.IsRequired
@@ -404,32 +428,26 @@ namespace SECRON.Views
                         AutoSize = true
                     };
                     Panel_Atributos.Controls.Add(lbl);
-                    _posicionesOriginalesY[lbl] = yPos;
                     yPos += 22;
 
-                    // ── Hint ─────────────────────────────────────────────
                     string hint = ObtenerHint(attr.DataType, attr.AttributeKey);
                     if (!string.IsNullOrEmpty(hint))
                     {
-                        var lblHint = new Label
+                        Panel_Atributos.Controls.Add(new Label
                         {
                             Text = hint,
                             Font = new Font("Segoe UI", 8F, FontStyle.Italic),
                             ForeColor = Color.Gray,
                             Location = new Point(10, yPos),
                             AutoSize = true
-                        };
-                        Panel_Atributos.Controls.Add(lblHint);
-                        _posicionesOriginalesY[lblHint] = yPos;
+                        });
                         yPos += 18;
                     }
 
-                    // ── Control dinámico editable ─────────────────────────
                     Control entrada = CrearControlEditable(attr.DataType, attr.Value ?? "", attr.AttributeKey);
                     entrada.Location = new Point(10, yPos);
                     entrada.Width = ancho;
                     Panel_Atributos.Controls.Add(entrada);
-                    _posicionesOriginalesY[entrada] = yPos;
 
                     _controlesAtributos[attr.AttributeDefId] = (new Mdl_FixedAssetAttributeValue
                     {
@@ -447,8 +465,6 @@ namespace SECRON.Views
 
                     yPos += entrada.Height + 15;
                 }
-
-                ActualizarVScrollBar();
             }
             catch (Exception ex)
             {
@@ -456,7 +472,6 @@ namespace SECRON.Views
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private string ObtenerHint(string dataType, string key)
         {
             switch (dataType?.ToUpper())
@@ -626,6 +641,7 @@ namespace SECRON.Views
 
             Btn_PrintLetter.Enabled = _activoSeleccionado.AssignedToEmployeeId.HasValue;
             Btn_Update.Enabled = true;
+            Btn_Assign.Enabled = true;
         }
 
         #endregion
@@ -685,7 +701,7 @@ namespace SECRON.Views
                 return;
             }
 
-            // Validar campos obligatorios
+            // Validar obligatorios
             foreach (var kvp in _controlesAtributos)
             {
                 var attr = kvp.Value.Atributo;
@@ -701,9 +717,14 @@ namespace SECRON.Views
                 }
             }
 
+            // Confirmación antes de guardar
+            if (MessageBox.Show(
+                $"¿Confirma actualizar las características del equipo '{_activoSeleccionado.AssetName}'?",
+                "Confirmar actualización",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+
             try
             {
-                // Guardar cada atributo
                 foreach (var kvp in _controlesAtributos)
                 {
                     var attr = kvp.Value.Atributo;
@@ -715,10 +736,9 @@ namespace SECRON.Views
                     Ctrl_FixedAssetAttributeValues.RegistrarValor(attr);
                 }
 
-                MessageBox.Show("Características del equipo actualizadas correctamente.", "Éxito",
+                MessageBox.Show("Características actualizadas correctamente.", "Éxito",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Recargar el panel para reflejar los valores guardados
                 CargarAtributosEditablesEnPanel(
                     _activoSeleccionado.AssetId,
                     _activoSeleccionado.AssetCategoryId);
@@ -780,125 +800,223 @@ namespace SECRON.Views
         }
 
         private void ImprimirCartaDeResponsabilidad(
-            PrintPageEventArgs e,
-            Mdl_FixedAsset activo,
-            List<Mdl_FixedAssetAttributeValue> atributos)
+    PrintPageEventArgs e,
+    Mdl_FixedAsset activo,
+    List<Mdl_FixedAssetAttributeValue> atributos)
         {
             Graphics g = e.Graphics;
-            int margenIzq = 60;
-            int margenDer = e.PageBounds.Width - 60;
-            int ancho = margenDer - margenIzq;
-            int yPos = 60;
+            Brush brush = Brushes.Black;
+            Pen pen = new Pen(Color.Black, 1);
+            Pen penGris = new Pen(Color.Gray, 0.5f);
 
-            Font fTitulo = new Font("Segoe UI", 16F, FontStyle.Bold);
-            Font fSubtitulo = new Font("Segoe UI", 11F, FontStyle.Bold);
-            Font fNormal = new Font("Segoe UI", 10F);
-            Font fNegrita = new Font("Segoe UI", 10F, FontStyle.Bold);
-            Font fPequeña = new Font("Segoe UI", 9F, FontStyle.Italic);
-            Brush negro = Brushes.Black;
-            Brush gris = Brushes.Gray;
-            Brush azul = new SolidBrush(Color.FromArgb(51, 140, 255));
+            Font fontTitulo = new Font("Calibri", 13, FontStyle.Bold);
+            Font fontBold = new Font("Calibri", 10, FontStyle.Bold);
+            Font fontNormal = new Font("Calibri", 10);
+            Font fontSmall = new Font("Calibri", 9);
+            Font fontSmallBold = new Font("Calibri", 9, FontStyle.Bold);
+            Font fontTable = new Font("Calibri", 8);
+            Font fontTableBold = new Font("Calibri", 8, FontStyle.Bold);
 
-            g.DrawString("UNIVERSIDAD REGIONAL REGIÓN 02 DE GUATEMALA", fNegrita, negro,
-                new RectangleF(margenIzq, yPos, ancho, 25),
-                new StringFormat { Alignment = StringAlignment.Center });
-            yPos += 22;
+            int leftMargin = 50;
+            int rightMargin = 760;
+            int pageWidth = rightMargin - leftMargin;
+            int currentY = 20;
+            float valorX = leftMargin + 200;
 
-            g.DrawString("SISTEMA DE CONTROL REGIONAL — SECRON", fPequeña, gris,
-                new RectangleF(margenIzq, yPos, ancho, 20),
-                new StringFormat { Alignment = StringAlignment.Center });
-            yPos += 35;
+            // ===== LOGO ENCABEZADO =====
+            try
+            {
+                Image logoEncabezado = Properties.Resources.LogoMembretadoEncabezado;
+                int logoW = 240, logoH = 80;
+                int logoX = leftMargin + (pageWidth - logoW) / 2;
+                g.DrawImage(logoEncabezado, logoX, currentY + 15, logoW, logoH);
+            }
+            catch { }
 
-            g.DrawLine(new Pen(Color.FromArgb(51, 140, 255), 2f), margenIzq, yPos, margenDer, yPos);
-            yPos += 15;
+            currentY += 50;
 
-            g.DrawString("CARTA DE RESPONSABILIDAD DE EQUIPO DE TECNOLOGÍA", fTitulo, azul,
-                new RectangleF(margenIzq, yPos, ancho, 35),
-                new StringFormat { Alignment = StringAlignment.Center });
-            yPos += 45;
-
+            // ===== REFERENCIA Y FECHA =====
             string fecha = DateTime.Now.ToString("dd 'de' MMMM 'de' yyyy",
-                new System.Globalization.CultureInfo("es-GT"));
-            g.DrawString($"Guatemala, {fecha}", fNormal, negro, new PointF(margenIzq, yPos));
-            g.DrawString($"Folio: {activo.AssetCode}-{DateTime.Now:yyyyMMddHHmm}", fNormal, gris,
-                new RectangleF(margenIzq, yPos, ancho, 20),
-                new StringFormat { Alignment = StringAlignment.Far });
-            yPos += 35;
+                new System.Globalization.CultureInfo("es-GT")).ToUpper();
+            g.DrawString($"Ref. {activo.AssetCode}", fontSmallBold, brush, rightMargin - 200, currentY + 65);
+            g.DrawString($"Guatemala, {fecha}", fontSmall, brush, rightMargin - 200, currentY + 80);
 
+            currentY += 105;
+
+            // ===== TÍTULO =====
+            string titulo = "CARTA DE RESPONSABILIDAD DE EQUIPO DE TECNOLOGÍA";
+            SizeF tituloSize = g.MeasureString(titulo, fontTitulo);
+            float tituloX = leftMargin + (pageWidth - tituloSize.Width) / 2;
+            g.DrawString(titulo, fontTitulo, brush, tituloX, currentY);
+            currentY += 28;
+
+            // Línea naranja
+            g.DrawLine(new Pen(Color.FromArgb(230, 115, 40), 2), leftMargin, currentY, rightMargin, currentY);
+            currentY += 18;
+
+            // ===== DATOS DEL EQUIPO =====
+            g.DrawString("ASIGNADO A:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(activo.EmployeeName?.ToUpper() ?? "___________________________", fontNormal, brush, valorX, currentY);
+            currentY += 27;
+
+            g.DrawString("DE:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(UserData?.FullName?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
+            currentY += 18;
+            g.DrawString("UNIVERSIDAD REGIONAL DE GUATEMALA", fontNormal, brush, valorX, currentY);
+            currentY += 28;
+
+            g.DrawString("EQUIPO:", fontBold, brush, leftMargin, currentY);
+            g.DrawString($"{activo.AssetCode} — {activo.AssetName?.ToUpper() ?? ""}", fontNormal, brush, valorX, currentY);
+            currentY += 27;
+
+            g.DrawString("CATEGORÍA:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(activo.CategoryName?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
+            currentY += 27;
+
+            g.DrawString("BODEGA / SEDE:", fontBold, brush, leftMargin, currentY);
+            g.DrawString(activo.WarehouseName?.ToUpper() ?? "SIN ASIGNAR", fontNormal, brush, valorX, currentY);
+            currentY += 35;
+
+            // ===== CUERPO — compromiso del responsable =====
+            string nombreResponsableTexto = activo.EmployeeName?.ToUpper() ?? "___________________________";
             string cuerpo =
-                $"Por medio de la presente, yo, {activo.EmployeeName?.ToUpper() ?? "___________________________"}, " +
+                $"Por medio de la presente, yo, {nombreResponsableTexto}, " +
                 $"en mi calidad de empleado(a) de la Universidad Regional Región 02 de Guatemala, " +
-                $"manifiesto haber recibido el equipo de tecnología que a continuación se describe, " +
+                $"manifiesto haber recibido el equipo de tecnología descrito a continuación " +
                 $"en perfectas condiciones de funcionamiento, comprometiéndome a darle el uso " +
                 $"adecuado, mantenerlo en buen estado y responder por cualquier daño, pérdida " +
                 $"o extravío del mismo.";
-            g.DrawString(cuerpo, fNormal, negro, new RectangleF(margenIzq, yPos, ancho, 100));
-            yPos += 90;
+            g.DrawString(cuerpo, fontNormal, brush, new RectangleF(leftMargin, currentY, pageWidth, 70));
+            currentY += 80;
 
-            yPos += 10;
-            g.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 255)), margenIzq, yPos, ancho, 25);
-            g.DrawString("  DATOS DEL EQUIPO", fSubtitulo, azul, new PointF(margenIzq, yPos + 4));
-            yPos += 30;
+            // Línea gris
+            g.DrawLine(penGris, leftMargin, currentY, rightMargin, currentY);
+            currentY += 18;
 
-            void FilaDato(string etiqueta, string valor)
+            // ===== TABLA DE ESPECIFICACIONES TÉCNICAS =====
+            int[] colWidths = { 220, pageWidth - 220 };
+            string[] headers = { "CARACTERÍSTICA", "VALOR" };
+            int tableX = leftMargin;
+            int rowH = 20;
+
+            g.FillRectangle(new SolidBrush(Color.FromArgb(30, 80, 160)), tableX, currentY, pageWidth, rowH);
+            int colX = tableX;
+            for (int i = 0; i < headers.Length; i++)
             {
-                g.DrawString(etiqueta, fNegrita, negro, new PointF(margenIzq + 5, yPos));
-                g.DrawString(valor ?? "—", fNormal, negro, new PointF(margenIzq + 180, yPos));
-                yPos += 22;
+                g.DrawString(headers[i], fontTableBold, Brushes.White, colX + 3, currentY + 4);
+                colX += colWidths[i];
+            }
+            g.DrawRectangle(pen, tableX, currentY, pageWidth, rowH);
+            currentY += rowH;
+
+            bool altRow = false;
+            int tableBodyStart = currentY;
+            int filasTotales = 0;
+
+            void FilaTabla(string etiqueta, string valor)
+            {
+                if (altRow)
+                    g.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 248)),
+                        tableX, currentY, pageWidth, rowH);
+                g.DrawString(etiqueta, fontTableBold, brush, tableX + 3, currentY + 4);
+                g.DrawString(valor ?? "—", fontTable, brush, tableX + colWidths[0] + 3, currentY + 4);
+                g.DrawRectangle(penGris, tableX, currentY, pageWidth, rowH);
+                currentY += rowH;
+                altRow = !altRow;
+                filasTotales++;
             }
 
-            FilaDato("CÓDIGO DE ACTIVO:", activo.AssetCode);
-            FilaDato("NOMBRE DEL EQUIPO:", activo.AssetName);
-            FilaDato("CATEGORÍA:", activo.CategoryName);
-            FilaDato("BODEGA / UBICACIÓN:", activo.WarehouseName ?? "SIN ASIGNAR");
-            FilaDato("ESTADO:", activo.AssetStatus);
-            FilaDato("FECHA DE ASIGNACIÓN:", DateTime.Now.ToString("dd/MM/yyyy"));
+            // Datos básicos del activo
+            FilaTabla("CÓDIGO DE ACTIVO", activo.AssetCode);
+            FilaTabla("NOMBRE DEL EQUIPO", activo.AssetName?.ToUpper() ?? "");
+            FilaTabla("CATEGORÍA", activo.CategoryName?.ToUpper() ?? "");
+            FilaTabla("ESTADO", activo.AssetStatus?.ToUpper() ?? "");
+            FilaTabla("BODEGA / UBICACIÓN", activo.WarehouseName?.ToUpper() ?? "SIN ASIGNAR");
+            FilaTabla("FECHA DE ASIGNACIÓN", DateTime.Now.ToString("dd/MM/yyyy"));
 
-            if (atributos != null && atributos.Any(a => !string.IsNullOrWhiteSpace(a.Value)))
+            // Atributos técnicos del equipo
+            if (atributos != null)
             {
-                yPos += 10;
-                g.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 255)), margenIzq, yPos, ancho, 25);
-                g.DrawString("  ESPECIFICACIONES TÉCNICAS", fSubtitulo, azul, new PointF(margenIzq, yPos + 4));
-                yPos += 30;
-
-                foreach (var attr in atributos.Where(a => !string.IsNullOrWhiteSpace(a.Value)).OrderBy(a => a.AttributeDefId))
+                foreach (var attr in atributos
+                    .Where(a => !string.IsNullOrWhiteSpace(a.Value))
+                    .OrderBy(a => a.AttributeDefId))
                 {
-                    g.DrawString($"{attr.AttributeLabel.ToUpper()}:", fNegrita, negro, new PointF(margenIzq + 5, yPos));
-                    g.DrawString(attr.Value, fNormal, negro, new PointF(margenIzq + 180, yPos));
-                    yPos += 22;
+                    FilaTabla(attr.AttributeLabel.ToUpper(), attr.Value);
 
-                    if (yPos > e.PageBounds.Height - 180) { e.HasMorePages = true; return; }
+                    if (currentY > e.PageBounds.Height - 180)
+                    {
+                        e.HasMorePages = true;
+                        return;
+                    }
                 }
             }
 
-            yPos += 20;
-            g.DrawString(
+            // Borde exterior de la tabla completa
+            g.DrawRectangle(pen, tableX, tableBodyStart - rowH, pageWidth, rowH * (filasTotales + 1));
+
+            currentY += 15;
+
+            // ===== COMPROMISO FINAL =====
+            string compromiso =
                 "El suscrito se compromete a utilizar el equipo únicamente para las actividades " +
                 "institucionales asignadas, a notificar de inmediato cualquier falla o incidente, " +
-                "y a devolverlo en las mismas condiciones en que fue recibido.",
-                fNormal, negro, new RectangleF(margenIzq, yPos, ancho, 80));
-            yPos += 80;
+                "y a devolverlo en las mismas condiciones en que fue recibido al finalizar su " +
+                "relación laboral o cuando la institución así lo requiera.";
+            g.DrawString(compromiso, fontNormal, brush,
+                new RectangleF(leftMargin, currentY, pageWidth, 60));
+            currentY += 65;
 
-            yPos += 30;
-            int centroFirma = margenIzq + (ancho / 2) - 100;
-            g.DrawLine(Pens.Black, centroFirma, yPos, centroFirma + 200, yPos);
-            yPos += 5;
-            g.DrawString(activo.EmployeeName?.ToUpper() ?? "NOMBRE DEL RESPONSABLE", fNegrita, negro,
-                new RectangleF(centroFirma - 50, yPos, 300, 20),
-                new StringFormat { Alignment = StringAlignment.Center });
-            yPos += 18;
-            g.DrawString("FIRMA DEL RESPONSABLE", fPequeña, gris,
-                new RectangleF(centroFirma - 50, yPos, 300, 20),
-                new StringFormat { Alignment = StringAlignment.Center });
-            yPos += 30;
+            // ===== PIE DE PÁGINA =====
+            int pieY = e.PageBounds.Height - 130;
+            try
+            {
+                Image piePagina = Properties.Resources.MembretadoPiePagina;
+                g.DrawImage(piePagina, leftMargin - 10, pieY, pageWidth + 20, 110);
+            }
+            catch { }
 
-            g.DrawLine(new Pen(Color.LightGray, 1f), margenIzq, yPos, margenDer, yPos);
-            yPos += 8;
-            g.DrawString(
-                $"Generado por SECRON el {DateTime.Now:dd/MM/yyyy HH:mm} | {UserData?.FullName?.ToUpper() ?? "SISTEMA"}",
-                fPequeña, gris,
-                new RectangleF(margenIzq, yPos, ancho, 20),
-                new StringFormat { Alignment = StringAlignment.Center });
+            // ===== FIRMAS =====
+            int firmaLineaY = pieY - 75;
+            int firma1X = leftMargin;
+            int firma3X = leftMargin + 480;
+            int firmaAncho = 200;
+
+            // Sello sobre firma 3
+            try
+            {
+                Image sello = Properties.Resources.SelloCoordinacion_Black;
+                g.DrawImage(sello, firma3X, firmaLineaY - 200, firmaAncho, 200);
+            }
+            catch { }
+
+            // Líneas de firma
+            g.DrawLine(pen, firma1X, firmaLineaY, firma1X + firmaAncho, firmaLineaY);
+            g.DrawLine(pen, firma3X, firmaLineaY, firma3X + firmaAncho, firmaLineaY);
+
+            int textoFirmaY = firmaLineaY + 5;
+
+            // Firma 1 — responsable del equipo
+            string nombreResponsable = activo.EmployeeName?.ToUpper() ?? "NOMBRE DEL RESPONSABLE";
+            SizeF sizeF1 = g.MeasureString(nombreResponsable, fontSmallBold);
+            g.DrawString(nombreResponsable, fontSmallBold, brush,
+                firma1X + (firmaAncho / 2f) - (sizeF1.Width / 2f), textoFirmaY);
+            SizeF sizeCargo = g.MeasureString("RESPONSABLE DEL EQUIPO", fontSmall);
+            g.DrawString("RESPONSABLE DEL EQUIPO", fontSmall, brush,
+                firma1X + (firmaAncho / 2f) - (sizeCargo.Width / 2f), textoFirmaY + 14);
+
+            // Firma 3 — coordinación general
+            SizeF sizeF3Titulo = g.MeasureString("COORDINACIÓN GENERAL", fontSmallBold);
+            SizeF sizeF3Oficina = g.MeasureString("OFICINAS CENTRALES", fontSmall);
+            g.DrawString("COORDINACIÓN GENERAL", fontSmallBold, brush,
+                firma3X + (firmaAncho / 2f) - (sizeF3Titulo.Width / 2f), textoFirmaY);
+            g.DrawString("OFICINAS CENTRALES", fontSmall, brush,
+                firma3X + (firmaAncho / 2f) - (sizeF3Oficina.Width / 2f), textoFirmaY + 14);
+
+            // Liberar recursos
+            fontTitulo.Dispose(); fontBold.Dispose(); fontNormal.Dispose();
+            fontSmall.Dispose(); fontSmallBold.Dispose();
+            fontTable.Dispose(); fontTableBold.Dispose();
+            pen.Dispose(); penGris.Dispose();
 
             e.HasMorePages = false;
         }
@@ -998,6 +1116,177 @@ namespace SECRON.Views
                 this.Cursor = Cursors.Default;
                 MessageBox.Show($"Error al exportar: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #endregion
+
+        #region Asignacion
+
+        private void ConfigurarPanel2()
+        {
+            ComboBox_TipoDestino.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_TipoDestino.Items.Clear();
+            ComboBox_TipoDestino.Items.Add("EMPLEADO");
+            ComboBox_TipoDestino.Items.Add("BODEGA");
+            ComboBox_TipoDestino.SelectedIndex = 0;
+            ComboBox_TipoDestino.SelectedIndexChanged += ComboBox_TipoDestino_SelectedIndexChanged;
+
+            ComboBox_Location.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Location.SelectedIndexChanged += ComboBox_Location_SelectedIndexChanged;
+
+            ComboBox_ToEmployee.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_ToLocation.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            CargarSedes();
+            ActualizarVisibilidadDestino();
+
+            Btn_Assign.Enabled = false;
+        }
+
+        private void CargarSedes()
+        {
+            ComboBox_Location.Items.Clear();
+            ComboBox_Location.Items.Add(new KeyValuePair<int, string>(0, "TODAS LAS SEDES"));
+
+            var sedes = Ctrl_Locations.ObtenerLocationsActivas();
+            foreach (var s in sedes)
+                ComboBox_Location.Items.Add(s);
+
+            ComboBox_Location.DisplayMember = "Value";
+            ComboBox_Location.SelectedIndex = 0;
+        }
+
+        private void ComboBox_TipoDestino_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActualizarVisibilidadDestino();
+        }
+
+        private void ActualizarVisibilidadDestino()
+        {
+            string tipo = ComboBox_TipoDestino.SelectedItem?.ToString();
+
+            Lbl_ToEmployee.Enabled = tipo == "EMPLEADO";
+            ComboBox_ToEmployee.Enabled = tipo == "EMPLEADO";
+            Lbl_ToLocation.Enabled = tipo == "BODEGA";
+            ComboBox_ToLocation.Enabled = tipo == "BODEGA";
+
+            if (tipo == "EMPLEADO")
+                CargarEmpleadosPorSede();
+            else
+                CargarBodegasPorSede();
+        }
+
+        private void ComboBox_Location_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActualizarVisibilidadDestino();
+        }
+
+        private void CargarEmpleadosPorSede()
+        {
+            ComboBox_ToEmployee.Items.Clear();
+            int locationId = ComboBox_Location.SelectedItem is KeyValuePair<int, string> kvp
+                ? kvp.Key : 0;
+
+            var empleados = locationId > 0
+                ? Ctrl_Employees.ObtenerEmpleadosPorSede(locationId)
+                : Ctrl_Employees.ObtenerEmpleadosParaCombo();
+
+            foreach (var emp in empleados)
+                ComboBox_ToEmployee.Items.Add(emp);
+
+            ComboBox_ToEmployee.DisplayMember = "Value";
+            if (ComboBox_ToEmployee.Items.Count > 0)
+                ComboBox_ToEmployee.SelectedIndex = 0;
+        }
+
+        private void CargarBodegasPorSede()
+        {
+            ComboBox_ToLocation.Items.Clear();
+            int locationId = ComboBox_Location.SelectedItem is KeyValuePair<int, string> kvp
+                ? kvp.Key : 0;
+
+            var bodegas = locationId > 0
+            ? Ctrl_Warehouses.ObtenerBodegasPorLocation(locationId)
+            : Ctrl_Warehouses.ObtenerBodegasParaCombo();
+
+            foreach (var b in bodegas)
+                ComboBox_ToLocation.Items.Add(b);
+
+            ComboBox_ToLocation.DisplayMember = "Value";
+            if (ComboBox_ToLocation.Items.Count > 0)
+                ComboBox_ToLocation.SelectedIndex = 0;
+        }
+
+        private void Btn_Assign_Click(object sender, EventArgs e)
+        {
+            if (_activoSeleccionado == null)
+            {
+                MessageBox.Show("Debe seleccionar un equipo de la lista.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string tipo = ComboBox_TipoDestino.SelectedItem?.ToString();
+
+            int? empleadoId = null;
+            int? bodegaId = null;
+            string destino = "";
+
+            if (tipo == "EMPLEADO")
+            {
+                if (ComboBox_ToEmployee.SelectedItem == null)
+                {
+                    MessageBox.Show("Debe seleccionar un empleado.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var kvp = (KeyValuePair<int, string>)ComboBox_ToEmployee.SelectedItem;
+                empleadoId = kvp.Key;
+                bodegaId = null; // limpiar bodega
+                destino = kvp.Value;
+            }
+            else // BODEGA
+            {
+                if (ComboBox_ToLocation.SelectedItem == null)
+                {
+                    MessageBox.Show("Debe seleccionar una bodega.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var kvp = (KeyValuePair<int, string>)ComboBox_ToLocation.SelectedItem;
+                bodegaId = kvp.Key;
+                empleadoId = null; // limpiar empleado
+                destino = kvp.Value;
+            }
+
+            if (MessageBox.Show(
+                $"¿Confirma asignar el equipo '{_activoSeleccionado.AssetName}' a '{destino}'?",
+                "Confirmar asignación",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+
+            int resultado = Ctrl_FixedAssets.ActualizarAsignacionActivo(
+                _activoSeleccionado.AssetId,
+                empleadoId,
+                bodegaId,
+                UserData?.UserId);
+
+            switch (resultado)
+            {
+                case 1:
+                    MessageBox.Show("Equipo asignado correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarActivos();
+                    LimpiarPanelAtributos();
+                    break;
+                case -1:
+                    MessageBox.Show("El activo no existe.", "Aviso",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                default:
+                    MessageBox.Show("Error al asignar el equipo.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
 

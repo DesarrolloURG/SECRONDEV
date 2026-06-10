@@ -800,5 +800,38 @@ namespace SECRON.Controllers
             }
             return lista;
         }
+        public static List<KeyValuePair<int, string>> ObtenerEmpleadosPorSede(int locationId)
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                SELECT e.EmployeeId, e.FullName
+                FROM   Employees e
+                WHERE  e.IsActive = 1
+                AND    e.LocationId = @LocationId
+                ORDER  BY e.FullName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@LocationId", locationId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(new KeyValuePair<int, string>(
+                                    reader.GetInt32(0), reader.GetString(1)));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener empleados por sede: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
     }
 }
