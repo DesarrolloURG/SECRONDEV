@@ -234,9 +234,14 @@ namespace SECRON.Views
         private void EjecutarBusqueda()
         {
             _assetsList = string.IsNullOrEmpty(_ultimoTextoBusqueda)
-                ? Ctrl_FixedAssets.MostrarActivos(paginaActual, registrosPorPagina)
-                : Ctrl_FixedAssets.BuscarActivos(_ultimoTextoBusqueda, _ultimoFiltro1,
-                    _ultimoFiltroEstado, _ultimoCategoriaId, paginaActual, registrosPorPagina);
+            ? Ctrl_FixedAssets.MostrarActivos(paginaActual, registrosPorPagina)
+            : Ctrl_FixedAssets.BuscarActivos(
+                textoBusqueda: _ultimoTextoBusqueda,
+                filtro1: _ultimoFiltro1,
+                filtroEstado: _ultimoFiltroEstado,
+                categoriaId: _ultimoCategoriaId,
+                pageNumber: paginaActual,
+                pageSize: registrosPorPagina);
 
             AsignarDataSourceActivos();
             ConfigurarTabla();
@@ -519,9 +524,15 @@ namespace SECRON.Views
 
                 paginaActual = 1;
 
-                _assetsList = Ctrl_FixedAssets.BuscarActivos(
-                    valorBusqueda, _ultimoFiltro1, _ultimoFiltroEstado,
-                    _ultimoCategoriaId, paginaActual, registrosPorPagina);
+                _assetsList = string.IsNullOrEmpty(_ultimoTextoBusqueda)
+                ? Ctrl_FixedAssets.MostrarActivos(paginaActual, registrosPorPagina)
+                : Ctrl_FixedAssets.BuscarActivos(
+                    textoBusqueda: _ultimoTextoBusqueda,
+                    filtro1: _ultimoFiltro1,
+                    filtroEstado: _ultimoFiltroEstado,
+                    categoriaId: _ultimoCategoriaId,
+                    pageNumber: paginaActual,
+                    pageSize: registrosPorPagina);
 
                 AsignarDataSourceActivos();
                 ConfigurarTabla();
@@ -631,9 +642,15 @@ namespace SECRON.Views
 
             if (!string.IsNullOrEmpty(_ultimoTextoBusqueda))
             {
-                _assetsList = Ctrl_FixedAssets.BuscarActivos(
-                    _ultimoTextoBusqueda, _ultimoFiltro1, _ultimoFiltroEstado,
-                    _ultimoCategoriaId, paginaActual, registrosPorPagina);
+                _assetsList = string.IsNullOrEmpty(_ultimoTextoBusqueda)
+                ? Ctrl_FixedAssets.MostrarActivos(paginaActual, registrosPorPagina)
+                : Ctrl_FixedAssets.BuscarActivos(
+                    textoBusqueda: _ultimoTextoBusqueda,
+                    filtro1: _ultimoFiltro1,
+                    filtroEstado: _ultimoFiltroEstado,
+                    categoriaId: _ultimoCategoriaId,
+                    pageNumber: paginaActual,
+                    pageSize: registrosPorPagina);
                 AsignarDataSourceActivos();
                 ConfigurarTabla();
                 AjustarColumnas();

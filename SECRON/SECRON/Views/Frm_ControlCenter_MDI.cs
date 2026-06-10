@@ -170,6 +170,7 @@ namespace SECRON.Views
             // Panel de Navegación Submenú Usuarios
             ConfigurarBotonSubmenuNavegacion(BtnUsersManagment);
             ConfigurarBotonSubmenuNavegacion(BtnUsersRolesPermisos);
+            ConfigurarBotonSubmenuNavegacion(Btn_ITSM_Technology);
             // Panel de Navegación Submenú Finanzas
             ConfigurarBotonSubmenuNavegacion(BtnFinances_Accounts);
             ConfigurarBotonSubmenuNavegacion(BtnFinances_Checks);
@@ -856,6 +857,7 @@ namespace SECRON.Views
             // ========== USUARIOS ==========
             BtnUsersManagment.Visible = TienePermiso("USERS_MANAGMENT");
             BtnUsersRolesPermisos.Visible = TienePermiso("USERS_ROLEPERMISSIONS");
+            Btn_ITSM_Technology.Visible = TienePermiso("USERS_ITSM_TECHONOLOGY");
 
             // ========== FINANCES ==========
             BtnFinances_Accounts.Visible = TienePermiso("ACCOUNTS_TAB");
@@ -1047,7 +1049,7 @@ namespace SECRON.Views
             var configuracionPaneles = new Dictionary<Button, (Panel panel, Size tamaño)>
             {
                 { BtnEmployees, (PanelEmployees, new Size(300, 80)) },
-                { BtnUsers, (PanelUsers, new Size(300, 80)) },
+                { BtnUsers, (PanelUsers, new Size(300, 120)) },
                 { BtnFinances, (PanelFinances, new Size(300, 200)) },
                 { BtnOrders, (PanelOrders, new Size(300, 160)) },
                 { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
@@ -1232,7 +1234,7 @@ namespace SECRON.Views
             var configuracionPaneles = new Dictionary<Button, (Panel panel, Size tamaño)>
             {
                 { BtnEmployees, (PanelEmployees, new Size(300, 280)) },
-                { BtnUsers, (PanelUsers, new Size(300, 160)) },
+                { BtnUsers, (PanelUsers, new Size(300, 120)) },
                 { BtnFinances, (PanelFinances, new Size(300, 200)) },
                 { BtnOrders, (PanelOrders, new Size(300, 160)) },
                 { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
@@ -1888,7 +1890,20 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Roles y Permisos", "UsersRolesPermisos");
         }
-        
+        private void Btn_ITSM_Technology_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_ITSM_Technology frm = new Frm_ITSM_Technology();
+            frm.Text = "Equipos de Tecnología";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Equipos de Tecnología", "ITSM_Technology");
+        }
+
+
         #endregion EventosClickSubmenuNavegacion
         #region EventosClickSubSubmenuNavegacion
         private void BtnKardexInsumosSedes_Click(object sender, EventArgs e)
@@ -2491,6 +2506,7 @@ namespace SECRON.Views
                 e.Cancel = true;
             }
         }
+
 
 
         #endregion EventoFormClosing

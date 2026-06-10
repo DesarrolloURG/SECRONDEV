@@ -427,6 +427,22 @@ namespace SECRON.Views
                 SetTextBoxFromValue(Txt_AccountAccumDep, cuentaAccum != null ? $"{cuentaAccum.Code} - {cuentaAccum.Name}" : "", "SELECCIONAR CUENTA DEP. ACUMULADA");
                 SetTextBoxFromValue(Txt_AccountExpense, cuentaExpense != null ? $"{cuentaExpense.Code} - {cuentaExpense.Name}" : "", "SELECCIONAR CUENTA GASTO DEP.");
 
+                // Cargar clasificación vinculada
+                _classificationId = _categoriaSeleccionada.ClassificationId;
+                if (_classificationId.HasValue && _classificationId > 0)
+                {
+                    var clasificaciones = Ctrl_FixedAssetClassificationCategories
+                        .MostrarClasificaciones();
+                    var clf = clasificaciones.Find(c => c.ClassificationId == _classificationId.Value);
+                    SetTextBoxFromValue(Txt_ClassificationCategories,
+                        clf?.ClassificationName ?? "", "SELECCIONAR CLASIFICACIÓN");
+                }
+                else
+                {
+                    SetTextBoxFromValue(Txt_ClassificationCategories, "", "SELECCIONAR CLASIFICACIÓN");
+                    _classificationId = null;
+                }
+
                 CargarAtributosDeCategoriaSeleccionada(categoryId);
                 Lbl_AtributosHeader.Text = $"CARACTERÍSTICAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_atributosList.Count} CARACTERÍSTICAS";
             }
@@ -980,6 +996,7 @@ namespace SECRON.Views
                     DepreciationYears = depYears,
                     AccountAccumDepId = _accountAccumDepId ?? 0,
                     AccountExpenseId = _accountExpenseId ?? 0,
+                    ClassificationId = _classificationId,  
                     IsActive = true,
                     CreatedDate = DateTime.Now,
                     CreatedBy = UserData?.UserId ?? 1
@@ -1038,6 +1055,7 @@ namespace SECRON.Views
                 _categoriaSeleccionada.DepreciationYears = depYears;
                 _categoriaSeleccionada.AccountAccumDepId = _accountAccumDepId ?? 0;
                 _categoriaSeleccionada.AccountExpenseId = _accountExpenseId ?? 0;
+                _categoriaSeleccionada.ClassificationId = _classificationId;
                 _categoriaSeleccionada.ModifiedDate = DateTime.Now;
                 _categoriaSeleccionada.ModifiedBy = UserData?.UserId ?? 1;
                 _categoriaSeleccionada = ConvertirCategoria(_categoriaSeleccionada);
@@ -1137,8 +1155,10 @@ namespace SECRON.Views
             _categoriaSeleccionada = null;
             _accountAccumDepId = null;
             _accountExpenseId = null;
+            _classificationId = null;  // ← agregar
 
             ConfigurarPlaceHoldersTextbox();
+            SetTextBoxFromValue(Txt_ClassificationCategories, "", "SELECCIONAR CLASIFICACIÓN"); // ← agregar
             ComboBox_DepreciationMethod.SelectedIndex = 0;
 
             TablaAtributos.DataSource = null;
@@ -1573,6 +1593,7 @@ namespace SECRON.Views
 
         #endregion SistemaDePermisos
 
+        #region ClassificationCategories
         private void Btn_SearchClassificationCategories_Click(object sender, EventArgs e)
         {
             if (!Btn_SearchClassificationCategories.Enabled) return;
@@ -1597,5 +1618,6 @@ namespace SECRON.Views
             Txt_ClassificationCategories.Text = classificationName;
             Txt_ClassificationCategories.ForeColor = Color.Black;
         }
+        #endregion 
     }
 }

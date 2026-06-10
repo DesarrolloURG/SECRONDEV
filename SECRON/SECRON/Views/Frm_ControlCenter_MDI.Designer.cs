@@ -33,6 +33,7 @@
             this.BtnEmployeesInformation = new System.Windows.Forms.Button();
             this.BtnEmployeesManagment = new System.Windows.Forms.Button();
             this.PanelUsers = new System.Windows.Forms.Panel();
+            this.Btn_ITSM_Technology = new System.Windows.Forms.Button();
             this.BtnUsersRolesPermisos = new System.Windows.Forms.Button();
             this.BtnUsersManagment = new System.Windows.Forms.Button();
             this.PanelSuppliers = new System.Windows.Forms.Panel();
@@ -243,13 +244,34 @@
             // PanelUsers
             // 
             this.PanelUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelUsers.Controls.Add(this.Btn_ITSM_Technology);
             this.PanelUsers.Controls.Add(this.BtnUsersRolesPermisos);
             this.PanelUsers.Controls.Add(this.BtnUsersManagment);
-            this.PanelUsers.Location = new System.Drawing.Point(220, 1);
+            this.PanelUsers.Location = new System.Drawing.Point(220, 250);
             this.PanelUsers.Name = "PanelUsers";
-            this.PanelUsers.Size = new System.Drawing.Size(300, 80);
+            this.PanelUsers.Size = new System.Drawing.Size(300, 120);
             this.PanelUsers.TabIndex = 4;
             this.PanelUsers.Visible = false;
+            // 
+            // Btn_ITSM_Technology
+            // 
+            this.Btn_ITSM_Technology.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.Btn_ITSM_Technology.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Btn_ITSM_Technology.FlatAppearance.BorderSize = 0;
+            this.Btn_ITSM_Technology.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.Btn_ITSM_Technology.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Btn_ITSM_Technology.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_ITSM_Technology.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Btn_ITSM_Technology.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ITSM_Technology.Location = new System.Drawing.Point(0, 70);
+            this.Btn_ITSM_Technology.Margin = new System.Windows.Forms.Padding(0);
+            this.Btn_ITSM_Technology.Name = "Btn_ITSM_Technology";
+            this.Btn_ITSM_Technology.Size = new System.Drawing.Size(300, 35);
+            this.Btn_ITSM_Technology.TabIndex = 47;
+            this.Btn_ITSM_Technology.Text = "EQUIPOS DE TECNOLOGÍA";
+            this.Btn_ITSM_Technology.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ITSM_Technology.UseVisualStyleBackColor = false;
+            this.Btn_ITSM_Technology.Click += new System.EventHandler(this.Btn_ITSM_Technology_Click);
             // 
             // BtnUsersRolesPermisos
             // 
@@ -1116,7 +1138,7 @@
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsMovementsController);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsResponsabilityLetter);
             this.PanelStaticItems.Controls.Add(this.BtnStaticItemsManagment);
-            this.PanelStaticItems.Location = new System.Drawing.Point(520, 300);
+            this.PanelStaticItems.Location = new System.Drawing.Point(520, 1);
             this.PanelStaticItems.Name = "PanelStaticItems";
             this.PanelStaticItems.Size = new System.Drawing.Size(300, 240);
             this.PanelStaticItems.TabIndex = 14;
@@ -2733,5 +2755,6 @@
         private System.Windows.Forms.Panel PanelWarehouses;
         private System.Windows.Forms.Button BtnWarehouse_Reports;
         private System.Windows.Forms.Button BtnWarehouse_Managment;
+        private System.Windows.Forms.Button Btn_ITSM_Technology;
     }
 }

@@ -22,15 +22,15 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT AssetCategoryId, CategoryCode, CategoryName, Description,
-                               IsTangible,
-                               DepreciationMethod, DepreciationYears,
-                               AccountAccumDepId, AccountExpenseId,
-                               IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
-                        FROM   FixedAssetCategories
-                        WHERE  IsActive = 1
-                        ORDER  BY CategoryName
-                        OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
+                SELECT AssetCategoryId, CategoryCode, CategoryName, Description,
+                       IsTangible, DepreciationMethod, DepreciationYears,
+                       AccountAccumDepId, AccountExpenseId,
+                       IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy,
+                       ClassificationId
+                FROM   FixedAssetCategories
+                WHERE  IsActive = 1
+                ORDER  BY CategoryName
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -57,12 +57,12 @@ namespace SECRON.Controllers
         // SEARCH con filtros
         // ─────────────────────────────────────────────
         public static List<Mdl_FixedAssetCategory> BuscarCategorias(
-            string textoBusqueda = "",
-            string filtro1 = "TODOS",
-            string filtroEstado = "TODOS",
-            string filtroTipo = "TODOS",
-            int pageNumber = 1,
-            int pageSize = 100)
+    string textoBusqueda = "",
+    string filtro1 = "TODOS",
+    string filtroEstado = "TODOS",
+    string filtroTipo = "TODOS",
+    int pageNumber = 1,
+    int pageSize = 100)
         {
             List<Mdl_FixedAssetCategory> lista = new List<Mdl_FixedAssetCategory>();
             try
@@ -71,13 +71,13 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT AssetCategoryId, CategoryCode, CategoryName, Description,
-                               IsTangible,
-                               DepreciationMethod, DepreciationYears,
-                               AccountAccumDepId, AccountExpenseId,
-                               IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
-                        FROM   FixedAssetCategories
-                        WHERE  1=1";
+                SELECT AssetCategoryId, CategoryCode, CategoryName, Description,
+                       IsTangible, DepreciationMethod, DepreciationYears,
+                       AccountAccumDepId, AccountExpenseId,
+                       IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy,
+                       ClassificationId
+                FROM   FixedAssetCategories
+                WHERE  1=1";
 
                     List<SqlParameter> parametros = new List<SqlParameter>();
 
@@ -120,7 +120,7 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en búsqueda de categorías: " + ex.Message,
+                MessageBox.Show("Error al buscar categorías: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return lista;
@@ -223,6 +223,7 @@ namespace SECRON.Controllers
                         cmd.Parameters.AddWithValue("@AccountAccumDepId", cat.AccountAccumDepId);
                         cmd.Parameters.AddWithValue("@AccountExpenseId", cat.AccountExpenseId);
                         cmd.Parameters.AddWithValue("@CreatedBy", (object)cat.CreatedBy ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ClassificationId", (object)cat.ClassificationId ?? DBNull.Value);
 
                         return (int)cmd.ExecuteScalar();
                     }
@@ -260,6 +261,7 @@ namespace SECRON.Controllers
                         cmd.Parameters.AddWithValue("@AccountExpenseId", cat.AccountExpenseId);
                         cmd.Parameters.AddWithValue("@IsActive", cat.IsActive);
                         cmd.Parameters.AddWithValue("@ModifiedBy", (object)cat.ModifiedBy ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ClassificationId", (object)cat.ClassificationId ?? DBNull.Value);
 
                         return (int)cmd.ExecuteScalar();
                     }
@@ -290,8 +292,44 @@ namespace SECRON.Controllers
                 CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                 CreatedBy = reader["CreatedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("CreatedBy")),
                 ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("ModifiedDate")),
-                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy"))
+                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy")),
+                ClassificationId = reader["ClassificationId"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ClassificationId"))
             };
+        }
+        // Método nuevo — obtener categorías por clasificación para el ComboBox
+        public static List<KeyValuePair<int, string>> ObtenerCategoriasPorClasificacion(int classificationId)
+        {
+            var lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                SELECT AssetCategoryId, CategoryName
+                FROM   FixedAssetCategories
+                WHERE  ClassificationId = @ClassificationId
+                AND    IsActive = 1
+                ORDER  BY CategoryName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ClassificationId", classificationId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(new KeyValuePair<int, string>(
+                                    reader.GetInt32(0),
+                                    reader["CategoryName"].ToString()));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener categorías por clasificación: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
         }
     }
 }

@@ -45,10 +45,6 @@ namespace SECRON.Views
             ConfigurarTabla();
             CargarClasificaciones(isActive: true);
             EstadoInicial();
-
-            // Ajustar visibilidad según modo
-            Btn_Yes.Visible = _parent != null;
-            Btn_No.Visible = _parent != null;
         }
 
         #endregion
@@ -152,12 +148,8 @@ namespace SECRON.Views
             Btn_Save.Enabled = true;
             Btn_Update.Enabled = false;
             Btn_Inactive.Enabled = false;
-
-            // Btn_Yes y Btn_No solo visibles en modo selector
-            Btn_Yes.Visible = ModoSelector;
-            Btn_No.Visible = ModoSelector;
             Btn_Yes.Enabled = false;
-            Btn_No.Enabled = ModoSelector;
+            Btn_No.Enabled = _parent != null || ModoSelector;
 
             ConfigurarComponentesDeshabilitados();
         }
@@ -237,10 +229,7 @@ namespace SECRON.Views
             Btn_Save.Enabled = false;
             Btn_Update.Enabled = true;
             Btn_Inactive.Enabled = true;
-
-            // En modo selector habilitar Yes
-            if (ModoSelector)
-                Btn_Yes.Enabled = true;
+            Btn_Yes.Enabled = _parent != null || ModoSelector;
         }
 
         #endregion
