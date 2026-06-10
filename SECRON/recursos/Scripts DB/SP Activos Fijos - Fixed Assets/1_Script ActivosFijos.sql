@@ -56,8 +56,35 @@ GO
 -- SECCIÓN 2: CREAR TABLAS
 -- ============================================================
 
+-- ============================================================
+-- 1. TABLA: FixedAssetClassificationCategories
+-- ============================================================
+CREATE TABLE [dbo].[FixedAssetClassificationCategories] (
+    [ClassificationId]   INT IDENTITY(1,1) NOT NULL,
+    [ClassificationCode] VARCHAR(20)        NOT NULL,
+    [ClassificationName] VARCHAR(100)       NOT NULL,
+    [Description]        VARCHAR(255)       NULL,
+    [IsActive]           BIT               NOT NULL CONSTRAINT DF_FACC_Active   DEFAULT 1,
+    [CreatedDate]        DATETIME          NULL     CONSTRAINT DF_FACC_Created  DEFAULT GETDATE(),
+    [CreatedBy]          INT               NULL,
+    [ModifiedDate]       DATETIME          NULL,
+    [ModifiedBy]         INT               NULL,
+    CONSTRAINT PK_FACC  PRIMARY KEY ([ClassificationId]),
+    CONSTRAINT UK_FACC_Code UNIQUE ([ClassificationCode])
+);
+GO
+
+-- ============================================================
+-- INSERT predeterminado — TECNOLOGÍA
+-- ============================================================
+INSERT INTO [dbo].[FixedAssetClassificationCategories]
+    (ClassificationCode, ClassificationName, Description, IsActive, CreatedBy)
+VALUES
+    ('TECH', 'TECNOLOGÍA', 'EQUIPOS Y DISPOSITIVOS DE TECNOLOGÍA', 1, 1);
+GO
+
 -- -------------------------------------------------------
--- 1. CATEGORÍAS DE ACTIVOS
+-- 2. CATEGORÍAS DE ACTIVOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetCategories] (
     [AssetCategoryId]    [int]           IDENTITY(1,1) NOT NULL,
@@ -81,8 +108,17 @@ CREATE TABLE [dbo].[FixedAssetCategories] (
 );
 GO
 
+-- ============================================================
+-- 3. FK en FixedAssetCategories → ClassificationId nullable
+-- ============================================================
+ALTER TABLE [dbo].[FixedAssetCategories]
+ADD [ClassificationId] INT NULL
+    CONSTRAINT FK_FAC_Classification
+    FOREIGN KEY REFERENCES [dbo].[FixedAssetClassificationCategories]([ClassificationId]);
+GO
+
 -- -------------------------------------------------------
--- 2. DEFINICIÓN DE ATRIBUTOS POR CATEGORÍA (EAV)
+-- 4. DEFINICIÓN DE ATRIBUTOS POR CATEGORÍA (EAV)
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetAttributeDefinitions] (
     [AttributeDefId]  [int]           IDENTITY(1,1) NOT NULL,
@@ -100,7 +136,7 @@ CREATE TABLE [dbo].[FixedAssetAttributeDefinitions] (
 GO
 
 -- -------------------------------------------------------
--- 3. CATÁLOGO MAESTRO DE ACTIVOS FIJOS
+-- 5. CATÁLOGO MAESTRO DE ACTIVOS FIJOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssets] (
     [AssetId]               [int]           IDENTITY(1,1) NOT NULL,
@@ -139,7 +175,7 @@ CREATE TABLE [dbo].[FixedAssets] (
 GO
 
 -- -------------------------------------------------------
--- 4. VALORES EAV (atributos específicos por activo)
+-- 6. VALORES EAV (atributos específicos por activo)
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetAttributeValues] (
     [AttributeValueId] [int]           IDENTITY(1,1) NOT NULL,
@@ -158,7 +194,7 @@ CREATE TABLE [dbo].[FixedAssetAttributeValues] (
 GO
 
 -- -------------------------------------------------------
--- 5. ESTADOS DE PARTIDAS CONTABLES DE ACTIVOS FIJOS
+-- 7. ESTADOS DE PARTIDAS CONTABLES DE ACTIVOS FIJOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[AccountingFixedAssetStatus] (
     [StatusId]    [int]          NOT NULL IDENTITY(1,1),
@@ -178,7 +214,7 @@ INSERT INTO [dbo].[AccountingFixedAssetStatus] ([StatusCode], [StatusName], [Des
 GO
 
 -- -------------------------------------------------------
--- 6. PARTIDAS CONTABLES DE ACTIVOS FIJOS — MAESTRO
+-- 8. PARTIDAS CONTABLES DE ACTIVOS FIJOS — MAESTRO
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[AccountingEntryFixedAssets] (
     [EntryMasterId] [int]           NOT NULL IDENTITY(1,1),
@@ -199,7 +235,7 @@ CREATE TABLE [dbo].[AccountingEntryFixedAssets] (
 GO
 
 -- -------------------------------------------------------
--- 7. PARTIDAS CONTABLES DE ACTIVOS FIJOS — DETALLE
+-- 9. PARTIDAS CONTABLES DE ACTIVOS FIJOS — DETALLE
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[AccountingEntryFixedAssetsDetail] (
     [EntryDetailId]  [int]           NOT NULL IDENTITY(1,1),
@@ -215,7 +251,7 @@ CREATE TABLE [dbo].[AccountingEntryFixedAssetsDetail] (
 GO
 
 -- -------------------------------------------------------
--- 8. ESTADOS DE TRASLADOS
+-- 10. ESTADOS DE TRASLADOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransferStatus] (
     [TransferStatusId] [int]          IDENTITY(1,1) NOT NULL,
@@ -256,7 +292,7 @@ SET IDENTITY_INSERT [dbo].[FixedAssetTransferStatus] OFF;
 GO
 
 -- -------------------------------------------------------
--- 9. TRANSICIONES PERMITIDAS ENTRE ESTADOS
+-- 11. TRANSICIONES PERMITIDAS ENTRE ESTADOS
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransferStatusTransitions] (
     [TransitionId] [int]      IDENTITY(1,1) NOT NULL,
@@ -291,7 +327,7 @@ VALUES
 GO
 
 -- -------------------------------------------------------
--- 10. TRASLADOS — MAESTRO
+-- 12. TRASLADOS — MAESTRO
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransfers] (
     [TransferId]       [int]           IDENTITY(1,1) NOT NULL,
@@ -317,7 +353,7 @@ CREATE TABLE [dbo].[FixedAssetTransfers] (
 GO
 
 -- -------------------------------------------------------
--- 11. TRASLADOS — DETALLE
+-- 13. TRASLADOS — DETALLE
 -- -------------------------------------------------------
 CREATE TABLE [dbo].[FixedAssetTransferDetails] (
     [TransferDetailId] [int]      IDENTITY(1,1) NOT NULL,

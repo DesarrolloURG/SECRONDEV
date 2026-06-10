@@ -1,6 +1,6 @@
 ﻿namespace SECRON.Views
 {
-    partial class Frm_Users_Managment
+    partial class Frm_ITSM_Users_Managment
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Users_Managment));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ITSM_Users_Managment));
             this.Panel_Superior = new System.Windows.Forms.Panel();
             this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();

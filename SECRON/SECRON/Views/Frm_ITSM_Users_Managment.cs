@@ -17,7 +17,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SECRON.Views
 {
-    public partial class Frm_Users_Managment : Form
+    public partial class Frm_ITSM_Users_Managment : Form
     {
         #region PropiedadesIniciales
         // Variables de entorno
@@ -113,7 +113,7 @@ namespace SECRON.Views
         }
 
         // Constructor del formulario
-        public Frm_Users_Managment()
+        public Frm_ITSM_Users_Managment()
         {
             InitializeComponent();
             this.Resize += FormularioResize;

@@ -1,6 +1,6 @@
 ﻿namespace SECRON.Views
 {
-    partial class Frm_Users_RolesPermissions
+    partial class Frm_ITSM_Users_RolesPermissions
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Users_RolesPermissions));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ITSM_Users_RolesPermissions));
             this.Panel_Superior = new System.Windows.Forms.Panel();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
             this.Panel_Asignar = new System.Windows.Forms.Panel();

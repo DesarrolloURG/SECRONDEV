@@ -110,6 +110,7 @@
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeDefinitions.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeValues.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetCategories.cs" />
+    <Compile Include="Controllers\Ctrl_FixedAssetClassificationCategories.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetTransfers.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssets.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetTransferStatus.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Models\Mdl_FixedAssetAttributeDefinition.cs" />
     <Compile Include="Models\Mdl_FixedAssetAttributeValue.cs" />
     <Compile Include="Models\Mdl_FixedAssetCategory.cs" />
+    <Compile Include="Models\Mdl_FixedAssetClassificationCategory.cs" />
     <Compile Include="Models\Mdl_FixedAssets.cs" />
     <Compile Include="Models\Mdl_FixedAssetTransfers.cs" />
     <Compile Include="Models\Mdl_FixedAssetTransferStatus.cs" />
@@ -369,6 +371,12 @@
     <Compile Include="Views\Frm_FixedAsset_Movements_Tracking.Designer.cs">
       <DependentUpon>Frm_FixedAsset_Movements_Tracking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_FixedAsset_SearchClassificationCategories.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_SearchClassificationCategories.Designer.cs">
+      <DependentUpon>Frm_FixedAsset_SearchClassificationCategories.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_FixedAsset_StatusMovements.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -386,6 +394,12 @@
     </Compile>
     <Compile Include="Views\Frm_Home.Designer.cs">
       <DependentUpon>Frm_Home.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_ITSM_Technology.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_ITSM_Technology.Designer.cs">
+      <DependentUpon>Frm_ITSM_Technology.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories.cs">
       <SubType>Form</SubType>
@@ -515,17 +529,17 @@
     <Compile Include="Views\Frm_Transfers_SearchCuenta.Designer.cs">
       <DependentUpon>Frm_Transfers_SearchCuenta.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Frm_Users_Managment.cs">
+    <Compile Include="Views\Frm_ITSM_Users_Managment.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Frm_Users_Managment.Designer.cs">
-      <DependentUpon>Frm_Users_Managment.cs</DependentUpon>
+    <Compile Include="Views\Frm_ITSM_Users_Managment.Designer.cs">
+      <DependentUpon>Frm_ITSM_Users_Managment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Frm_Users_RolesPermissions.cs">
+    <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Frm_Users_RolesPermissions.Designer.cs">
-      <DependentUpon>Frm_Users_RolesPermissions.cs</DependentUpon>
+    <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.Designer.cs">
+      <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Views\Frm_Accounts_Managment.resx">
       <DependentUpon>Frm_Accounts_Managment.cs</DependentUpon>
@@ -605,6 +619,9 @@
     <EmbeddedResource Include="Views\Frm_FixedAsset_Movements_Tracking.resx">
       <DependentUpon>Frm_FixedAsset_Movements_Tracking.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset_SearchClassificationCategories.resx">
+      <DependentUpon>Frm_FixedAsset_SearchClassificationCategories.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FixedAsset_StatusMovements.resx">
       <DependentUpon>Frm_FixedAsset_StatusMovements.cs</DependentUpon>
     </EmbeddedResource>
@@ -613,6 +630,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Home.resx">
       <DependentUpon>Frm_Home.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_ITSM_Technology.resx">
+      <DependentUpon>Frm_ITSM_Technology.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories.resx">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories.cs</DependentUpon>
@@ -682,11 +702,11 @@
     <EmbeddedResource Include="Views\Frm_Transfers_SearchCuenta.resx">
       <DependentUpon>Frm_Transfers_SearchCuenta.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_Users_Managment.resx">
-      <DependentUpon>Frm_Users_Managment.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Frm_ITSM_Users_Managment.resx">
+      <DependentUpon>Frm_ITSM_Users_Managment.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_Users_RolesPermissions.resx">
-      <DependentUpon>Frm_Users_RolesPermissions.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Frm_ITSM_Users_RolesPermissions.resx">
+      <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -1867,7 +1867,7 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_Users_Managment frm = new Frm_Users_Managment();
+            Frm_ITSM_Users_Managment frm = new Frm_ITSM_Users_Managment();
             frm.Text = "Gestión de Usuarios";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
@@ -1880,7 +1880,7 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_Users_RolesPermissions frm = new Frm_Users_RolesPermissions();
+            Frm_ITSM_Users_RolesPermissions frm = new Frm_ITSM_Users_RolesPermissions();
             frm.Text = "Roles y Permisos";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario

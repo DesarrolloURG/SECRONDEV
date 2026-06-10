@@ -151,5 +151,58 @@ namespace SECRON.Controllers
                 IsSystem = reader.GetBoolean(reader.GetOrdinal("IsSystem"))
             };
         }
+
+        // ─────────────────────────────────────────────
+        // READ - Plantilla + valores guardados combinados
+        // ─────────────────────────────────────────────
+        public static List<Mdl_FixedAssetAttributeValue> ObtenerValoresConPlantilla(int assetId, int categoryId)
+        {
+            List<Mdl_FixedAssetAttributeValue> lista = new List<Mdl_FixedAssetAttributeValue>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                SELECT 
+                    ISNULL(av.AttributeValueId, 0)  AS AttributeValueId,
+                    ISNULL(av.AssetId, @AssetId)    AS AssetId,
+                    ad.AttributeDefId,
+                    av.Value,
+                    ISNULL(av.CreatedDate, GETDATE()) AS CreatedDate,
+                    av.CreatedBy,
+                    av.ModifiedDate,
+                    av.ModifiedBy,
+                    ad.AttributeKey,
+                    ad.AttributeLabel,
+                    ad.DataType,
+                    ad.IsRequired,
+                    ad.IsSystem
+                FROM FixedAssetAttributeDefinitions ad
+                LEFT JOIN FixedAssetAttributeValues av
+                    ON av.AttributeDefId = ad.AttributeDefId
+                    AND av.AssetId = @AssetId
+                WHERE ad.AssetCategoryId = @CategoryId
+                AND   ad.IsActive = 1
+                ORDER BY ad.AttributeDefId";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@AssetId", assetId);
+                        cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(MapearValor(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener características del activo: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
     }
 }

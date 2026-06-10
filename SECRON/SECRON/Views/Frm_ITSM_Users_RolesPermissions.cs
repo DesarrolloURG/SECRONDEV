@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace SECRON.Views
 {
-    public partial class Frm_Users_RolesPermissions : Form
+    public partial class Frm_ITSM_Users_RolesPermissions : Form
     {
         #region Propiedades
         public Mdl_Security_UserInfo UserData { get; set; }
@@ -24,7 +24,7 @@ namespace SECRON.Views
         {
             ConfigurarMaxLengthTextBox();
         }
-        public Frm_Users_RolesPermissions()
+        public Frm_ITSM_Users_RolesPermissions()
         {
             InitializeComponent();
             InicializarPestanas();

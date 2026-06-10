@@ -14,6 +14,7 @@ namespace SECRON.Views
     {
         #region PropiedadesIniciales
 
+        private int? _classificationId = null;
         public Mdl_Security_UserInfo UserData { get; set; }
 
         // Filtros
@@ -212,15 +213,25 @@ namespace SECRON.Views
             ComboBox_DepreciationMethod.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_DepreciationMethod.Items.Clear();
             ComboBox_DepreciationMethod.Items.Add("LINEA_RECTA");
-            //ComboBox_DepreciationMethod.Items.Add("DECLINING_BALANCE");
-            //ComboBox_DepreciationMethod.Items.Add("SUM_OF_YEARS");
             ComboBox_DepreciationMethod.SelectedIndex = 0;
 
+            // ── Tipos de datos — todos los tipos disponibles ──────────────
             ComboBox_DataType.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_DataType.Items.Clear();
             ComboBox_DataType.Items.Add("TEXTO");
             ComboBox_DataType.Items.Add("NUMERO");
             ComboBox_DataType.Items.Add("FECHA");
+            ComboBox_DataType.Items.Add("FECHAHORA");
+            ComboBox_DataType.Items.Add("BOOLEAN");
+            ComboBox_DataType.Items.Add("LISTA");
+            ComboBox_DataType.Items.Add("MULTILINEA");
+            ComboBox_DataType.Items.Add("PORCENTAJE");
+            ComboBox_DataType.Items.Add("MONEDA");
+            ComboBox_DataType.Items.Add("EMAIL");
+            ComboBox_DataType.Items.Add("URL");
+            ComboBox_DataType.Items.Add("TELEFONO");
+            ComboBox_DataType.Items.Add("RANGO");
+            ComboBox_DataType.Items.Add("COLOR");
             ComboBox_DataType.SelectedIndex = 0;
 
             ComboBox_IsRequired.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -235,12 +246,24 @@ namespace SECRON.Views
             ComboBox_IsTangible.Items.Add("INTANGIBLE");
             ComboBox_IsTangible.SelectedIndex = 0;
 
+            // ── Filtro por tipo — mismo listado ──────────────────────────
             FiltroAtributoTipo.DropDownStyle = ComboBoxStyle.DropDownList;
             FiltroAtributoTipo.Items.Clear();
             FiltroAtributoTipo.Items.Add("TODOS");
             FiltroAtributoTipo.Items.Add("TEXTO");
             FiltroAtributoTipo.Items.Add("NUMERO");
             FiltroAtributoTipo.Items.Add("FECHA");
+            FiltroAtributoTipo.Items.Add("FECHAHORA");
+            FiltroAtributoTipo.Items.Add("BOOLEAN");
+            FiltroAtributoTipo.Items.Add("LISTA");
+            FiltroAtributoTipo.Items.Add("MULTILINEA");
+            FiltroAtributoTipo.Items.Add("PORCENTAJE");
+            FiltroAtributoTipo.Items.Add("MONEDA");
+            FiltroAtributoTipo.Items.Add("EMAIL");
+            FiltroAtributoTipo.Items.Add("URL");
+            FiltroAtributoTipo.Items.Add("TELEFONO");
+            FiltroAtributoTipo.Items.Add("RANGO");
+            FiltroAtributoTipo.Items.Add("COLOR");
             FiltroAtributoTipo.SelectedIndex = 0;
 
             FiltroAtributoEstado.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -1547,8 +1570,32 @@ namespace SECRON.Views
             AplicarEstadoBotonPorPermiso(Btn_InactiveAtributo, "FA_ATTRIBUTES_INACTIVE");
         }
 
+
         #endregion SistemaDePermisos
 
-
+        private void Btn_SearchClassificationCategories_Click(object sender, EventArgs e)
+        {
+            if (!Btn_SearchClassificationCategories.Enabled) return;
+            try
+            {
+                using (var frm = new Frm_FixedAsset_SearchClassificationCategories(this))
+                {
+                    frm.UserData = UserData;
+                    frm.StartPosition = FormStartPosition.CenterParent;
+                    frm.ShowDialog(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar clasificación: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void SetClasificacion(int classificationId, string classificationName)
+        {
+            _classificationId = classificationId;
+            Txt_ClassificationCategories.Text = classificationName;
+            Txt_ClassificationCategories.ForeColor = Color.Black;
+        }
     }
 }

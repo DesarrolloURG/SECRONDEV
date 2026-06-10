@@ -1329,178 +1329,139 @@ namespace SECRON.Views
 
         #region ConfiguracionesTabla_Atributos
 
-        private void CargarAtributosDelActivoSeleccionado(int assetId, int categoryId)
+        private void LimpiarTablaAtributos()
         {
-            try
-            {
-                var plantilla = Ctrl_FixedAssetAttributeValues.ObtenerPlantillaPorCategoria(categoryId);
-
-                var valoresGuardados = Ctrl_FixedAssetAttributeValues.ObtenerValoresPorActivo(assetId);
-
-                _atributosValoresList = plantilla;
-                foreach (var item in _atributosValoresList)
-                {
-                    var guardado = valoresGuardados.FirstOrDefault(v => v.AttributeDefId == item.AttributeDefId);
-                    if (guardado != null)
-                    {
-                        item.AttributeValueId = guardado.AttributeValueId;
-                        item.Value = guardado.Value;
-                    }
-                }
-
-                AsignarDataSourceAtributos();
-                ConfigurarTablaAtributos();
-                AjustarColumnasAtributos();
-
-                int conValor = _atributosValoresList.Count(a => !string.IsNullOrWhiteSpace(a.Value));
-                Lbl_AtributosHeader.Text =
-                    $"CARACTERÍSTICAS DE: {_activoSeleccionado.AssetName.ToUpper()} " +
-                    $"— {conValor}/{_atributosValoresList.Count} COMPLETADAS";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar atributos: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void AsignarDataSourceAtributos()
-        {
-            if (_atributosValoresList == null || _atributosValoresList.Count == 0)
-            {
+            if (TablaAtributos != null)
                 TablaAtributos.DataSource = null;
-                return;
-            }
-
-            var data = _atributosValoresList.Select(a => new
-            {
-                a.AttributeDefId,
-                Etiqueta = a.AttributeLabel,
-                Tipo = a.DataType,
-                Obligatorio = a.IsRequired ? "SI" : "NO",
-                Valor = string.IsNullOrWhiteSpace(a.Value) ? "— SIN VALOR —"
-                    : a.DataType?.ToUpper() == "FECHA" && DateTime.TryParse(a.Value, out DateTime fecha)
-                        ? fecha.ToString("dd/MM/yyyy")
-                        : a.Value
-            }).ToList();
-
-            TablaAtributos.DataSource = data;
+            _atributosValoresList = null;
         }
 
         private void ConfigurarTablaAtributos()
         {
-            if (TablaAtributos.Columns.Count > 0)
-            {
-                if (TablaAtributos.Columns.Contains("AttributeDefId"))
-                    TablaAtributos.Columns["AttributeDefId"].Visible = false;
-
-                if (TablaAtributos.Columns.Contains("Etiqueta"))
-                    TablaAtributos.Columns["Etiqueta"].HeaderText = "CARACTERÍSTICA";
-                if (TablaAtributos.Columns.Contains("Tipo"))
-                    TablaAtributos.Columns["Tipo"].HeaderText = "TIPO";
-                if (TablaAtributos.Columns.Contains("Obligatorio"))
-                    TablaAtributos.Columns["Obligatorio"].HeaderText = "REQUERIDO";
-                if (TablaAtributos.Columns.Contains("Valor"))
-                    TablaAtributos.Columns["Valor"].HeaderText = "VALOR REGISTRADO";
-            }
-
             TablaAtributos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             TablaAtributos.MultiSelect = false;
             TablaAtributos.ReadOnly = true;
             TablaAtributos.AllowUserToAddRows = false;
-            TablaAtributos.AllowUserToDeleteRows = false;
-            TablaAtributos.AllowUserToResizeRows = false;
+            TablaAtributos.RowHeadersVisible = false;
             TablaAtributos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            TablaAtributos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
+            TablaAtributos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             TablaAtributos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(94, 53, 177);
             TablaAtributos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            TablaAtributos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             TablaAtributos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 143, 109);
             TablaAtributos.DefaultCellStyle.SelectionForeColor = Color.White;
             TablaAtributos.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
-            TablaAtributos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-
-            TablaAtributos.RowTemplate.Height = 35;
-            TablaAtributos.ColumnHeadersHeight = 40;
-
-            // Colorear filas sin valor en amarillo claro para destacarlas
-            TablaAtributos.CellFormatting -= TablaAtributos_CellFormatting;
-            TablaAtributos.CellFormatting += TablaAtributos_CellFormatting;
-            TablaAtributos.SelectionChanged += TablaAtributos_SelectionChanged;
+            TablaAtributos.RowTemplate.Height = 30;
         }
 
         private void AjustarColumnasAtributos()
         {
             if (TablaAtributos.Columns.Count == 0) return;
 
-            SetFillWeightAtrib(TablaAtributos, "Etiqueta", 40);
-            SetFillWeightAtrib(TablaAtributos, "Tipo", 15);
-            SetFillWeightAtrib(TablaAtributos, "Obligatorio", 15);
-            SetFillWeightAtrib(TablaAtributos, "Valor", 30);
-        }
+            foreach (DataGridViewColumn col in TablaAtributos.Columns)
+                col.Visible = false;
 
-        private void SetFillWeightAtrib(DataGridView grid, string col, int weight)
-        {
-            if (!grid.Columns.Contains(col)) return;
-            grid.Columns[col].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            grid.Columns[col].FillWeight = weight;
-        }
+            string[] visibles = { "Etiqueta", "Tipo", "Obligatorio", "Valor" };
+            foreach (var nombre in visibles)
+                if (TablaAtributos.Columns.Contains(nombre))
+                    TablaAtributos.Columns[nombre].Visible = true;
 
-        private void TablaAtributos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-            var row = TablaAtributos.Rows[e.RowIndex];
-
-            object valorCell = TablaAtributos.Columns.Contains("Valor")
-                ? row.Cells["Valor"].Value
-                : null;
-
-            bool sinValor = valorCell == null ||
-                            valorCell.ToString() == "— SIN VALOR —" ||
-                            string.IsNullOrWhiteSpace(valorCell.ToString());
-
-            if (sinValor && !row.Selected)
-                e.CellStyle.BackColor = Color.FromArgb(255, 253, 220);
-        }
-
-        private void LimpiarTablaAtributos()
-        {
-            _atributosValoresList = null;
-            TablaAtributos.DataSource = null;
-            Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UN ACTIVO FIJO";
-            Btn_ClearAtributo_Click(null, null);
+            if (TablaAtributos.Columns.Contains("Etiqueta"))
+            {
+                TablaAtributos.Columns["Etiqueta"].HeaderText = "CARACTERÍSTICA";
+                TablaAtributos.Columns["Etiqueta"].FillWeight = 25;
+            }
+            if (TablaAtributos.Columns.Contains("Tipo"))
+            {
+                TablaAtributos.Columns["Tipo"].HeaderText = "TIPO";
+                TablaAtributos.Columns["Tipo"].FillWeight = 15;
+            }
+            if (TablaAtributos.Columns.Contains("Obligatorio"))
+            {
+                TablaAtributos.Columns["Obligatorio"].HeaderText = "OBLIGATORIO";
+                TablaAtributos.Columns["Obligatorio"].FillWeight = 10;
+            }
+            if (TablaAtributos.Columns.Contains("Valor"))
+            {
+                TablaAtributos.Columns["Valor"].HeaderText = "VALOR";
+                TablaAtributos.Columns["Valor"].FillWeight = 50;
+            }
         }
 
         private void ConfigurarFiltrosAtributos()
         {
-            ConfigurarPlaceHolder(Txt_BuscarAtributo, "BUSCAR CARACTERÍSTICA...");
-
             FiltroAtributoTipo.DropDownStyle = ComboBoxStyle.DropDownList;
             FiltroAtributoTipo.Items.Clear();
-            FiltroAtributoTipo.Items.Add("TODOS");
+            FiltroAtributoTipo.Items.Add("TODOS LOS TIPOS");
             FiltroAtributoTipo.Items.Add("TEXTO");
             FiltroAtributoTipo.Items.Add("NUMERO");
             FiltroAtributoTipo.Items.Add("FECHA");
+            FiltroAtributoTipo.Items.Add("FECHAHORA");
+            FiltroAtributoTipo.Items.Add("BOOLEAN");
+            FiltroAtributoTipo.Items.Add("LISTA");
+            FiltroAtributoTipo.Items.Add("MULTILINEA");
+            FiltroAtributoTipo.Items.Add("PORCENTAJE");
+            FiltroAtributoTipo.Items.Add("MONEDA");
+            FiltroAtributoTipo.Items.Add("EMAIL");
+            FiltroAtributoTipo.Items.Add("URL");
+            FiltroAtributoTipo.Items.Add("TELEFONO");
+            FiltroAtributoTipo.Items.Add("RANGO");
+            FiltroAtributoTipo.Items.Add("COLOR");
             FiltroAtributoTipo.SelectedIndex = 0;
+        }
+
+        private void CargarAtributosDelActivoSeleccionado(int assetId, int categoryId)
+        {
+            try
+            {
+                _atributosValoresList =
+                    Ctrl_FixedAssetAttributeValues.ObtenerValoresConPlantilla(assetId, categoryId);
+
+                AsignarDataSourceAtributos();
+                ConfigurarTablaAtributos();
+                AjustarColumnasAtributos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar características: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AsignarDataSourceAtributos()
+        {
+            if (_atributosValoresList == null) { TablaAtributos.DataSource = null; return; }
+
+            var data = _atributosValoresList.Select(a => new
+            {
+                a.AttributeDefId,
+                Etiqueta = a.AttributeLabel,
+                Tipo = a.DataType,
+                Obligatorio = a.IsRequired ? "SÍ" : "NO",
+                Valor = string.IsNullOrWhiteSpace(a.Value) ? "— SIN VALOR —" : a.Value
+            }).ToList();
+
+            TablaAtributos.DataSource = null;
+            TablaAtributos.DataSource = data;
+            ConfigurarTablaAtributos();
+            AjustarColumnasAtributos();
         }
 
         private void Btn_SearchAtributo_Click(object sender, EventArgs e)
         {
             if (_atributosValoresList == null) return;
 
-            string texto = TienePlaceholder(Txt_BuscarAtributo, "BUSCAR CARACTERÍSTICA...")
-                ? "" : Txt_BuscarAtributo.Text.Trim().ToUpper();
-            string filtroTipo = FiltroAtributoTipo.SelectedItem?.ToString() ?? "TODOS";
+            string valor = TienePlaceholder(Txt_BuscarAtributo, "BUSCAR CARACTERÍSTICA...")
+                                ? "" : Txt_BuscarAtributo.Text.Trim().ToUpper();
+            string tipo = FiltroAtributoTipo.SelectedItem?.ToString() ?? "TODOS LOS TIPOS";
 
-            var filtrados = _atributosValoresList.AsEnumerable();
-
-            if (!string.IsNullOrEmpty(texto))
-                filtrados = filtrados.Where(a =>
-                    (a.AttributeLabel?.ToUpper().Contains(texto) == true) ||
-                    (a.AttributeKey?.ToUpper().Contains(texto) == true));
-
-            if (filtroTipo != "TODOS")
-                filtrados = filtrados.Where(a => a.DataType == filtroTipo);
+            var filtrados = _atributosValoresList.Where(a =>
+                (string.IsNullOrEmpty(valor) ||
+                    a.AttributeLabel.ToUpper().Contains(valor) ||
+                    (a.Value ?? "").ToUpper().Contains(valor)) &&
+                (tipo == "TODOS LOS TIPOS" ||
+                    string.Equals(a.DataType, tipo, StringComparison.OrdinalIgnoreCase))
+            ).ToList();
 
             var data = filtrados.Select(a => new
             {
@@ -1519,185 +1480,61 @@ namespace SECRON.Views
 
         private void Txt_BuscarAtributo_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; Btn_SearchAtributo_Click(sender, e); }
+            if (e.KeyCode == Keys.Enter)
+            { e.SuppressKeyPress = true; Btn_SearchAtributo_Click(sender, e); }
         }
 
         private void Btn_CleanSearchAtributo_Click(object sender, EventArgs e)
         {
             SetTextBoxFromValue(Txt_BuscarAtributo, "", "BUSCAR CARACTERÍSTICA...");
             FiltroAtributoTipo.SelectedIndex = 0;
-
             if (_atributosValoresList == null) return;
-
             AsignarDataSourceAtributos();
             ConfigurarTablaAtributos();
             AjustarColumnasAtributos();
         }
 
+        // Selección en tabla — ya no llena campos de edición inline
+        // La edición se hace abriendo Frm_FA_AssetAttributeValues
         private void TablaAtributos_SelectionChanged(object sender, EventArgs e)
         {
-            if (TablaAtributos.SelectedRows.Count == 0 || _atributosValoresList == null) return;
-
-            int defId = Convert.ToInt32(TablaAtributos.SelectedRows[0].Cells["AttributeDefId"].Value);
-            var atrib = _atributosValoresList.FirstOrDefault(a => a.AttributeDefId == defId);
-            if (atrib == null) return;
-
-            Txt_AttributeKey.Text = atrib.AttributeKey;
-            Txt_AttributeLabel.Text = atrib.AttributeLabel;
-            Txt_AttributeType.Text = atrib.DataType;
-
-            if (atrib.DataType?.ToUpper() == "FECHA")
-            {
-                Txt_AttributeValue.Visible = false;
-                MostrarDtpAtributo(atrib.Value);
-            }
-            else
-            {
-                OcultarDtpAtributo();
-                Txt_AttributeValue.Visible = true;
-                Txt_AttributeValue.Text = string.IsNullOrWhiteSpace(atrib.Value) ? "" : atrib.Value;
-            }
+            // Reservado — sin acción inline
         }
 
+        // Btn_UpdateAtributo abre el formulario completo de atributos
         private void Btn_UpdateAtributo_Click(object sender, EventArgs e)
         {
-            if (_activoSeleccionado == null || _atributosValoresList == null) return;
-
-            try
+            if (_activoSeleccionado == null || _activoSeleccionado.AssetId == 0)
             {
-                int defId = 0;
-                if (TablaAtributos.SelectedRows.Count == 0 ||
-                    !int.TryParse(TablaAtributos.SelectedRows[0].Cells["AttributeDefId"].Value?.ToString(), out defId))
-                {
-                    MessageBox.Show("Seleccione una característica de la tabla.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var atrib = _atributosValoresList.FirstOrDefault(a => a.AttributeDefId == defId);
-                if (atrib == null) return;
-
-                string valor;
-                if (atrib.DataType?.ToUpper() == "FECHA" && _dtpAtributo != null && _dtpAtributo.Visible)
-                    valor = _dtpAtributo.Value.ToString("yyyy-MM-dd");
-                else
-                    valor = Txt_AttributeValue.Text.Trim();
-
-                if (atrib.IsRequired && string.IsNullOrWhiteSpace(valor))
-                {
-                    MessageBox.Show($"El campo '{atrib.AttributeLabel}' es obligatorio.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (!string.IsNullOrWhiteSpace(valor))
-                {
-                    switch (atrib.DataType?.ToUpper())
-                    {
-                        case "NUMBER":
-                        case "NUMERO":
-                            if (!decimal.TryParse(valor, System.Globalization.NumberStyles.Any,
-                                System.Globalization.CultureInfo.InvariantCulture, out _))
-                            {
-                                MessageBox.Show($"El campo '{atrib.AttributeLabel}' debe ser un número válido.", "Validación",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                            break;
-                    }
-                }
-
-                if (MessageBox.Show(
-                    $"¿Actualizar el valor de '{atrib.AttributeLabel}'?",
-                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-
-                atrib.Value = valor.ToUpper();
-                atrib.ModifiedBy = UserData?.UserId;
-                atrib.ModifiedDate = DateTime.Now;
-
-                int resultado;
-                if (atrib.AttributeValueId == 0)
-                {
-                    atrib.AssetId = _activoSeleccionado.AssetId;
-                    atrib.CreatedBy = UserData?.UserId;
-                    resultado = Ctrl_FixedAssetAttributeValues.RegistrarValor(atrib);
-                    if (resultado > 0) atrib.AttributeValueId = resultado;
-                }
-                else
-                {
-                    resultado = Ctrl_FixedAssetAttributeValues.ActualizarValor(atrib);
-                }
-
-                switch (resultado)
-                {
-                    case 1:
-                        MessageBox.Show("Característica actualizada exitosamente.", "Éxito",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        EjecutarBusqueda();
-                        ActualizarInfoPaginacion();
-                        CargarAtributosDelActivoSeleccionado(
-                            _activoSeleccionado.AssetId, _activoSeleccionado.AssetCategoryId);
-                        break;
-                    case -1:
-                        MessageBox.Show("El registro no fue encontrado.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    default:
-                        MessageBox.Show("No se pudo actualizar la característica.", "Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                }
+                MessageBox.Show("Debe seleccionar un activo primero.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            catch (Exception ex)
+
+            using (var frmAttr = new Frm_FA_AssetAttributeValues(
+                _activoSeleccionado.AssetId,
+                _activoSeleccionado.AssetCategoryId,
+                UserData?.UserId ?? 1))
             {
-                MessageBox.Show($"Error al actualizar característica: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                frmAttr.StartPosition = FormStartPosition.CenterParent;
+
+                if (frmAttr.ShowDialog(this) != DialogResult.OK) return;
+
+                // Guardar los valores actualizados
+                frmAttr.GuardarValores(_activoSeleccionado.AssetId);
+
+                MessageBox.Show("Características actualizadas exitosamente.", "Éxito",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarAtributosDelActivoSeleccionado(
+                    _activoSeleccionado.AssetId,
+                    _activoSeleccionado.AssetCategoryId);
             }
         }
 
         private void Btn_ClearAtributo_Click(object sender, EventArgs e)
         {
-            Txt_AttributeKey.Text = string.Empty;
-            Txt_AttributeLabel.Text = string.Empty;
-            Txt_AttributeType.Text = string.Empty;
-            Txt_AttributeValue.Text = string.Empty;
-            Txt_AttributeValue.Visible = true;
-            OcultarDtpAtributo();
             TablaAtributos.ClearSelection();
-        }
-
-        private DateTimePicker _dtpAtributo = null;
-
-        private void MostrarDtpAtributo(string valorActual)
-        {
-            if (_dtpAtributo == null)
-            {
-                _dtpAtributo = new DateTimePicker
-                {
-                    Name = "DTP_AtributoValue",
-                    Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold),
-                    Format = DateTimePickerFormat.Custom,
-                    CustomFormat = "dd/MM/yyyy",
-                    Location = Txt_AttributeValue.Location,
-                    Size = Txt_AttributeValue.Size
-                };
-                Panel_AtributosCRUD.Controls.Add(_dtpAtributo);
-            }
-
-            if (!string.IsNullOrWhiteSpace(valorActual) &&
-                DateTime.TryParse(valorActual, out DateTime fecha))
-                _dtpAtributo.Value = fecha;
-            else
-                _dtpAtributo.Value = DateTime.Today;
-
-            _dtpAtributo.Visible = true;
-            _dtpAtributo.BringToFront();
-        }
-
-        private void OcultarDtpAtributo()
-        {
-            if (_dtpAtributo != null)
-                _dtpAtributo.Visible = false;
         }
 
         #endregion ConfiguracionesTabla_Atributos
