@@ -83,6 +83,7 @@ namespace SECRON.Controllers
     int? categoriaId = null,
     int? classificationId = null,
     string assetStatus = null,
+    int? employeeId = null,
     int pageNumber = 1,
     int pageSize = 100)
         {
@@ -94,10 +95,10 @@ namespace SECRON.Controllers
                 {
                     string query = @"
                 SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
-                       fa.AssetCategoryId, 
+                       fa.AssetCategoryId,
                        (SELECT av.Value FROM FixedAssetAttributeValues av
                          INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
-                         WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
+                         WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand,
                        (SELECT av.Value FROM FixedAssetAttributeValues av
                          INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
                          WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'MODEL' AND ad.IsSystem = 1) AS Model,
@@ -131,7 +132,6 @@ namespace SECRON.Controllers
                     else if (filtroEstado == "SOLO INACTIVOS")
                         query += " AND fa.IsActive = 0";
 
-                    // Filtro por AssetStatus directo (ACTIVE, TRANSFERRED, etc.)
                     if (!string.IsNullOrWhiteSpace(assetStatus))
                     {
                         query += " AND fa.AssetStatus = @assetStatus";
@@ -144,11 +144,16 @@ namespace SECRON.Controllers
                         parametros.Add(new SqlParameter("@categoriaId", categoriaId.Value));
                     }
 
-                    // Filtro por clasificación — join a FixedAssetClassificationCategories
                     if (classificationId.HasValue)
                     {
                         query += " AND fac.ClassificationId = @classificationId";
                         parametros.Add(new SqlParameter("@classificationId", classificationId.Value));
+                    }
+
+                    if (employeeId.HasValue)
+                    {
+                        query += " AND fa.AssignedToEmployeeId = @employeeId";
+                        parametros.Add(new SqlParameter("@employeeId", employeeId.Value));
                     }
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))

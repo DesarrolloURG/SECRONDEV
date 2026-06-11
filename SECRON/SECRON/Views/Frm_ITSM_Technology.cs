@@ -14,7 +14,9 @@ namespace SECRON.Views
     public partial class Frm_ITSM_Technology : Form
     {
         #region PropiedadesIniciales
-
+        // Variable de estado entre páginas
+        private int _filaImpresionActual = 0;
+        private bool _encabezadoImpreso = false;
         public Mdl_Security_UserInfo UserData { get; set; }
 
         private List<Mdl_FixedAsset> _activosList;
@@ -752,7 +754,8 @@ namespace SECRON.Views
 
         #endregion
 
-        #region CartaDeResponsabilidad
+        /* LEGACY IMPRESIÓN DE CARTA INDIVIDUAL POR ACTIVO
+         * #region CartaDeResponsabilidad
 
         private void Btn_PrintLetter_Click(object sender, EventArgs e)
         {
@@ -774,15 +777,38 @@ namespace SECRON.Views
 
             try
             {
+                // Resetear estado de impresión
+                _filaImpresionActual = 0;
+                _encabezadoImpreso = false;
+
+                // Construir lista de filas una sola vez
                 var atributos = Ctrl_FixedAssetAttributeValues
                     .ObtenerValoresConPlantilla(
                         _activoSeleccionado.AssetId,
                         _activoSeleccionado.AssetCategoryId);
 
+                var filas = new List<(string Etiqueta, string Valor)>
+        {
+            ("CÓDIGO DE ACTIVO",    _activoSeleccionado.AssetCode),
+            ("NOMBRE DEL EQUIPO",   _activoSeleccionado.AssetName?.ToUpper() ?? ""),
+            ("CATEGORÍA",           _activoSeleccionado.CategoryName?.ToUpper() ?? ""),
+            ("ESTADO",              _activoSeleccionado.AssetStatus?.ToUpper() ?? ""),
+            ("BODEGA / UBICACIÓN",  _activoSeleccionado.WarehouseName?.ToUpper() ?? "SIN ASIGNAR"),
+            ("FECHA DE ASIGNACIÓN", DateTime.Now.ToString("dd/MM/yyyy"))
+        };
+
+                if (atributos != null)
+                    foreach (var attr in atributos
+                        .Where(a => !string.IsNullOrWhiteSpace(a.Value))
+                        .OrderBy(a => a.AttributeDefId))
+                        filas.Add((attr.AttributeLabel.ToUpper(), attr.Value));
+
                 var printDoc = new PrintDocument();
                 printDoc.DocumentName = $"Carta_Responsabilidad_{_activoSeleccionado.AssetCode}";
+                printDoc.DefaultPageSettings.PaperSize = new PaperSize("Letter", 850, 1100);
+                printDoc.DefaultPageSettings.Margins = new Margins(40, 40, 40, 40);
                 printDoc.PrintPage += (s, ev) =>
-                    ImprimirCartaDeResponsabilidad(ev, _activoSeleccionado, atributos);
+                    ImprimirCartaDeResponsabilidad(ev, _activoSeleccionado, filas);
 
                 var preview = new PrintPreviewDialog
                 {
@@ -798,11 +824,10 @@ namespace SECRON.Views
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void ImprimirCartaDeResponsabilidad(
-    PrintPageEventArgs e,
-    Mdl_FixedAsset activo,
-    List<Mdl_FixedAssetAttributeValue> atributos)
+        PrintPageEventArgs e,
+        Mdl_FixedAsset activo,
+        List<(string Etiqueta, string Valor)> filas)
         {
             Graphics g = e.Graphics;
             Brush brush = Brushes.Black;
@@ -820,205 +845,256 @@ namespace SECRON.Views
             int leftMargin = 50;
             int rightMargin = 760;
             int pageWidth = rightMargin - leftMargin;
-            int currentY = 20;
+            int pageHeight = e.PageBounds.Height;
+            int pieY = pageHeight - 130;
             float valorX = leftMargin + 200;
-
-            // ===== LOGO ENCABEZADO =====
-            try
-            {
-                Image logoEncabezado = Properties.Resources.LogoMembretadoEncabezado;
-                int logoW = 240, logoH = 80;
-                int logoX = leftMargin + (pageWidth - logoW) / 2;
-                g.DrawImage(logoEncabezado, logoX, currentY + 15, logoW, logoH);
-            }
-            catch { }
-
-            currentY += 50;
-
-            // ===== REFERENCIA Y FECHA =====
-            string fecha = DateTime.Now.ToString("dd 'de' MMMM 'de' yyyy",
-                new System.Globalization.CultureInfo("es-GT")).ToUpper();
-            g.DrawString($"Ref. {activo.AssetCode}", fontSmallBold, brush, rightMargin - 200, currentY + 65);
-            g.DrawString($"Guatemala, {fecha}", fontSmall, brush, rightMargin - 200, currentY + 80);
-
-            currentY += 105;
-
-            // ===== TÍTULO =====
-            string titulo = "CARTA DE RESPONSABILIDAD DE EQUIPO DE TECNOLOGÍA";
-            SizeF tituloSize = g.MeasureString(titulo, fontTitulo);
-            float tituloX = leftMargin + (pageWidth - tituloSize.Width) / 2;
-            g.DrawString(titulo, fontTitulo, brush, tituloX, currentY);
-            currentY += 28;
-
-            // Línea naranja
-            g.DrawLine(new Pen(Color.FromArgb(230, 115, 40), 2), leftMargin, currentY, rightMargin, currentY);
-            currentY += 18;
-
-            // ===== DATOS DEL EQUIPO =====
-            g.DrawString("ASIGNADO A:", fontBold, brush, leftMargin, currentY);
-            g.DrawString(activo.EmployeeName?.ToUpper() ?? "___________________________", fontNormal, brush, valorX, currentY);
-            currentY += 27;
-
-            g.DrawString("DE:", fontBold, brush, leftMargin, currentY);
-            g.DrawString(UserData?.FullName?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
-            currentY += 18;
-            g.DrawString("UNIVERSIDAD REGIONAL DE GUATEMALA", fontNormal, brush, valorX, currentY);
-            currentY += 28;
-
-            g.DrawString("EQUIPO:", fontBold, brush, leftMargin, currentY);
-            g.DrawString($"{activo.AssetCode} — {activo.AssetName?.ToUpper() ?? ""}", fontNormal, brush, valorX, currentY);
-            currentY += 27;
-
-            g.DrawString("CATEGORÍA:", fontBold, brush, leftMargin, currentY);
-            g.DrawString(activo.CategoryName?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
-            currentY += 27;
-
-            g.DrawString("BODEGA / SEDE:", fontBold, brush, leftMargin, currentY);
-            g.DrawString(activo.WarehouseName?.ToUpper() ?? "SIN ASIGNAR", fontNormal, brush, valorX, currentY);
-            currentY += 35;
-
-            // ===== CUERPO — compromiso del responsable =====
-            string nombreResponsableTexto = activo.EmployeeName?.ToUpper() ?? "___________________________";
-            string cuerpo =
-                $"Por medio de la presente, yo, {nombreResponsableTexto}, " +
-                $"en mi calidad de empleado(a) de la Universidad Regional Región 02 de Guatemala, " +
-                $"manifiesto haber recibido el equipo de tecnología descrito a continuación " +
-                $"en perfectas condiciones de funcionamiento, comprometiéndome a darle el uso " +
-                $"adecuado, mantenerlo en buen estado y responder por cualquier daño, pérdida " +
-                $"o extravío del mismo.";
-            g.DrawString(cuerpo, fontNormal, brush, new RectangleF(leftMargin, currentY, pageWidth, 70));
-            currentY += 80;
-
-            // Línea gris
-            g.DrawLine(penGris, leftMargin, currentY, rightMargin, currentY);
-            currentY += 18;
-
-            // ===== TABLA DE ESPECIFICACIONES TÉCNICAS =====
-            int[] colWidths = { 220, pageWidth - 220 };
-            string[] headers = { "CARACTERÍSTICA", "VALOR" };
             int tableX = leftMargin;
             int rowH = 20;
+            int[] colWidths = { 220, pageWidth - 220 };
 
-            g.FillRectangle(new SolidBrush(Color.FromArgb(30, 80, 160)), tableX, currentY, pageWidth, rowH);
-            int colX = tableX;
-            for (int i = 0; i < headers.Length; i++)
+            // Límites clave
+            int firmaLineaY = pieY - 75;
+            int selloInicio = firmaLineaY - 200;       // donde empieza el sello
+            int limiteUltima = selloInicio - 20;         // máximo contenido en página final (antes del sello)
+            int limiteNormal = pieY - 20;               // máximo contenido en páginas intermedias (antes del pie)
+
+            void DibujarPie()
             {
-                g.DrawString(headers[i], fontTableBold, Brushes.White, colX + 3, currentY + 4);
-                colX += colWidths[i];
+                try
+                {
+                    Image pie = Properties.Resources.MembretadoPiePagina;
+                    g.DrawImage(pie, leftMargin - 10, pieY, pageWidth + 20, 110);
+                }
+                catch { }
             }
-            g.DrawRectangle(pen, tableX, currentY, pageWidth, rowH);
-            currentY += rowH;
 
+            void DibujarLogo()
+            {
+                try
+                {
+                    Image logo = Properties.Resources.LogoMembretadoEncabezado;
+                    int logoW = 240, logoH = 80;
+                    int logoX = leftMargin + (pageWidth - logoW) / 2;
+                    g.DrawImage(logo, logoX, 35, logoW, logoH);
+                }
+                catch { }
+            }
+
+            void LiberarRecursos()
+            {
+                fontTitulo.Dispose(); fontBold.Dispose(); fontNormal.Dispose();
+                fontSmall.Dispose(); fontSmallBold.Dispose();
+                fontTable.Dispose(); fontTableBold.Dispose();
+                pen.Dispose(); penGris.Dispose();
+            }
+
+            // Calcular si el contenido restante + compromiso caben antes del sello
+            bool EsUltimaPagina(int yActual)
+            {
+                int filasRestantes = filas.Count - _filaImpresionActual;
+                int alturaRestante = (filasRestantes * rowH) + rowH + 65 + 30;
+                return (yActual + alturaRestante) <= limiteUltima;
+            }
+
+            int currentY = 20;
+
+            // ── Primera página — encabezado completo ─────────────────────
+            if (!_encabezadoImpreso)
+            {
+                DibujarLogo();
+                currentY += 50;
+
+                string fecha = DateTime.Now.ToString("dd 'de' MMMM 'de' yyyy",
+                    new System.Globalization.CultureInfo("es-GT")).ToUpper();
+                g.DrawString($"Ref. {activo.AssetCode}", fontSmallBold, brush, rightMargin - 200, currentY + 65);
+                g.DrawString($"Guatemala, {fecha}", fontSmall, brush, rightMargin - 200, currentY + 80);
+                currentY += 105;
+
+                string titulo = "CARTA DE RESPONSABILIDAD DE EQUIPO DE TECNOLOGÍA";
+                SizeF tSize = g.MeasureString(titulo, fontTitulo);
+                g.DrawString(titulo, fontTitulo, brush,
+                    leftMargin + (pageWidth - tSize.Width) / 2, currentY);
+                currentY += 28;
+                g.DrawLine(new Pen(Color.FromArgb(230, 115, 40), 2),
+                    leftMargin, currentY, rightMargin, currentY);
+                currentY += 18;
+
+                g.DrawString("ASIGNADO A:", fontBold, brush, leftMargin, currentY);
+                g.DrawString(activo.EmployeeName?.ToUpper() ?? "___________________________",
+                    fontNormal, brush, valorX, currentY);
+                currentY += 27;
+
+                g.DrawString("DE:", fontBold, brush, leftMargin, currentY);
+                g.DrawString(UserData?.FullName?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
+                currentY += 18;
+                g.DrawString("UNIVERSIDAD REGIONAL DE GUATEMALA", fontNormal, brush, valorX, currentY);
+                currentY += 28;
+
+                g.DrawString("EQUIPO:", fontBold, brush, leftMargin, currentY);
+                g.DrawString($"{activo.AssetCode} — {activo.AssetName?.ToUpper() ?? ""}",
+                    fontNormal, brush, valorX, currentY);
+                currentY += 27;
+
+                g.DrawString("CATEGORÍA:", fontBold, brush, leftMargin, currentY);
+                g.DrawString(activo.CategoryName?.ToUpper() ?? "", fontNormal, brush, valorX, currentY);
+                currentY += 27;
+
+                g.DrawString("BODEGA / SEDE:", fontBold, brush, leftMargin, currentY);
+                g.DrawString(activo.WarehouseName?.ToUpper() ?? "SIN ASIGNAR",
+                    fontNormal, brush, valorX, currentY);
+                currentY += 35;
+
+                string nombreResp = activo.EmployeeName?.ToUpper() ?? "___________________________";
+                string cuerpo =
+                    $"Por medio de la presente, yo, {nombreResp}, " +
+                    $"en mi calidad de empleado(a) de la Universidad Regional Región 02 de Guatemala, " +
+                    $"manifiesto haber recibido el equipo de tecnología descrito a continuación " +
+                    $"en perfectas condiciones de funcionamiento, comprometiéndome a darle el uso " +
+                    $"adecuado, mantenerlo en buen estado y responder por cualquier daño, pérdida " +
+                    $"o extravío del mismo.";
+                g.DrawString(cuerpo, fontNormal, brush,
+                    new RectangleF(leftMargin, currentY, pageWidth, 70));
+                currentY += 80;
+
+                g.DrawLine(penGris, leftMargin, currentY, rightMargin, currentY);
+                currentY += 18;
+
+                g.FillRectangle(new SolidBrush(Color.FromArgb(30, 80, 160)), tableX, currentY, pageWidth, rowH);
+                g.DrawString("ESPECIFICACIÓN", fontTableBold, Brushes.White, tableX + 3, currentY + 4);
+                g.DrawString("DETALLE", fontTableBold, Brushes.White, tableX + colWidths[0] + 3, currentY + 4);
+                g.DrawRectangle(pen, tableX, currentY, pageWidth, rowH);
+                currentY += rowH;
+
+                _encabezadoImpreso = true;
+            }
+            else
+            {
+                // ── Páginas siguientes — logo + espacio + encabezado tabla ──
+                DibujarLogo();
+                currentY = 150;
+
+                g.FillRectangle(new SolidBrush(Color.FromArgb(30, 80, 160)), tableX, currentY, pageWidth, rowH);
+                g.DrawString("ESPECIFICACIÓN", fontTableBold, Brushes.White, tableX + 3, currentY + 4);
+                g.DrawString("DETALLE", fontTableBold, Brushes.White, tableX + colWidths[0] + 3, currentY + 4);
+                g.DrawRectangle(pen, tableX, currentY, pageWidth, rowH);
+                currentY += rowH;
+            }
+
+            // Determinar límite para esta página
+            bool esUltima = EsUltimaPagina(currentY);
+            int limiteContenido = esUltima ? limiteUltima : limiteNormal;
+
+            // ── Dibujar filas desde donde quedó ──────────────────────────
             bool altRow = false;
             int tableBodyStart = currentY;
-            int filasTotales = 0;
+            int filasEnPagina = 0;
 
-            void FilaTabla(string etiqueta, string valor)
+            while (_filaImpresionActual < filas.Count)
             {
+                if (currentY + rowH > limiteContenido)
+                {
+                    g.DrawRectangle(pen, tableX, tableBodyStart - rowH, pageWidth,
+                        rowH * (filasEnPagina + 1));
+                    DibujarPie();
+                    LiberarRecursos();
+                    e.HasMorePages = true;
+                    return;
+                }
+
+                var fila = filas[_filaImpresionActual];
                 if (altRow)
                     g.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 248)),
                         tableX, currentY, pageWidth, rowH);
-                g.DrawString(etiqueta, fontTableBold, brush, tableX + 3, currentY + 4);
-                g.DrawString(valor ?? "—", fontTable, brush, tableX + colWidths[0] + 3, currentY + 4);
+                g.DrawString(fila.Etiqueta, fontTableBold, brush, tableX + 3, currentY + 4);
+                g.DrawString(fila.Valor ?? "—", fontTable, brush,
+                    tableX + colWidths[0] + 3, currentY + 4);
                 g.DrawRectangle(penGris, tableX, currentY, pageWidth, rowH);
                 currentY += rowH;
                 altRow = !altRow;
-                filasTotales++;
+                filasEnPagina++;
+                _filaImpresionActual++;
+
+                // Recalcular límite después de cada fila
+                esUltima = EsUltimaPagina(currentY);
+                limiteContenido = esUltima ? limiteUltima : limiteNormal;
             }
 
-            // Datos básicos del activo
-            FilaTabla("CÓDIGO DE ACTIVO", activo.AssetCode);
-            FilaTabla("NOMBRE DEL EQUIPO", activo.AssetName?.ToUpper() ?? "");
-            FilaTabla("CATEGORÍA", activo.CategoryName?.ToUpper() ?? "");
-            FilaTabla("ESTADO", activo.AssetStatus?.ToUpper() ?? "");
-            FilaTabla("BODEGA / UBICACIÓN", activo.WarehouseName?.ToUpper() ?? "SIN ASIGNAR");
-            FilaTabla("FECHA DE ASIGNACIÓN", DateTime.Now.ToString("dd/MM/yyyy"));
-
-            // Atributos técnicos del equipo
-            if (atributos != null)
-            {
-                foreach (var attr in atributos
-                    .Where(a => !string.IsNullOrWhiteSpace(a.Value))
-                    .OrderBy(a => a.AttributeDefId))
-                {
-                    FilaTabla(attr.AttributeLabel.ToUpper(), attr.Value);
-
-                    if (currentY > e.PageBounds.Height - 180)
-                    {
-                        e.HasMorePages = true;
-                        return;
-                    }
-                }
-            }
-
-            // Borde exterior de la tabla completa
-            g.DrawRectangle(pen, tableX, tableBodyStart - rowH, pageWidth, rowH * (filasTotales + 1));
-
+            g.DrawRectangle(pen, tableX, tableBodyStart - rowH, pageWidth,
+                rowH * (filasEnPagina + 1));
             currentY += 15;
 
-            // ===== COMPROMISO FINAL =====
-            string compromiso =
+            // ── Compromiso final ──────────────────────────────────────────
+            if (currentY + 65 > limiteUltima)
+            {
+                DibujarPie();
+                LiberarRecursos();
+                e.HasMorePages = true;
+                return;
+            }
+
+            string compromisoFinal =
                 "El suscrito se compromete a utilizar el equipo únicamente para las actividades " +
                 "institucionales asignadas, a notificar de inmediato cualquier falla o incidente, " +
                 "y a devolverlo en las mismas condiciones en que fue recibido al finalizar su " +
                 "relación laboral o cuando la institución así lo requiera.";
-            g.DrawString(compromiso, fontNormal, brush,
+            g.DrawString(compromisoFinal, fontNormal, brush,
                 new RectangleF(leftMargin, currentY, pageWidth, 60));
-            currentY += 65;
 
-            // ===== PIE DE PÁGINA =====
-            int pieY = e.PageBounds.Height - 130;
-            try
-            {
-                Image piePagina = Properties.Resources.MembretadoPiePagina;
-                g.DrawImage(piePagina, leftMargin - 10, pieY, pageWidth + 20, 110);
-            }
-            catch { }
+            // ── Última página — pie + sello + firmas ─────────────────────
+            DibujarPie();
 
-            // ===== FIRMAS =====
-            int firmaLineaY = pieY - 75;
             int firma1X = leftMargin;
             int firma3X = leftMargin + 480;
             int firmaAncho = 200;
 
-            // Sello sobre firma 3
             try
             {
                 Image sello = Properties.Resources.SelloCoordinacion_Black;
-                g.DrawImage(sello, firma3X, firmaLineaY - 200, firmaAncho, 200);
+                g.DrawImage(sello, firma3X, selloInicio, firmaAncho, 200);
             }
             catch { }
 
-            // Líneas de firma
             g.DrawLine(pen, firma1X, firmaLineaY, firma1X + firmaAncho, firmaLineaY);
             g.DrawLine(pen, firma3X, firmaLineaY, firma3X + firmaAncho, firmaLineaY);
 
             int textoFirmaY = firmaLineaY + 5;
 
-            // Firma 1 — responsable del equipo
-            string nombreResponsable = activo.EmployeeName?.ToUpper() ?? "NOMBRE DEL RESPONSABLE";
-            SizeF sizeF1 = g.MeasureString(nombreResponsable, fontSmallBold);
-            g.DrawString(nombreResponsable, fontSmallBold, brush,
-                firma1X + (firmaAncho / 2f) - (sizeF1.Width / 2f), textoFirmaY);
-            SizeF sizeCargo = g.MeasureString("RESPONSABLE DEL EQUIPO", fontSmall);
+            string nombreFirma = activo.EmployeeName?.ToUpper() ?? "NOMBRE DEL RESPONSABLE";
+            SizeF sF1 = g.MeasureString(nombreFirma, fontSmallBold);
+            g.DrawString(nombreFirma, fontSmallBold, brush,
+                firma1X + (firmaAncho / 2f) - (sF1.Width / 2f), textoFirmaY);
+            SizeF sCargo = g.MeasureString("RESPONSABLE DEL EQUIPO", fontSmall);
             g.DrawString("RESPONSABLE DEL EQUIPO", fontSmall, brush,
-                firma1X + (firmaAncho / 2f) - (sizeCargo.Width / 2f), textoFirmaY + 14);
+                firma1X + (firmaAncho / 2f) - (sCargo.Width / 2f), textoFirmaY + 14);
 
-            // Firma 3 — coordinación general
-            SizeF sizeF3Titulo = g.MeasureString("COORDINACIÓN GENERAL", fontSmallBold);
-            SizeF sizeF3Oficina = g.MeasureString("OFICINAS CENTRALES", fontSmall);
+            SizeF sF3T = g.MeasureString("COORDINACIÓN GENERAL", fontSmallBold);
+            SizeF sF3O = g.MeasureString("OFICINAS CENTRALES", fontSmall);
             g.DrawString("COORDINACIÓN GENERAL", fontSmallBold, brush,
-                firma3X + (firmaAncho / 2f) - (sizeF3Titulo.Width / 2f), textoFirmaY);
+                firma3X + (firmaAncho / 2f) - (sF3T.Width / 2f), textoFirmaY);
             g.DrawString("OFICINAS CENTRALES", fontSmall, brush,
-                firma3X + (firmaAncho / 2f) - (sizeF3Oficina.Width / 2f), textoFirmaY + 14);
+                firma3X + (firmaAncho / 2f) - (sF3O.Width / 2f), textoFirmaY + 14);
 
-            // Liberar recursos
-            fontTitulo.Dispose(); fontBold.Dispose(); fontNormal.Dispose();
-            fontSmall.Dispose(); fontSmallBold.Dispose();
-            fontTable.Dispose(); fontTableBold.Dispose();
-            pen.Dispose(); penGris.Dispose();
-
+            LiberarRecursos();
             e.HasMorePages = false;
+        }
+
+        #endregion
+         * 
+         * 
+         * 
+         * */
+
+        #region CartaDeResponsabilidad
+
+        private void Btn_PrintLetter_Click(object sender, EventArgs e)
+        {
+            using (var frm = new Frm_ITSM_Technology_ResponsabilityLetter
+            {
+                UserData = UserData
+            })
+            {
+                frm.ShowDialog(this);
+            }
         }
 
         #endregion
