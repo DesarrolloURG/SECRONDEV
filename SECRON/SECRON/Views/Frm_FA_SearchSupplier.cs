@@ -49,9 +49,9 @@ namespace SECRON.Views
         {
             ComboBox_BuscarPor.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_BuscarPor.Items.Clear();
-            ComboBox_BuscarPor.Items.Add("NOMBRE");
-            ComboBox_BuscarPor.Items.Add("RAZÓN SOCIAL");
-            ComboBox_BuscarPor.Items.Add("ACTIVIDAD COMERCIAL");
+            ComboBox_BuscarPor.Items.Add("POR NOMBRE");
+            ComboBox_BuscarPor.Items.Add("POR RAZÓN SOCIAL");
+            ComboBox_BuscarPor.Items.Add("POR ACTIVIDAD COMERCIAL");
             ComboBox_BuscarPor.SelectedIndex = 0;
         }
 

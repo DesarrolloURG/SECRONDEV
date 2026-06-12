@@ -234,7 +234,7 @@ namespace SECRON.Views
 
                 if (tipo == "PROVEEDORES - RAZÓN SOCIAL")
                 {
-                    var resultados = Ctrl_Suppliers.BuscarProveedores(Txt_ValorBuscado.Text);
+                    var resultados = Ctrl_Suppliers.BuscarProveedores(Txt_ValorBuscado.Text, "POR RAZÓN SOCIAL");
                     Tabla.DataSource = resultados;
 
                     if (Tabla.Columns.Count > 0)
@@ -254,7 +254,7 @@ namespace SECRON.Views
                 }
                 else if (tipo == "PROVEEDORES - NOMBRE COMERCIAL")
                 {
-                    var resultados = Ctrl_Suppliers.BuscarProveedores(Txt_ValorBuscado.Text);
+                    var resultados = Ctrl_Suppliers.BuscarProveedores(Txt_ValorBuscado.Text, "POR NOMBRE");
                     Tabla.DataSource = resultados;
 
                     if (Tabla.Columns.Count > 0)
