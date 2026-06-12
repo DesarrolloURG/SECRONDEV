@@ -111,16 +111,35 @@ namespace SECRON.Controllers
                     {
                         switch (filtro)
                         {
-                            case "RAZÓN SOCIAL":
+                            case "POR RAZÓN SOCIAL":
                                 query += " AND LegalName LIKE @texto";
                                 break;
-                            case "ACTIVIDAD COMERCIAL":
+
+                            case "POR NIT":
+                                query += " AND TaxId LIKE @texto";
+                                break;
+
+                            case "POR CLASIFICACIÓN":
+                                query += " AND Classification LIKE @texto";
+                                break;
+                            
+                            case "POR ACTIVIDAD COMERCIAL":
                                 query += " AND CommercialActivity LIKE @texto";
                                 break;
-                            default: // NOMBRE
+
+                            case "TODOS":
+                                query += @" AND (
+                            SupplierName LIKE @texto
+                            OR LegalName LIKE @texto
+                            OR TaxId LIKE @texto
+                        )";
+                                break;
+
+                            default: // POR NOMBRE
                                 query += " AND SupplierName LIKE @texto";
                                 break;
                         }
+
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 

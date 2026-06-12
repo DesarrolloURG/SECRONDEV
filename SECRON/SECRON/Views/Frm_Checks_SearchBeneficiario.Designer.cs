@@ -61,9 +61,10 @@
             this.panel1.Controls.Add(this.Btn_Yes);
             this.panel1.Controls.Add(this.Lbl_Beneficiario);
             this.panel1.Controls.Add(this.Txt_Beneficiario);
-            this.panel1.Location = new System.Drawing.Point(9, 494);
+            this.panel1.Location = new System.Drawing.Point(12, 608);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(665, 114);
+            this.panel1.Size = new System.Drawing.Size(887, 140);
             this.panel1.TabIndex = 78;
             // 
             // Btn_No
@@ -72,9 +73,10 @@
             this.Btn_No.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_No.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
             this.Btn_No.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_No.Location = new System.Drawing.Point(406, 65);
+            this.Btn_No.Location = new System.Drawing.Point(541, 80);
+            this.Btn_No.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_No.Name = "Btn_No";
-            this.Btn_No.Size = new System.Drawing.Size(124, 37);
+            this.Btn_No.Size = new System.Drawing.Size(165, 46);
             this.Btn_No.TabIndex = 66;
             this.Btn_No.Text = "CANCELAR";
             this.Btn_No.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -87,9 +89,10 @@
             this.Btn_Yes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Yes.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_Yes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Yes.Location = new System.Drawing.Point(536, 65);
+            this.Btn_Yes.Location = new System.Drawing.Point(715, 80);
+            this.Btn_Yes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Yes.Name = "Btn_Yes";
-            this.Btn_Yes.Size = new System.Drawing.Size(117, 37);
+            this.Btn_Yes.Size = new System.Drawing.Size(156, 46);
             this.Btn_Yes.TabIndex = 65;
             this.Btn_Yes.Text = "ACEPTAR";
             this.Btn_Yes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -101,7 +104,8 @@
             this.Lbl_Beneficiario.AutoSize = true;
             this.Lbl_Beneficiario.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Beneficiario.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Beneficiario.Location = new System.Drawing.Point(10, 12);
+            this.Lbl_Beneficiario.Location = new System.Drawing.Point(13, 15);
+            this.Lbl_Beneficiario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Beneficiario.Name = "Lbl_Beneficiario";
             this.Lbl_Beneficiario.Size = new System.Drawing.Size(208, 20);
             this.Lbl_Beneficiario.TabIndex = 61;
@@ -110,10 +114,11 @@
             // Txt_Beneficiario
             // 
             this.Txt_Beneficiario.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Beneficiario.Location = new System.Drawing.Point(14, 35);
+            this.Txt_Beneficiario.Location = new System.Drawing.Point(19, 43);
+            this.Txt_Beneficiario.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Txt_Beneficiario.MaxLength = 15;
             this.Txt_Beneficiario.Name = "Txt_Beneficiario";
-            this.Txt_Beneficiario.Size = new System.Drawing.Size(639, 27);
+            this.Txt_Beneficiario.Size = new System.Drawing.Size(851, 27);
             this.Txt_Beneficiario.TabIndex = 60;
             // 
             // PanelTabla
@@ -123,9 +128,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.PanelTabla.Controls.Add(this.Tabla);
-            this.PanelTabla.Location = new System.Drawing.Point(9, 205);
+            this.PanelTabla.Location = new System.Drawing.Point(12, 252);
+            this.PanelTabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(665, 279);
+            this.PanelTabla.Size = new System.Drawing.Size(887, 343);
             this.PanelTabla.TabIndex = 77;
             // 
             // Tabla
@@ -133,8 +139,9 @@
             this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
+            this.Tabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(665, 279);
+            this.Tabla.Size = new System.Drawing.Size(887, 343);
             this.Tabla.TabIndex = 1;
             this.Tabla.SelectionChanged += new System.EventHandler(this.Tabla_SelectionChanged);
             // 
@@ -149,18 +156,20 @@
             this.Panel_DetalleTabla.Controls.Add(this.Btn_Search);
             this.Panel_DetalleTabla.Controls.Add(this.Lbl_ValorBuscado);
             this.Panel_DetalleTabla.Controls.Add(this.Txt_ValorBuscado);
-            this.Panel_DetalleTabla.Location = new System.Drawing.Point(9, 67);
+            this.Panel_DetalleTabla.Location = new System.Drawing.Point(12, 82);
+            this.Panel_DetalleTabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_DetalleTabla.Name = "Panel_DetalleTabla";
-            this.Panel_DetalleTabla.Size = new System.Drawing.Size(663, 125);
+            this.Panel_DetalleTabla.Size = new System.Drawing.Size(884, 154);
             this.Panel_DetalleTabla.TabIndex = 76;
             // 
             // ComboBox_BuscarPor
             // 
             this.ComboBox_BuscarPor.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.ComboBox_BuscarPor.FormattingEnabled = true;
-            this.ComboBox_BuscarPor.Location = new System.Drawing.Point(14, 35);
+            this.ComboBox_BuscarPor.Location = new System.Drawing.Point(19, 43);
+            this.ComboBox_BuscarPor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ComboBox_BuscarPor.Name = "ComboBox_BuscarPor";
-            this.ComboBox_BuscarPor.Size = new System.Drawing.Size(557, 26);
+            this.ComboBox_BuscarPor.Size = new System.Drawing.Size(741, 26);
             this.ComboBox_BuscarPor.TabIndex = 71;
             // 
             // Lbl_BuscarPor
@@ -168,7 +177,8 @@
             this.Lbl_BuscarPor.AutoSize = true;
             this.Lbl_BuscarPor.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_BuscarPor.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_BuscarPor.Location = new System.Drawing.Point(10, 12);
+            this.Lbl_BuscarPor.Location = new System.Drawing.Point(13, 15);
+            this.Lbl_BuscarPor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_BuscarPor.Name = "Lbl_BuscarPor";
             this.Lbl_BuscarPor.Size = new System.Drawing.Size(106, 20);
             this.Lbl_BuscarPor.TabIndex = 64;
@@ -179,9 +189,10 @@
             this.Btn_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_Clear.Location = new System.Drawing.Point(618, 16);
+            this.Btn_Clear.Location = new System.Drawing.Point(824, 20);
+            this.Btn_Clear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Clear.Name = "Btn_Clear";
-            this.Btn_Clear.Size = new System.Drawing.Size(35, 45);
+            this.Btn_Clear.Size = new System.Drawing.Size(47, 55);
             this.Btn_Clear.TabIndex = 63;
             this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Clear.UseVisualStyleBackColor = true;
@@ -192,9 +203,10 @@
             this.Btn_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
-            this.Btn_Search.Location = new System.Drawing.Point(577, 16);
+            this.Btn_Search.Location = new System.Drawing.Point(769, 20);
+            this.Btn_Search.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Search.Name = "Btn_Search";
-            this.Btn_Search.Size = new System.Drawing.Size(35, 45);
+            this.Btn_Search.Size = new System.Drawing.Size(47, 55);
             this.Btn_Search.TabIndex = 62;
             this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Search.UseVisualStyleBackColor = true;
@@ -205,7 +217,8 @@
             this.Lbl_ValorBuscado.AutoSize = true;
             this.Lbl_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_ValorBuscado.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_ValorBuscado.Location = new System.Drawing.Point(10, 68);
+            this.Lbl_ValorBuscado.Location = new System.Drawing.Point(13, 84);
+            this.Lbl_ValorBuscado.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_ValorBuscado.Name = "Lbl_ValorBuscado";
             this.Lbl_ValorBuscado.Size = new System.Drawing.Size(178, 20);
             this.Lbl_ValorBuscado.TabIndex = 61;
@@ -214,10 +227,11 @@
             // Txt_ValorBuscado
             // 
             this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_ValorBuscado.Location = new System.Drawing.Point(14, 90);
-            this.Txt_ValorBuscado.MaxLength = 15;
+            this.Txt_ValorBuscado.Location = new System.Drawing.Point(19, 111);
+            this.Txt_ValorBuscado.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Txt_ValorBuscado.MaxLength = 100;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(639, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(851, 27);
             this.Txt_ValorBuscado.TabIndex = 60;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
@@ -227,8 +241,9 @@
             this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
             this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Superior.Location = new System.Drawing.Point(0, 0);
+            this.Panel_Superior.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_Superior.Name = "Panel_Superior";
-            this.Panel_Superior.Size = new System.Drawing.Size(684, 55);
+            this.Panel_Superior.Size = new System.Drawing.Size(912, 68);
             this.Panel_Superior.TabIndex = 75;
             // 
             // Lbl_Formulario
@@ -238,7 +253,8 @@
             this.Lbl_Formulario.AutoSize = true;
             this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Formulario.Location = new System.Drawing.Point(8, 13);
+            this.Lbl_Formulario.Location = new System.Drawing.Point(11, 16);
+            this.Lbl_Formulario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Formulario.Name = "Lbl_Formulario";
             this.Lbl_Formulario.Size = new System.Drawing.Size(282, 25);
             this.Lbl_Formulario.TabIndex = 50;
@@ -246,15 +262,16 @@
             // 
             // Frm_Checks_SearchBeneficiario
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(684, 611);
+            this.ClientSize = new System.Drawing.Size(912, 752);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.PanelTabla);
             this.Controls.Add(this.Panel_DetalleTabla);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Frm_Checks_SearchBeneficiario";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON - CATÁLOGO DE BENEFICIARIOS";

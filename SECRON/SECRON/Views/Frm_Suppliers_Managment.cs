@@ -316,6 +316,8 @@ namespace SECRON.Views
                     valorBusqueda = Txt_ValorBuscado.Text.Trim();
                 }
 
+                string filtroBusqueda = Filtro1.SelectedItem?.ToString() ?? "TODOS";
+
                 string clasificacion = "";
                 if (Filtro2.SelectedItem?.ToString() != "TODOS")
                 {
@@ -324,75 +326,72 @@ namespace SECRON.Views
 
                 string filtroBancario = Filtro3.SelectedItem?.ToString() ?? "TODOS";
 
-                // ⭐ GUARDAR FILTROS
+                // Guardar filtros
                 _ultimoTextoBusqueda = valorBusqueda;
                 _ultimaClasificacion = clasificacion;
                 _ultimoFiltroBancario = filtroBancario;
 
-                // ⭐ REINICIAR A PÁGINA 1
                 paginaActual = 1;
 
-                // ⭐ SI HAY FILTRO BANCARIO, TRAER TODOS Y FILTRAR EN MEMORIA
                 if (filtroBancario != "TODOS")
                 {
-                    // Traer TODOS los registros que cumplan los filtros de BD
                     List<Mdl_Suppliers> todosLosResultados = Ctrl_Suppliers.BuscarProveedores(
                         textoBusqueda: valorBusqueda,
+                        filtro: filtroBusqueda,
                         classification: clasificacion,
                         pageNumber: 1,
                         pageSize: int.MaxValue
                     );
 
-                    // Filtrar por datos bancarios
                     if (filtroBancario == "CON DATOS BANCARIOS")
                     {
-                        todosLosResultados = todosLosResultados.Where(p => !string.IsNullOrWhiteSpace(p.BankAccountNumber)).ToList();
+                        todosLosResultados = todosLosResultados
+                            .Where(p => !string.IsNullOrWhiteSpace(p.BankAccountNumber))
+                            .ToList();
                     }
                     else if (filtroBancario == "SIN DATOS BANCARIOS")
                     {
-                        todosLosResultados = todosLosResultados.Where(p => string.IsNullOrWhiteSpace(p.BankAccountNumber)).ToList();
+                        todosLosResultados = todosLosResultados
+                            .Where(p => string.IsNullOrWhiteSpace(p.BankAccountNumber))
+                            .ToList();
                     }
 
-                    // Guardar lista completa filtrada
                     _listaCompletaFiltrada = todosLosResultados;
 
-                    // Aplicar paginación manual
                     int skip = (paginaActual - 1) * registrosPorPagina;
-                    proveedoresList = todosLosResultados.Skip(skip).Take(registrosPorPagina).ToList();
 
-                    // Actualizar contador total
+                    proveedoresList = todosLosResultados
+                        .Skip(skip)
+                        .Take(registrosPorPagina)
+                        .ToList();
+
                     totalRegistros = todosLosResultados.Count;
                 }
                 else
                 {
-                    // ⭐ SIN FILTRO BANCARIO: Búsqueda normal con paginación de BD
                     _listaCompletaFiltrada = null;
 
-                    List<Mdl_Suppliers> resultados = Ctrl_Suppliers.BuscarProveedores(
+                    proveedoresList = Ctrl_Suppliers.BuscarProveedores(
                         textoBusqueda: valorBusqueda,
+                        filtro: filtroBusqueda,
                         classification: clasificacion,
                         pageNumber: paginaActual,
                         pageSize: registrosPorPagina
                     );
 
-                    proveedoresList = resultados;
-
-                    // Contar total
                     totalRegistros = Ctrl_Suppliers.ContarTotalProveedores(
                         textoBusqueda: valorBusqueda,
                         classification: clasificacion
                     );
                 }
 
-                // Mostrar resultados
                 Tabla.DataSource = proveedoresList;
+
                 ConfigurarTabla();
                 AjustarColumnas();
 
-                // Calcular total de páginas
                 totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
 
-                // ⭐ ACTUALIZAR LA INFORMACIÓN DE PAGINACIÓN
                 ActualizarInfoPaginacion();
 
                 this.Cursor = Cursors.Default;
@@ -400,10 +399,16 @@ namespace SECRON.Views
             catch (Exception ex)
             {
                 this.Cursor = Cursors.Default;
-                MessageBox.Show($"Error al buscar: {ex.Message}", "Error",
-                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                MessageBox.Show(
+                    $"Error al buscar: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
+
         private void Txt_ValorBuscado_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
