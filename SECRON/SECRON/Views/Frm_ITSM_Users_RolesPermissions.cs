@@ -20,10 +20,17 @@ namespace SECRON.Views
         private TabControl tabControl;
         #endregion
         #region Constructor
-        private void Frm_Users_RolesPermissions_Load(object sender, EventArgs e)
+        private async void Frm_Users_RolesPermissions_Load(object sender, EventArgs e)
         {
             ConfigurarMaxLengthTextBox();
+
+            if (UserData != null)
+            {
+                await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                ConfigurarControlesPorPermisos();
+            }
         }
+
         public Frm_ITSM_Users_RolesPermissions()
         {
             InitializeComponent();
@@ -1338,7 +1345,7 @@ namespace SECRON.Views
             ComboBox_ActionType.SelectedIndex = 0;
 
             // Habilitar botón guardar y deshabilitar actualizar/inactivar
-            Btn_Save.Enabled = true;
+            AplicarEstadoBotonPorPermiso(Btn_Save, "FA_ITMS_TECH_ROLES_CREATE");
             Btn_Update.Enabled = false;
             Btn_Inactive.Enabled = false;
         }
@@ -1378,8 +1385,8 @@ namespace SECRON.Views
 
                     // Configurar botones
                     Btn_Save.Enabled = false;
-                    Btn_Update.Enabled = permiso.IsActive;
-                    Btn_Inactive.Enabled = permiso.IsActive;
+                    AplicarEstadoBotonPorPermiso(Btn_Update, "FA_ITMS_TECH_ROLES_UPDATE");
+                    AplicarEstadoBotonPorPermiso(Btn_Inactive, "FA_ITMS_TECH_ROLES_INACTIVE");
                 }
             }
         }
@@ -2556,5 +2563,73 @@ namespace SECRON.Views
             Txt_ValorBuscadoUsuario.MaxLength = 150;
         }
         #endregion ConfigurarTextBox
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            // Roles — asignación de rol a usuario
+            AplicarEstadoBotonPorPermiso(Btn_Asignar, "FA_ITMS_TECH_ROLES_UPDATE");
+            
+            // Permisos a roles
+            AplicarEstadoBotonPorPermiso(Btn_Add1, "FA_ITMS_TECH_ROLES_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_AddAll1, "FA_ITMS_TECH_ROLES_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Remove1, "FA_ITMS_TECH_ROLES_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_RemoveAll1, "FA_ITMS_TECH_ROLES_UPDATE");
+
+            // CRUD permisos
+            AplicarEstadoBotonPorPermiso(Btn_SearchUsuario, "FA_ITMS_TECH_ROLES_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Search5, "FA_ITMS_TECH_ROLES_READ");
+            AplicarEstadoBotonPorPermiso(Btn_SearchPermiso, "FA_ITMS_TECH_ROLES_READ");
+
+            AplicarEstadoBotonPorPermiso(Btn_Save, "FA_ITMS_TECH_ROLES_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "FA_ITMS_TECH_ROLES_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Inactive, "FA_ITMS_TECH_ROLES_INACTIVE");
+
+            // Permisos adicionales a usuario
+            AplicarEstadoBotonPorPermiso(Btn_Add4, "FA_ITMS_TECH_ROLES_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Remove4, "FA_ITMS_TECH_ROLES_UPDATE");
+        }
+
+        #endregion SistemaDePermisos
     }
 }

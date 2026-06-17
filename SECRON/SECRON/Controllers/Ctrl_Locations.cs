@@ -39,50 +39,28 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Location_Insert", connection))
                 {
-                    string query = @"
-                        INSERT INTO Locations
-                        (
-                            LocationCode,
-                            LocationName,
-                            Address,
-                            City,
-                            IsActive,
-                            CreatedDate,
-                            CreatedBy,
-                            LocationCategoryId,
-                            PrimaryWarehouseId,
-                            MunicipalityId
-                        )
-                        VALUES
-                        (
-                            @LocationCode,
-                            @LocationName,
-                            @Address,
-                            @City,
-                            @IsActive,
-                            GETDATE(),
-                            @CreatedBy,
-                            @LocationCategoryId,
-                            @PrimaryWarehouseId,
-                            @MunicipalityId
-                        )";
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@LocationCode", (object)ubicacion.LocationCode ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LocationName", (object)ubicacion.LocationName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)ubicacion.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", (object)ubicacion.City ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LocationCategoryId", (object)ubicacion.LocationCategoryId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PrimaryWarehouseId", (object)ubicacion.PrimaryWarehouseId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MunicipalityId", (object)ubicacion.MunicipalityId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)ubicacion.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    int resultado = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    if (resultado == -1)
                     {
-                        AgregarParametrosUbicacion(cmd, ubicacion, incluirLocationId: false, incluirModifiedBy: false);
-                        return cmd.ExecuteNonQuery();
+                        MessageBox.Show("Ya existe una sede con ese código. No se puede guardar un código duplicado.",
+                            "Código duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
+
+                    return resultado;
                 }
-            }
-            catch (SqlException ex)
-            {
-                MostrarErrorSqlDuplicado(
-                    ex,
-                    "Ya existe una sede con ese código. No se puede guardar un código duplicado.",
-                    "Error al registrar ubicación: " + ex.Message
-                );
-                return 0;
             }
             catch (Exception ex)
             {
@@ -97,35 +75,29 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Location_Update", connection))
                 {
-                    string query = @"
-                        UPDATE Locations
-                           SET LocationCode = @LocationCode,
-                               LocationName = @LocationName,
-                               Address = @Address,
-                               City = @City,
-                               LocationCategoryId = @LocationCategoryId,
-                               PrimaryWarehouseId = @PrimaryWarehouseId,
-                               MunicipalityId = @MunicipalityId,
-                               ModifiedDate = GETDATE(),
-                               ModifiedBy = @ModifiedBy
-                         WHERE LocationId = @LocationId";
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@LocationId", ubicacion.LocationId);
+                    cmd.Parameters.AddWithValue("@LocationCode", (object)ubicacion.LocationCode ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LocationName", (object)ubicacion.LocationName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)ubicacion.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@City", (object)ubicacion.City ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LocationCategoryId", (object)ubicacion.LocationCategoryId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PrimaryWarehouseId", (object)ubicacion.PrimaryWarehouseId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MunicipalityId", (object)ubicacion.MunicipalityId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)ubicacion.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    int resultado = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    if (resultado == -1)
                     {
-                        AgregarParametrosUbicacion(cmd, ubicacion, incluirLocationId: true, incluirModifiedBy: true);
-                        return cmd.ExecuteNonQuery();
+                        MessageBox.Show("Ya existe una sede con ese código. No se puede actualizar con un código duplicado.",
+                            "Código duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
+
+                    return resultado;
                 }
-            }
-            catch (SqlException ex)
-            {
-                MostrarErrorSqlDuplicado(
-                    ex,
-                    "Ya existe una sede con ese código. No se puede actualizar con un código duplicado.",
-                    "Error al actualizar ubicación: " + ex.Message
-                );
-                return 0;
             }
             catch (Exception ex)
             {
@@ -140,20 +112,21 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Location_Inactive", connection))
                 {
-                    string query = @"
-                        UPDATE Locations
-                           SET IsActive = 0,
-                               ModifiedDate = GETDATE(),
-                               ModifiedBy = @ModifiedBy
-                         WHERE LocationId = @LocationId";
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@LocationId", locationId);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    int resultado = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    if (resultado == -1)
                     {
-                        cmd.Parameters.AddWithValue("@LocationId", locationId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
-                        return cmd.ExecuteNonQuery();
+                        MessageBox.Show("La sede ya se encuentra inactiva.",
+                            "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
+
+                    return resultado;
                 }
             }
             catch (Exception ex)

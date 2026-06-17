@@ -60,20 +60,24 @@ namespace SECRON.Views
         int nWidthEllipse, int nHeightEllipse);
 
         // Evento Load del formulario
-        private void Frm_Users_Managment_Load(object sender, EventArgs e)
+        private async void Frm_Users_Managment_Load(object sender, EventArgs e)
         {
             try
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                // Crear ToolStrip de paginación para ambas tablas
+                ConfigurarPlaceHoldersTextbox();
+                ConfigurarMaxLengthTextBox();
                 CrearToolStripPaginacionUsuarios();
                 CrearToolStripPaginacionColaboradores();
 
-                // Cargar todos los usuarios y colaboradores
-                CargarUsuarios();
+                if (UserData != null)
+                {
+                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    ConfigurarControlesPorPermisos();
+                }
 
-                // Actualizar información de paginación
+                CargarUsuarios();
                 ActualizarInfoPaginacionUsuarios();
                 ActualizarInfoPaginacionColaboradores();
 
@@ -85,22 +89,6 @@ namespace SECRON.Views
                 MessageBox.Show($"Error al cargar el formulario: {ex.Message}",
                               "Error SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            // Configurar PlaceHolders en los TextBox
-            ConfigurarPlaceHoldersTextbox();
-
-            // Configurar tamaño máximo de los TextBox
-            ConfigurarMaxLengthTextBox();
-
-            // Cargar filtros
-            CargarFiltros();
-
-            // Configurar ComboBoxes
-            ConfigurarComboBoxes();
-
-            // Configurar TabIndex y Focus inicial
-            ConfigurarTabIndexYFocus();
-            AplicarEstilosBotones();
         }
 
         // Método separado para Resize
@@ -1405,5 +1393,59 @@ namespace SECRON.Views
             }
         }
         #endregion DesbloquearUsuario
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Save, "FA_ITMS_TECH_MANAGEMENT_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "FA_ITMS_TECH_MANAGEMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Send, "FA_ITMS_TECH_MANAGEMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_ResetPassword, "FA_ITMS_TECH_MANAGEMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_DesbloquearUsuario, "FA_ITMS_TECH_MANAGEMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "FA_ITMS_TECH_MANAGEMENT_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_SearchUsers, "FA_ITMS_TECH_MANAGEMENT_READ");
+        }
+
+        #endregion SistemaDePermisos
+
     }
 }

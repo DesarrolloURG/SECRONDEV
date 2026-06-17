@@ -3,6 +3,7 @@ using SECRON.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -25,7 +26,7 @@ namespace SECRON.Views
             InitializeComponent();
         }
 
-        private void Frm_Accounts_Managment_Load(object sender, EventArgs e)
+        private async void Frm_Accounts_Managment_Load(object sender, EventArgs e)
         {
             try
             {
@@ -34,6 +35,12 @@ namespace SECRON.Views
                 RefrescarTabla();
                 ConfigurarEstadoInicialBotones();
                 BloquearCampos();
+
+                if (UserData != null)
+                {
+                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    ConfigurarControlesPorPermisos();
+                }
             }
             catch (Exception ex)
             {
@@ -173,8 +180,8 @@ namespace SECRON.Views
             // Habilitar edición
             HabilitarCampos();
             Btn_Save.Enabled = false;
-            Btn_Update.Enabled = true;
-            Btn_Inactive.Enabled = true;
+            Btn_Update.Enabled = TienePermiso("ACCOUNTS_MANAGMENT_UPDATE");
+            Btn_Inactive.Enabled = TienePermiso("ACCOUNTS_MANAGMENT_INACTIVE");
             Btn_Clear.Enabled = true;
         }
 
@@ -193,8 +200,8 @@ namespace SECRON.Views
 
             HabilitarCampos();
             Btn_Save.Enabled = false;
-            Btn_Update.Enabled = true;
-            Btn_Inactive.Enabled = true;
+            Btn_Update.Enabled = TienePermiso("ACCOUNTS_MANAGMENT_UPDATE");
+            Btn_Inactive.Enabled = TienePermiso("ACCOUNTS_MANAGMENT_INACTIVE");
             Btn_Clear.Enabled = true;
         }
 
@@ -411,10 +418,11 @@ namespace SECRON.Views
 
         private void Btn_Search_Click(object sender, EventArgs e)
         {
-            
+            if (!Btn_Search.Enabled) return;
+
             LimpiarFormulario();
             HabilitarCampos();
-            Btn_Save.Enabled = true;
+            Btn_Save.Enabled = TienePermiso("ACCOUNTS_MANAGMENT_CREATE");
             Btn_Update.Enabled = false;
             Btn_Inactive.Enabled = false;
             Btn_Clear.Enabled = true;
@@ -424,6 +432,8 @@ namespace SECRON.Views
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
+            if (!Btn_Save.Enabled) return;
+
             if (!ValidarCamposObligatorios()) return;
 
             if (Ctrl_Accounts.ValidarRegistro("Code", Txt_Code.Text.Trim()))
@@ -453,6 +463,8 @@ namespace SECRON.Views
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
+
             if (_cuentaSeleccionada == null)
             {
                 MessageBox.Show("SELECCIONE UNA CUENTA DE LA TABLA PARA EDITAR.", "VALIDACIÓN",
@@ -490,6 +502,8 @@ namespace SECRON.Views
 
         private void Btn_Inactive_Click(object sender, EventArgs e)
         {
+            if (!Btn_Inactive.Enabled) return;
+
             if (_cuentaSeleccionada == null)
             {
                 MessageBox.Show("SELECCIONE UNA CUENTA DE LA TABLA PRIMERO.", "VALIDACIÓN",
@@ -514,6 +528,8 @@ namespace SECRON.Views
 
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
+            if (!Btn_Clear.Enabled) return;
+
             LimpiarFormulario();
             Txt_ValorBuscado.Clear();
             RefrescarTabla();
@@ -565,6 +581,8 @@ namespace SECRON.Views
 
         private void Btn_Export_Click(object sender, EventArgs e)
         {
+            if (!Btn_Export.Enabled) return;
+
             try
             {
                 // Obtener lista completa de cuentas
@@ -738,5 +756,59 @@ namespace SECRON.Views
         }
 
         #endregion ImportarExportar
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Search, "ACCOUNTS_MANAGMENT_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Save, "ACCOUNTS_MANAGMENT_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "ACCOUNTS_MANAGMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Inactive, "ACCOUNTS_MANAGMENT_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "ACCOUNTS_MANAGMENT_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Import, "ACCOUNTS_MANAGMENT_IMPORT");
+        }
+
+        #endregion SistemaDePermisos
+
     }
 }

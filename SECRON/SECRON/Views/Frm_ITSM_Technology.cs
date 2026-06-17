@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -48,7 +49,7 @@ namespace SECRON.Views
 
         #region Load
 
-        private void Frm_ITSM_Technology_Load(object sender, EventArgs e)
+        private async void Frm_ITSM_Technology_Load(object sender, EventArgs e)
         {
             try
             {
@@ -58,11 +59,17 @@ namespace SECRON.Views
                 InicializarScroll();
                 ConfigurarEventosScroll();
 
-                // Validar clasificación TECNOLOGÍA antes de cargar
                 if (!ValidarClasificacionTecnologia()) return;
 
                 ConfigurarComboBoxCategoria();
                 ConfigurarPanel2();
+
+                if (UserData != null)
+                {
+                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    ConfigurarControlesPorPermisos();
+                }
+
                 LimpiarPanelAtributos();
                 CargarActivos();
             }
@@ -642,8 +649,8 @@ namespace SECRON.Views
                 _activoSeleccionado.AssetCategoryId);
 
             Btn_PrintLetter.Enabled = _activoSeleccionado.AssignedToEmployeeId.HasValue;
-            Btn_Update.Enabled = true;
-            Btn_Assign.Enabled = true;
+            Btn_Update.Enabled = TienePermiso("FA_ITMS_TECH_UPDATE");
+            Btn_Assign.Enabled = TienePermiso("FA_ITMS_TECH_UPDATE");
         }
 
         #endregion
@@ -652,6 +659,8 @@ namespace SECRON.Views
 
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            if (!Btn_Search.Enabled) return;
+
             string valor = Txt_ValorBuscado.Text.Trim().ToUpper();
             string filtro = Filtro1.SelectedItem?.ToString();
 
@@ -682,6 +691,8 @@ namespace SECRON.Views
 
         private void Btn_CleanSearch_Click(object sender, EventArgs e)
         {
+            if (!Btn_CleanSearch.Enabled) return;
+
             Txt_ValorBuscado.Clear();
             Filtro1.SelectedIndex = 0;
             Filtro2.SelectedIndex = 0;
@@ -696,6 +707,8 @@ namespace SECRON.Views
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
+
             if (_activoSeleccionado == null || _controlesAtributos == null)
             {
                 MessageBox.Show("Debe seleccionar un equipo de la lista.", "Validación",
@@ -1088,6 +1101,8 @@ namespace SECRON.Views
 
         private void Btn_PrintLetter_Click(object sender, EventArgs e)
         {
+            if (!Btn_PrintLetter.Enabled) return;
+
             using (var frm = new Frm_ITSM_Technology_ResponsabilityLetter
             {
                 UserData = UserData
@@ -1103,6 +1118,8 @@ namespace SECRON.Views
 
         private void Btn_Export_Click(object sender, EventArgs e)
         {
+            if (!Btn_Export.Enabled) return;
+
             try
             {
                 if (_activosList == null || _activosList.Count == 0)
@@ -1296,6 +1313,8 @@ namespace SECRON.Views
 
         private void Btn_Assign_Click(object sender, EventArgs e)
         {
+            if (!Btn_Assign.Enabled) return;
+
             if (_activoSeleccionado == null)
             {
                 MessageBox.Show("Debe seleccionar un equipo de la lista.", "Validación",
@@ -1367,5 +1386,57 @@ namespace SECRON.Views
         }
 
         #endregion
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Update, "FA_ITMS_TECH_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Assign, "FA_ITMS_TECH_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_PrintLetter, "FA_ITMS_TECH_PRINT");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "FA_ITMS_TECH_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Search, "FA_ITMS_TECH_READ");
+        }
+
+        #endregion SistemaDePermisos
     }
 }
