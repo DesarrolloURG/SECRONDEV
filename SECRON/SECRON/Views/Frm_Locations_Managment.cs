@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SECRON.Views
@@ -49,12 +50,19 @@ namespace SECRON.Views
 
         #region CargaInicial
 
-        private void Frm_Locations_Managment_Load(object sender, EventArgs e)
+        private async void Frm_Locations_Managment_Load(object sender, EventArgs e)
         {
             ConfigurarTabIndexYFocus();
             CargarCountries();
             CrearToolStripPaginacion();
             paginaActual = 1;
+
+            if (UserData != null)
+            {
+                await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                ConfigurarControlesPorPermisos();
+            }
+
             RefrescarListado();
             ActualizarInfoPaginacion();
 
@@ -576,7 +584,8 @@ namespace SECRON.Views
         }
 
         private void Btn_Search_Click(object sender, EventArgs e)
-        {
+        { 
+            if(!Btn_Search.Enabled)return;
             EjecutarBusqueda();
         }
 
@@ -591,6 +600,8 @@ namespace SECRON.Views
 
         private void Btn_CleanSearch_Click(object sender, EventArgs e)
         {
+            if (!Btn_CleanSearch.Enabled) return;
+
             try
             {
                 _cargandoUbicacion = true;
@@ -621,6 +632,7 @@ namespace SECRON.Views
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
+            if (!Btn_Save.Enabled) return;
             try
             {
                 if (!ValidarCamposUbicacion())
@@ -700,6 +712,8 @@ namespace SECRON.Views
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
+
             try
             {
                 if (_ubicacionSeleccionada == null || _ubicacionSeleccionada.LocationId == 0)
@@ -786,6 +800,7 @@ namespace SECRON.Views
 
         private void Btn_Inactive_Click(object sender, EventArgs e)
         {
+            if (!Btn_Inactive.Enabled) return;
             try
             {
                 if (_ubicacionSeleccionada == null || _ubicacionSeleccionada.LocationId == 0)
@@ -849,6 +864,8 @@ namespace SECRON.Views
 
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
+            if (!Btn_Clear.Enabled) return;
+
             LimpiarFormularioLocations();
         }
 
@@ -1186,5 +1203,58 @@ namespace SECRON.Views
         }
 
         #endregion
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Search, "LOCATIONS_MANAGMENT_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Save, "LOCATIONS_MANAGMENT_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "LOCATIONS_MANAGMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Inactive, "LOCATIONS_MANAGMENT_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "LOCATIONS_MANAGMENT_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Import, "LOCATIONS_MANAGMENT_IMPORT");
+        }
+
+        #endregion SistemaDePermisos
     }
 }

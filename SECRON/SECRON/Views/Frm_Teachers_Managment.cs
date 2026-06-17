@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -29,14 +30,35 @@ namespace SECRON.Views
         private ToolStripButton btnAnterior;
         private ToolStripButton btnSiguiente;
 
-        private void Frm_Teachers_Managment_Load(object sender, EventArgs e)
+        private async void Frm_Teachers_Managment_Load(object sender, EventArgs e)
         {
-            ConfigurarTabIndexYFocus();
             try
             {
                 this.Cursor = Cursors.WaitCursor;
+
+                // Configuraciones visuales primero
+                ConfigurarTabIndexYFocus();
+                ConfigurarPlaceHoldersTextbox();
+                ConfigurarMaxLengthTextBox();
+                ConfigurarComboBoxes();
+                InicializarScroll();
+                ConfigurarEventosScroll();
                 CrearToolStripPaginacion();
+                CargarProximoCodigoDocente();
+
+                // Permisos
+                if (UserData != null)
+                {
+                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    ConfigurarControlesPorPermisos();
+                }
+
+                // Datos
                 CargarDocentes();
+
+                // Filtros AL FINAL (después de que docentesList ya esté cargada)
+                CargarFiltros();
+
                 this.Cursor = Cursors.Default;
             }
             catch (Exception ex)
@@ -45,15 +67,6 @@ namespace SECRON.Views
                 MessageBox.Show($"Error al cargar el formulario: {ex.Message}",
                               "Error SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            ConfigurarPlaceHoldersTextbox();
-            ConfigurarMaxLengthTextBox();
-            CargarFiltros();
-            InicializarScroll();
-            ConfigurarEventosScroll();
-            ConfigurarComboBoxes();
-
-            // Cargar código de docente automático
-            CargarProximoCodigoDocente();
         }
 
         private void FormularioResize(object sender, EventArgs e)
@@ -314,6 +327,8 @@ namespace SECRON.Views
         // Carga la lista completa de docentes activos desde la base de datos
         private void CargarDocentes()
         {
+            if (!Btn_Search.Enabled) return;
+
             try
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -708,6 +723,8 @@ namespace SECRON.Views
         {
             try
             {
+                if (docentesList == null) return;
+
                 this.Cursor = Cursors.WaitCursor;
 
                 _ultimaEspecializacion = Filtro1.SelectedItem?.ToString() ?? "TODAS LAS ESPECIALIZACIONES";
@@ -991,6 +1008,7 @@ namespace SECRON.Views
         // Evento del botón Guardar - SOLO registra docentes NUEVOS
         private void Btn_Save_Click(object sender, EventArgs e)
         {
+            if (!Btn_Save.Enabled) return;
             try
             {
                 // Validar campos obligatorios antes de proceder
@@ -1037,6 +1055,8 @@ namespace SECRON.Views
         // Evento del botón Update (Actualizar) - Actualiza DIRECTAMENTE el registro seleccionado con confirmación
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
+
             try
             {
                 // Validar que haya un docente seleccionado
@@ -1089,7 +1109,7 @@ namespace SECRON.Views
                         _docenteSeleccionado = null;
 
                         // Habilitar el botón Save para nuevos registros
-                        Btn_Save.Enabled = true;
+                        AplicarEstadoBotonPorPermiso(Btn_Save, "EMPLOYEES_TEACHERS_CREATE");
                     }
                     else
                     {
@@ -1108,6 +1128,8 @@ namespace SECRON.Views
         // Evento del botón Inactive (Eliminar) - Inactiva el registro seleccionado
         private void Btn_Inactive_Click(object sender, EventArgs e)
         {
+            if (!Btn_Inactive.Enabled) return;
+
             try
             {
                 if (_docenteSeleccionado == null)
@@ -1155,6 +1177,8 @@ namespace SECRON.Views
         // Evento del botón Clear (Limpiar) - Limpia todos los controles
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
+            if (!Btn_Clear.Enabled) return;
+
             LimpiarFormulario();
             _docenteSeleccionado = null;
             HabilitarBotonesEdicionEliminacion(false);
@@ -1291,14 +1315,17 @@ namespace SECRON.Views
         // Habilita o deshabilita los botones de edición y eliminación
         private void HabilitarBotonesEdicionEliminacion(bool habilitar)
         {
-            Btn_Update.Enabled = habilitar;
-            Btn_Inactive.Enabled = habilitar;
+            Btn_Update.Enabled = habilitar && TienePermiso("EMPLOYEES_TEACHERS_UPDATE");
+            Btn_Inactive.Enabled = habilitar && TienePermiso("EMPLOYEES_TEACHERS_INACTIVE");
+
         }
         #endregion MetodosAuxiliares
         #region ExportarExcel
         // Exporta la lista FILTRADA de docentes a un archivo Excel (solo los que están en la tabla actualmente)
         private void Btn_Export_Click(object sender, EventArgs e)
         {
+            if (!Btn_Export.Enabled) return;
+
             try
             {
                 // CORREGIDO: Exportar solo los docentes que están filtrados actualmente
@@ -1524,6 +1551,8 @@ namespace SECRON.Views
         // Aplica los filtros cuando se hace clic en el botón buscar
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            if (!Btn_Search.Enabled) return;
+
             try
             {
                 AplicarFiltros(sender, e);
@@ -1539,6 +1568,8 @@ namespace SECRON.Views
         // Limpia todos los filtros y recarga todos los docentes
         private void Btn_Limpiar_Click(object sender, EventArgs e)
         {
+            if (!Btn_CleanSearch.Enabled) return;
+
             try
             {
                 // Limpiar el campo de búsqueda
@@ -1568,5 +1599,58 @@ namespace SECRON.Views
             }
         }
         #endregion EventosFaltantes
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Search, "EMPLOYEES_TEACHERS_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Save, "EMPLOYEES_TEACHERS_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "EMPLOYEES_TEACHERS_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Inactive, "EMPLOYEES_TEACHERS_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "EMPLOYEES_TEACHERS_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Import, "EMPLOYEES_TEACHERS_IMPORT");
+        }
+
+        #endregion SistemaDePermisos
     }
 }

@@ -44,39 +44,34 @@ namespace SECRON.Views
         //private ToolStripLabel lblPaginaInfo;
         private bool _cargandoFormulario = true;
         // Evento Load del formulario
-        private void Frm_Employees_Managment_Load(object sender, EventArgs e)
+        private async void Frm_Employees_Managment_Load(object sender, EventArgs e)
         {
             try
             {
                 _cargandoFormulario = true;
 
-                // Configuración visual y de navegación
                 ConfigurarTabIndexYFocus();
                 ConfigurarPlaceHoldersTextbox();
                 ConfigurarMaxLengthTextBox();
                 ConfigurarDateTimePickers();
-
-                // Configurar y cargar ComboBox (SIEMPRE primero)
                 ConfigurarComboBoxes();
-                CargarFiltros();
-
-                // Configuración de tabla y paginación
                 CrearToolStripPaginacion();
-                CargarEmpleados();
-                ActualizarInfoPaginacion();
-
-                // Scroll y eventos auxiliares
                 InicializarScroll();
                 ConfigurarEventosScroll();
-
-                // Estado inicial del formulario
                 CargarProximoCodigo();
                 HabilitarControlesEdicion(true, false);
 
-                // Evitar selección automática al iniciar
-                Tabla.ClearSelection();
+                if (UserData != null)
+                {
+                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    ConfigurarControlesPorPermisos();
+                }
 
-                // Habilitar eventos (a partir de aquí ya es seguro)
+                CargarFiltros();
+                CargarEmpleados();
+                ActualizarInfoPaginacion();
+
+                Tabla.ClearSelection();
                 _cargandoFormulario = false;
 
                 this.Cursor = Cursors.Default;
@@ -87,22 +82,6 @@ namespace SECRON.Views
                 MessageBox.Show($"Error al cargar el formulario: {ex.Message}",
                               "Error SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            // Configurar PlaceHolders en los TextBox
-            ConfigurarPlaceHoldersTextbox();
-            // Configurar tamaño máximo de los TextBox
-            ConfigurarMaxLengthTextBox();
-            // Configurar DateTimePicker
-            ConfigurarDateTimePickers();
-            // Configurar ScrollBar
-            InicializarScroll();
-            // Configurar eventos del Scroll
-            ConfigurarEventosScroll();
-            // Configurar ComboBoxes
-            ConfigurarComboBoxes();
-            // Cargar código de docente automático
-            CargarProximoCodigo();
-            // Activar/Desactivar controles
-            HabilitarControlesEdicion(true, false);
         }
         // Método separado
         private void FormularioResize(object sender, EventArgs e)
@@ -396,6 +375,7 @@ namespace SECRON.Views
         // Evento Click del botón Buscar
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            if (!Btn_Search.Enabled) return;
             ejecutarBusqueda();
         }
 
@@ -565,6 +545,7 @@ namespace SECRON.Views
         // Evento Click del botón Limpiar Búsqueda
         private void Btn_CleanSearch_Click(object sender, EventArgs e)
         {
+            if (!Btn_CleanSearch.Enabled) return;
             // Limpiar búsqueda
             Txt_ValorBuscado.Text = "BUSCAR POR NOMBRE, DEPARTAMENTO, DPI...";
             Txt_ValorBuscado.ForeColor = Color.Gray;
@@ -1469,6 +1450,7 @@ namespace SECRON.Views
         // Evento para botón Guardar
         private void Btn_Save_Click(object sender, EventArgs e)
         {
+            if (!Btn_Save.Enabled) return;
             try
             {
                 // ASEGURAR QUE LOS VALORES ESTÉN ACTUALIZADOS ANTES DE GUARDAR
@@ -1575,6 +1557,7 @@ namespace SECRON.Views
         // Evento para botón Actualizar
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
             try
             {
                 if (_empleadoSeleccionado == null || _empleadoSeleccionado.EmployeeId == 0)
@@ -1683,6 +1666,7 @@ namespace SECRON.Views
         // Evento para botón Inactivar
         private void Btn_Inactive_Click(object sender, EventArgs e)
         {
+            if (!Btn_Inactive.Enabled) return;
             try
             {
                 if (_empleadoSeleccionado == null || _empleadoSeleccionado.EmployeeId == 0)
@@ -1801,6 +1785,7 @@ namespace SECRON.Views
         // Evento para botón Limpiar
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
+            if (!Btn_Clear.Enabled) return;
             LimpiarFormulario();
         }
 
@@ -1809,6 +1794,7 @@ namespace SECRON.Views
         // Evento para botón Exportar a Excel
         private void Btn_Export_Click(object sender, EventArgs e)
         {
+            if (!Btn_Export.Enabled) return;
             try
             {
                 // ⭐ OBTENER REGISTROS SEGÚN FILTROS ACTIVOS
@@ -2099,5 +2085,57 @@ namespace SECRON.Views
             }
         }
         #endregion
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Save, "EMPLOYEES_MANAGMENT_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "EMPLOYEES_MANAGMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Inactive, "EMPLOYEES_MANAGMENT_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "EMPLOYEES_MANAGMENT_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Search, "EMPLOYEES_MANAGMENT_READ");
+        }
+
+        #endregion SistemaDePermisos
     }
 }

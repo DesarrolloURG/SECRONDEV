@@ -893,7 +893,8 @@ namespace SECRON.Views
         // Configurar estado inicial de botones
         private void ConfigurarEstadoInicialBotones()
         {
-            Btn_AddCuenta.Enabled = true;
+            
+            Btn_AddCuenta.Enabled = TienePermiso("CHECKS_MANAGMENT_CREATE");
             Btn_Update.Enabled = false;
             Btn_Remove.Enabled = false;
         }
@@ -1084,7 +1085,7 @@ namespace SECRON.Views
                 _filaSeleccionadaIndex = -1;
 
                 // Restaurar estado de botones
-                Btn_AddCuenta.Enabled = true;
+                Btn_AddCuenta.Enabled = TienePermiso("CHECKS_MANAGMENT_CREATE");
                 Btn_Update.Enabled = false;
 
                 // Regresar foco al código
@@ -1137,7 +1138,7 @@ namespace SECRON.Views
                 _filaSeleccionadaIndex = -1;
 
                 // Restaurar estado de botones
-                Btn_AddCuenta.Enabled = true;
+                Btn_AddCuenta.Enabled = TienePermiso("CHECKS_MANAGMENT_CREATE");
                 Btn_Update.Enabled = false;
                 Btn_Remove.Enabled = false;
 
@@ -1615,13 +1616,13 @@ namespace SECRON.Views
 
                 // Cambiar estado de botones
                 Btn_AddCuenta.Enabled = false;
-                Btn_Update.Enabled = true;
+                Btn_Update.Enabled = TienePermiso("CHECKS_MANAGMENT_UPDATE");
                 Btn_Remove.Enabled = true; // Si tienes botón eliminar
             }
             else
             {
                 _filaSeleccionadaIndex = -1;
-                Btn_AddCuenta.Enabled = true;
+                Btn_AddCuenta.Enabled = TienePermiso("CHECKS_MANAGMENT_CREATE");
                 Btn_Update.Enabled = false;
                 Btn_Remove.Enabled = false; // Si tienes botón eliminar
             }
@@ -1915,7 +1916,7 @@ namespace SECRON.Views
             _filaSeleccionadaIndex = -1;
 
             // Restaurar estado de botones
-            Btn_AddCuenta.Enabled = true;
+            Btn_AddCuenta.Enabled = TienePermiso("CHECKS_MANAGMENT_CREATE");
             Btn_Update.Enabled = false;
             Btn_Remove.Enabled = false;
         }
@@ -4301,7 +4302,15 @@ namespace SECRON.Views
         {
             // ⭐ CHECKS_MANAGMENT_ASSIGNMENT - Asignar Cheques (CHK_032)
             Btn_AsignarCheque.Enabled = TienePermiso("CHECKS_MANAGMENT_ASSIGNMENT");
+
+            //nuevos permisos creados
+            Btn_Update.Enabled = TienePermiso("CHECKS_MANAGMENT_UPDATE");
+            Btn_Imprimir.Enabled = TienePermiso("CHECKS_MANAGMENT_PRINT");
+            Btn_AddCuenta.Enabled = TienePermiso("CHECKS_MANAGMENT_CREATE");
+            Btn_SearchBeneficiario.Enabled = TienePermiso("CHECKS_MANAGMENT_READ");
+
         }
+
         #endregion SistemaDePermisos
         #region ExencionManualComplemento
         // Método para validar y configurar exención manual

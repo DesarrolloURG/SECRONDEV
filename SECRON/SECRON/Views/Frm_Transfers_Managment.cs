@@ -891,7 +891,8 @@ namespace SECRON.Views
         // Configurar estado inicial de botones
         private void ConfigurarEstadoInicialBotones()
         {
-            Btn_AddCuenta.Enabled = true;
+            AplicarEstadoBotonPorPermiso(Btn_AddCuenta, "TRANSFERS_MANAGMENT_CREATE");
+
             Btn_Update.Enabled = false;
             Btn_Remove.Enabled = false;
         }
@@ -913,6 +914,8 @@ namespace SECRON.Views
         // Agregar cuenta a la partida - EVENTO DEL BOTÓN
         private void Btn_AddCuenta_Click(object sender, EventArgs e)
         {
+            if (!Btn_AddCuenta.Enabled) return;
+        
             try
             {
                 // Obtener valores de los campos
@@ -994,6 +997,8 @@ namespace SECRON.Views
         // ACTUALIZAR cuenta de la partida - EVENTO DEL BOTÓN
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
+
             try
             {
                 // VALIDACIÓN 1: Verificar que hay una fila seleccionada
@@ -1082,7 +1087,7 @@ namespace SECRON.Views
                 _filaSeleccionadaIndex = -1;
 
                 // Restaurar estado de botones
-                Btn_AddCuenta.Enabled = true;
+                AplicarEstadoBotonPorPermiso(Btn_AddCuenta, "TRANSFERS_MANAGMENT_CREATE");
                 Btn_Update.Enabled = false;
 
                 // Regresar foco al código
@@ -1098,6 +1103,8 @@ namespace SECRON.Views
         // ELIMINAR cuenta de la partida - EVENTO DEL BOTÓN
         private void Btn_Remove_Click(object sender, EventArgs e)
         {
+            if (!Btn_Remove.Enabled) return;
+
             try
             {
                 // Validar que hay una fila seleccionada
@@ -1135,7 +1142,7 @@ namespace SECRON.Views
                 _filaSeleccionadaIndex = -1;
 
                 // Restaurar estado de botones
-                Btn_AddCuenta.Enabled = true;
+                AplicarEstadoBotonPorPermiso(Btn_AddCuenta, "TRANSFERS_MANAGMENT_CREATE");
                 Btn_Update.Enabled = false;
                 Btn_Remove.Enabled = false;
 
@@ -1167,6 +1174,8 @@ namespace SECRON.Views
         // Evento para buscar cuenta - ABRIR FORMULARIO DE BÚSQUEDA
         private void Btn_SearchCuenta_Click(object sender, EventArgs e)
         {
+            if (!Btn_SearchCuenta.Enabled) return;
+
             // Asegurar estado inicial de botones
             ConfigurarEstadoInicialBotones();
 
@@ -1616,7 +1625,7 @@ namespace SECRON.Views
             else
             {
                 _filaSeleccionadaIndex = -1;
-                Btn_AddCuenta.Enabled = true;
+                AplicarEstadoBotonPorPermiso(Btn_AddCuenta, "TRANSFERS_MANAGMENT_CREATE");
                 Btn_Update.Enabled = false;
                 Btn_Remove.Enabled = false; // Si tienes botón eliminar
             }
@@ -1815,6 +1824,8 @@ namespace SECRON.Views
         // Evento del botón Buscar Beneficiario
         private void Btn_SearchBeneficiario_Click(object sender, EventArgs e)
         {
+            if (!Btn_SearchBeneficiario.Enabled) return;
+
             try
             {
                 Frm_Transfers_SearchBeneficiario frmBuscar = new Frm_Transfers_SearchBeneficiario(this);
@@ -1905,12 +1916,14 @@ namespace SECRON.Views
         // Limpiar solo los campos de la cuenta que se está ingresando
         private void Btn_ClearCuenta_Click(object sender, EventArgs e)
         {
+            if (!Btn_ClearCuenta.Enabled) return;
+
             LimpiarCamposPartida();
             Tabla.ClearSelection();
             _filaSeleccionadaIndex = -1;
 
             // Restaurar estado de botones
-            Btn_AddCuenta.Enabled = true;
+            AplicarEstadoBotonPorPermiso(Btn_AddCuenta, "TRANSFERS_MANAGMENT_CREATE");
             Btn_Update.Enabled = false;
             Btn_Remove.Enabled = false;
         }
@@ -1980,6 +1993,8 @@ namespace SECRON.Views
         // Limpiar solo la partida contable (tabla)
         private void Btn_ClearPartida_Click(object sender, EventArgs e)
         {
+            if (!Btn_ClearPartida.Enabled) return;
+
             if (Tabla.Rows.Count == 0)
             {
                 MessageBox.Show("LA PARTIDA CONTABLE ESTÁ VACÍA",
@@ -2496,6 +2511,8 @@ namespace SECRON.Views
         // Evento del botón Btn_Imprimir
         private void Btn_Imprimir_Click(object sender, EventArgs e)
         {
+            if (!Btn_Imprimir.Enabled) return;
+
             try
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -4196,40 +4213,55 @@ namespace SECRON.Views
 
         #endregion RefrescoAutomatico
         #region SistemaDePermisos
-        // ========== SISTEMA DE PERMISOS ==========
-        private Ctrl_Security_Auth authController;
-        private List<string> permisosUsuario = new List<string>();
 
-        // Método para cargar permisos del usuario
-        private async Task CargarPermisosUsuario(int userId, int roleId)
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
         {
             try
             {
-                permisosUsuario = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
-                System.Diagnostics.Debug.WriteLine($"Permisos cargados en Checks Managment: {permisosUsuario.Count}");
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}",
-                               "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Método para verificar si tiene un permiso específico
-        private bool TienePermiso(string permissionCode)
+        protected bool TienePermiso(string permissionCode)
         {
-            if (permisosUsuario == null || permisosUsuario.Count == 0)
-                return false;
-
-            return permisosUsuario.Contains(permissionCode);
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
         }
 
-        // Método para configurar botones según permisos
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
         private void ConfigurarBotonesPorPermisos()
         {
-            // ⭐ CHECKS_MANAGMENT_ASSIGNMENT - Asignar TRANSFERENCIAs (CHK_032)
-            //Btn_AsignarTRANSFERENCIA.Enabled = TienePermiso("CHECKS_MANAGMENT_ASSIGNMENT");
+            AplicarEstadoBotonPorPermiso(Btn_AddCuenta, "TRANSFERS_MANAGMENT_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "TRANSFERS_MANAGMENT__UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Remove, "TRANSFERS_MANAGMENT_DELETE");
+            AplicarEstadoBotonPorPermiso(Btn_SearchBeneficiario, "TRANSFERS_MANAGMENT__READ");
+            AplicarEstadoBotonPorPermiso(Btn_SearchCuenta, "TRANSFERS_MANAGMENT__READ");
         }
+
         #endregion SistemaDePermisos
         #region ExencionManualComplemento
         // Método para validar y configurar exención manual

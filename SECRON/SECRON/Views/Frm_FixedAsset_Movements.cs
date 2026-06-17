@@ -3,11 +3,12 @@ using SECRON.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Drawing.Printing;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SECRON.Views
 {
@@ -62,15 +63,22 @@ namespace SECRON.Views
 
         #region Load
 
-        private void Frm_FixedAsset_Movements_Load(object sender, EventArgs e)
+        private async void Frm_FixedAsset_Movements_Load(object sender, EventArgs e)
         {
             ConfigurarTablaDetalles();
             CargarComboBoxDestino();
-            EstadoInicial();
             InicializarScroll();
             ConfigurarEventosScroll();
             ComboBox_Location.SelectedIndexChanged += ComboBox_Location_SelectedIndexChanged;
             InicializarImpresion();
+
+            if (UserData != null)
+            {
+                await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                ConfigurarControlesPorPermisos();
+            }
+
+            EstadoInicial();
         }
 
         #endregion
@@ -230,7 +238,7 @@ namespace SECRON.Views
 
             Tabla.DataSource = null;
 
-            Btn_AddAsset.Enabled = true;
+            AplicarEstadoBotonPorPermiso(Btn_AddAsset, "FA_MOVEMENTS_CREATE");
             Btn_RemoveAsset.Enabled = false;
             Btn_EndTransfer.Enabled = false;
             Btn_Update.Enabled = false;
@@ -811,7 +819,7 @@ namespace SECRON.Views
             Txt_FromEmployee.Clear();
 
             Btn_RemoveAsset.Enabled = true;
-            Btn_EndTransfer.Enabled = true;
+            AplicarEstadoBotonPorPermiso(Btn_EndTransfer, "FA_MOVEMENTS_CREATE");
         }
 
         private void Btn_RemoveAsset_Click(object sender, EventArgs e)
@@ -1377,5 +1385,59 @@ namespace SECRON.Views
 
             EstadoInicial();
         }
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_AddAsset, "FA_MOVEMENTS_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_EndTransfer, "FA_MOVEMENTS_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "FA_MOVEMENTS_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_States, "FA_MOVEMENTS_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Transfer, "FA_MOVEMENTS_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "FA_MOVEMENTS_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Cancel, "FA_MOVEMENTS_UPDATE");
+        }
+
+        #endregion SistemaDePermisos
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -29,15 +30,31 @@ namespace SECRON.Views
         private ToolStripButton btnSiguiente;
         //private ToolStripLabel lblPaginaInfo;
 
-        private void Frm_Suppliers_Managment_Load(object sender, EventArgs e)
+        private async void Frm_Suppliers_Managment_Load(object sender, EventArgs e)
         {
-            ConfigurarTabIndexYFocus();
             try
             {
                 this.Cursor = Cursors.WaitCursor;
+
+                ConfigurarTabIndexYFocus();
+                ConfigurarPlaceHoldersTextbox();
+                ConfigurarMaxLengthTextBox();
+                ConfigurarComboBoxes();
+                InicializarScroll();
+                ConfigurarEventosScroll();
                 CrearToolStripPaginacion();
+                CargarProximoCodigoProveedor();
+
+                if (UserData != null)
+                {
+                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    ConfigurarControlesPorPermisos();
+                }
+
                 CargarProveedores();
                 ActualizarInfoPaginacion();
+                CargarFiltros();
+
                 this.Cursor = Cursors.Default;
             }
             catch (Exception ex)
@@ -46,15 +63,6 @@ namespace SECRON.Views
                 MessageBox.Show($"Error al cargar el formulario: {ex.Message}",
                               "Error SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            ConfigurarPlaceHoldersTextbox();
-            ConfigurarMaxLengthTextBox();
-            CargarFiltros();
-            InicializarScroll();
-            ConfigurarEventosScroll();
-            ConfigurarComboBoxes();
-
-            // CARGAR CÓDIGO DE PROVEEDOR AUTOMÁTICO
-            CargarProximoCodigoProveedor();
         }
 
         private void FormularioResize(object sender, EventArgs e)
@@ -305,6 +313,8 @@ namespace SECRON.Views
         #region Search
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            if (!Btn_Search.Enabled) return;
+
             try
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -420,6 +430,8 @@ namespace SECRON.Views
 
         private void Btn_CleanSearch_Click(object sender, EventArgs e)
         {
+            if (!Btn_CleanSearch.Enabled) return;
+
             Txt_ValorBuscado.Text = "BUSCAR POR NOMBRE, NIT, RAZÓN SOCIAL...";
             Txt_ValorBuscado.ForeColor = Color.Gray;
             Filtro1.SelectedIndex = 0;
@@ -602,6 +614,7 @@ namespace SECRON.Views
             try
             {
                 if (Tabla.SelectedRows.Count == 0) return;
+                if (proveedoresList == null) return;
 
                 DataGridViewRow fila = Tabla.SelectedRows[0];
                 int supplierId = Convert.ToInt32(fila.Cells["SupplierId"].Value);
@@ -1046,6 +1059,8 @@ namespace SECRON.Views
 
         private void Btn_Save_Click(object sender, EventArgs e)
         {
+            if (!Btn_Save.Enabled) return;
+
             try
             {
                 if (!ValidarCamposObligatorios())
@@ -1128,6 +1143,8 @@ namespace SECRON.Views
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
+            if (!Btn_Update.Enabled) return;
+
             try
             {
                 if (_proveedorSeleccionado == null || _proveedorSeleccionado.SupplierId == 0)
@@ -1209,6 +1226,8 @@ namespace SECRON.Views
 
         private void Btn_Inactive_Click(object sender, EventArgs e)
         {
+            if (!Btn_Inactive.Enabled) return;
+
             try
             {
                 if (_proveedorSeleccionado == null || _proveedorSeleccionado.SupplierId == 0)
@@ -1284,12 +1303,15 @@ namespace SECRON.Views
 
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
+            if (!Btn_Clear.Enabled) return;
+
             LimpiarFormulario();
         }
         #endregion Limpieza
         #region ExportarExcel
         private void Btn_Export_Click(object sender, EventArgs e)
         {
+            if (!Btn_Export.Enabled) return;
             try
             {
                 // ⭐ OBTENER REGISTROS SEGÚN FILTROS ACTIVOS
@@ -1506,5 +1528,58 @@ namespace SECRON.Views
             }
         }
         #endregion ExportarExcel
+
+        #region SistemaDePermisos
+
+        private Ctrl_Security_Auth authController;
+        private HashSet<string> permisosUsuario = new HashSet<string>();
+
+        protected virtual async Task CargarPermisosUsuario(int userId, int roleId)
+        {
+            try
+            {
+                authController = new Ctrl_Security_Auth();
+                var permisos = await authController.ObtenerPermisosUsuarioAsync(userId, roleId);
+                permisosUsuario = permisos != null
+                    ? new HashSet<string>(permisos, StringComparer.OrdinalIgnoreCase)
+                    : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            }
+            catch (Exception ex)
+            {
+                permisosUsuario = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                MessageBox.Show($"ERROR AL CARGAR PERMISOS: {ex.Message}", "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected bool TienePermiso(string permissionCode)
+        {
+            return !string.IsNullOrWhiteSpace(permissionCode) &&
+                   permisosUsuario != null &&
+                   permisosUsuario.Contains(permissionCode);
+        }
+
+        protected void AplicarEstadoBotonPorPermiso(Button boton, string permissionCode)
+        {
+            if (boton == null) return;
+            bool habilitado = TienePermiso(permissionCode);
+            boton.Enabled = habilitado;
+            if (habilitado)
+            { boton.UseVisualStyleBackColor = true; boton.ForeColor = Color.Black; boton.Cursor = Cursors.Default; }
+            else
+            { boton.BackColor = Color.FromArgb(200, 200, 200); boton.ForeColor = Color.Gray; boton.Cursor = Cursors.No; }
+        }
+
+        protected void ConfigurarControlesPorPermisos()
+        {
+            AplicarEstadoBotonPorPermiso(Btn_Search, "SUPPLIERS_MANAGMENT_READ");
+            AplicarEstadoBotonPorPermiso(Btn_Save, "SUPPLIERS_MANAGMENT_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_Update, "SUPPLIERS_MANAGMENT_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_Inactive, "SUPPLIERS_MANAGMENT_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_Export, "SUPPLIERS_MANAGMENT_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Import, "SUPPLIERS_MANAGMENT_IMPORT");
+        }
+
+        #endregion SistemaDePermisos
     }
 }
