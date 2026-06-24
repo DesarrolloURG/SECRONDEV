@@ -390,6 +390,34 @@ namespace SECRON.Views
         private void ConfigurarTabla()
         {
             Tabla.Columns.Clear();
+
+            // Columna abrir PDF
+            var colAbrir = new DataGridViewImageColumn();
+            colAbrir.Name = "ColAbrirPDF";
+            colAbrir.HeaderText = "";
+            colAbrir.Width = 35;
+            colAbrir.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            colAbrir.DefaultCellStyle.NullValue = Properties.Resources.SearchNegro25x25;
+            Tabla.Columns.Add(colAbrir);
+
+            // Columna cargar PDF
+            var colCargar = new DataGridViewImageColumn();
+            colCargar.Name = "ColCargarPDF";
+            colCargar.HeaderText = "";
+            colCargar.Width = 35;
+            colCargar.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            colCargar.DefaultCellStyle.NullValue = Properties.Resources.UploadFileBlack25x25;
+            Tabla.Columns.Add(colCargar);
+
+            // Validar si el cheque tiene vinculado archivo o no
+            var colEstado = new DataGridViewImageColumn();
+            colEstado.Name = "FilePath";
+            colEstado.HeaderText = "ARCHIVO";
+            colEstado.Width = 35;
+            colEstado.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            colEstado.DefaultCellStyle.NullValue = Properties.Resources.InactivarRojo25x25;
+            Tabla.Columns.Add(colEstado);
+
             Tabla.Columns.Add("CheckId", "ID");
             Tabla.Columns.Add("CheckNumber", "NO. CHEQUE");
             Tabla.Columns.Add("IssueDate", "FECHA EMISIÓN");
@@ -401,6 +429,7 @@ namespace SECRON.Views
             Tabla.Columns.Add("Status", "ESTADO");
             Tabla.Columns.Add("CreatedBy", "EMITIDO POR");
             Tabla.Columns.Add("Predeclared", "PREDECLARADO");
+
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Tabla.MultiSelect = false;
@@ -427,6 +456,9 @@ namespace SECRON.Views
             AjustarColumnas();
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            // Eventos
+            Tabla.CellClick += Tabla_CellClick_PDF;
         }
 
         private void AjustarColumnas()
@@ -453,6 +485,8 @@ namespace SECRON.Views
                 Tabla.Columns["CreatedBy"].FillWeight = 15;
                 Tabla.Columns["Predeclared"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 Tabla.Columns["Predeclared"].FillWeight = 10;
+                Tabla.Columns["FilePath"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                Tabla.Columns["FilePath"].FillWeight = 15;
             }
         }
         #endregion ConfigurarTabla
@@ -492,6 +526,12 @@ namespace SECRON.Views
                 }
 
                 Tabla.Rows.Add(
+                    DBNull.Value,                               // ColAbrirPDF
+                    DBNull.Value,                               // ColCargarPDF
+                                                                // Mostrar si hay archivo vinculado o no al cheque
+                    string.IsNullOrWhiteSpace(cheque.FilePath)
+                    ? (object)DBNull.Value
+                    : Properties.Resources.SaveVerde25x25,
                     cheque.CheckId,
                     cheque.CheckNumber,
                     cheque.IssueDate.ToString("dd/MM/yyyy"),
@@ -1681,5 +1721,91 @@ namespace SECRON.Views
             }
         }
         #endregion Portapepeles
+        #region GestionArchivoPDF
+        private void Tabla_CellClick_PDF(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            // Abrir PDF
+            if (e.ColumnIndex == Tabla.Columns["ColAbrirPDF"].Index)
+            {
+                int checkId = Convert.ToInt32(Tabla.Rows[e.RowIndex].Cells["CheckId"].Value);
+                var cheque = chequesList.FirstOrDefault(c => c.CheckId == checkId);
+                string filePath = cheque?.FilePath;
+
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    MessageBox.Show("ESTE CHEQUE NO TIENE UN ARCHIVO VINCULADO.", "AVISO",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!System.IO.File.Exists(filePath))
+                {
+                    Ctrl_Checks.ActualizarFilePath(checkId, null, UserData.UserId);
+                    MessageBox.Show("EL ARCHIVO NO SE ENCUENTRA EN LA RUTA INDICADA.\nSE HA LIMPIADO EL VÍNCULO AUTOMÁTICAMENTE.",
+                                    "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    CargarCheques();
+                    return;
+                }
+
+                System.Diagnostics.Process.Start(filePath);
+            }
+            // Cargar PDF
+            else if (e.ColumnIndex == Tabla.Columns["ColCargarPDF"].Index)
+            {
+                int checkId = Convert.ToInt32(Tabla.Rows[e.RowIndex].Cells["CheckId"].Value);
+                string numeroCheque = Tabla.Rows[e.RowIndex].Cells["CheckNumber"].Value.ToString();
+
+                // Verificar si ya tiene archivo vinculado
+                var chequeExistente = chequesList.FirstOrDefault(c => c.CheckId == checkId);
+                if (!string.IsNullOrWhiteSpace(chequeExistente?.FilePath))
+                {
+                    if (MessageBox.Show("ESTE CHEQUE YA TIENE UN ARCHIVO VINCULADO.\n¿DESEA REEMPLAZARLO?",
+                        "CONFIRMAR", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        return;
+                }
+
+                using (OpenFileDialog dlg = new OpenFileDialog())
+                {
+                    dlg.Title = "SELECCIONAR ARCHIVO PDF";
+                    dlg.Filter = "Archivos PDF (*.pdf)|*.pdf";
+
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            string carpetaDestino = @"\\Uregional\shared\SECRONDEV\FINANZAS\CHEQUES\";
+                            //string carpetaDestino = @"\\Uregional\shared\SECRONQA\FINANZAS\CHEQUES\";
+                            //string carpetaDestino = @"\\Uregional\shared\SECRON\FINANZAS\CHEQUES\";
+                            string rutaDestino = System.IO.Path.Combine(carpetaDestino, numeroCheque + ".pdf");
+
+                            if (!System.IO.Directory.Exists(carpetaDestino))
+                                System.IO.Directory.CreateDirectory(carpetaDestino);
+
+                            string rutaSinExtension = System.IO.Path.Combine(carpetaDestino, numeroCheque);
+                            if (System.IO.File.Exists(rutaSinExtension))
+                                System.IO.File.Delete(rutaSinExtension);
+
+                            System.IO.File.Copy(dlg.FileName, rutaDestino, overwrite: true);
+
+                            bool ok = Ctrl_Checks.ActualizarFilePath(checkId, rutaDestino, UserData.UserId);
+                            if (ok)
+                            {
+                                MessageBox.Show("ARCHIVO VINCULADO CORRECTAMENTE.", "ÉXITO",
+                                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                CargarCheques();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("ERROR AL COPIAR ARCHIVO: " + ex.Message, "ERROR",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+        }
+        #endregion GestionArchivoPDF
     }
 }

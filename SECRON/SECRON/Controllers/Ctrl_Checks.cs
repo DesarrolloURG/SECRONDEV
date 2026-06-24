@@ -222,7 +222,8 @@ namespace SECRON.Controllers
                 Bill = reader[40] == DBNull.Value ? null : reader[40].ToString(),
                 Aguinaldo = reader.GetDecimal(41), 
                 LastComplement = reader.GetBoolean(42),
-                FileControl = reader[43] == DBNull.Value ? null : reader[43].ToString()
+                FileControl = reader[43] == DBNull.Value ? null : reader[43].ToString(),
+                FilePath = reader[44] == DBNull.Value ? null : reader[44].ToString()
             };
         }
 
@@ -310,7 +311,7 @@ namespace SECRON.Controllers
                 WithholdingTax, Retention, Bonus, Discounts, Advances, Viaticos, Stamps, PurchaseOrderNumber, 
                 Complement, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, AuthorizedDate, 
                 AuthorizedBy, CashedDate, Predeclared, Compensation, Vacation, Bill, Aguinaldo, LastComplement,
-                FileControl
+                FileControl, FilePath 
                 FROM Checks 
                 WHERE Complement = @NumeroComplemento AND IsActive = 1
                 ORDER BY CheckNumber ASC";
@@ -349,7 +350,7 @@ namespace SECRON.Controllers
                 WithholdingTax, Retention, Bonus, Discounts, Advances, Viaticos, Stamps, PurchaseOrderNumber, 
                 Complement, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, AuthorizedDate, 
                 AuthorizedBy, CashedDate, Predeclared, Compensation, Vacation, Bill, Aguinaldo, LastComplement,
-                FileControl
+                FileControl, FilePath
                 FROM Checks 
                 WHERE CheckNumber = @CheckNumber AND IsActive = 1";
 
@@ -388,7 +389,7 @@ namespace SECRON.Controllers
                 WithholdingTax, Retention, Bonus, Discounts, Advances, Viaticos, Stamps, PurchaseOrderNumber, 
                 Complement, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, AuthorizedDate, 
                 AuthorizedBy, CashedDate, Predeclared, Compensation, Vacation, Bill, Aguinaldo, LastComplement,
-                FileControl
+                FileControl, FilePath
                 FROM Checks
                 ORDER BY CheckId DESC
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
@@ -427,7 +428,7 @@ namespace SECRON.Controllers
                 WithholdingTax, Retention, Bonus, Discounts, Advances, Viaticos, Stamps, PurchaseOrderNumber, 
                 Complement, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, AuthorizedDate, 
                 AuthorizedBy, CashedDate, Predeclared, Compensation, Vacation, Bill, Aguinaldo, LastComplement,
-                FileControl
+                FileControl, FilePath
                 FROM Checks 
                 WHERE CheckId = @CheckId";
 
@@ -495,7 +496,7 @@ namespace SECRON.Controllers
                 WithholdingTax, Retention, Bonus, Discounts, Advances, Viaticos, Stamps, PurchaseOrderNumber, 
                 Complement, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, AuthorizedDate, 
                 AuthorizedBy, CashedDate, Predeclared, Compensation, Vacation, Bill, Aguinaldo, LastComplement,
-                FileControl
+                FileControl, FilePath
                 FROM Checks WHERE 1=1");
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
@@ -802,7 +803,7 @@ namespace SECRON.Controllers
                     WithholdingTax, Retention, Bonus, Discounts, Advances, Viaticos, Stamps, PurchaseOrderNumber, 
                     Complement, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, AuthorizedDate, 
                     AuthorizedBy, CashedDate, Predeclared, Compensation, Vacation, Bill, Aguinaldo, LastComplement,
-                    FileControl
+                    FileControl, FilePath
                     FROM Checks 
                     WHERE Predeclared = 0");
 
@@ -1088,6 +1089,36 @@ namespace SECRON.Controllers
             catch (Exception ex)
             {
                 MessageBox.Show($"ERROR AL ACTUALIZAR FILECONTROL: {ex.Message}",
+                                "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        public static bool ActualizarFilePath(int checkId, string filePath, int userId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"UPDATE Checks
+                             SET FilePath = @FilePath,
+                                 ModifiedDate = GETDATE(),
+                                 ModifiedBy = @UserId
+                             WHERE CheckId = @CheckId";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@FilePath", (object)filePath ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@UserId", userId > 0 ? (object)userId : DBNull.Value);
+                        cmd.Parameters.AddWithValue("@CheckId", checkId);
+
+                        return cmd.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR AL ACTUALIZAR RUTA DE ARCHIVO: {ex.Message}",
                                 "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
