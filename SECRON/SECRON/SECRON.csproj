@@ -427,6 +427,12 @@
     <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.Designer.cs">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_KARDEX_ImportItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_ImportItems.Designer.cs">
+      <DependentUpon>Frm_KARDEX_ImportItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_KARDEX_ItemsManagment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -665,6 +671,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.resx">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_ImportItems.resx">
+      <DependentUpon>Frm_KARDEX_ImportItems.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_ItemsManagment.resx">
       <DependentUpon>Frm_KARDEX_ItemsManagment.cs</DependentUpon>

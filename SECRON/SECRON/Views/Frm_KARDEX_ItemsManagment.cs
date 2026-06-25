@@ -1587,5 +1587,30 @@ namespace SECRON.Views
         }
 
         #endregion SistemaDePermisos
+        #region ImportarListados
+        private void Btn_Import_Click(object sender, EventArgs e)
+        {
+            if (!Btn_Import.Enabled) return;
+            try
+            {
+                using (var frm = new Frm_KARDEX_ImportItems())
+                {
+                    frm.UserData = this.UserData;
+                    frm.StartPosition = FormStartPosition.CenterParent;
+                    frm.ShowDialog(this);
+
+                    RefrescarListado();
+                    ConfigurarTabla();
+                    AjustarColumnas();
+                    ActualizarInfoPaginacion();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ABRIR IMPORTACIÓN: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion ImportarListados
     }
 }

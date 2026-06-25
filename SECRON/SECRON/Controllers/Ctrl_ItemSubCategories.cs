@@ -183,5 +183,34 @@ namespace SECRON.Controllers
                 ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy"))
             };
         }
+        public static List<Mdl_ItemSubCategories> ObtenerTodasParaCombo()
+        {
+            List<Mdl_ItemSubCategories> lista = new List<Mdl_ItemSubCategories>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                SELECT SubCategoryId, CategoryId, SubCategoryCode, SubCategoryName,
+                       IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
+                FROM   ItemSubCategories
+                WHERE  IsActive = 1
+                ORDER  BY CategoryId, SubCategoryCode";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            lista.Add(MapearSubCategoria(reader));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener subcategorías: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
     }
 }
