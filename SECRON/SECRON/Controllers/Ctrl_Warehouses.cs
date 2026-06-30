@@ -152,5 +152,36 @@ namespace SECRON.Controllers
                 ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy"))
             };
         }
+
+        // MÉTODO: Obtener el WarehouseId de la bodega central (Locations.LocationCode = '1')
+        public static int? ObtenerBodegaCentralId()
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                        SELECT w.WarehouseId
+                        FROM   Warehouses w
+                        INNER JOIN Locations l ON l.LocationId = w.LocationId
+                        WHERE  l.LocationCode = '1'
+                        AND    w.IsActive = 1";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        object resultado = cmd.ExecuteScalar();
+                        return resultado == null || resultado == DBNull.Value
+                            ? (int?)null
+                            : Convert.ToInt32(resultado);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener la bodega central: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
     }
 }

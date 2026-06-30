@@ -1,0 +1,8 @@
+-- PRIORIDAD DE LA SOLICITUD DE COMPRA
+CREATE TABLE PurchasePriority (
+    PriorityId INT IDENTITY(1,1) PRIMARY KEY,
+    PriorityCode VARCHAR(10) NOT NULL UNIQUE,
+    PriorityName VARCHAR(20) NOT NULL,
+    IsActive BIT DEFAULT 1
+);
+-- 'BAJA', 'MEDIA', 'ALTA', 'URGENTE'

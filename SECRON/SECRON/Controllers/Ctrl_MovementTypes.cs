@@ -113,5 +113,56 @@ namespace SECRON.Controllers
             }
             return null;
         }
+
+        // MÉTODO: Obtener solo tipos de movimiento de entrada (AffectsStock = '+'), para Ingreso de Mercadería
+        public static List<KeyValuePair<int, string>> ObtenerTiposDeEntrada()
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT MovementTypeId, TypeName FROM MovementTypes WHERE AffectsStock = '+' AND IsActive = 1 ORDER BY TypeName";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                lista.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener tipos de movimiento de entrada: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
+
+        // MÉTODO: Obtener MovementTypeId por su TypeCode
+        public static int? ObtenerIdPorCodigo(string typeCode)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT MovementTypeId FROM MovementTypes WHERE TypeCode = @TypeCode AND IsActive = 1";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@TypeCode", typeCode);
+                        object resultado = cmd.ExecuteScalar();
+                        return resultado == null || resultado == DBNull.Value ? (int?)null : Convert.ToInt32(resultado);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener tipo de movimiento por código: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
     }
 }
