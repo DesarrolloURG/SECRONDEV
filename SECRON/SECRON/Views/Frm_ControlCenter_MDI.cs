@@ -1910,9 +1910,11 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
+            Frm_KARDEX_WarehouseInventory frm = new Frm_KARDEX_WarehouseInventory();
             frm.Text = "Control de Movimientos E/S";
             frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
 
             AbrirFormularioConPestana(frm, "Control de Insumos en Sedes", "KardexInsumosSedes");
         }
