@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -55,7 +56,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Mostrar artículos con paginación
         public static List<Mdl_Items> MostrarArticulos(int pageNumber = 1, int pageSize = 100)
         {
             List<Mdl_Items> lista = new List<Mdl_Items>();
@@ -65,21 +65,21 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT i.ItemId, i.ItemCode, i.ItemName, i.Description,
-                               i.CategoryId, c.CategoryName,
-                               i.SubCategoryId, s.SubCategoryName,
-                               i.UnitId, u.UnitName,
-                               i.MinimumStock, i.MaximumStock, i.ReorderPoint,
-                               i.UnitCost, i.LastPurchasePrice,
-                               i.HasLotControl, i.HasExpiryDate, i.IsActive,
-                               i.CreatedDate, i.CreatedBy, i.ModifiedDate, i.ModifiedBy
-                        FROM   Items i
-                        INNER JOIN ItemCategories     c ON i.CategoryId    = c.CategoryId
-                        INNER JOIN ItemSubCategories  s ON i.SubCategoryId = s.SubCategoryId
-                        INNER JOIN MeasurementUnits   u ON i.UnitId        = u.UnitId
-                        WHERE  i.IsActive = 1
-                        ORDER  BY i.ItemName
-                        OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
+                SELECT i.ItemId, i.ItemCode, i.ItemName, i.Description,
+                       i.CategoryId, c.CategoryName,
+                       i.SubCategoryId, s.SubCategoryName,
+                       i.UnitId, u.UnitName,
+                       i.MinimumStock, i.MaximumStock, i.ReorderPoint,
+                       i.UnitCost, i.LastPurchasePrice,
+                       i.HasLotControl, i.HasExpiryDate, i.IsActive,
+                       i.CreatedDate, i.CreatedBy, i.ModifiedDate, i.ModifiedBy
+                FROM   Items i
+                INNER JOIN ItemCategories    c ON i.CategoryId    = c.CategoryId
+                LEFT  JOIN ItemSubCategories s ON i.SubCategoryId = s.SubCategoryId
+                INNER JOIN MeasurementUnits  u ON i.UnitId        = u.UnitId
+                WHERE  i.IsActive = 1
+                ORDER  BY i.ItemName
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -103,12 +103,12 @@ namespace SECRON.Controllers
 
         // MÉTODO PRINCIPAL: Búsqueda con filtros
         public static List<Mdl_Items> BuscarArticulos(
-            string textoBusqueda = "",
-            int? categoryId = null,
-            string filtro1 = "TODOS",
-            string filtro3 = "TODOS",
-            int pageNumber = 1,
-            int pageSize = 100)
+     string textoBusqueda = "",
+     int? categoryId = null,
+     string filtro1 = "TODOS",
+     string filtro3 = "TODOS",
+     int pageNumber = 1,
+     int pageSize = 100)
         {
             List<Mdl_Items> lista = new List<Mdl_Items>();
             try
@@ -117,19 +117,19 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT i.ItemId, i.ItemCode, i.ItemName, i.Description,
-                               i.CategoryId, c.CategoryName,
-                               i.SubCategoryId, s.SubCategoryName,
-                               i.UnitId, u.UnitName,
-                               i.MinimumStock, i.MaximumStock, i.ReorderPoint,
-                               i.UnitCost, i.LastPurchasePrice,
-                               i.HasLotControl, i.HasExpiryDate, i.IsActive,
-                               i.CreatedDate, i.CreatedBy, i.ModifiedDate, i.ModifiedBy
-                        FROM   Items i
-                        INNER JOIN ItemCategories     c ON i.CategoryId    = c.CategoryId
-                        INNER JOIN ItemSubCategories  s ON i.SubCategoryId = s.SubCategoryId
-                        INNER JOIN MeasurementUnits   u ON i.UnitId        = u.UnitId
-                        WHERE 1=1";
+                SELECT i.ItemId, i.ItemCode, i.ItemName, i.Description,
+                       i.CategoryId, c.CategoryName,
+                       i.SubCategoryId, s.SubCategoryName,
+                       i.UnitId, u.UnitName,
+                       i.MinimumStock, i.MaximumStock, i.ReorderPoint,
+                       i.UnitCost, i.LastPurchasePrice,
+                       i.HasLotControl, i.HasExpiryDate, i.IsActive,
+                       i.CreatedDate, i.CreatedBy, i.ModifiedDate, i.ModifiedBy
+                FROM   Items i
+                INNER JOIN ItemCategories    c ON i.CategoryId    = c.CategoryId
+                LEFT  JOIN ItemSubCategories s ON i.SubCategoryId = s.SubCategoryId
+                INNER JOIN MeasurementUnits  u ON i.UnitId        = u.UnitId
+                WHERE 1=1";
 
                     List<SqlParameter> parametros = new List<SqlParameter>();
 
@@ -375,7 +375,7 @@ namespace SECRON.Controllers
                 Description = reader["Description"] == DBNull.Value ? null : reader["Description"].ToString(),
                 CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                 CategoryName = reader["CategoryName"] == DBNull.Value ? null : reader["CategoryName"].ToString(),
-                SubCategoryId = reader.GetInt32(reader.GetOrdinal("SubCategoryId")),
+                SubCategoryId = reader["SubCategoryId"] == DBNull.Value ? 0 : reader.GetInt32(reader.GetOrdinal("SubCategoryId")),
                 SubCategoryName = reader["SubCategoryName"] == DBNull.Value ? null : reader["SubCategoryName"].ToString(),
                 UnitId = reader.GetInt32(reader.GetOrdinal("UnitId")),
                 UnitName = reader["UnitName"] == DBNull.Value ? null : reader["UnitName"].ToString(),
@@ -419,6 +419,54 @@ namespace SECRON.Controllers
                 MessageBox.Show("Error al inactivar artículo: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
+            }
+        }
+        public static int ImportarArticulo(Mdl_Items item, out string itemCodeGenerado)
+        {
+            itemCodeGenerado = "";
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_Items_ImportUpsert", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@ItemName", item.ItemName ?? "");
+                        cmd.Parameters.AddWithValue("@Description", (object)item.Description ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@CategoryId", item.CategoryId);
+                        cmd.Parameters.AddWithValue("@SubCategoryId", item.SubCategoryId > 0
+                        ? (object)item.SubCategoryId : DBNull.Value);
+                        cmd.Parameters.AddWithValue("@UnitId", item.UnitId);
+                        cmd.Parameters.AddWithValue("@MinimumStock", item.MinimumStock);
+                        cmd.Parameters.AddWithValue("@MaximumStock", (object)item.MaximumStock ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ReorderPoint", (object)item.ReorderPoint ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@UnitCost", (object)item.UnitCost ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@LastPurchasePrice", (object)item.LastPurchasePrice ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@HasLotControl", item.HasLotControl);
+                        cmd.Parameters.AddWithValue("@HasExpiryDate", item.HasExpiryDate);
+                        cmd.Parameters.AddWithValue("@CreatedBy", item.CreatedBy > 0 ? (object)item.CreatedBy : DBNull.Value);
+
+                        SqlParameter outputCode = new SqlParameter("@ItemCode", SqlDbType.NVarChar, 50);
+                        outputCode.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(outputCode);
+
+                        SqlParameter returnValue = new SqlParameter();
+                        returnValue.Direction = ParameterDirection.ReturnValue;
+                        cmd.Parameters.Add(returnValue);
+
+                        cmd.ExecuteNonQuery();
+
+                        itemCodeGenerado = outputCode.Value?.ToString() ?? "";
+                        return Convert.ToInt32(returnValue.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al importar artículo: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return -1;
             }
         }
     }

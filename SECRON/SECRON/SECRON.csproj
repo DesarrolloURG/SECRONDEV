@@ -456,6 +456,12 @@
     <Compile Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.Designer.cs">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_KARDEX_ImportItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_KARDEX_ImportItems.Designer.cs">
+      <DependentUpon>Frm_KARDEX_ImportItems.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_KARDEX_ItemsManagment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -521,6 +527,12 @@
     </Compile>
     <Compile Include="Views\Frm_Locations_Managment.Designer.cs">
       <DependentUpon>Frm_Locations_Managment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_Pruebas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Pruebas.Designer.cs">
+      <DependentUpon>Frm_Pruebas.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_Security_ForgetPassword.cs">
       <SubType>Form</SubType>
@@ -722,6 +734,9 @@
     <EmbeddedResource Include="Views\Frm_KARDEX_CatalogLocationsCategories_Templates.resx">
       <DependentUpon>Frm_KARDEX_CatalogLocationsCategories_Templates.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_KARDEX_ImportItems.resx">
+      <DependentUpon>Frm_KARDEX_ImportItems.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_ItemsManagment.resx">
       <DependentUpon>Frm_KARDEX_ItemsManagment.cs</DependentUpon>
     </EmbeddedResource>
@@ -754,6 +769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Locations_Managment.resx">
       <DependentUpon>Frm_Locations_Managment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Pruebas.resx">
+      <DependentUpon>Frm_Pruebas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Security_ForgetPassword.resx">
       <DependentUpon>Frm_Security_ForgetPassword.cs</DependentUpon>
@@ -924,6 +942,10 @@
     <None Include="Resources\SelloCoordinacion_Black.png" />
     <None Include="Resources\MembretadoPiePagina.png" />
     <None Include="Resources\LogoMembretadoEncabezado.png" />
+    <None Include="Img\UploadFileBlack20x20.png" />
+    <None Include="Img\UploadFileBlack25x25.png" />
+    <None Include="Img\UploadFileWhite20x20.png" />
+    <None Include="Img\UploadFileWhite25x25.png" />
     <Content Include="SECRON-Logotipo.ico" />
   </ItemGroup>
   <ItemGroup>

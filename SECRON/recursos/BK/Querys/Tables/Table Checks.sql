@@ -75,6 +75,9 @@ CREATE TABLE Checks (
     CONSTRAINT FK_Checks_AuthorizedBy FOREIGN KEY (AuthorizedBy) REFERENCES Users(UserId)
 );
 
+ALTER TABLE Checks
+ADD FilePath NVARCHAR(500) NULL;
+
 SELECT * FROM Checks ORDER BY CheckNumber;
 
 SELECT * FROM Checks WHERE Period = 'DICIEMBRE' and FileControl = 'PENDIENTE'

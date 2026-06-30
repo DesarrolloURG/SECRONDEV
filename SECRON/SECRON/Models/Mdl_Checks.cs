@@ -73,6 +73,7 @@ namespace SECRON.Models
         public decimal Aguinaldo { get; set; }      // Aguinaldo - SOLO LIQUIDACIONES (índice 41)
         public bool LastComplement { get; set; }    // Último complemento (índice 42)
         public string FileControl { get; set; }     // Control de archivo (índice 43)
+        public string FilePath { get; set; }        // Ruta del archivo (índice 44)
 
 
         // Constructor vacío
