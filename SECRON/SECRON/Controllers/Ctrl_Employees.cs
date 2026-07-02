@@ -211,7 +211,10 @@ namespace SECRON.Controllers
                         EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
                         nominal_salary, base_salary, additional_bonus, legal_bonus,
                         IGSS, ISR, net_salary, IGSS_MANUAL,
-                        IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion
+                        IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
+                        FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
+                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales
+                        
                         FROM Employees WHERE IsActive = 1 
                         ORDER BY LastName, FirstName 
                         OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
@@ -260,7 +263,9 @@ namespace SECRON.Controllers
                         EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
                         nominal_salary, base_salary, additional_bonus, legal_bonus,
                         IGSS, ISR, net_salary, IGSS_MANUAL,
-                        IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion
+                        IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
+                        FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
+                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales
                         FROM Employees 
                         WHERE IsActive = 1";
 
@@ -455,7 +460,9 @@ namespace SECRON.Controllers
                     EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
                     nominal_salary, base_salary, additional_bonus, legal_bonus,
                     IGSS, ISR, net_salary, IGSS_MANUAL,
-                    IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion
+                    IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
+                    FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
+                    FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales
                     FROM Employees WHERE EmployeeId = @EmployeeId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -518,7 +525,14 @@ namespace SECRON.Controllers
                 ModifiedDate = reader[32] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(32),
                 ModifiedBy = reader[33] == DBNull.Value ? null : (int?)reader.GetInt32(33),
                 LocationId = reader[34] == DBNull.Value ? null : (int?)reader.GetInt32(34),
-                TipoContratacion = reader[35] == DBNull.Value ? null : reader[35].ToString()
+                TipoContratacion = reader[35] == DBNull.Value ? null : reader[35].ToString(),
+                FilePath_DPI = reader[36] == DBNull.Value ? null : reader[36].ToString(),
+                FilePath_Titulos = reader[37] == DBNull.Value ? null : reader[37].ToString(),
+                FilePath_RTU = reader[38] == DBNull.Value ? null : reader[38].ToString(),
+                FilePath_Colegiado = reader[39] == DBNull.Value ? null : reader[39].ToString(),
+                FilePath_RENAS = reader[40] == DBNull.Value ? null : reader[40].ToString(),
+                FilePath_AntPoliciacos = reader[41] == DBNull.Value ? null : reader[41].ToString(),
+                FilePath_AntPenales = reader[42] == DBNull.Value ? null : reader[42].ToString()
             };
         }
 
@@ -832,6 +846,49 @@ namespace SECRON.Controllers
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return lista;
+        }
+
+        public static bool ActualizarFilePathEmpleado(int employeeId, string campo, string ruta, int modifiedBy)
+        {
+            try
+            {
+                // Validar que el campo sea uno de los permitidos para evitar SQL injection
+                string[] camposPermitidos = {
+            "FilePath_DPI", "FilePath_Titulos", "FilePath_RTU",
+            "FilePath_Colegiado", "FilePath_RENAS",
+            "FilePath_AntPoliciacos", "FilePath_AntPenales"
+        };
+
+                if (!Array.Exists(camposPermitidos, c => c == campo))
+                {
+                    MessageBox.Show("CAMPO DE ARCHIVO NO VÁLIDO.", "ERROR SECRON",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = $@"UPDATE Employees 
+                              SET {campo} = @Ruta,
+                                  ModifiedDate = GETDATE(),
+                                  ModifiedBy = @ModifiedBy
+                              WHERE EmployeeId = @EmployeeId";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Ruta", (object)ruta ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                        return cmd.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ACTUALIZAR ARCHIVO: " + ex.Message, "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
     }
 }

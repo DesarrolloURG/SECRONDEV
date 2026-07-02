@@ -1775,9 +1775,9 @@ namespace SECRON.Views
                     {
                         try
                         {
-                            string carpetaDestino = @"\\Uregional\shared\SECRONDEV\FINANZAS\CHEQUES\";
-                            //string carpetaDestino = @"\\Uregional\shared\SECRONQA\FINANZAS\CHEQUES\";
-                            //string carpetaDestino = @"\\Uregional\shared\SECRON\FINANZAS\CHEQUES\";
+                            string carpetaDestino = @"\\Uregional\Shared$\SECRONDEV\FINANZAS\CHEQUES\";
+                            //string carpetaDestino = @"\\Uregional\Shared$\SECRONQA\FINANZAS\CHEQUES\";
+                            //string carpetaDestino = @"\\Uregional\Shared$\SECRON\FINANZAS\CHEQUES\";
                             string rutaDestino = System.IO.Path.Combine(carpetaDestino, numeroCheque + ".pdf");
 
                             if (!System.IO.Directory.Exists(carpetaDestino))

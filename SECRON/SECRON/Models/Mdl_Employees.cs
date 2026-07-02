@@ -60,6 +60,15 @@ namespace SECRON.Models
         public decimal? NetSalary { get; set; }
         public bool? IGSSManual { get; set; }
 
+        // Rutas de archivos
+        public string FilePath_DPI { get; set; }
+        public string FilePath_Titulos { get; set; }
+        public string FilePath_RTU { get; set; }
+        public string FilePath_Colegiado { get; set; }
+        public string FilePath_RENAS { get; set; }
+        public string FilePath_AntPoliciacos { get; set; }
+        public string FilePath_AntPenales { get; set; }
+
         // Constructor vacío
         public Mdl_Employees()
         {

@@ -247,7 +247,7 @@
             this.PanelUsers.Controls.Add(this.Btn_ITSM_Technology);
             this.PanelUsers.Controls.Add(this.BtnUsersRolesPermisos);
             this.PanelUsers.Controls.Add(this.BtnUsersManagment);
-            this.PanelUsers.Location = new System.Drawing.Point(220, 250);
+            this.PanelUsers.Location = new System.Drawing.Point(220, 1);
             this.PanelUsers.Name = "PanelUsers";
             this.PanelUsers.Size = new System.Drawing.Size(300, 120);
             this.PanelUsers.TabIndex = 4;

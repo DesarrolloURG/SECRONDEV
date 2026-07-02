@@ -134,7 +134,7 @@ namespace SECRON.Views
             this.Lbl_Formulario = new System.Windows.Forms.Label();
             this.Panel_Izquierdo = new System.Windows.Forms.Panel();
             this.vScrollBar = new System.Windows.Forms.VScrollBar();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.Panel_CRUD = new System.Windows.Forms.Panel();
             this.Btn_Clear = new System.Windows.Forms.Button();
             this.Btn_Inactive = new System.Windows.Forms.Button();
             this.Btn_Update = new System.Windows.Forms.Button();
@@ -206,7 +206,7 @@ namespace SECRON.Views
             this.Tabla = new System.Windows.Forms.DataGridView();
             this.PanelToolStrip = new System.Windows.Forms.Panel();
             this.Lbl_Paginas = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.Panel_Busqueda = new System.Windows.Forms.Panel();
             this.Btn_CleanSearch = new System.Windows.Forms.Button();
             this.Filtro3 = new System.Windows.Forms.ComboBox();
             this.Filtro2 = new System.Windows.Forms.ComboBox();
@@ -215,7 +215,7 @@ namespace SECRON.Views
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Panel_Superior.SuspendLayout();
             this.Panel_Izquierdo.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.Panel_CRUD.SuspendLayout();
             this.Panel_Emergencia.SuspendLayout();
             this.Panel_Laboral.SuspendLayout();
             this.Panel_Contacto.SuspendLayout();
@@ -224,7 +224,7 @@ namespace SECRON.Views
             this.PanelTabla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
             this.PanelToolStrip.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.Panel_Busqueda.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Superior
@@ -287,7 +287,7 @@ namespace SECRON.Views
             // 
             this.Panel_Izquierdo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.Panel_Izquierdo.Controls.Add(this.vScrollBar);
-            this.Panel_Izquierdo.Controls.Add(this.panel1);
+            this.Panel_Izquierdo.Controls.Add(this.Panel_CRUD);
             this.Panel_Izquierdo.Controls.Add(this.Panel_Emergencia);
             this.Panel_Izquierdo.Controls.Add(this.Panel_Laboral);
             this.Panel_Izquierdo.Controls.Add(this.Panel_Contacto);
@@ -311,17 +311,17 @@ namespace SECRON.Views
             this.vScrollBar.TabIndex = 76;
             this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
             // 
-            // panel1
+            // Panel_CRUD
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panel1.Controls.Add(this.Btn_Clear);
-            this.panel1.Controls.Add(this.Btn_Inactive);
-            this.panel1.Controls.Add(this.Btn_Update);
-            this.panel1.Controls.Add(this.Btn_Save);
-            this.panel1.Location = new System.Drawing.Point(16, 40);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(384, 47);
-            this.panel1.TabIndex = 75;
+            this.Panel_CRUD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_CRUD.Controls.Add(this.Btn_Clear);
+            this.Panel_CRUD.Controls.Add(this.Btn_Inactive);
+            this.Panel_CRUD.Controls.Add(this.Btn_Update);
+            this.Panel_CRUD.Controls.Add(this.Btn_Save);
+            this.Panel_CRUD.Location = new System.Drawing.Point(16, 40);
+            this.Panel_CRUD.Name = "Panel_CRUD";
+            this.Panel_CRUD.Size = new System.Drawing.Size(384, 47);
+            this.Panel_CRUD.TabIndex = 75;
             // 
             // Btn_Clear
             // 
@@ -1092,7 +1092,7 @@ namespace SECRON.Views
             // 
             this.Panel_Derecho.Controls.Add(this.PanelTabla);
             this.Panel_Derecho.Controls.Add(this.PanelToolStrip);
-            this.Panel_Derecho.Controls.Add(this.panel2);
+            this.Panel_Derecho.Controls.Add(this.Panel_Busqueda);
             this.Panel_Derecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Panel_Derecho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Panel_Derecho.ForeColor = System.Drawing.Color.Black;
@@ -1147,21 +1147,21 @@ namespace SECRON.Views
             this.Lbl_Paginas.TabIndex = 51;
             this.Lbl_Paginas.Text = "MOSTRANDO 1-10 DE 100 COLABORADORES";
             // 
-            // panel2
+            // Panel_Busqueda
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.Panel_Busqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panel2.Controls.Add(this.Btn_CleanSearch);
-            this.panel2.Controls.Add(this.Filtro3);
-            this.panel2.Controls.Add(this.Filtro2);
-            this.panel2.Controls.Add(this.Btn_Search);
-            this.panel2.Controls.Add(this.Filtro1);
-            this.panel2.Controls.Add(this.Txt_ValorBuscado);
-            this.panel2.Location = new System.Drawing.Point(22, 20);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(725, 120);
-            this.panel2.TabIndex = 53;
+            this.Panel_Busqueda.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Busqueda.Controls.Add(this.Btn_CleanSearch);
+            this.Panel_Busqueda.Controls.Add(this.Filtro3);
+            this.Panel_Busqueda.Controls.Add(this.Filtro2);
+            this.Panel_Busqueda.Controls.Add(this.Btn_Search);
+            this.Panel_Busqueda.Controls.Add(this.Filtro1);
+            this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
+            this.Panel_Busqueda.Location = new System.Drawing.Point(22, 20);
+            this.Panel_Busqueda.Name = "Panel_Busqueda";
+            this.Panel_Busqueda.Size = new System.Drawing.Size(725, 120);
+            this.Panel_Busqueda.TabIndex = 53;
             // 
             // Btn_CleanSearch
             // 
@@ -1245,7 +1245,7 @@ namespace SECRON.Views
             this.Panel_Superior.PerformLayout();
             this.Panel_Izquierdo.ResumeLayout(false);
             this.Panel_Izquierdo.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.Panel_CRUD.ResumeLayout(false);
             this.Panel_Emergencia.ResumeLayout(false);
             this.Panel_Emergencia.PerformLayout();
             this.Panel_Laboral.ResumeLayout(false);
@@ -1259,8 +1259,8 @@ namespace SECRON.Views
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();
             this.PanelToolStrip.ResumeLayout(false);
             this.PanelToolStrip.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.Panel_Busqueda.ResumeLayout(false);
+            this.Panel_Busqueda.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1318,12 +1318,12 @@ namespace SECRON.Views
         private System.Windows.Forms.Label Lbl_Parentesco;
         private System.Windows.Forms.Label Lbl_PersonaEmergencia;
         private System.Windows.Forms.Label Lbl_Subtitulo4;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel Panel_CRUD;
         private System.Windows.Forms.Button Btn_Update;
         private System.Windows.Forms.Button Btn_Save;
         private System.Windows.Forms.Button Btn_Inactive;
         private System.Windows.Forms.VScrollBar vScrollBar;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel Panel_Busqueda;
         private System.Windows.Forms.TextBox Txt_ValorBuscado;
         private System.Windows.Forms.Button Btn_Search;
         private System.Windows.Forms.ComboBox Filtro3;
