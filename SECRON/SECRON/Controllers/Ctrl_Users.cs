@@ -1,13 +1,14 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -46,30 +47,23 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_Insert", connection))
                 {
-                    string query = @"INSERT INTO Users (Username, PasswordHash, FullName, RoleId, StatusId, 
-                        NotificationsEnabled, IsTemporaryPassword, InstitutionalEmail, EmployeeId, 
-                        PasswordExpiryDate, CreatedBy) 
-                        VALUES (@Username, @PasswordHash, @FullName, @RoleId, @StatusId, 
-                        @NotificationsEnabled, @IsTemporaryPassword, @InstitutionalEmail, @EmployeeId, 
-                        @PasswordExpiryDate, @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Username", usuario.Username ?? "");
+                    cmd.Parameters.AddWithValue("@PasswordHash", GenerarHashPassword(password));
+                    cmd.Parameters.AddWithValue("@FullName", usuario.FullName ?? "");
+                    cmd.Parameters.AddWithValue("@RoleId", usuario.RoleId);
+                    cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
+                    cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
+                    cmd.Parameters.AddWithValue("@IsTemporaryPassword", usuario.IsTemporaryPassword);
+                    cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PasswordExpiryDate", (object)usuario.PasswordExpiryDate ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)usuario.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@Username", usuario.Username ?? "");
-                        cmd.Parameters.AddWithValue("@PasswordHash", GenerarHashPassword(password));
-                        cmd.Parameters.AddWithValue("@FullName", usuario.FullName ?? "");
-                        cmd.Parameters.AddWithValue("@RoleId", usuario.RoleId);
-                        cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
-                        cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
-                        cmd.Parameters.AddWithValue("@IsTemporaryPassword", usuario.IsTemporaryPassword);
-                        cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@PasswordExpiryDate", (object)usuario.PasswordExpiryDate ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)usuario.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -78,6 +72,7 @@ namespace SECRON.Controllers
                 return 0;
             }
         }
+
         // MÉTODO PRINCIPAL: Mostrar todos los usuarios con paginación
         public static List<Mdl_Users> MostrarUsuarios(int pageNumber = 1, int pageSize = 100)
         {
@@ -185,27 +180,21 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_Update", connection))
                 {
-                    string query = @"UPDATE Users SET Username = @Username, FullName = @FullName, 
-                        RoleId = @RoleId, StatusId = @StatusId, NotificationsEnabled = @NotificationsEnabled, 
-                        InstitutionalEmail = @InstitutionalEmail, EmployeeId = @EmployeeId, 
-                        ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy 
-                        WHERE UserId = @UserId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", usuario.UserId);
+                    cmd.Parameters.AddWithValue("@Username", usuario.Username ?? "");
+                    cmd.Parameters.AddWithValue("@FullName", usuario.FullName ?? "");
+                    cmd.Parameters.AddWithValue("@RoleId", usuario.RoleId);
+                    cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
+                    cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
+                    cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)usuario.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", usuario.UserId);
-                        cmd.Parameters.AddWithValue("@Username", usuario.Username ?? "");
-                        cmd.Parameters.AddWithValue("@FullName", usuario.FullName ?? "");
-                        cmd.Parameters.AddWithValue("@RoleId", usuario.RoleId);
-                        cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
-                        cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
-                        cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)usuario.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -221,23 +210,17 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_ChangePassword", connection))
                 {
-                    string query = @"UPDATE Users SET PasswordHash = @PasswordHash, 
-                        IsTemporaryPassword = @IsTemporaryPassword, 
-                        PasswordExpiryDate = @PasswordExpiryDate, 
-                        ModifiedDate = GETDATE() 
-                        WHERE UserId = @UserId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@PasswordHash", GenerarHashPassword(newPassword));
+                    cmd.Parameters.AddWithValue("@IsTemporaryPassword", isTemporary);
+                    cmd.Parameters.AddWithValue("@PasswordExpiryDate",
+                        isTemporary ? (object)DateTime.Now.AddDays(30) : DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        cmd.Parameters.AddWithValue("@PasswordHash", GenerarHashPassword(newPassword));
-                        cmd.Parameters.AddWithValue("@IsTemporaryPassword", isTemporary);
-                        cmd.Parameters.AddWithValue("@PasswordExpiryDate",
-                            isTemporary ? (object)DateTime.Now.AddDays(30) : DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -321,16 +304,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_RegisterFailedLogin", connection))
                 {
-                    string query = @"UPDATE Users SET FailedLoginAttempts = FailedLoginAttempts + 1, 
-                        IsLocked = CASE WHEN FailedLoginAttempts >= 4 THEN 1 ELSE 0 END 
-                        WHERE Username = @Username";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Username", username ?? "");
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@Username", username ?? "");
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch { return 0; }
@@ -342,15 +322,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_RegisterSuccessfulLogin", connection))
                 {
-                    string query = @"UPDATE Users SET FailedLoginAttempts = 0, LastLoginDate = GETDATE(), 
-                        LastConnectionDate = GETDATE() WHERE UserId = @UserId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch { return 0; }
@@ -362,14 +340,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_Unlock", connection))
                 {
-                    string query = "UPDATE Users SET IsLocked = 0, FailedLoginAttempts = 0 WHERE UserId = @UserId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -641,22 +618,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_UnlockWithAudit", connection))
                 {
-                    string query = @"UPDATE Users 
-                SET 
-                    IsLocked = 0,
-                    FailedLoginAttempts = 0,
-                    ModifiedDate = GETDATE(),
-                    ModifiedBy = @ModifiedBy 
-                WHERE UserId = @UserId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

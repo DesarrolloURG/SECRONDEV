@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,20 +19,17 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemCategories_Insert", connection))
                 {
-                    string query = @"INSERT INTO ItemCategories (CategoryCode, CategoryName, Description, IsActive, CreatedBy) 
-                        VALUES (@CategoryCode, @CategoryName, @Description, @IsActive, @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CategoryCode", categoria.CategoryCode ?? "");
+                    cmd.Parameters.AddWithValue("@CategoryName", categoria.CategoryName ?? "");
+                    cmd.Parameters.AddWithValue("@Description", (object)categoria.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsActive", categoria.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)categoria.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CategoryCode", categoria.CategoryCode ?? "");
-                        cmd.Parameters.AddWithValue("@CategoryName", categoria.CategoryName ?? "");
-                        cmd.Parameters.AddWithValue("@Description", (object)categoria.Description ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IsActive", categoria.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)categoria.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -75,20 +73,17 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemCategories_Update", connection))
                 {
-                    string query = @"UPDATE ItemCategories SET CategoryCode = @CategoryCode, 
-                        CategoryName = @CategoryName, Description = @Description 
-                        WHERE CategoryId = @CategoryId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CategoryId", categoria.CategoryId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@CategoryCode", categoria.CategoryCode ?? "");
+                    cmd.Parameters.AddWithValue("@CategoryName", categoria.CategoryName ?? "");
+                    cmd.Parameters.AddWithValue("@Description", (object)categoria.Description ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CategoryId", categoria.CategoryId);
-                        cmd.Parameters.AddWithValue("@CategoryCode", categoria.CategoryCode ?? "");
-                        cmd.Parameters.AddWithValue("@CategoryName", categoria.CategoryName ?? "");
-                        cmd.Parameters.AddWithValue("@Description", (object)categoria.Description ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -104,13 +99,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemCategories_Update", connection))
                 {
-                    string query = "UPDATE ItemCategories SET IsActive = 0 WHERE CategoryId = @CategoryId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CategoryId", categoryId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Windows.Forms;
-using SECRON.Configuration;
-using SECRON.Models;
 
 namespace SECRON.Controllers
 {
@@ -71,103 +72,62 @@ namespace SECRON.Controllers
         {
             try
             {
-                // Si no viene StatusId, poner COMPLETADA
                 if (transfer.StatusId <= 0)
-                {
                     transfer.StatusId = Ctrl_TransferStatus.ObtenerStatusCompletadaId();
-                }
 
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Transfers_Insert", connection))
                 {
-                    string query = @"INSERT INTO Transfers (
-                                        TransferNumber, IssueDate, IssuePlace,
-                                        Amount, PrintedAmount,
-                                        BeneficiaryName, EmployeeId,
-                                        BankId, BankAccountNumber, BanksAccountTypeId,
-                                        StatusId, Concept, DetailDescription,
-                                        Period, LocationId, DepartmentId,
-                                        Exemption, TaxFreeAmount, FoodAllowance, IGSS,
-                                        WithholdingTax, Retention, Bonus, Discounts, Advances,
-                                        Viaticos, Stamps, PurchaseOrderNumber, Complement,
-                                        IsActive, CreatedBy, Compensation, Vacation,
-                                        Bill, Aguinaldo, LastComplement, FileControl,
-                                        CreatedDate
-                                     )
-                                     VALUES (
-                                        @TransferNumber, @IssueDate, @IssuePlace,
-                                        @Amount, @PrintedAmount,
-                                        @BeneficiaryName, @EmployeeId,
-                                        @BankId, @BankAccountNumber, @BanksAccountTypeId,
-                                        @StatusId, @Concept, @DetailDescription,
-                                        @Period, @LocationId, @DepartmentId,
-                                        @Exemption, @TaxFreeAmount, @FoodAllowance, @IGSS,
-                                        @WithholdingTax, @Retention, @Bonus, @Discounts, @Advances,
-                                        @Viaticos, @Stamps, @PurchaseOrderNumber, @Complement,
-                                        @IsActive, @CreatedBy, @Compensation, @Vacation,
-                                        @Bill, @Aguinaldo, @LastComplement, @FileControl,
-                                        GETDATE()
-                                     );
-                                     SELECT SCOPE_IDENTITY();";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TransferNumber", transfer.TransferNumber ?? "");
+                    cmd.Parameters.AddWithValue("@IssueDate", transfer.IssueDate);
+                    cmd.Parameters.AddWithValue("@IssuePlace", transfer.IssuePlace ?? "GUATEMALA");
+                    cmd.Parameters.AddWithValue("@Amount", transfer.Amount);
+                    cmd.Parameters.AddWithValue("@PrintedAmount", transfer.PrintedAmount);
+                    cmd.Parameters.AddWithValue("@BeneficiaryName", transfer.BeneficiaryName ?? "");
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)transfer.EmployeeId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankId", transfer.BankId);
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)transfer.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BanksAccountTypeId", transfer.BanksAccountTypeId);
+                    cmd.Parameters.AddWithValue("@StatusId", transfer.StatusId);
+                    cmd.Parameters.AddWithValue("@Concept", transfer.Concept ?? "");
+                    cmd.Parameters.AddWithValue("@DetailDescription", (object)transfer.DetailDescription ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Period", transfer.Period ?? "");
+                    cmd.Parameters.AddWithValue("@LocationId", (object)transfer.LocationId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DepartmentId", (object)transfer.DepartmentId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Exemption", transfer.Exemption);
+                    cmd.Parameters.AddWithValue("@TaxFreeAmount", transfer.TaxFreeAmount);
+                    cmd.Parameters.AddWithValue("@FoodAllowance", transfer.FoodAllowance);
+                    cmd.Parameters.AddWithValue("@IGSS", transfer.IGSS);
+                    cmd.Parameters.AddWithValue("@WithholdingTax", transfer.WithholdingTax);
+                    cmd.Parameters.AddWithValue("@Retention", transfer.Retention);
+                    cmd.Parameters.AddWithValue("@Bonus", transfer.Bonus);
+                    cmd.Parameters.AddWithValue("@Discounts", transfer.Discounts);
+                    cmd.Parameters.AddWithValue("@Advances", transfer.Advances);
+                    cmd.Parameters.AddWithValue("@Viaticos", transfer.Viaticos);
+                    cmd.Parameters.AddWithValue("@Stamps", transfer.Stamps);
+                    cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)transfer.PurchaseOrderNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Complement", (object)transfer.Complement ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsActive", transfer.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)transfer.CreatedBy ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Compensation", transfer.Compensation);
+                    cmd.Parameters.AddWithValue("@Vacation", transfer.Vacation);
+                    cmd.Parameters.AddWithValue("@Bill", (object)transfer.Bill ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Aguinaldo", transfer.Aguinaldo);
+                    cmd.Parameters.AddWithValue("@LastComplement", transfer.LastComplement);
+                    cmd.Parameters.AddWithValue("@FileControl", (object)transfer.FileControl ?? "PENDIENTE");
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    object result = cmd.ExecuteScalar();
+                    int newId = result == null || result == DBNull.Value ? 0 : Convert.ToInt32(result);
+
+                    if (newId > 0 && transfer.CreatedBy.HasValue && transfer.CreatedBy.Value > 0)
                     {
-                        cmd.Parameters.AddWithValue("@TransferNumber", transfer.TransferNumber ?? "");
-                        cmd.Parameters.AddWithValue("@IssueDate", transfer.IssueDate);
-                        cmd.Parameters.AddWithValue("@IssuePlace", transfer.IssuePlace ?? "GUATEMALA");
-                        cmd.Parameters.AddWithValue("@Amount", transfer.Amount);
-                        cmd.Parameters.AddWithValue("@PrintedAmount", transfer.PrintedAmount);
-                        cmd.Parameters.AddWithValue("@BeneficiaryName", transfer.BeneficiaryName ?? "");
-                        cmd.Parameters.AddWithValue("@EmployeeId", (object)transfer.EmployeeId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankId", transfer.BankId);
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)transfer.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BanksAccountTypeId", transfer.BanksAccountTypeId);
-                        cmd.Parameters.AddWithValue("@StatusId", transfer.StatusId);
-                        cmd.Parameters.AddWithValue("@Concept", transfer.Concept ?? "");
-                        cmd.Parameters.AddWithValue("@DetailDescription", (object)transfer.DetailDescription ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Period", transfer.Period ?? "");
-                        cmd.Parameters.AddWithValue("@LocationId", (object)transfer.LocationId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@DepartmentId", (object)transfer.DepartmentId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Exemption", transfer.Exemption);
-                        cmd.Parameters.AddWithValue("@TaxFreeAmount", transfer.TaxFreeAmount);
-                        cmd.Parameters.AddWithValue("@FoodAllowance", transfer.FoodAllowance);
-                        cmd.Parameters.AddWithValue("@IGSS", transfer.IGSS);
-                        cmd.Parameters.AddWithValue("@WithholdingTax", transfer.WithholdingTax);
-                        cmd.Parameters.AddWithValue("@Retention", transfer.Retention);
-                        cmd.Parameters.AddWithValue("@Bonus", transfer.Bonus);
-                        cmd.Parameters.AddWithValue("@Discounts", transfer.Discounts);
-                        cmd.Parameters.AddWithValue("@Advances", transfer.Advances);
-                        cmd.Parameters.AddWithValue("@Viaticos", transfer.Viaticos);
-                        cmd.Parameters.AddWithValue("@Stamps", transfer.Stamps);
-                        cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)transfer.PurchaseOrderNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Complement", (object)transfer.Complement ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IsActive", transfer.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)transfer.CreatedBy ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Compensation", transfer.Compensation);
-                        cmd.Parameters.AddWithValue("@Vacation", transfer.Vacation);
-                        cmd.Parameters.AddWithValue("@Bill", (object)transfer.Bill ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Aguinaldo", transfer.Aguinaldo);
-                        cmd.Parameters.AddWithValue("@LastComplement", transfer.LastComplement);
-                        cmd.Parameters.AddWithValue("@FileControl", (object)transfer.FileControl ?? "PENDIENTE");
-
-                        object result = cmd.ExecuteScalar();
-                        int newId = result == null || result == DBNull.Value
-                            ? 0
-                            : Convert.ToInt32(result);
-
-                        // Auditoría simple
-                        if (newId > 0 && transfer.CreatedBy.HasValue && transfer.CreatedBy.Value > 0)
-                        {
-                            Ctrl_Audit.RegistrarAccion(
-                                transfer.CreatedBy.Value,
-                                "CREAR",
-                                "Transfers",
-                                newId,
-                                $"Se creó la transferencia {transfer.TransferNumber}"
-                            );
-                        }
-
-                        return newId;
+                        Ctrl_Audit.RegistrarAccion(
+                            transfer.CreatedBy.Value, "CREAR", "Transfers", newId,
+                            $"Se creó la transferencia {transfer.TransferNumber}");
                     }
+
+                    return newId;
                 }
             }
             catch (Exception ex)
@@ -184,102 +144,58 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Transfers_Update", connection))
                 {
-                    string query = @"UPDATE Transfers SET
-                                        TransferNumber = @TransferNumber,
-                                        IssueDate = @IssueDate,
-                                        IssuePlace = @IssuePlace,
-                                        Amount = @Amount,
-                                        PrintedAmount = @PrintedAmount,
-                                        BeneficiaryName = @BeneficiaryName,
-                                        EmployeeId = @EmployeeId,
-                                        BankId = @BankId,
-                                        BankAccountNumber = @BankAccountNumber,
-                                        BanksAccountTypeId = @BanksAccountTypeId,
-                                        StatusId = @StatusId,
-                                        Concept = @Concept,
-                                        DetailDescription = @DetailDescription,
-                                        Period = @Period,
-                                        LocationId = @LocationId,
-                                        DepartmentId = @DepartmentId,
-                                        Exemption = @Exemption,
-                                        TaxFreeAmount = @TaxFreeAmount,
-                                        FoodAllowance = @FoodAllowance,
-                                        IGSS = @IGSS,
-                                        WithholdingTax = @WithholdingTax,
-                                        Retention = @Retention,
-                                        Bonus = @Bonus,
-                                        Discounts = @Discounts,
-                                        Advances = @Advances,
-                                        Viaticos = @Viaticos,
-                                        Stamps = @Stamps,
-                                        PurchaseOrderNumber = @PurchaseOrderNumber,
-                                        Complement = @Complement,
-                                        Compensation = @Compensation,
-                                        Vacation = @Vacation,
-                                        Bill = @Bill,
-                                        Aguinaldo = @Aguinaldo,
-                                        LastComplement = @LastComplement,
-                                        FileControl = @FileControl,
-                                        ModifiedDate = GETDATE(),
-                                        ModifiedBy = @ModifiedBy
-                                     WHERE TransferId = @TransferId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TransferId", transfer.TransferId);
+                    cmd.Parameters.AddWithValue("@TransferNumber", transfer.TransferNumber ?? "");
+                    cmd.Parameters.AddWithValue("@IssueDate", transfer.IssueDate);
+                    cmd.Parameters.AddWithValue("@IssuePlace", transfer.IssuePlace ?? "GUATEMALA");
+                    cmd.Parameters.AddWithValue("@Amount", transfer.Amount);
+                    cmd.Parameters.AddWithValue("@PrintedAmount", transfer.PrintedAmount);
+                    cmd.Parameters.AddWithValue("@BeneficiaryName", transfer.BeneficiaryName ?? "");
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)transfer.EmployeeId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankId", transfer.BankId);
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)transfer.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BanksAccountTypeId", transfer.BanksAccountTypeId);
+                    cmd.Parameters.AddWithValue("@StatusId", transfer.StatusId);
+                    cmd.Parameters.AddWithValue("@Concept", transfer.Concept ?? "");
+                    cmd.Parameters.AddWithValue("@DetailDescription", (object)transfer.DetailDescription ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Period", transfer.Period ?? "");
+                    cmd.Parameters.AddWithValue("@LocationId", (object)transfer.LocationId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DepartmentId", (object)transfer.DepartmentId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Exemption", transfer.Exemption);
+                    cmd.Parameters.AddWithValue("@TaxFreeAmount", transfer.TaxFreeAmount);
+                    cmd.Parameters.AddWithValue("@FoodAllowance", transfer.FoodAllowance);
+                    cmd.Parameters.AddWithValue("@IGSS", transfer.IGSS);
+                    cmd.Parameters.AddWithValue("@WithholdingTax", transfer.WithholdingTax);
+                    cmd.Parameters.AddWithValue("@Retention", transfer.Retention);
+                    cmd.Parameters.AddWithValue("@Bonus", transfer.Bonus);
+                    cmd.Parameters.AddWithValue("@Discounts", transfer.Discounts);
+                    cmd.Parameters.AddWithValue("@Advances", transfer.Advances);
+                    cmd.Parameters.AddWithValue("@Viaticos", transfer.Viaticos);
+                    cmd.Parameters.AddWithValue("@Stamps", transfer.Stamps);
+                    cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)transfer.PurchaseOrderNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Complement", (object)transfer.Complement ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Compensation", transfer.Compensation);
+                    cmd.Parameters.AddWithValue("@Vacation", transfer.Vacation);
+                    cmd.Parameters.AddWithValue("@Bill", (object)transfer.Bill ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Aguinaldo", transfer.Aguinaldo);
+                    cmd.Parameters.AddWithValue("@LastComplement", transfer.LastComplement);
+                    cmd.Parameters.AddWithValue("@FileControl", (object)transfer.FileControl ?? "PENDIENTE");
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)transfer.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    object result = cmd.ExecuteScalar();
+                    bool ok = result != null && Convert.ToInt32(result) > 0;
+
+                    if (ok && transfer.ModifiedBy.HasValue && transfer.ModifiedBy.Value > 0)
                     {
-                        cmd.Parameters.AddWithValue("@TransferId", transfer.TransferId);
-                        cmd.Parameters.AddWithValue("@TransferNumber", transfer.TransferNumber ?? "");
-                        cmd.Parameters.AddWithValue("@IssueDate", transfer.IssueDate);
-                        cmd.Parameters.AddWithValue("@IssuePlace", transfer.IssuePlace ?? "GUATEMALA");
-                        cmd.Parameters.AddWithValue("@Amount", transfer.Amount);
-                        cmd.Parameters.AddWithValue("@PrintedAmount", transfer.PrintedAmount);
-                        cmd.Parameters.AddWithValue("@BeneficiaryName", transfer.BeneficiaryName ?? "");
-                        cmd.Parameters.AddWithValue("@EmployeeId", (object)transfer.EmployeeId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankId", transfer.BankId);
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)transfer.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BanksAccountTypeId", transfer.BanksAccountTypeId);
-                        cmd.Parameters.AddWithValue("@StatusId", transfer.StatusId);
-                        cmd.Parameters.AddWithValue("@Concept", transfer.Concept ?? "");
-                        cmd.Parameters.AddWithValue("@DetailDescription", (object)transfer.DetailDescription ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Period", transfer.Period ?? "");
-                        cmd.Parameters.AddWithValue("@LocationId", (object)transfer.LocationId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@DepartmentId", (object)transfer.DepartmentId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Exemption", transfer.Exemption);
-                        cmd.Parameters.AddWithValue("@TaxFreeAmount", transfer.TaxFreeAmount);
-                        cmd.Parameters.AddWithValue("@FoodAllowance", transfer.FoodAllowance);
-                        cmd.Parameters.AddWithValue("@IGSS", transfer.IGSS);
-                        cmd.Parameters.AddWithValue("@WithholdingTax", transfer.WithholdingTax);
-                        cmd.Parameters.AddWithValue("@Retention", transfer.Retention);
-                        cmd.Parameters.AddWithValue("@Bonus", transfer.Bonus);
-                        cmd.Parameters.AddWithValue("@Discounts", transfer.Discounts);
-                        cmd.Parameters.AddWithValue("@Advances", transfer.Advances);
-                        cmd.Parameters.AddWithValue("@Viaticos", transfer.Viaticos);
-                        cmd.Parameters.AddWithValue("@Stamps", transfer.Stamps);
-                        cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)transfer.PurchaseOrderNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Complement", (object)transfer.Complement ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Compensation", transfer.Compensation);
-                        cmd.Parameters.AddWithValue("@Vacation", transfer.Vacation);
-                        cmd.Parameters.AddWithValue("@Bill", (object)transfer.Bill ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Aguinaldo", transfer.Aguinaldo);
-                        cmd.Parameters.AddWithValue("@LastComplement", transfer.LastComplement);
-                        cmd.Parameters.AddWithValue("@FileControl", (object)transfer.FileControl ?? "PENDIENTE");
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)transfer.ModifiedBy ?? DBNull.Value);
-
-                        bool ok = cmd.ExecuteNonQuery() > 0;
-
-                        if (ok && transfer.ModifiedBy.HasValue && transfer.ModifiedBy.Value > 0)
-                        {
-                            Ctrl_Audit.RegistrarAccion(
-                                transfer.ModifiedBy.Value,
-                                "ACTUALIZAR",
-                                "Transfers",
-                                transfer.TransferId,
-                                $"Se actualizó la transferencia {transfer.TransferNumber}"
-                            );
-                        }
-
-                        return ok;
+                        Ctrl_Audit.RegistrarAccion(
+                            transfer.ModifiedBy.Value, "ACTUALIZAR", "Transfers", transfer.TransferId,
+                            $"Se actualizó la transferencia {transfer.TransferNumber}");
                     }
+
+                    return ok;
                 }
             }
             catch (Exception ex)
@@ -332,10 +248,8 @@ namespace SECRON.Controllers
 
                 string estadoUpper = nuevoEstado.Trim().ToUpper();
 
-                if (estadoUpper != "PENDIENTE" &&
-                    estadoUpper != "TRASLADADO" &&
-                    estadoUpper != "RECIBIDO" &&
-                    estadoUpper != "ARCHIVADO")
+                if (estadoUpper != "PENDIENTE" && estadoUpper != "TRASLADADO" &&
+                    estadoUpper != "RECIBIDO" && estadoUpper != "ARCHIVADO")
                 {
                     MessageBox.Show("Estado de FileControl inválido.", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -343,26 +257,15 @@ namespace SECRON.Controllers
                 }
 
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Transfers_UpdateFileControl", connection))
                 {
-                    string query = @"UPDATE Transfers
-                                     SET FileControl = @FileControl,
-                                         ModifiedDate = GETDATE(),
-                                         ModifiedBy   = @UserId
-                                     WHERE TransferId = @TransferId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TransferId", transferId);
+                    cmd.Parameters.AddWithValue("@FileControl", estadoUpper);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@FileControl", estadoUpper);
-
-                        if (userId > 0)
-                            cmd.Parameters.AddWithValue("@UserId", userId);
-                        else
-                            cmd.Parameters.AddWithValue("@UserId", DBNull.Value);
-
-                        cmd.Parameters.AddWithValue("@TransferId", transferId);
-
-                        return cmd.ExecuteNonQuery() > 0;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)
@@ -406,13 +309,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Transfers_MarkLastComplement", connection))
                 {
-                    string query = "UPDATE Transfers SET LastComplement = 1 WHERE TransferNumber = @TransferNumber AND IsActive = 1";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TransferNumber", numeroTransfer);
-                        return cmd.ExecuteNonQuery() > 0;
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TransferNumber", numeroTransfer);
+
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch

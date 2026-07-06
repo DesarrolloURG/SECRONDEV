@@ -13,9 +13,7 @@ namespace SECRON.Controllers
 {
     internal class Ctrl_FixedAssetClassificationCategories
     {
-        // ─────────────────────────────────────────────
-        // READ
-        // ─────────────────────────────────────────────
+        
         public static List<Mdl_FixedAssetClassificationCategory> MostrarClasificaciones(
             string classificationCode = null,
             string classificationName = null,
@@ -53,9 +51,6 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // ─────────────────────────────────────────────
-        // COMBO
-        // ─────────────────────────────────────────────
         public static List<KeyValuePair<int, string>> ObtenerClasificacionesParaCombo(
             bool soloActivas = true)
         {
@@ -91,9 +86,6 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // ─────────────────────────────────────────────
-        // CREATE
-        // ─────────────────────────────────────────────
         public static int RegistrarClasificacion(
             Mdl_FixedAssetClassificationCategory clasificacion)
         {
@@ -126,9 +118,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // UPDATE
-        // ─────────────────────────────────────────────
         public static int ActualizarClasificacion(
             Mdl_FixedAssetClassificationCategory clasificacion)
         {
@@ -165,9 +154,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // INACTIVE
-        // ─────────────────────────────────────────────
         public static int InactivarClasificacion(int classificationId, int? modifiedBy = null)
         {
             try
@@ -194,9 +180,7 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // MAPPER
-        // ─────────────────────────────────────────────
+        
         private static Mdl_FixedAssetClassificationCategory Mapear(SqlDataReader reader)
         {
             return new Mdl_FixedAssetClassificationCategory

@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,19 +19,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_MeasurementUnits_Insert", connection))
                 {
-                    string query = @"INSERT INTO MeasurementUnits (UnitCode, UnitName, Abbreviation, IsActive) 
-                        VALUES (@UnitCode, @UnitName, @Abbreviation, @IsActive)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UnitCode", unidad.UnitCode ?? "");
+                    cmd.Parameters.AddWithValue("@UnitName", unidad.UnitName ?? "");
+                    cmd.Parameters.AddWithValue("@Abbreviation", unidad.Abbreviation ?? "");
+                    cmd.Parameters.AddWithValue("@IsActive", unidad.IsActive);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UnitCode", unidad.UnitCode ?? "");
-                        cmd.Parameters.AddWithValue("@UnitName", unidad.UnitName ?? "");
-                        cmd.Parameters.AddWithValue("@Abbreviation", unidad.Abbreviation ?? "");
-                        cmd.Parameters.AddWithValue("@IsActive", unidad.IsActive);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -74,20 +72,17 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_MeasurementUnits_Update", connection))
                 {
-                    string query = @"UPDATE MeasurementUnits SET UnitCode = @UnitCode, 
-                        UnitName = @UnitName, Abbreviation = @Abbreviation 
-                        WHERE UnitId = @UnitId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UnitId", unidad.UnitId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@UnitCode", unidad.UnitCode ?? "");
+                    cmd.Parameters.AddWithValue("@UnitName", unidad.UnitName ?? "");
+                    cmd.Parameters.AddWithValue("@Abbreviation", unidad.Abbreviation ?? "");
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UnitId", unidad.UnitId);
-                        cmd.Parameters.AddWithValue("@UnitCode", unidad.UnitCode ?? "");
-                        cmd.Parameters.AddWithValue("@UnitName", unidad.UnitName ?? "");
-                        cmd.Parameters.AddWithValue("@Abbreviation", unidad.Abbreviation ?? "");
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -103,13 +98,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_MeasurementUnits_Update", connection))
                 {
-                    string query = "UPDATE MeasurementUnits SET IsActive = 0 WHERE UnitId = @UnitId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UnitId", unitId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UnitId", unitId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

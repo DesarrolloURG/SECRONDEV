@@ -1,9 +1,10 @@
 ﻿// Ctrl_Audit.cs (NOMBRE NUEVO)
-using System;
-using System.Data.SqlClient;
-using System.Windows.Forms;
 using SECRON.Configuration;
 using SECRON.Models;
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace SECRON.Controllers
 {
@@ -15,25 +16,20 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AuditLog_Insert", connection))
                 {
-                    string query = @"INSERT INTO AuditLog (UserId, Action, TableName, RecordId, 
-                        OldValues, NewValues, IPAddress, UserAgent) 
-                        VALUES (@UserId, @Action, @TableName, @RecordId, @OldValues, 
-                        @NewValues, @IPAddress, @UserAgent)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", audit.UserId);
+                    cmd.Parameters.AddWithValue("@Action", audit.Action ?? "");
+                    cmd.Parameters.AddWithValue("@TableName", (object)audit.TableName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@RecordId", (object)audit.RecordId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@OldValues", (object)audit.OldValues ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NewValues", (object)audit.NewValues ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IPAddress", (object)audit.IPAddress ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UserAgent", (object)audit.UserAgent ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", audit.UserId);
-                        cmd.Parameters.AddWithValue("@Action", audit.Action ?? "");
-                        cmd.Parameters.AddWithValue("@TableName", (object)audit.TableName ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@RecordId", (object)audit.RecordId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@OldValues", (object)audit.OldValues ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@NewValues", (object)audit.NewValues ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IPAddress", (object)audit.IPAddress ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@UserAgent", (object)audit.UserAgent ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -56,7 +52,7 @@ namespace SECRON.Controllers
                     Action = action,
                     TableName = tableName,
                     RecordId = recordId,
-                    NewValues = details // Usar NewValues para detalles generales
+                    NewValues = details
                 };
 
                 RegistrarAuditoria(audit);

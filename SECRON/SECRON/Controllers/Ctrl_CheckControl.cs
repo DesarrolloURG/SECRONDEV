@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,23 +19,19 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_CheckControl_Insert", connection))
                 {
-                    string query = @"INSERT INTO CheckControl (UserId, InitialLimit, FinalLimit, CurrentCounter, 
-                    Priority, IsActive, CreatedBy) 
-                    VALUES (@UserId, @InitialLimit, @FinalLimit, @CurrentCounter, @Priority, @IsActive, @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", control.UserId);
+                    cmd.Parameters.AddWithValue("@InitialLimit", control.InitialLimit);
+                    cmd.Parameters.AddWithValue("@FinalLimit", control.FinalLimit);
+                    cmd.Parameters.AddWithValue("@CurrentCounter", control.CurrentCounter);
+                    cmd.Parameters.AddWithValue("@Priority", control.Priority);
+                    cmd.Parameters.AddWithValue("@IsActive", control.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)control.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", control.UserId);
-                        cmd.Parameters.AddWithValue("@InitialLimit", control.InitialLimit);
-                        cmd.Parameters.AddWithValue("@FinalLimit", control.FinalLimit);
-                        cmd.Parameters.AddWithValue("@CurrentCounter", control.CurrentCounter);
-                        cmd.Parameters.AddWithValue("@Priority", control.Priority);
-                        cmd.Parameters.AddWithValue("@IsActive", control.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)control.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -78,14 +75,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_CheckControl_IncrementCounterByUser", connection))
                 {
-                    string query = @"UPDATE CheckControl SET CurrentCounter = CurrentCounter + 1, 
-                        ModifiedDate = GETDATE() WHERE UserId = @UserId AND IsActive = 1";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -94,24 +90,20 @@ namespace SECRON.Controllers
                 return 0;
             }
         }
+
         // MÉTODO: Incrementar contador por rango específico (CheckControlId)
         public static int SiguienteChequePorControl(int checkControlId)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_CheckControl_IncrementCounterById", connection))
                 {
-                    string query = @"UPDATE CheckControl
-                             SET CurrentCounter = CurrentCounter + 1,
-                                 ModifiedDate   = GETDATE()
-                             WHERE CheckControlId = @CheckControlId
-                               AND IsActive = 1";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -128,23 +120,19 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_CheckControl_Update", connection))
                 {
-                    string query = @"UPDATE CheckControl SET InitialLimit = @InitialLimit, 
-                    FinalLimit = @FinalLimit, CurrentCounter = @CurrentCounter, Priority = @Priority,
-                    ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy 
-                    WHERE CheckControlId = @CheckControlId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckControlId", control.CheckControlId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@InitialLimit", control.InitialLimit);
+                    cmd.Parameters.AddWithValue("@FinalLimit", control.FinalLimit);
+                    cmd.Parameters.AddWithValue("@CurrentCounter", control.CurrentCounter);
+                    cmd.Parameters.AddWithValue("@Priority", control.Priority);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)control.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckControlId", control.CheckControlId);
-                        cmd.Parameters.AddWithValue("@InitialLimit", control.InitialLimit);
-                        cmd.Parameters.AddWithValue("@FinalLimit", control.FinalLimit);
-                        cmd.Parameters.AddWithValue("@CurrentCounter", control.CurrentCounter);
-                        cmd.Parameters.AddWithValue("@Priority", control.Priority);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)control.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -160,15 +148,19 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_CheckControl_Update", connection))
                 {
-                    string query = @"UPDATE CheckControl SET IsActive = 0, ModifiedDate = GETDATE(), 
-                        ModifiedBy = @ModifiedBy WHERE CheckControlId = @CheckControlId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@InitialLimit", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@FinalLimit", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CurrentCounter", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Priority", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -298,13 +290,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_CheckControl_Delete", connection))
                 {
-                    string query = "DELETE FROM CheckControl WHERE CheckControlId = @CheckControlId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
-                        return cmd.ExecuteNonQuery() > 0;
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)

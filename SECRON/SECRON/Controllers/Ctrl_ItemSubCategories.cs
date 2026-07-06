@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -68,28 +69,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemSubCategories_Insert", connection))
                 {
-                    string query = @"
-                        IF EXISTS (SELECT 1 FROM ItemSubCategories 
-                                   WHERE CategoryId = @CategoryId AND SubCategoryCode = @SubCategoryCode)
-                            SELECT -1
-                        ELSE
-                        BEGIN
-                            INSERT INTO ItemSubCategories
-                                (CategoryId, SubCategoryCode, SubCategoryName, IsActive, CreatedBy)
-                            VALUES
-                                (@CategoryId, @SubCategoryCode, @SubCategoryName, 1, @CreatedBy)
-                            SELECT 1
-                        END";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CategoryId", sub.CategoryId);
-                        cmd.Parameters.AddWithValue("@SubCategoryCode", sub.SubCategoryCode?.ToUpper() ?? "");
-                        cmd.Parameters.AddWithValue("@SubCategoryName", sub.SubCategoryName?.ToUpper() ?? "");
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)sub.CreatedBy ?? DBNull.Value);
-                        return (int)cmd.ExecuteScalar();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CategoryId", sub.CategoryId);
+                    cmd.Parameters.AddWithValue("@SubCategoryCode", sub.SubCategoryCode?.ToUpper() ?? "");
+                    cmd.Parameters.AddWithValue("@SubCategoryName", sub.SubCategoryName?.ToUpper() ?? "");
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)sub.CreatedBy ?? DBNull.Value);
+                    return (int)cmd.ExecuteScalar();
                 }
             }
             catch (Exception ex)
@@ -105,30 +92,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemSubCategories_Update", connection))
                 {
-                    string query = @"
-                IF NOT EXISTS (SELECT 1 FROM ItemSubCategories 
-                               WHERE SubCategoryId = @SubCategoryId)
-                    SELECT -2
-                ELSE
-                BEGIN
-                    UPDATE ItemSubCategories SET
-                        SubCategoryName = @SubCategoryName,
-                        IsActive        = @IsActive,
-                        ModifiedDate    = GETDATE(),
-                        ModifiedBy      = @ModifiedBy
-                    WHERE SubCategoryId = @SubCategoryId
-                    SELECT 1
-                END";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@SubCategoryId", sub.SubCategoryId);
-                        cmd.Parameters.AddWithValue("@SubCategoryName", sub.SubCategoryName?.ToUpper() ?? "");
-                        cmd.Parameters.AddWithValue("@IsActive", sub.IsActive);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)sub.ModifiedBy ?? DBNull.Value);
-                        return (int)cmd.ExecuteScalar();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SubCategoryId", sub.SubCategoryId);
+                    cmd.Parameters.AddWithValue("@SubCategoryName", sub.SubCategoryName?.ToUpper() ?? "");
+                    cmd.Parameters.AddWithValue("@IsActive", sub.IsActive);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)sub.ModifiedBy ?? DBNull.Value);
+                    return (int)cmd.ExecuteScalar();
                 }
             }
             catch (Exception ex)
@@ -144,20 +115,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemSubCategories_Inactive", connection))
                 {
-                    string query = @"
-                        UPDATE ItemSubCategories SET
-                            IsActive     = 0,
-                            ModifiedDate = GETDATE(),
-                            ModifiedBy   = @ModifiedBy
-                        WHERE SubCategoryId = @SubCategoryId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SubCategoryId", subCategoryId);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@SubCategoryId", subCategoryId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

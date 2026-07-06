@@ -223,6 +223,7 @@
     <Compile Include="Models\Mdl_WarehouseManager.cs" />
     <Compile Include="Models\Mdl_WarehouseManagerPermission.cs" />
     <Compile Include="Models\Mdl_WarehousePermission.cs" />
+    <Compile Include="Models\Mdl_WarehouseWithLocation.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

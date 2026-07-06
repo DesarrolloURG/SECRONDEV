@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,43 +19,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockByLocation_GetOrCreate", connection))
                 {
-                    // Primero intentamos obtener
-                    string querySelect = @"SELECT * FROM ItemStockByLocation 
-                        WHERE ItemId = @ItemId AND LocationId = @LocationId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemId", itemId);
+                    cmd.Parameters.AddWithValue("@LocationId", locationId);
 
-                    using (SqlCommand cmd = new SqlCommand(querySelect, connection))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        cmd.Parameters.AddWithValue("@ItemId", itemId);
-                        cmd.Parameters.AddWithValue("@LocationId", locationId);
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return MapearStock(reader);
-                            }
-                        }
-                    }
-
-                    // Si no existe, lo creamos
-                    string queryInsert = @"INSERT INTO ItemStockByLocation (ItemId, LocationId, CurrentStock, 
-                        ReservedStock, MinimumStock, IsActive) 
-                        VALUES (@ItemId, @LocationId, 0, 0, 0, 1);
-                        SELECT * FROM ItemStockByLocation WHERE ItemStockLocationId = SCOPE_IDENTITY()";
-
-                    using (SqlCommand cmd = new SqlCommand(queryInsert, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemId", itemId);
-                        cmd.Parameters.AddWithValue("@LocationId", locationId);
-
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return MapearStock(reader);
-                            }
-                        }
+                        if (reader.Read())
+                            return MapearStock(reader);
                     }
                 }
             }
@@ -71,19 +45,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockByLocation_UpdateStock", connection))
                 {
-                    string query = @"UPDATE ItemStockByLocation SET CurrentStock = @CurrentStock, 
-                        LastMovementDate = GETDATE() 
-                        WHERE ItemId = @ItemId AND LocationId = @LocationId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemId", itemId);
+                    cmd.Parameters.AddWithValue("@LocationId", locationId);
+                    cmd.Parameters.AddWithValue("@CurrentStock", newStock);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemId", itemId);
-                        cmd.Parameters.AddWithValue("@LocationId", locationId);
-                        cmd.Parameters.AddWithValue("@CurrentStock", newStock);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -221,34 +191,18 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockByLocation_Upsert", connection))
                 {
-                    string query = @"
-                IF EXISTS (SELECT 1 FROM ItemStockByLocation WHERE ItemId = @ItemId AND LocationId = @LocationId)
-                    UPDATE ItemStockByLocation SET
-                        CurrentStock = @CurrentStock,
-                        ReservedStock = @ReservedStock,
-                        MinimumStock = @MinimumStock,
-                        MaximumStock = @MaximumStock,
-                        IsActive = 1,
-                        LastMovementDate = GETDATE()
-                    WHERE ItemId = @ItemId AND LocationId = @LocationId
-                ELSE
-                    INSERT INTO ItemStockByLocation 
-                        (ItemId, LocationId, CurrentStock, ReservedStock, MinimumStock, MaximumStock, IsActive)
-                    VALUES 
-                        (@ItemId, @LocationId, @CurrentStock, @ReservedStock, @MinimumStock, @MaximumStock, 1)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemId", stock.ItemId);
+                    cmd.Parameters.AddWithValue("@LocationId", stock.LocationId);
+                    cmd.Parameters.AddWithValue("@CurrentStock", stock.CurrentStock);
+                    cmd.Parameters.AddWithValue("@ReservedStock", stock.ReservedStock);
+                    cmd.Parameters.AddWithValue("@MinimumStock", stock.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", (object)stock.MaximumStock == null ? DBNull.Value : (object)stock.MaximumStock);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemId", stock.ItemId);
-                        cmd.Parameters.AddWithValue("@LocationId", stock.LocationId);
-                        cmd.Parameters.AddWithValue("@CurrentStock", stock.CurrentStock);
-                        cmd.Parameters.AddWithValue("@ReservedStock", stock.ReservedStock);
-                        cmd.Parameters.AddWithValue("@MinimumStock", stock.MinimumStock);
-                        cmd.Parameters.AddWithValue("@MaximumStock", (object)stock.MaximumStock == null ? DBNull.Value : (object)stock.MaximumStock);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -264,23 +218,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockByLocation_UpdateFull", connection))
                 {
-                    string query = @"UPDATE ItemStockByLocation SET
-                CurrentStock = @CurrentStock,
-                MinimumStock = @MinimumStock,
-                MaximumStock = @MaximumStock,
-                LastMovementDate = GETDATE()
-                WHERE ItemStockLocationId = @ItemStockLocationId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemStockLocationId", stock.ItemStockLocationId);
+                    cmd.Parameters.AddWithValue("@CurrentStock", stock.CurrentStock);
+                    cmd.Parameters.AddWithValue("@MinimumStock", stock.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", (object)stock.MaximumStock == null ? DBNull.Value : (object)stock.MaximumStock);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemStockLocationId", stock.ItemStockLocationId);
-                        cmd.Parameters.AddWithValue("@CurrentStock", stock.CurrentStock);
-                        cmd.Parameters.AddWithValue("@MinimumStock", stock.MinimumStock);
-                        cmd.Parameters.AddWithValue("@MaximumStock", (object)stock.MaximumStock == null ? DBNull.Value : (object)stock.MaximumStock);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -296,13 +243,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockByLocation_Delete", connection))
                 {
-                    string query = "DELETE FROM ItemStockByLocation WHERE ItemStockLocationId = @ItemStockLocationId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemStockLocationId", itemStockLocationId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemStockLocationId", itemStockLocationId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

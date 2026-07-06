@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,30 +19,25 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Accounts_Insert", connection))
                 {
-                    string query = @"INSERT INTO Accounts (Code, Name, Type, ParentAccountCode, Level, 
-                        Sign, Balance, BankCode, BankName, BankAccountType, CheckNumber, Currency, CurrencyName) 
-                        VALUES (@Code, @Name, @Type, @ParentAccountCode, @Level, @Sign, @Balance, 
-                        @BankCode, @BankName, @BankAccountType, @CheckNumber, @Currency, @CurrencyName)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Code", cuenta.Code ?? "");
+                    cmd.Parameters.AddWithValue("@Name", cuenta.Name ?? "");
+                    cmd.Parameters.AddWithValue("@Type", (object)cuenta.Type ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ParentAccountCode", cuenta.ParentAccountCode ?? "");
+                    cmd.Parameters.AddWithValue("@Level", cuenta.Level);
+                    cmd.Parameters.AddWithValue("@Sign", cuenta.Sign ?? "");
+                    cmd.Parameters.AddWithValue("@Balance", cuenta.Balance);
+                    cmd.Parameters.AddWithValue("@BankCode", cuenta.BankCode);
+                    cmd.Parameters.AddWithValue("@BankName", cuenta.BankName ?? "");
+                    cmd.Parameters.AddWithValue("@BankAccountType", cuenta.BankAccountType ?? "");
+                    cmd.Parameters.AddWithValue("@CheckNumber", cuenta.CheckNumber);
+                    cmd.Parameters.AddWithValue("@Currency", cuenta.Currency ?? "");
+                    cmd.Parameters.AddWithValue("@CurrencyName", cuenta.CurrencyName ?? "");
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@Code", cuenta.Code ?? "");
-                        cmd.Parameters.AddWithValue("@Name", cuenta.Name ?? "");
-                        cmd.Parameters.AddWithValue("@Type", (object)cuenta.Type ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ParentAccountCode", cuenta.ParentAccountCode ?? "");
-                        cmd.Parameters.AddWithValue("@Level", cuenta.Level);
-                        cmd.Parameters.AddWithValue("@Sign", cuenta.Sign ?? "");
-                        cmd.Parameters.AddWithValue("@Balance", cuenta.Balance);
-                        cmd.Parameters.AddWithValue("@BankCode", cuenta.BankCode);
-                        cmd.Parameters.AddWithValue("@BankName", cuenta.BankName ?? "");
-                        cmd.Parameters.AddWithValue("@BankAccountType", cuenta.BankAccountType ?? "");
-                        cmd.Parameters.AddWithValue("@CheckNumber", cuenta.CheckNumber);
-                        cmd.Parameters.AddWithValue("@Currency", cuenta.Currency ?? "");
-                        cmd.Parameters.AddWithValue("@CurrencyName", cuenta.CurrencyName ?? "");
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -132,32 +128,25 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Accounts_Update", connection))
                 {
-                    string query = @"UPDATE Accounts SET Name = @Name, Type = @Type, 
-                        ParentAccountCode = @ParentAccountCode, Level = @Level, Sign = @Sign, 
-                        Balance = @Balance, BankCode = @BankCode, BankName = @BankName, 
-                        BankAccountType = @BankAccountType, CheckNumber = @CheckNumber, 
-                        Currency = @Currency, CurrencyName = @CurrencyName 
-                        WHERE Code = @Code";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Code", cuenta.Code ?? "");
+                    cmd.Parameters.AddWithValue("@Name", cuenta.Name ?? "");
+                    cmd.Parameters.AddWithValue("@Type", (object)cuenta.Type ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ParentAccountCode", cuenta.ParentAccountCode ?? "");
+                    cmd.Parameters.AddWithValue("@Level", cuenta.Level);
+                    cmd.Parameters.AddWithValue("@Sign", cuenta.Sign ?? "");
+                    cmd.Parameters.AddWithValue("@Balance", cuenta.Balance);
+                    cmd.Parameters.AddWithValue("@BankCode", cuenta.BankCode);
+                    cmd.Parameters.AddWithValue("@BankName", cuenta.BankName ?? "");
+                    cmd.Parameters.AddWithValue("@BankAccountType", cuenta.BankAccountType ?? "");
+                    cmd.Parameters.AddWithValue("@CheckNumber", cuenta.CheckNumber);
+                    cmd.Parameters.AddWithValue("@Currency", cuenta.Currency ?? "");
+                    cmd.Parameters.AddWithValue("@CurrencyName", cuenta.CurrencyName ?? "");
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@Code", cuenta.Code ?? "");
-                        cmd.Parameters.AddWithValue("@Name", cuenta.Name ?? "");
-                        cmd.Parameters.AddWithValue("@Type", (object)cuenta.Type ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ParentAccountCode", cuenta.ParentAccountCode ?? "");
-                        cmd.Parameters.AddWithValue("@Level", cuenta.Level);
-                        cmd.Parameters.AddWithValue("@Sign", cuenta.Sign ?? "");
-                        cmd.Parameters.AddWithValue("@Balance", cuenta.Balance);
-                        cmd.Parameters.AddWithValue("@BankCode", cuenta.BankCode);
-                        cmd.Parameters.AddWithValue("@BankName", cuenta.BankName ?? "");
-                        cmd.Parameters.AddWithValue("@BankAccountType", cuenta.BankAccountType ?? "");
-                        cmd.Parameters.AddWithValue("@CheckNumber", cuenta.CheckNumber);
-                        cmd.Parameters.AddWithValue("@Currency", cuenta.Currency ?? "");
-                        cmd.Parameters.AddWithValue("@CurrencyName", cuenta.CurrencyName ?? "");
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -172,22 +161,24 @@ namespace SECRON.Controllers
         {
             try
             {
-                int updatedLevel = parentLevel + 1;
-                int resultado = 0;
-
+                int resultado;
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Accounts_UpdateLevelsByParent", connection))
                 {
-                    // Actualizar nivel de cuentas hijas
-                    string query = "UPDATE Accounts SET Level = @UpdatedLevel WHERE ParentAccountCode = @ParentAccountCode";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UpdatedLevel", updatedLevel);
-                        cmd.Parameters.AddWithValue("@ParentAccountCode", parentAccountCode ?? "");
-                        resultado = cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ParentAccountCode", parentAccountCode ?? "");
+                    cmd.Parameters.AddWithValue("@ParentLevel", parentLevel);
 
-                    // Si se actualizó alguna cuenta, actualizar recursivamente las subcuentas
-                    if (resultado > 0)
+                    object result = cmd.ExecuteScalar();
+                    resultado = result == null ? 0 : Convert.ToInt32(result);
+                }
+
+                if (resultado > 0)
+                {
+                    int updatedLevel = parentLevel + 1;
+                    List<string> subcuentas = new List<string>();
+
+                    using (SqlConnection connection = DatabaseConfig.StartConection())
                     {
                         string subcuentasQuery = "SELECT Code FROM Accounts WHERE ParentAccountCode = @ParentAccountCode";
                         using (SqlCommand subcmd = new SqlCommand(subcuentasQuery, connection))
@@ -195,21 +186,16 @@ namespace SECRON.Controllers
                             subcmd.Parameters.AddWithValue("@ParentAccountCode", parentAccountCode ?? "");
                             using (SqlDataReader reader = subcmd.ExecuteReader())
                             {
-                                List<string> subcuentas = new List<string>();
                                 while (reader.Read())
-                                {
                                     subcuentas.Add(reader["Code"].ToString());
-                                }
-                                reader.Close();
-
-                                foreach (string codigo in subcuentas)
-                                {
-                                    ActualizarNiveles(codigo, updatedLevel);
-                                }
                             }
                         }
                     }
+
+                    foreach (string codigo in subcuentas)
+                        ActualizarNiveles(codigo, updatedLevel);
                 }
+
                 return resultado;
             }
             catch (Exception ex)
@@ -303,38 +289,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Accounts_UpdateBalance", connection))
                 {
-                    // 1. Obtener el SIGNO de la cuenta
-                    string querySigno = "SELECT Sign FROM Accounts WHERE Name = @AccountName";
-                    SqlCommand cmdSigno = new SqlCommand(querySigno, connection);
-                    cmdSigno.Parameters.AddWithValue("@AccountName", accountName ?? "");
-                    string signo = cmdSigno.ExecuteScalar()?.ToString() ?? "+";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@AccountName", accountName ?? "");
+                    cmd.Parameters.AddWithValue("@Debit", debit);
+                    cmd.Parameters.AddWithValue("@Credit", credit);
 
-                    // 2. Calcular el monto según el SIGNO
-                    decimal monto = 0;
-
-                    if (signo == "+")  // ACTIVO, GASTOS
-                    {
-                        if (debit > 0)
-                            monto = debit;      // Cargo = suma
-                        else
-                            monto = -credit;    // Abono = resta
-                    }
-                    else  // PASIVO, PATRIMONIO, INGRESOS (signo == "-")
-                    {
-                        if (credit > 0)
-                            monto = credit;     // Abono = suma
-                        else
-                            monto = -debit;     // Cargo = resta
-                    }
-
-                    // 3. Actualizar el saldo
-                    string queryUpdate = "UPDATE Accounts SET Balance = (Balance + @Monto) WHERE Name = @AccountName";
-                    SqlCommand cmdUpdate = new SqlCommand(queryUpdate, connection);
-                    cmdUpdate.Parameters.AddWithValue("@AccountName", accountName ?? "");
-                    cmdUpdate.Parameters.AddWithValue("@Monto", monto);
-
-                    return cmdUpdate.ExecuteNonQuery();
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

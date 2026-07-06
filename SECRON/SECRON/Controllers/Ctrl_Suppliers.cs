@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,34 +19,27 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Suppliers_Insert", connection))
                 {
-                    string query = @"INSERT INTO Suppliers (SupplierCode, SupplierName, LegalName, TaxId, 
-                        ContactName, Phone, Phone2, Email, Address, CommercialActivity, Classification, 
-                        BankAccountNumber, BankName, IsActive, CreatedBy) 
-                        VALUES (@SupplierCode, @SupplierName, @LegalName, @TaxId, @ContactName, @Phone, 
-                        @Phone2, @Email, @Address, @CommercialActivity, @Classification, @BankAccountNumber, 
-                        @BankName, @IsActive, @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SupplierCode", proveedor.SupplierCode ?? "");
+                    cmd.Parameters.AddWithValue("@SupplierName", proveedor.SupplierName ?? "");
+                    cmd.Parameters.AddWithValue("@LegalName", proveedor.LegalName ?? "");
+                    cmd.Parameters.AddWithValue("@TaxId", (object)proveedor.TaxId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ContactName", (object)proveedor.ContactName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Phone", proveedor.Phone ?? "");
+                    cmd.Parameters.AddWithValue("@Phone2", (object)proveedor.Phone2 ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", (object)proveedor.Email ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)proveedor.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CommercialActivity", proveedor.CommercialActivity ?? "");
+                    cmd.Parameters.AddWithValue("@Classification", proveedor.Classification ?? "");
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)proveedor.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankName", (object)proveedor.BankName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsActive", proveedor.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)proveedor.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@SupplierCode", proveedor.SupplierCode ?? "");
-                        cmd.Parameters.AddWithValue("@SupplierName", proveedor.SupplierName ?? "");
-                        cmd.Parameters.AddWithValue("@LegalName", proveedor.LegalName ?? "");
-                        cmd.Parameters.AddWithValue("@TaxId", (object)proveedor.TaxId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ContactName", (object)proveedor.ContactName ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Phone", proveedor.Phone ?? "");
-                        cmd.Parameters.AddWithValue("@Phone2", (object)proveedor.Phone2 ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Email", (object)proveedor.Email ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Address", (object)proveedor.Address ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@CommercialActivity", proveedor.CommercialActivity ?? "");
-                        cmd.Parameters.AddWithValue("@Classification", proveedor.Classification ?? "");
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)proveedor.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankName", (object)proveedor.BankName ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IsActive", proveedor.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)proveedor.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -178,34 +172,28 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Suppliers_Update", connection))
                 {
-                    string query = @"UPDATE Suppliers SET SupplierCode = @SupplierCode, SupplierName = @SupplierName, 
-                        LegalName = @LegalName, TaxId = @TaxId, ContactName = @ContactName, Phone = @Phone, 
-                        Phone2 = @Phone2, Email = @Email, Address = @Address, CommercialActivity = @CommercialActivity, 
-                        Classification = @Classification, BankAccountNumber = @BankAccountNumber, BankName = @BankName, 
-                        ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy 
-                        WHERE SupplierId = @SupplierId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SupplierId", proveedor.SupplierId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@SupplierCode", proveedor.SupplierCode ?? "");
+                    cmd.Parameters.AddWithValue("@SupplierName", proveedor.SupplierName ?? "");
+                    cmd.Parameters.AddWithValue("@LegalName", proveedor.LegalName ?? "");
+                    cmd.Parameters.AddWithValue("@TaxId", (object)proveedor.TaxId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ContactName", (object)proveedor.ContactName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Phone", proveedor.Phone ?? "");
+                    cmd.Parameters.AddWithValue("@Phone2", (object)proveedor.Phone2 ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", (object)proveedor.Email ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)proveedor.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CommercialActivity", proveedor.CommercialActivity ?? "");
+                    cmd.Parameters.AddWithValue("@Classification", proveedor.Classification ?? "");
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)proveedor.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankName", (object)proveedor.BankName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)proveedor.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@SupplierId", proveedor.SupplierId);
-                        cmd.Parameters.AddWithValue("@SupplierCode", proveedor.SupplierCode ?? "");
-                        cmd.Parameters.AddWithValue("@SupplierName", proveedor.SupplierName ?? "");
-                        cmd.Parameters.AddWithValue("@LegalName", proveedor.LegalName ?? "");
-                        cmd.Parameters.AddWithValue("@TaxId", (object)proveedor.TaxId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ContactName", (object)proveedor.ContactName ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Phone", proveedor.Phone ?? "");
-                        cmd.Parameters.AddWithValue("@Phone2", (object)proveedor.Phone2 ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Email", (object)proveedor.Email ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Address", (object)proveedor.Address ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@CommercialActivity", proveedor.CommercialActivity ?? "");
-                        cmd.Parameters.AddWithValue("@Classification", proveedor.Classification ?? "");
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)proveedor.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankName", (object)proveedor.BankName ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)proveedor.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -221,16 +209,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Suppliers_Update", connection))
                 {
-                    string query = @"UPDATE Suppliers SET IsActive = 0, ModifiedDate = GETDATE(), 
-                        ModifiedBy = @ModifiedBy WHERE SupplierId = @SupplierId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SupplierId", supplierId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@SupplierId", supplierId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

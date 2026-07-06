@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Windows.Forms;
+﻿using SECRON.Configuration;
 using SECRON.Models;
-using SECRON.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SECRON.Controllers
 {
@@ -18,32 +19,18 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockTemplates_Upsert", connection))
                 {
-                    string query = @"
-                IF EXISTS (SELECT 1 FROM ItemStockTemplates 
-                           WHERE LocationCategoryId = @LocationCategoryId AND ItemId = @ItemId)
-                    UPDATE ItemStockTemplates 
-                    SET MinimumStock = @MinimumStock, MaximumStock = @MaximumStock,
-                        ReorderPoint = @ReorderPoint, IsActive = 1,
-                        ModifiedDate = GETDATE(), ModifiedBy = @CreatedBy
-                    WHERE LocationCategoryId = @LocationCategoryId AND ItemId = @ItemId
-                ELSE
-                    INSERT INTO ItemStockTemplates 
-                        (LocationCategoryId, ItemId, MinimumStock, MaximumStock, ReorderPoint, IsActive, CreatedBy)
-                    VALUES 
-                        (@LocationCategoryId, @ItemId, @MinimumStock, @MaximumStock, @ReorderPoint, 1, @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@LocationCategoryId", plantilla.LocationCategoryId);
+                    cmd.Parameters.AddWithValue("@ItemId", plantilla.ItemId);
+                    cmd.Parameters.AddWithValue("@MinimumStock", plantilla.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", plantilla.MaximumStock);
+                    cmd.Parameters.AddWithValue("@ReorderPoint", (object)plantilla.ReorderPoint ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)plantilla.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@LocationCategoryId", plantilla.LocationCategoryId);
-                        cmd.Parameters.AddWithValue("@ItemId", plantilla.ItemId);
-                        cmd.Parameters.AddWithValue("@MinimumStock", plantilla.MinimumStock);
-                        cmd.Parameters.AddWithValue("@MaximumStock", plantilla.MaximumStock);
-                        cmd.Parameters.AddWithValue("@ReorderPoint", (object)plantilla.ReorderPoint ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)plantilla.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -162,22 +149,18 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockTemplates_Update", connection))
                 {
-                    string query = @"UPDATE ItemStockTemplates SET 
-                        MinimumStock = @MinimumStock, MaximumStock = @MaximumStock, 
-                        ReorderPoint = @ReorderPoint, ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy
-                        WHERE TemplateId = @TemplateId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TemplateId", plantilla.TemplateId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@MinimumStock", plantilla.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", plantilla.MaximumStock);
+                    cmd.Parameters.AddWithValue("@ReorderPoint", (object)plantilla.ReorderPoint ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)plantilla.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TemplateId", plantilla.TemplateId);
-                        cmd.Parameters.AddWithValue("@MinimumStock", plantilla.MinimumStock);
-                        cmd.Parameters.AddWithValue("@MaximumStock", plantilla.MaximumStock);
-                        cmd.Parameters.AddWithValue("@ReorderPoint", (object)plantilla.ReorderPoint ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)plantilla.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -193,13 +176,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockTemplates_Update", connection))
                 {
-                    string query = "UPDATE ItemStockTemplates SET IsActive = 0 WHERE TemplateId = @TemplateId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TemplateId", templateId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TemplateId", templateId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -288,13 +272,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemStockTemplates_Delete", connection))
                 {
-                    string query = "DELETE FROM ItemStockTemplates WHERE TemplateId = @TemplateId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TemplateId", templateId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TemplateId", templateId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

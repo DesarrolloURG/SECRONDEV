@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,28 +19,18 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryMaster_Insert", connection))
                 {
-                    string query = @"
-                        INSERT INTO AccountingEntryMaster
-                            (EntryDate, Concept, StatusId, TotalAmount, CreatedBy, IsActive)
-                        VALUES
-                            (@EntryDate, @Concept, @StatusId, @TotalAmount, @CreatedBy, @IsActive);
-                        SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EntryDate", partida.EntryDate);
+                    cmd.Parameters.AddWithValue("@Concept", partida.Concept ?? "");
+                    cmd.Parameters.AddWithValue("@StatusId", partida.StatusId);
+                    cmd.Parameters.AddWithValue("@TotalAmount", partida.TotalAmount);
+                    cmd.Parameters.AddWithValue("@CreatedBy", partida.CreatedBy);
+                    cmd.Parameters.AddWithValue("@IsActive", partida.IsActive);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EntryDate", partida.EntryDate);
-                        cmd.Parameters.AddWithValue("@Concept", partida.Concept ?? "");
-                        cmd.Parameters.AddWithValue("@StatusId", partida.StatusId);
-                        cmd.Parameters.AddWithValue("@TotalAmount", partida.TotalAmount);
-                        cmd.Parameters.AddWithValue("@CreatedBy", partida.CreatedBy);
-                        cmd.Parameters.AddWithValue("@IsActive", partida.IsActive);
-
-                        object result = cmd.ExecuteScalar();
-                        return result == null || result == DBNull.Value
-                            ? 0
-                            : Convert.ToInt32(result);
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null || result == DBNull.Value ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -104,13 +95,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryMaster_Delete", connection))
                 {
-                    string query = "DELETE FROM AccountingEntryMaster WHERE EntryMasterId = @EntryMasterId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -127,30 +118,18 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryMaster_Update", connection))
                 {
-                    string query = @"
-                        UPDATE AccountingEntryMaster
-                        SET
-                            EntryDate    = @EntryDate,
-                            Concept      = @Concept,
-                            StatusId     = @StatusId,
-                            TotalAmount  = @TotalAmount,
-                            ModifiedDate = GETDATE(),
-                            ModifiedBy   = @ModifiedBy
-                        WHERE EntryMasterId = @EntryMasterId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EntryMasterId", partida.EntryMasterId);
+                    cmd.Parameters.AddWithValue("@EntryDate", partida.EntryDate);
+                    cmd.Parameters.AddWithValue("@Concept", partida.Concept ?? "");
+                    cmd.Parameters.AddWithValue("@StatusId", partida.StatusId);
+                    cmd.Parameters.AddWithValue("@TotalAmount", partida.TotalAmount);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)partida.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EntryMasterId", partida.EntryMasterId);
-                        cmd.Parameters.AddWithValue("@EntryDate", partida.EntryDate);
-                        cmd.Parameters.AddWithValue("@Concept", partida.Concept ?? "");
-                        cmd.Parameters.AddWithValue("@StatusId", partida.StatusId);
-                        cmd.Parameters.AddWithValue("@TotalAmount", partida.TotalAmount);
-                        cmd.Parameters.AddWithValue("@ModifiedBy",
-                            (object)partida.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
