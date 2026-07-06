@@ -1,0 +1,18 @@
+CREATE OR ALTER PROCEDURE SP_RolePermissions_DeleteAllByRole
+    @RoleId INT
+AS
+BEGIN
+    SET NOCOUNT ON; SET XACT_ABORT ON;
+
+    BEGIN TRANSACTION
+    BEGIN TRY
+        DELETE FROM RolePermissions WHERE RoleId = @RoleId;
+        DECLARE @rows INT = @@ROWCOUNT;
+
+        COMMIT TRANSACTION; SELECT @rows;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION; SELECT 0;
+    END CATCH
+END
+GO

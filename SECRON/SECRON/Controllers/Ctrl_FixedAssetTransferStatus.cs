@@ -10,9 +10,7 @@ namespace SECRON.Controllers
 {   
     internal class Ctrl_FixedAssetTransferStatus
     {
-        // ─────────────────────────────────────────────
-        // READ - con filtros opcionales
-        // ─────────────────────────────────────────────
+
         public static List<Mdl_FixedAssetTransferStatus> MostrarEstados(
             string statusCode = null,
             string statusName = null,
@@ -47,9 +45,7 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // ─────────────────────────────────────────────
-        // COMBO — para otros formularios
-        // ─────────────────────────────────────────────
+
         public static List<KeyValuePair<int, string>> ObtenerEstadosParaCombo(bool soloActivos = true)
         {
             List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
@@ -83,9 +79,6 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // ─────────────────────────────────────────────
-        // CREATE
-        // ─────────────────────────────────────────────
         public static int RegistrarEstado(Mdl_FixedAssetTransferStatus estado)
         {
             try
@@ -115,9 +108,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // UPDATE
-        // ─────────────────────────────────────────────
         public static int ActualizarEstado(Mdl_FixedAssetTransferStatus estado)
         {
             try
@@ -149,9 +139,7 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // INACTIVE
-        // ─────────────────────────────────────────────
+
         public static int InactivarEstado(int transferStatusId, int? modifiedBy = null)
         {
             try
@@ -177,9 +165,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // MAPPER
-        // ─────────────────────────────────────────────
         private static Mdl_FixedAssetTransferStatus MapearEstado(SqlDataReader reader)
         {
             return new Mdl_FixedAssetTransferStatus
@@ -198,9 +183,6 @@ namespace SECRON.Controllers
             };
         }
 
-        // ─────────────────────────────────────────────
-        // DELETE
-        // ─────────────────────────────────────────────
         public static int EliminarEstado(int transferStatusId)
         {
             try

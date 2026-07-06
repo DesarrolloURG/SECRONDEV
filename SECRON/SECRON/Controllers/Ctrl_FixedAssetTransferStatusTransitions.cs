@@ -10,9 +10,6 @@ namespace SECRON.Controllers
 {
     internal class Ctrl_FixedAssetTransferStatusTransitions
     {
-        // ─────────────────────────────────────────────
-        // READ - por estado origen (uso principal desde el formulario)
-        // ─────────────────────────────────────────────
         public static List<Mdl_FixedAssetTransferStatusTransition> MostrarTransiciones(
             int? fromStatusId = null,
             int? toStatusId = null)
@@ -45,9 +42,6 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // ─────────────────────────────────────────────
-        // CREATE
-        // ─────────────────────────────────────────────
         public static int RegistrarTransicion(int fromStatusId, int toStatusId, int? createdBy = null)
         {
             try
@@ -74,9 +68,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // DELETE físico
-        // ─────────────────────────────────────────────
         public static int EliminarTransicion(int transitionId)
         {
             try
@@ -101,9 +92,7 @@ namespace SECRON.Controllers
             }
         }
 
-        // ─────────────────────────────────────────────
-        // MAPPER
-        // ─────────────────────────────────────────────
+        
         private static Mdl_FixedAssetTransferStatusTransition MapearTransicion(SqlDataReader reader)
         {
             return new Mdl_FixedAssetTransferStatusTransition

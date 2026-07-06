@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -15,23 +16,21 @@ namespace SECRON.Controllers
         #region VÍNCULOS BÁSICOS
 
         // Registrar vínculo entre una partida contable y un cheque
+        // Registrar vínculo entre una partida contable y un cheque
         public static bool RegistrarVinculo(int entryMasterId, int checkId)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = @"
-                        INSERT INTO AccountingEntryChecks (EntryMasterId, CheckId)
-                        VALUES (@EntryMasterId, @CheckId);";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryChecks_Insert", connection))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
                         cmd.Parameters.AddWithValue("@CheckId", checkId);
 
-                        int rows = cmd.ExecuteNonQuery();
-                        return rows > 0;
+                        object result = cmd.ExecuteScalar();
+                        return result != null && Convert.ToInt32(result) > 0;
                     }
                 }
             }
@@ -106,19 +105,20 @@ namespace SECRON.Controllers
         }
 
         // Eliminar vínculo por EntryMasterId (si eliminas la partida y no tienes ON DELETE CASCADE)
+        // Eliminar vínculo por EntryMasterId
         public static bool EliminarVinculoPorEntry(int entryMasterId)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = @"DELETE FROM AccountingEntryChecks WHERE EntryMasterId = @EntryMasterId";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryChecks_DeleteByEntry", connection))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
-                        int rows = cmd.ExecuteNonQuery();
-                        return rows > 0;
+
+                        object result = cmd.ExecuteScalar();
+                        return result != null && Convert.ToInt32(result) > 0;
                     }
                 }
             }
@@ -166,23 +166,21 @@ namespace SECRON.Controllers
         }
 
         // Actualizar CheckId en todas las partidas vinculadas (por ejemplo al renumerar cheques)
+        // Actualizar CheckId en todas las partidas vinculadas
         public static int ActualizarCheckIdEnTodasPartidas(int checkIdAntiguo, int checkIdNuevo)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = @"
-                        UPDATE AccountingEntryChecks
-                        SET CheckId = @CheckIdNuevo
-                        WHERE CheckId = @CheckIdAntiguo";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryChecks_UpdateCheckId", connection))
                     {
-                        cmd.Parameters.AddWithValue("@CheckIdNuevo", checkIdNuevo);
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@CheckIdAntiguo", checkIdAntiguo);
+                        cmd.Parameters.AddWithValue("@CheckIdNuevo", checkIdNuevo);
 
-                        return cmd.ExecuteNonQuery();
+                        object result = cmd.ExecuteScalar();
+                        return result == null ? 0 : Convert.ToInt32(result);
                     }
                 }
             }
@@ -239,6 +237,7 @@ namespace SECRON.Controllers
 
         // Modificar un campo de AccountingEntryMaster usando CheckId
         // Equivalente al antiguo ModificarCampo(int checkId, string campo, string nuevoValor)
+        // Modificar un campo de AccountingEntryMaster usando CheckId
         public static int ModificarCampo(int checkId, string campo, string nuevoValor)
         {
             if (string.IsNullOrWhiteSpace(campo))
@@ -252,20 +251,15 @@ namespace SECRON.Controllers
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = $@"
-                        UPDATE m
-                        SET m.{campo} = @NuevoValor
-                        FROM AccountingEntryMaster m
-                        INNER JOIN AccountingEntryChecks c
-                            ON c.EntryMasterId = m.EntryMasterId
-                        WHERE c.CheckId = @CheckId";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryMaster_UpdateFieldByCheck", connection))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@CheckId", checkId);
+                        cmd.Parameters.AddWithValue("@Campo", campo);
                         cmd.Parameters.AddWithValue("@NuevoValor", (object)nuevoValor ?? DBNull.Value);
 
-                        return cmd.ExecuteNonQuery();
+                        object result = cmd.ExecuteScalar();
+                        return result == null ? 0 : Convert.ToInt32(result);
                     }
                 }
             }

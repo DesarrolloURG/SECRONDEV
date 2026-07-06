@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -84,41 +85,32 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Teachers_Insert", connection))
                 {
-                    string query = @"INSERT INTO Teachers (TeacherCode, FullName, Phone, Email, DPI, NIT, 
-                        Address, AcademicTitle, Specialization, IsCollegiateActive, CollegiateNumber, 
-                        BankAccountNumber, BankId, LocationId, HireDate, ContractType, UserId, 
-                        RegisteredByCoordinatorId, IsActive, CreatedDate, CreatedBy) 
-                        VALUES (@TeacherCode, @FullName, @Phone, @Email, @DPI, @NIT, @Address, 
-                        @AcademicTitle, @Specialization, @IsCollegiateActive, @CollegiateNumber, 
-                        @BankAccountNumber, @BankId, @LocationId, @HireDate, @ContractType, @UserId, 
-                        @RegisteredByCoordinatorId, @IsActive, GETDATE(), @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherCode", docente.TeacherCode ?? "");
+                    cmd.Parameters.AddWithValue("@FullName", docente.FullName?.ToUpper() ?? "");
+                    cmd.Parameters.AddWithValue("@Phone", (object)docente.Phone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", (object)docente.Email ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DPI", (object)docente.DPI ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NIT", (object)docente.NIT ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)docente.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AcademicTitle", (object)docente.AcademicTitle?.ToUpper() ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Specialization", (object)docente.Specialization ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsCollegiateActive", docente.IsCollegiateActive);
+                    cmd.Parameters.AddWithValue("@CollegiateNumber", (object)docente.CollegiateNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)docente.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankId", (object)docente.BankId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LocationId", docente.LocationId);
+                    cmd.Parameters.AddWithValue("@HireDate", (object)docente.HireDate ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ContractType", (object)docente.ContractType ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UserId", (object)docente.UserId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@RegisteredByCoordinatorId", (object)docente.RegisteredByCoordinatorId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsActive", docente.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)docente.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TeacherCode", docente.TeacherCode ?? "");
-                        cmd.Parameters.AddWithValue("@FullName", docente.FullName?.ToUpper() ?? "");
-                        cmd.Parameters.AddWithValue("@Phone", (object)docente.Phone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Email", (object)docente.Email ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@DPI", (object)docente.DPI ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@NIT", (object)docente.NIT ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Address", (object)docente.Address ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AcademicTitle", (object)docente.AcademicTitle?.ToUpper() ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Specialization", (object)docente.Specialization ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IsCollegiateActive", docente.IsCollegiateActive);
-                        cmd.Parameters.AddWithValue("@CollegiateNumber", (object)docente.CollegiateNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)docente.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankId", (object)docente.BankId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@LocationId", docente.LocationId);
-                        cmd.Parameters.AddWithValue("@HireDate", (object)docente.HireDate ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ContractType", (object)docente.ContractType ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@UserId", (object)docente.UserId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@RegisteredByCoordinatorId", (object)docente.RegisteredByCoordinatorId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IsActive", docente.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)docente.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -340,42 +332,33 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Teachers_Update", connection))
                 {
-                    string query = @"UPDATE Teachers SET TeacherCode = @TeacherCode, FullName = @FullName, 
-                        Phone = @Phone, Email = @Email, DPI = @DPI, NIT = @NIT, Address = @Address, 
-                        AcademicTitle = @AcademicTitle, Specialization = @Specialization, 
-                        IsCollegiateActive = @IsCollegiateActive, CollegiateNumber = @CollegiateNumber, 
-                        BankAccountNumber = @BankAccountNumber, BankId = @BankId, LocationId = @LocationId, 
-                        HireDate = @HireDate, ContractType = @ContractType, UserId = @UserId, 
-                        RegisteredByCoordinatorId = @RegisteredByCoordinatorId, 
-                        ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy 
-                        WHERE TeacherId = @TeacherId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherId", docente.TeacherId);
+                    cmd.Parameters.AddWithValue("@Mode", 0);
+                    cmd.Parameters.AddWithValue("@TeacherCode", docente.TeacherCode ?? "");
+                    cmd.Parameters.AddWithValue("@FullName", docente.FullName?.ToUpper() ?? "");
+                    cmd.Parameters.AddWithValue("@Phone", (object)docente.Phone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", (object)docente.Email ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DPI", (object)docente.DPI ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NIT", (object)docente.NIT ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)docente.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AcademicTitle", (object)docente.AcademicTitle?.ToUpper() ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Specialization", (object)docente.Specialization ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsCollegiateActive", docente.IsCollegiateActive);
+                    cmd.Parameters.AddWithValue("@CollegiateNumber", (object)docente.CollegiateNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)docente.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankId", (object)docente.BankId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LocationId", docente.LocationId);
+                    cmd.Parameters.AddWithValue("@HireDate", (object)docente.HireDate ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ContractType", (object)docente.ContractType ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UserId", (object)docente.UserId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@RegisteredByCoordinatorId", (object)docente.RegisteredByCoordinatorId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)docente.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TeacherId", docente.TeacherId);
-                        cmd.Parameters.AddWithValue("@TeacherCode", docente.TeacherCode ?? "");
-                        cmd.Parameters.AddWithValue("@FullName", docente.FullName?.ToUpper() ?? "");
-                        cmd.Parameters.AddWithValue("@Phone", (object)docente.Phone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Email", (object)docente.Email ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@DPI", (object)docente.DPI ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@NIT", (object)docente.NIT ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Address", (object)docente.Address ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AcademicTitle", (object)docente.AcademicTitle?.ToUpper() ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Specialization", (object)docente.Specialization ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IsCollegiateActive", docente.IsCollegiateActive);
-                        cmd.Parameters.AddWithValue("@CollegiateNumber", (object)docente.CollegiateNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)docente.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankId", (object)docente.BankId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@LocationId", docente.LocationId);
-                        cmd.Parameters.AddWithValue("@HireDate", (object)docente.HireDate ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ContractType", (object)docente.ContractType ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@UserId", (object)docente.UserId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@RegisteredByCoordinatorId", (object)docente.RegisteredByCoordinatorId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)docente.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -392,16 +375,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Teachers_Update", connection))
                 {
-                    string query = @"UPDATE Teachers SET IsActive = 0, ModifiedDate = GETDATE(), 
-                        ModifiedBy = @ModifiedBy WHERE TeacherId = @TeacherId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                    cmd.Parameters.AddWithValue("@Mode", 1);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -418,16 +400,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Teachers_Update", connection))
                 {
-                    string query = @"UPDATE Teachers SET IsActive = 1, ModifiedDate = GETDATE(), 
-                        ModifiedBy = @ModifiedBy WHERE TeacherId = @TeacherId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                    cmd.Parameters.AddWithValue("@Mode", 2);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

@@ -158,19 +158,13 @@ namespace SECRON.Controllers
                 {
                     await connection.OpenAsync();
 
-                    // Actualizar fecha de desconexión
-                    string query = @"
-                        UPDATE Users 
-                        SET LastConnectionDate = GETDATE()
-                        WHERE UserId = @userId";
-
-                    using (var command = new SqlCommand(query, connection))
+                    using (var command = new SqlCommand("SP_Users_UpdateLastConnection", connection))
                     {
-                        command.Parameters.AddWithValue("@userId", userId);
-                        await command.ExecuteNonQueryAsync();
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        await command.ExecuteScalarAsync();
                     }
 
-                    // Log del logout
                     await auditController.LogLogoutAsync(userId, username);
 
                     return true;
@@ -193,26 +187,18 @@ namespace SECRON.Controllers
 
                     string passwordHash = CreatePasswordHash(newPassword);
 
-                    string query = @"
-                        UPDATE Users 
-                        SET PasswordHash = @passwordHash,
-                            IsTemporaryPassword = @isTemporary,
-                            PasswordExpiryDate = @expiryDate,
-                            ModifiedDate = GETDATE()
-                        WHERE UserId = @userId";
-
-                    using (var command = new SqlCommand(query, connection))
+                    using (var command = new SqlCommand("SP_Users_ChangePasswordAuth", connection))
                     {
-                        command.Parameters.AddWithValue("@passwordHash", passwordHash);
-                        command.Parameters.AddWithValue("@isTemporary", isTemporary);
-                        command.Parameters.AddWithValue("@expiryDate",
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        command.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                        command.Parameters.AddWithValue("@IsTemporary", isTemporary);
+                        command.Parameters.AddWithValue("@ExpiryDate",
                             isTemporary ? DateTime.Now.AddDays(30) : (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@userId", userId);
 
-                        await command.ExecuteNonQueryAsync();
+                        await command.ExecuteScalarAsync();
                     }
 
-                    // Log del cambio de contraseña
                     await auditController.LogPasswordChangeAsync(userId, username, isTemporary);
 
                     return true;
@@ -373,18 +359,14 @@ namespace SECRON.Controllers
         // Incrementar intentos fallidos Async
         private async Task IncrementFailedAttemptsAsync(SqlConnection connection, int userId)
         {
-            string query = @"
-                UPDATE Users 
-                SET FailedLoginAttempts = FailedLoginAttempts + 1,
-                    ModifiedDate = GETDATE()
-                WHERE UserId = @userId";
-
-            using (var command = new SqlCommand(query, connection))
+            using (var command = new SqlCommand("SP_Users_IncrementFailedAttempts", connection))
             {
-                command.Parameters.AddWithValue("@userId", userId);
-                await command.ExecuteNonQueryAsync();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", userId);
+                await command.ExecuteScalarAsync();
             }
         }
+
         // Obtener número de intentos fallidos Async
         private async Task<int> GetFailedAttemptsAsync(SqlConnection connection, int userId)
         {
@@ -400,45 +382,31 @@ namespace SECRON.Controllers
         // Bloquear usuario Async
         private async Task LockUserAsync(SqlConnection connection, int userId)
         {
-            string query = @"
-                UPDATE Users 
-                SET IsLocked = 1, ModifiedDate = GETDATE() 
-                WHERE UserId = @userId";
-
-            using (var command = new SqlCommand(query, connection))
+            using (var command = new SqlCommand("SP_Users_Lock", connection))
             {
-                command.Parameters.AddWithValue("@userId", userId);
-                await command.ExecuteNonQueryAsync();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", userId);
+                await command.ExecuteScalarAsync();
             }
         }
         // Resetear intentos fallidos Async
         private async Task ResetFailedAttemptsAsync(SqlConnection connection, int userId)
         {
-            string query = @"
-                UPDATE Users 
-                SET FailedLoginAttempts = 0 
-                WHERE UserId = @userId";
-
-            using (var command = new SqlCommand(query, connection))
+            using (var command = new SqlCommand("SP_Users_ResetFailedAttempts", connection))
             {
-                command.Parameters.AddWithValue("@userId", userId);
-                await command.ExecuteNonQueryAsync();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", userId);
+                await command.ExecuteScalarAsync();
             }
         }
         // Actualizar fechas de último login y conexión Async
         private async Task UpdateLastLoginAsync(SqlConnection connection, int userId)
         {
-            string query = @"
-                UPDATE Users 
-                SET LastLoginDate = GETDATE(), 
-                    LastConnectionDate = GETDATE(),
-                    ModifiedDate = GETDATE()
-                WHERE UserId = @userId";
-
-            using (var command = new SqlCommand(query, connection))
+            using (var command = new SqlCommand("SP_Users_UpdateLastLoginAuth", connection))
             {
-                command.Parameters.AddWithValue("@userId", userId);
-                await command.ExecuteNonQueryAsync();
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", userId);
+                await command.ExecuteScalarAsync();
             }
         }
         // Verificar contraseña usando BCrypt

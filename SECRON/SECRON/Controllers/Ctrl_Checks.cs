@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -40,60 +41,48 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_Insert", connection))
                 {
-                    string query = @"INSERT INTO Checks (CheckNumber, IssueDate, IssuePlace, Amount, PrintedAmount, 
-                BeneficiaryName, EmployeeId, BankId, BankAccountNumber, StatusId, Concept, DetailDescription, 
-                Period, LocationId, DepartmentId, Exemption, TaxFreeAmount, FoodAllowance, IGSS, 
-                WithholdingTax, Retention, Bonus, Discounts, Advances, Viaticos, Stamps, PurchaseOrderNumber, 
-                Complement, IsActive, CreatedBy, Predeclared, Compensation, Vacation, Bill, Aguinaldo, LastComplement) 
-                VALUES (@CheckNumber, @IssueDate, @IssuePlace, @Amount, @PrintedAmount, @BeneficiaryName, 
-                @EmployeeId, @BankId, @BankAccountNumber, @StatusId, @Concept, @DetailDescription, @Period, 
-                @LocationId, @DepartmentId, @Exemption, @TaxFreeAmount, @FoodAllowance, @IGSS, 
-                @WithholdingTax, @Retention, @Bonus, @Discounts, @Advances, @Viaticos, @Stamps, 
-                @PurchaseOrderNumber, @Complement, @IsActive, @CreatedBy, @Predeclared, @Compensation, 
-                @Vacation, @Bill, @Aguinaldo, @LastComplement)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckNumber", cheque.CheckNumber ?? "");
+                    cmd.Parameters.AddWithValue("@IssueDate", cheque.IssueDate);
+                    cmd.Parameters.AddWithValue("@IssuePlace", cheque.IssuePlace ?? "GUATEMALA");
+                    cmd.Parameters.AddWithValue("@Amount", cheque.Amount);
+                    cmd.Parameters.AddWithValue("@PrintedAmount", cheque.PrintedAmount);
+                    cmd.Parameters.AddWithValue("@BeneficiaryName", cheque.BeneficiaryName ?? "");
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)cheque.EmployeeId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankId", cheque.BankId);
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)cheque.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@StatusId", cheque.StatusId);
+                    cmd.Parameters.AddWithValue("@Concept", cheque.Concept ?? "");
+                    cmd.Parameters.AddWithValue("@DetailDescription", (object)cheque.DetailDescription ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Period", cheque.Period ?? "");
+                    cmd.Parameters.AddWithValue("@LocationId", (object)cheque.LocationId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DepartmentId", (object)cheque.DepartmentId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Exemption", cheque.Exemption);
+                    cmd.Parameters.AddWithValue("@TaxFreeAmount", cheque.TaxFreeAmount);
+                    cmd.Parameters.AddWithValue("@FoodAllowance", cheque.FoodAllowance);
+                    cmd.Parameters.AddWithValue("@IGSS", cheque.IGSS);
+                    cmd.Parameters.AddWithValue("@WithholdingTax", cheque.WithholdingTax);
+                    cmd.Parameters.AddWithValue("@Retention", cheque.Retention);
+                    cmd.Parameters.AddWithValue("@Bonus", cheque.Bonus);
+                    cmd.Parameters.AddWithValue("@Discounts", cheque.Discounts);
+                    cmd.Parameters.AddWithValue("@Advances", cheque.Advances);
+                    cmd.Parameters.AddWithValue("@Viaticos", cheque.Viaticos);
+                    cmd.Parameters.AddWithValue("@Stamps", cheque.Stamps);
+                    cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)cheque.PurchaseOrderNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Complement", (object)cheque.Complement ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsActive", cheque.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)cheque.CreatedBy ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Predeclared", cheque.Predeclared);
+                    cmd.Parameters.AddWithValue("@Compensation", cheque.Compensation);
+                    cmd.Parameters.AddWithValue("@Vacation", cheque.Vacation);
+                    cmd.Parameters.AddWithValue("@Bill", (object)cheque.Bill ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Aguinaldo", cheque.Aguinaldo);
+                    cmd.Parameters.AddWithValue("@LastComplement", cheque.LastComplement);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckNumber", cheque.CheckNumber ?? "");
-                        cmd.Parameters.AddWithValue("@IssueDate", cheque.IssueDate);
-                        cmd.Parameters.AddWithValue("@IssuePlace", cheque.IssuePlace ?? "GUATEMALA");
-                        cmd.Parameters.AddWithValue("@Amount", cheque.Amount);
-                        cmd.Parameters.AddWithValue("@PrintedAmount", cheque.PrintedAmount);
-                        cmd.Parameters.AddWithValue("@BeneficiaryName", cheque.BeneficiaryName ?? "");
-                        cmd.Parameters.AddWithValue("@EmployeeId", (object)cheque.EmployeeId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankId", cheque.BankId);
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)cheque.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@StatusId", cheque.StatusId);
-                        cmd.Parameters.AddWithValue("@Concept", cheque.Concept ?? "");
-                        cmd.Parameters.AddWithValue("@DetailDescription", (object)cheque.DetailDescription ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Period", cheque.Period ?? "");
-                        cmd.Parameters.AddWithValue("@LocationId", (object)cheque.LocationId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@DepartmentId", (object)cheque.DepartmentId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Exemption", cheque.Exemption);
-                        cmd.Parameters.AddWithValue("@TaxFreeAmount", cheque.TaxFreeAmount);
-                        cmd.Parameters.AddWithValue("@FoodAllowance", cheque.FoodAllowance);
-                        cmd.Parameters.AddWithValue("@IGSS", cheque.IGSS);
-                        cmd.Parameters.AddWithValue("@WithholdingTax", cheque.WithholdingTax);
-                        cmd.Parameters.AddWithValue("@Retention", cheque.Retention);
-                        cmd.Parameters.AddWithValue("@Bonus", cheque.Bonus);
-                        cmd.Parameters.AddWithValue("@Discounts", cheque.Discounts);
-                        cmd.Parameters.AddWithValue("@Advances", cheque.Advances);
-                        cmd.Parameters.AddWithValue("@Viaticos", cheque.Viaticos);
-                        cmd.Parameters.AddWithValue("@Stamps", cheque.Stamps);
-                        cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)cheque.PurchaseOrderNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Complement", (object)cheque.Complement ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IsActive", cheque.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)cheque.CreatedBy ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Predeclared", cheque.Predeclared);
-                        cmd.Parameters.AddWithValue("@Compensation", cheque.Compensation);
-                        cmd.Parameters.AddWithValue("@Vacation", cheque.Vacation);
-                        cmd.Parameters.AddWithValue("@Bill", (object)cheque.Bill ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Aguinaldo", cheque.Aguinaldo);  
-                        cmd.Parameters.AddWithValue("@LastComplement", cheque.LastComplement);  
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -109,62 +98,48 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_Update", connection))
                 {
-                    string query = @"UPDATE Checks SET CheckNumber = @CheckNumber, IssueDate = @IssueDate, 
-                IssuePlace = @IssuePlace, Amount = @Amount, PrintedAmount = @PrintedAmount, 
-                BeneficiaryName = @BeneficiaryName, EmployeeId = @EmployeeId, BankId = @BankId, 
-                BankAccountNumber = @BankAccountNumber, StatusId = @StatusId, Concept = @Concept, 
-                DetailDescription = @DetailDescription, Period = @Period, LocationId = @LocationId, 
-                DepartmentId = @DepartmentId, Exemption = @Exemption, TaxFreeAmount = @TaxFreeAmount, 
-                FoodAllowance = @FoodAllowance, IGSS = @IGSS, WithholdingTax = @WithholdingTax, 
-                Retention = @Retention, Bonus = @Bonus, Discounts = @Discounts, Advances = @Advances, 
-                Viaticos = @Viaticos, Stamps = @Stamps, PurchaseOrderNumber = @PurchaseOrderNumber, 
-                Complement = @Complement, Predeclared = @Predeclared, Compensation = @Compensation,
-                Vacation = @Vacation, Bill = @Bill, Aguinaldo = @Aguinaldo, LastComplement = @LastComplement,
-                ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy 
-                WHERE CheckId = @CheckId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckId", cheque.CheckId);
+                    cmd.Parameters.AddWithValue("@CheckNumber", cheque.CheckNumber ?? "");
+                    cmd.Parameters.AddWithValue("@IssueDate", cheque.IssueDate);
+                    cmd.Parameters.AddWithValue("@IssuePlace", cheque.IssuePlace ?? "GUATEMALA");
+                    cmd.Parameters.AddWithValue("@Amount", cheque.Amount);
+                    cmd.Parameters.AddWithValue("@PrintedAmount", cheque.PrintedAmount);
+                    cmd.Parameters.AddWithValue("@BeneficiaryName", cheque.BeneficiaryName ?? "");
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)cheque.EmployeeId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankId", cheque.BankId);
+                    cmd.Parameters.AddWithValue("@BankAccountNumber", (object)cheque.BankAccountNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@StatusId", cheque.StatusId);
+                    cmd.Parameters.AddWithValue("@Concept", cheque.Concept ?? "");
+                    cmd.Parameters.AddWithValue("@DetailDescription", (object)cheque.DetailDescription ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Period", cheque.Period ?? "");
+                    cmd.Parameters.AddWithValue("@LocationId", (object)cheque.LocationId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@DepartmentId", (object)cheque.DepartmentId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Exemption", cheque.Exemption);
+                    cmd.Parameters.AddWithValue("@TaxFreeAmount", cheque.TaxFreeAmount);
+                    cmd.Parameters.AddWithValue("@FoodAllowance", cheque.FoodAllowance);
+                    cmd.Parameters.AddWithValue("@IGSS", cheque.IGSS);
+                    cmd.Parameters.AddWithValue("@WithholdingTax", cheque.WithholdingTax);
+                    cmd.Parameters.AddWithValue("@Retention", cheque.Retention);
+                    cmd.Parameters.AddWithValue("@Bonus", cheque.Bonus);
+                    cmd.Parameters.AddWithValue("@Discounts", cheque.Discounts);
+                    cmd.Parameters.AddWithValue("@Advances", cheque.Advances);
+                    cmd.Parameters.AddWithValue("@Viaticos", cheque.Viaticos);
+                    cmd.Parameters.AddWithValue("@Stamps", cheque.Stamps);
+                    cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)cheque.PurchaseOrderNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Complement", (object)cheque.Complement ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Predeclared", cheque.Predeclared);
+                    cmd.Parameters.AddWithValue("@Compensation", cheque.Compensation);
+                    cmd.Parameters.AddWithValue("@Vacation", cheque.Vacation);
+                    cmd.Parameters.AddWithValue("@Bill", (object)cheque.Bill ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Aguinaldo", cheque.Aguinaldo);
+                    cmd.Parameters.AddWithValue("@LastComplement", cheque.LastComplement);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)cheque.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckId", cheque.CheckId);
-                        cmd.Parameters.AddWithValue("@CheckNumber", cheque.CheckNumber ?? "");
-                        cmd.Parameters.AddWithValue("@IssueDate", cheque.IssueDate);
-                        cmd.Parameters.AddWithValue("@IssuePlace", cheque.IssuePlace ?? "GUATEMALA");
-                        cmd.Parameters.AddWithValue("@Amount", cheque.Amount);
-                        cmd.Parameters.AddWithValue("@PrintedAmount", cheque.PrintedAmount);
-                        cmd.Parameters.AddWithValue("@BeneficiaryName", cheque.BeneficiaryName ?? "");
-                        cmd.Parameters.AddWithValue("@EmployeeId", (object)cheque.EmployeeId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BankId", cheque.BankId);
-                        cmd.Parameters.AddWithValue("@BankAccountNumber", (object)cheque.BankAccountNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@StatusId", cheque.StatusId);
-                        cmd.Parameters.AddWithValue("@Concept", cheque.Concept ?? "");
-                        cmd.Parameters.AddWithValue("@DetailDescription", (object)cheque.DetailDescription ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Period", cheque.Period ?? "");
-                        cmd.Parameters.AddWithValue("@LocationId", (object)cheque.LocationId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@DepartmentId", (object)cheque.DepartmentId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Exemption", cheque.Exemption);
-                        cmd.Parameters.AddWithValue("@TaxFreeAmount", cheque.TaxFreeAmount);
-                        cmd.Parameters.AddWithValue("@FoodAllowance", cheque.FoodAllowance);
-                        cmd.Parameters.AddWithValue("@IGSS", cheque.IGSS);
-                        cmd.Parameters.AddWithValue("@WithholdingTax", cheque.WithholdingTax);
-                        cmd.Parameters.AddWithValue("@Retention", cheque.Retention);
-                        cmd.Parameters.AddWithValue("@Bonus", cheque.Bonus);
-                        cmd.Parameters.AddWithValue("@Discounts", cheque.Discounts);
-                        cmd.Parameters.AddWithValue("@Advances", cheque.Advances);
-                        cmd.Parameters.AddWithValue("@Viaticos", cheque.Viaticos);
-                        cmd.Parameters.AddWithValue("@Stamps", cheque.Stamps);
-                        cmd.Parameters.AddWithValue("@PurchaseOrderNumber", (object)cheque.PurchaseOrderNumber ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Complement", (object)cheque.Complement ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Predeclared", cheque.Predeclared);
-                        cmd.Parameters.AddWithValue("@Compensation", cheque.Compensation);
-                        cmd.Parameters.AddWithValue("@Vacation", cheque.Vacation);
-                        cmd.Parameters.AddWithValue("@Bill", (object)cheque.Bill ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Aguinaldo", cheque.Aguinaldo);  // NUEVO
-                        cmd.Parameters.AddWithValue("@LastComplement", cheque.LastComplement);  // NUEVO
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)cheque.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -281,14 +256,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_MarkLastComplement", connection))
                 {
-                    string query = "UPDATE Checks SET LastComplement = 1 WHERE CheckNumber = @CheckNumber AND IsActive = 1";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckNumber", numeroCheque);
-                        int rowsAffected = cmd.ExecuteNonQuery();
-                        return rowsAffected > 0;
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckNumber", numeroCheque);
+
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch
@@ -949,21 +923,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_Predeclare", connection))
                 {
-                    string query = @"UPDATE Checks 
-                            SET Predeclared = 1, 
-                                ModifiedDate = GETDATE(), 
-                                ModifiedBy = @UserId 
-                            WHERE CheckId = @CheckId AND Predeclared = 0";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckId", checkId);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@CheckId", checkId);
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-
-                        int resultado = cmd.ExecuteNonQuery();
-                        return resultado > 0;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)
@@ -975,6 +942,8 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO: Predeclarar múltiples cheques seleccionados
+
+        /*
         public static int PredeclararSeleccionados(List<int> checkIds, int userId)
         {
             int exitosos = 0;
@@ -984,18 +953,14 @@ namespace SECRON.Controllers
                 {
                     foreach (int checkId in checkIds)
                     {
-                        string query = @"UPDATE Checks 
-                                SET Predeclared = 1, 
-                                    ModifiedDate = GETDATE(), 
-                                    ModifiedBy = @UserId 
-                                WHERE CheckId = @CheckId AND Predeclared = 0";
-
-                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        using (SqlCommand cmd = new SqlCommand("SP_Checks_Predeclare", connection))
                         {
+                            cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@CheckId", checkId);
                             cmd.Parameters.AddWithValue("@UserId", userId);
 
-                            if (cmd.ExecuteNonQuery() > 0)
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && Convert.ToInt32(result) > 0)
                                 exitosos++;
                         }
                     }
@@ -1007,6 +972,30 @@ namespace SECRON.Controllers
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return exitosos;
+        }*/
+
+        //METODO SE ENCUENTRA EN PRUEBAS
+        public static int PredeclararSeleccionados(List<int> checkIds, int userId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_PredeclareBatch", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckIdsJson", "[" + string.Join(",", checkIds) + "]");
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR AL PREDECLARAR SELECCIONADOS: {ex.Message}", "ERROR",
+                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
         }
 
         // MÉTODO: Predeclarar TODOS los cheques no predeclarados
@@ -1015,18 +1004,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_PredeclareAll", connection))
                 {
-                    string query = @"UPDATE Checks 
-                            SET Predeclared = 1, 
-                                ModifiedDate = GETDATE(), 
-                                ModifiedBy = @UserId 
-                            WHERE Predeclared = 0";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -1036,6 +1020,7 @@ namespace SECRON.Controllers
                 return 0;
             }
         }
+
         // MÉTODO: Actualizar estado de FileControl
         public static bool ActualizarFileControl(int checkId, string nuevoEstado, int userId)
         {
@@ -1048,13 +1033,11 @@ namespace SECRON.Controllers
                     return false;
                 }
 
-                // Normalizar a mayúsculas
                 string estadoUpper = nuevoEstado.Trim().ToUpper();
 
-                // Validar estados permitidos
                 if (estadoUpper != "PENDIENTE" &&
                     estadoUpper != "TRASLADADO" &&
-                    estadoUpper != "RECIBIDO" &&      // ✅ incluido
+                    estadoUpper != "RECIBIDO" &&
                     estadoUpper != "ARCHIVADO")
                 {
                     MessageBox.Show("Estado de FileControl inválido.", "ERROR",
@@ -1063,27 +1046,15 @@ namespace SECRON.Controllers
                 }
 
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_UpdateFileControl", connection))
                 {
-                    string query = @"UPDATE Checks
-                             SET FileControl = @FileControl,
-                                 ModifiedDate = GETDATE(),
-                                 ModifiedBy   = @UserId
-                             WHERE CheckId = @CheckId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckId", checkId);
+                    cmd.Parameters.AddWithValue("@FileControl", estadoUpper);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@FileControl", estadoUpper);
-
-                        // 🔥 Evitar romper FK con UserId=0
-                        if (userId > 0)
-                            cmd.Parameters.AddWithValue("@UserId", userId);
-                        else
-                            cmd.Parameters.AddWithValue("@UserId", DBNull.Value);
-
-                        cmd.Parameters.AddWithValue("@CheckId", checkId);
-
-                        return cmd.ExecuteNonQuery() > 0;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)
@@ -1099,21 +1070,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Checks_UpdateFilePath", connection))
                 {
-                    string query = @"UPDATE Checks
-                             SET FilePath = @FilePath,
-                                 ModifiedDate = GETDATE(),
-                                 ModifiedBy = @UserId
-                             WHERE CheckId = @CheckId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CheckId", checkId);
+                    cmd.Parameters.AddWithValue("@FilePath", (object)filePath ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@FilePath", (object)filePath ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@UserId", userId > 0 ? (object)userId : DBNull.Value);
-                        cmd.Parameters.AddWithValue("@CheckId", checkId);
-
-                        return cmd.ExecuteNonQuery() > 0;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)

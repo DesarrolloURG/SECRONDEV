@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -15,19 +16,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryTransfers_Insert", connection))
                 {
-                    string query = @"
-                        INSERT INTO AccountingEntryTransfers (EntryMasterId, TransferId)
-                        VALUES (@EntryMasterId, @TransferId);";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
+                    cmd.Parameters.AddWithValue("@TransferId", transferId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
-                        cmd.Parameters.AddWithValue("@TransferId", transferId);
-
-                        int rows = cmd.ExecuteNonQuery();
-                        return rows > 0;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)
@@ -107,15 +103,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryTransfers_DeleteByEntry", connection))
                 {
-                    string query = @"DELETE FROM AccountingEntryTransfers WHERE EntryMasterId = @EntryMasterId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
-                        int rows = cmd.ExecuteNonQuery();
-                        return rows > 0;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)
@@ -167,19 +161,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryTransfers_UpdateTransferId", connection))
                 {
-                    string query = @"
-                        UPDATE AccountingEntryTransfers
-                        SET TransferId = @TransferIdNuevo
-                        WHERE TransferId = @TransferIdAntiguo";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TransferIdAntiguo", transferIdAntiguo);
+                    cmd.Parameters.AddWithValue("@TransferIdNuevo", transferIdNuevo);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TransferIdNuevo", transferIdNuevo);
-                        cmd.Parameters.AddWithValue("@TransferIdAntiguo", transferIdAntiguo);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -243,22 +232,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryMaster_UpdateFieldByTransfer", connection))
                 {
-                    string query = $@"
-                        UPDATE m
-                        SET m.{campo} = @NuevoValor
-                        FROM AccountingEntryMaster m
-                        INNER JOIN AccountingEntryTransfers t
-                            ON t.EntryMasterId = m.EntryMasterId
-                        WHERE t.TransferId = @TransferId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TransferId", transferId);
+                    cmd.Parameters.AddWithValue("@Campo", campo);
+                    cmd.Parameters.AddWithValue("@NuevoValor", (object)nuevoValor ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@TransferId", transferId);
-                        cmd.Parameters.AddWithValue("@NuevoValor", (object)nuevoValor ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

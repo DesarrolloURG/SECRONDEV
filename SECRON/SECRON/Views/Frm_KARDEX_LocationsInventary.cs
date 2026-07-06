@@ -22,6 +22,9 @@ namespace SECRON.Views
         private int? _sedeActivaId = null;
         private string _sedeActivaNombre = "";
 
+        private int? _bodegaActivaId = null;
+        private string _bodegaActivaNombre = "";
+
         // Filtros de búsqueda
         private string _ultimoTextoBusqueda = "";
         private string _ultimoFiltro1 = "TODOS";
@@ -29,8 +32,8 @@ namespace SECRON.Views
         private string _ultimoFiltro3 = "TODOS";
 
         // Selección actual en la grilla
-        private List<Mdl_ItemStockByLocation> _stockList;
-        private Mdl_ItemStockByLocation _stockSeleccionado = null;
+        private List<Mdl_ItemWarehouseStock> _stockList;
+        private Mdl_ItemWarehouseStock _stockSeleccionado = null;
 
         // Item seleccionado (para detalle del panel izquierdo)
         private int? _categoriaItemId = null;
@@ -78,6 +81,8 @@ namespace SECRON.Views
                     await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
                     ConfigurarControlesPorPermisos();
                 }
+                
+                
 
                 this.Cursor = Cursors.Default;
             }
@@ -249,20 +254,37 @@ namespace SECRON.Views
             ComboBox_Location.Items.Clear();
             ComboBox_Location.Items.Add("SELECCIONAR SEDE...");
 
-            var sedes = Ctrl_Locations.ObtenerLocationsActivas();
-            foreach (var sede in sedes)
-                ComboBox_Location.Items.Add(new CategoriaItem(sede.Key, sede.Value));
+            var bodegasAsignadas = Ctrl_Warehouses.ObtenerBodegasAsignadasConLocation(UserData.UserId, false);
+
+            var sedesUnicas = bodegasAsignadas
+                .GroupBy(b => new { b.LocationId, b.LocationName })
+                .Select(g => new CategoriaItem(g.Key.LocationId, g.Key.LocationName))
+                .OrderBy(s => s.Nombre)
+                .ToList();
+
+            foreach (var sede in sedesUnicas)
+                ComboBox_Location.Items.Add(sede);
 
             ComboBox_Location.DisplayMember = "Nombre";
             ComboBox_Location.SelectedIndex = 0;
             ComboBox_Location.SelectedIndexChanged += ComboBox_Location_SelectedIndexChanged;
         }
+
         private void ComboBox_Location_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ComboBox_Warehouse.SelectedIndexChanged -= ComboBox_Warehouse_SelectedIndexChanged;
+            ComboBox_Warehouse.Items.Clear();
+            ComboBox_Warehouse.Items.Add("SELECCIONAR BODEGA...");
+            ComboBox_Warehouse.SelectedIndex = 0;
+            ComboBox_Warehouse.SelectedIndexChanged += ComboBox_Warehouse_SelectedIndexChanged;
+
             if (!(ComboBox_Location.SelectedItem is CategoriaItem sede))
             {
                 _sedeActivaId = null;
                 _sedeActivaNombre = "";
+                _bodegaActivaId = null;
+                _bodegaActivaNombre = "";
+                ComboBox_Warehouse.Enabled = false;
                 DeshabilitarTodo();
                 Tabla.DataSource = null;
                 if (Lbl_Paginas != null)
@@ -272,6 +294,40 @@ namespace SECRON.Views
 
             _sedeActivaId = sede.Id;
             _sedeActivaNombre = sede.Nombre;
+            _bodegaActivaId = null;
+            _bodegaActivaNombre = "";
+
+            var bodegasAsignadas = Ctrl_Warehouses.ObtenerBodegasAsignadasConLocation(UserData.UserId, false);
+            var bodegasDeLaSede = bodegasAsignadas
+                .Where(b => b.LocationId == _sedeActivaId.Value)
+                .OrderBy(b => b.WarehouseName)
+                .ToList();
+
+            foreach (var bodega in bodegasDeLaSede)
+                ComboBox_Warehouse.Items.Add(new CategoriaItem(bodega.WarehouseId, bodega.WarehouseName));
+
+            ComboBox_Warehouse.Enabled = true;
+            DeshabilitarTodo();
+            Tabla.DataSource = null;
+            if (Lbl_Paginas != null)
+                Lbl_Paginas.Text = "SELECCIONE UNA BODEGA";
+        }
+
+        private void ComboBox_Warehouse_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!(ComboBox_Warehouse.SelectedItem is CategoriaItem bodega))
+            {
+                _bodegaActivaId = null;
+                _bodegaActivaNombre = "";
+                DeshabilitarTodo();
+                Tabla.DataSource = null;
+                if (Lbl_Paginas != null)
+                    Lbl_Paginas.Text = "SELECCIONE UNA BODEGA";
+                return;
+            }
+
+            _bodegaActivaId = bodega.Id;
+            _bodegaActivaNombre = bodega.Nombre;
 
             HabilitarTodo();
             LimpiarFormulario();
@@ -296,21 +352,13 @@ namespace SECRON.Views
 
         private void RefrescarListado()
         {
-            // Obtener todo el stock con detalle, filtrado opcionalmente por sede
-            if (_sedeActivaId.HasValue)
+            if (_bodegaActivaId.HasValue)
             {
-                _stockList = Ctrl_ItemStockByLocation.ObtenerStockPorUbicacionConDetalle(_sedeActivaId.Value);
+                _stockList = Ctrl_ItemWarehouseStock.ObtenerStockPorBodegaConDetalle(_bodegaActivaId.Value);
             }
             else
             {
-                // Sin sede seleccionada: mostrar todo (todas las sedes)
-                _stockList = new List<Mdl_ItemStockByLocation>();
-                var sedes = Ctrl_ItemStockByLocation.ObtenerSedesParaCombo();
-                foreach (var sede in sedes)
-                {
-                    var stockSede = Ctrl_ItemStockByLocation.ObtenerStockPorUbicacionConDetalle(sede.Key);
-                    _stockList.AddRange(stockSede);
-                }
+                _stockList = new List<Mdl_ItemWarehouseStock>();
             }
 
             AplicarFiltrosEnMemoria();
@@ -357,7 +405,6 @@ namespace SECRON.Views
                 return;
             }
 
-            // Aplicar paginación en memoria
             var paginado = _stockList
                 .Skip((paginaActual - 1) * registrosPorPagina)
                 .Take(registrosPorPagina)
@@ -365,14 +412,12 @@ namespace SECRON.Views
 
             var data = paginado.Select(s => new
             {
-                s.ItemStockLocationId,
+                s.ItemWarehouseStockId,
                 s.ItemId,
-                s.LocationId,
+                s.WarehouseId,
                 s.ItemCode,
                 s.ItemName,
                 s.CurrentStock,
-                //s.ReservedStock,
-                //s.AvailableStock,
                 s.MinimumStock,
                 s.MaximumStock,
                 s.LastMovementDate
@@ -385,12 +430,12 @@ namespace SECRON.Views
         {
             if (Tabla.Columns.Count > 0)
             {
-                if (Tabla.Columns.Contains("ItemStockLocationId"))
-                    Tabla.Columns["ItemStockLocationId"].Visible = false;
+                if (Tabla.Columns.Contains("ItemWarehouseStockId"))
+                    Tabla.Columns["ItemWarehouseStockId"].Visible = false;
                 if (Tabla.Columns.Contains("ItemId"))
                     Tabla.Columns["ItemId"].Visible = false;
-                if (Tabla.Columns.Contains("LocationId"))
-                    Tabla.Columns["LocationId"].Visible = false;
+                if (Tabla.Columns.Contains("WarehouseId"))
+                    Tabla.Columns["WarehouseId"].Visible = false;
 
                 if (Tabla.Columns.Contains("ItemCode"))
                     Tabla.Columns["ItemCode"].HeaderText = "CÓDIGO";
@@ -398,10 +443,6 @@ namespace SECRON.Views
                     Tabla.Columns["ItemName"].HeaderText = "NOMBRE DEL ARTÍCULO";
                 if (Tabla.Columns.Contains("CurrentStock"))
                     Tabla.Columns["CurrentStock"].HeaderText = "STOCK ACTUAL";
-                //if (Tabla.Columns.Contains("ReservedStock"))
-                    //Tabla.Columns["ReservedStock"].HeaderText = "RESERVADO";
-                //if (Tabla.Columns.Contains("AvailableStock"))
-                    //Tabla.Columns["AvailableStock"].HeaderText = "DISPONIBLE";
                 if (Tabla.Columns.Contains("MinimumStock"))
                     Tabla.Columns["MinimumStock"].HeaderText = "STOCK MÍNIMO";
                 if (Tabla.Columns.Contains("MaximumStock"))
@@ -457,10 +498,10 @@ namespace SECRON.Views
                 }
 
                 var fila = Tabla.SelectedRows[0];
-                if (fila.Cells["ItemStockLocationId"].Value == null) return;
+                if (fila.Cells["ItemWarehouseStockId"].Value == null) return;
 
-                int stockId = (int)fila.Cells["ItemStockLocationId"].Value;
-                _stockSeleccionado = _stockList?.FirstOrDefault(s => s.ItemStockLocationId == stockId);
+                int stockId = (int)fila.Cells["ItemWarehouseStockId"].Value;
+                _stockSeleccionado = _stockList?.FirstOrDefault(s => s.ItemWarehouseStockId == stockId);
 
                 if (_stockSeleccionado != null)
                 {
@@ -793,13 +834,9 @@ namespace SECRON.Views
                 _stockSeleccionado.MaximumStock = ObtenerDecimalDesdeTextBox(
                     Txt_MaximumStock, "0.00", "STOCK MÁXIMO");
 
-                //decimal nuevoStock = decimal.TryParse(Txt_CurrentStock.Text.Trim(), out decimal stockActual) ? stockActual : 0;
-                //nuevoStock += (decimal)Txt_AddStock.Value;
-
                 _stockSeleccionado.CurrentStock = (decimal)Txt_AddStock.Value;
 
-
-                int resultado = Ctrl_ItemStockByLocation.ActualizarStockCompleto(_stockSeleccionado);
+                int resultado = Ctrl_ItemWarehouseStock.ActualizarStockCompleto(_stockSeleccionado);
 
                 if (resultado > 0)
                 {
@@ -836,14 +873,14 @@ namespace SECRON.Views
                 }
 
                 var confirmacion = MessageBox.Show(
-                    $"¿ESTÁ SEGURO QUE DESEA ELIMINAR \"{_stockSeleccionado.ItemName}\" DEL INVENTARIO DE ESTA SEDE?\n\n" +
+                    $"¿ESTÁ SEGURO QUE DESEA ELIMINAR \"{_stockSeleccionado.ItemName}\" DEL INVENTARIO DE ESTA BODEGA?\n\n" +
                     "ESTA ACCIÓN NO AFECTA EL CATÁLOGO MAESTRO DE ARTÍCULOS.",
                     "CONFIRMAR ELIMINACIÓN", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (confirmacion != DialogResult.Yes) return;
 
-                int resultado = Ctrl_ItemStockByLocation.EliminarStockDeUbicacion(
-                    _stockSeleccionado.ItemStockLocationId);
+                int resultado = Ctrl_ItemWarehouseStock.EliminarStockDeBodega(
+                    _stockSeleccionado.ItemWarehouseStockId);
 
                 if (resultado > 0)
                 {
@@ -947,7 +984,7 @@ namespace SECRON.Views
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     Filter = "Excel Files|*.xlsx",
-                    Title = "Exportar Inventario por Sede",
+                    Title = "Exportar Inventario por Bodega",
                     FileName = $"KARDEX_Inventario_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
                 };
 
@@ -962,14 +999,14 @@ namespace SECRON.Views
                 var worksheet = (Excel.Worksheet)workbook.Sheets[1];
                 worksheet.Name = "Inventario";
 
-                worksheet.Cells[1, 1] = "CONTROL DE INVENTARIOS POR SEDE - KARDEX";
-                worksheet.Range["A1:H1"].Merge();
-                worksheet.Range["A1:H1"].Font.Size = 16;
-                worksheet.Range["A1:H1"].Font.Bold = true;
-                worksheet.Range["A1:H1"].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                worksheet.Range["A1:H1"].Interior.Color =
+                worksheet.Cells[1, 1] = "CONTROL DE INVENTARIOS POR BODEGA - KARDEX";
+                worksheet.Range["A1:F1"].Merge();
+                worksheet.Range["A1:F1"].Font.Size = 16;
+                worksheet.Range["A1:F1"].Font.Bold = true;
+                worksheet.Range["A1:F1"].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                worksheet.Range["A1:F1"].Interior.Color =
                     System.Drawing.ColorTranslator.ToOle(Color.FromArgb(51, 140, 255));
-                worksheet.Range["A1:H1"].Font.Color =
+                worksheet.Range["A1:F1"].Font.Color =
                     System.Drawing.ColorTranslator.ToOle(Color.White);
 
                 worksheet.Cells[2, 1] = $"GENERADO POR: {UserData?.FullName?.ToUpper() ?? "SECRON"}";
@@ -978,15 +1015,15 @@ namespace SECRON.Views
 
                 int headerRow = 6;
                 string[] headers = {
-                    "CÓDIGO", "NOMBRE ARTÍCULO",
-                    "STOCK ACTUAL", "RESERVADO", "DISPONIBLE",
-                    "STOCK MÍNIMO", "STOCK MÁXIMO", "ÚLT. MOVIMIENTO"
-                };
+            "CÓDIGO", "NOMBRE ARTÍCULO",
+            "STOCK ACTUAL",
+            "STOCK MÍNIMO", "STOCK MÁXIMO", "ÚLT. MOVIMIENTO"
+        };
 
                 for (int i = 0; i < headers.Length; i++)
                     worksheet.Cells[headerRow, i + 1] = headers[i];
 
-                var headerRange = worksheet.Range[$"A{headerRow}:H{headerRow}"];
+                var headerRange = worksheet.Range[$"A{headerRow}:F{headerRow}"];
                 headerRange.Font.Bold = true;
                 headerRange.Font.Color = System.Drawing.ColorTranslator.ToOle(Color.White);
                 headerRange.Interior.Color =
@@ -999,21 +1036,19 @@ namespace SECRON.Views
                     worksheet.Cells[row, 1] = s.ItemCode;
                     worksheet.Cells[row, 2] = s.ItemName;
                     worksheet.Cells[row, 3] = s.CurrentStock.ToString("N2");
-                    worksheet.Cells[row, 4] = s.ReservedStock.ToString("N2");
-                    worksheet.Cells[row, 5] = s.AvailableStock.ToString("N2");
-                    worksheet.Cells[row, 6] = s.MinimumStock.ToString("N2");
-                    worksheet.Cells[row, 7] = s.MaximumStock.ToString("N2");
-                    worksheet.Cells[row, 8] = s.LastMovementDate.HasValue
+                    worksheet.Cells[row, 4] = s.MinimumStock.ToString("N2");
+                    worksheet.Cells[row, 5] = s.MaximumStock.ToString("N2");
+                    worksheet.Cells[row, 6] = s.LastMovementDate.HasValue
                         ? s.LastMovementDate.Value.ToString("dd/MM/yyyy HH:mm") : "";
 
                     if (row % 2 == 0)
-                        worksheet.Range[$"A{row}:H{row}"].Interior.Color =
+                        worksheet.Range[$"A{row}:F{row}"].Interior.Color =
                             System.Drawing.ColorTranslator.ToOle(Color.FromArgb(240, 240, 240));
 
                     row++;
                 }
 
-                var dataRange = worksheet.Range[$"A{headerRow}:H{row - 1}"];
+                var dataRange = worksheet.Range[$"A{headerRow}:F{row - 1}"];
                 dataRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
                 dataRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
 

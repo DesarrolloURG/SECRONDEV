@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,19 +19,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_RolePermissions_Insert", connection))
                 {
-                    string query = @"INSERT INTO RolePermissions (RoleId, PermissionId, IsGranted, CreatedBy) 
-                        VALUES (@RoleId, @PermissionId, @IsGranted, @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@RoleId", rolePermission.RoleId);
+                    cmd.Parameters.AddWithValue("@PermissionId", rolePermission.PermissionId);
+                    cmd.Parameters.AddWithValue("@IsGranted", rolePermission.IsGranted);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)rolePermission.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@RoleId", rolePermission.RoleId);
-                        cmd.Parameters.AddWithValue("@PermissionId", rolePermission.PermissionId);
-                        cmd.Parameters.AddWithValue("@IsGranted", rolePermission.IsGranted);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)rolePermission.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -46,45 +44,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_RolePermissions_AssignMultiple", connection))
                 {
-                    using (SqlTransaction transaction = connection.BeginTransaction())
-                    {
-                        try
-                        {
-                            // Primero eliminamos los permisos existentes del rol
-                            string deleteQuery = "DELETE FROM RolePermissions WHERE RoleId = @RoleId";
-                            using (SqlCommand deleteCmd = new SqlCommand(deleteQuery, connection, transaction))
-                            {
-                                deleteCmd.Parameters.AddWithValue("@RoleId", roleId);
-                                deleteCmd.ExecuteNonQuery();
-                            }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@RoleId", roleId);
+                    cmd.Parameters.AddWithValue("@PermissionIdsJson", "[" + string.Join(",", permissionIds) + "]");
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)createdBy ?? DBNull.Value);
 
-                            // Luego insertamos los nuevos permisos
-                            int count = 0;
-                            string insertQuery = @"INSERT INTO RolePermissions (RoleId, PermissionId, IsGranted, CreatedBy) 
-                                VALUES (@RoleId, @PermissionId, @IsGranted, @CreatedBy)";
-
-                            foreach (int permissionId in permissionIds)
-                            {
-                                using (SqlCommand insertCmd = new SqlCommand(insertQuery, connection, transaction))
-                                {
-                                    insertCmd.Parameters.AddWithValue("@RoleId", roleId);
-                                    insertCmd.Parameters.AddWithValue("@PermissionId", permissionId);
-                                    insertCmd.Parameters.AddWithValue("@IsGranted", true);
-                                    insertCmd.Parameters.AddWithValue("@CreatedBy", (object)createdBy ?? DBNull.Value);
-                                    count += insertCmd.ExecuteNonQuery();
-                                }
-                            }
-
-                            transaction.Commit();
-                            return count;
-                        }
-                        catch
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -158,16 +126,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_RolePermissions_UpdateGrantStatus", connection))
                 {
-                    string query = "UPDATE RolePermissions SET IsGranted = @IsGranted WHERE RolePermissionId = @RolePermissionId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@RolePermissionId", rolePermissionId);
+                    cmd.Parameters.AddWithValue("@IsGranted", isGranted);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@RolePermissionId", rolePermissionId);
-                        cmd.Parameters.AddWithValue("@IsGranted", isGranted);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -183,14 +149,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_RolePermissions_Delete", connection))
                 {
-                    string query = "DELETE FROM RolePermissions WHERE RolePermissionId = @RolePermissionId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@RolePermissionId", rolePermissionId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@RolePermissionId", rolePermissionId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -206,14 +171,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_RolePermissions_DeleteAllByRole", connection))
                 {
-                    string query = "DELETE FROM RolePermissions WHERE RoleId = @RoleId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@RoleId", roleId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@RoleId", roleId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

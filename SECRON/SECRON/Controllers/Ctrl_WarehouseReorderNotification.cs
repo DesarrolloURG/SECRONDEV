@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Windows.Forms;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -163,20 +164,11 @@ namespace SECRON.Controllers
         private static void ResolverArticulosRecuperados(int warehouseId)
         {
             using (SqlConnection connection = DatabaseConfig.StartConection())
+            using (SqlCommand cmd = new SqlCommand("SP_WarehouseReorderNotifications_ResolveRecovered", connection))
             {
-                string query = @"UPDATE wrn
-                    SET ResolvedDate = GETDATE()
-                    FROM WarehouseReorderNotifications wrn
-                    INNER JOIN ItemWarehouseStock s ON s.ItemId = wrn.ItemId AND s.WarehouseId = wrn.WarehouseId
-                    WHERE wrn.WarehouseId = @WarehouseId
-                      AND wrn.ResolvedDate IS NULL
-                      AND (s.ReorderPoint IS NULL OR s.CurrentStock > s.ReorderPoint)";
-
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@WarehouseId", warehouseId);
-                    cmd.ExecuteNonQuery();
-                }
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@WarehouseId", warehouseId);
+                cmd.ExecuteScalar();
             }
         }
 
@@ -209,19 +201,13 @@ namespace SECRON.Controllers
         private static void RegistrarNotificacionesActivas(int warehouseId, List<int> itemIds)
         {
             using (SqlConnection connection = DatabaseConfig.StartConection())
+            using (SqlCommand cmd = new SqlCommand("SP_WarehouseReorderNotifications_InsertBatch", connection))
             {
-                foreach (int itemId in itemIds)
-                {
-                    string query = @"INSERT INTO WarehouseReorderNotifications (WarehouseId, ItemId, NotifiedDate)
-                        VALUES (@WarehouseId, @ItemId, GETDATE())";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@WarehouseId", warehouseId);
+                cmd.Parameters.AddWithValue("@ItemIdsJson", "[" + string.Join(",", itemIds) + "]");
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@WarehouseId", warehouseId);
-                        cmd.Parameters.AddWithValue("@ItemId", itemId);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
+                cmd.ExecuteScalar();
             }
         }
 

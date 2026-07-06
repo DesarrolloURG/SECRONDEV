@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -19,20 +20,17 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryDetails_Insert", connection))
                 {
-                    string query = @"INSERT INTO AccountingEntryDetails (EntryMasterId, AccountId, Debit, Credit, Remarks) 
-                        VALUES (@EntryMasterId, @AccountId, @Debit, @Credit, @Remarks)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EntryMasterId", detalle.EntryMasterId);
+                    cmd.Parameters.AddWithValue("@AccountId", detalle.AccountId);
+                    cmd.Parameters.AddWithValue("@Debit", detalle.Debit);
+                    cmd.Parameters.AddWithValue("@Credit", detalle.Credit);
+                    cmd.Parameters.AddWithValue("@Remarks", (object)detalle.Remarks ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EntryMasterId", detalle.EntryMasterId);
-                        cmd.Parameters.AddWithValue("@AccountId", detalle.AccountId);
-                        cmd.Parameters.AddWithValue("@Debit", detalle.Debit);
-                        cmd.Parameters.AddWithValue("@Credit", detalle.Credit);
-                        cmd.Parameters.AddWithValue("@Remarks", (object)detalle.Remarks ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -104,13 +102,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_AccountingEntryDetails_Delete", connection))
                 {
-                    string query = "DELETE FROM AccountingEntryDetails WHERE EntryDetailId = @EntryDetailId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EntryDetailId", entryDetailId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EntryDetailId", entryDetailId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -100,22 +101,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemWarehouseStock_UpdateLimits", connection))
                 {
-                    string query = @"UPDATE ItemWarehouseStock SET
-                        MinimumStock = @MinimumStock,
-                        MaximumStock = @MaximumStock,
-                        ReorderPoint = @ReorderPoint
-                        WHERE ItemWarehouseStockId = @ItemWarehouseStockId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemWarehouseStockId", itemWarehouseStockId);
+                    cmd.Parameters.AddWithValue("@MinimumStock", minimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", maximumStock);
+                    cmd.Parameters.AddWithValue("@ReorderPoint", reorderPoint);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemWarehouseStockId", itemWarehouseStockId);
-                        cmd.Parameters.AddWithValue("@MinimumStock", minimumStock);
-                        cmd.Parameters.AddWithValue("@MaximumStock", maximumStock);
-                        cmd.Parameters.AddWithValue("@ReorderPoint", reorderPoint);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -151,6 +146,51 @@ namespace SECRON.Controllers
                 UnitId = Convert.ToInt32(reader["UnitId"]),
                 UnitName = reader["UnitName"]?.ToString() ?? ""
             };
+        }
+
+        public static int ActualizarStockCompleto(Mdl_ItemWarehouseStock stock)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemWarehouseStock_UpdateFull", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemWarehouseStockId", stock.ItemWarehouseStockId);
+                    cmd.Parameters.AddWithValue("@CurrentStock", stock.CurrentStock);
+                    cmd.Parameters.AddWithValue("@MinimumStock", stock.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", stock.MaximumStock);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar stock: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
+        public static int EliminarStockDeBodega(int itemWarehouseStockId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemWarehouseStock_Delete", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemWarehouseStockId", itemWarehouseStockId);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar stock: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
         }
     }
 }

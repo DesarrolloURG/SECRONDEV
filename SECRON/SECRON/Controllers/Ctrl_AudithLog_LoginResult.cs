@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Models; // Para usar Mdl_AuditLog_LoginResult
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms; // Agregado para Application
-using SECRON.Models; // Para usar Mdl_AuditLog_LoginResult
 
 namespace SECRON.Controllers
 {
@@ -29,12 +30,9 @@ namespace SECRON.Controllers
                 {
                     await connection.OpenAsync();
 
-                    string query = @"
-                        INSERT INTO AuditLog (UserId, Action, TableName, RecordId, OldValues, NewValues, ActionDate, IPAddress, UserAgent)
-                        VALUES (@UserId, @Action, @TableName, @RecordId, @OldValues, @NewValues, @ActionDate, @IPAddress, @UserAgent)";
-
-                    using (var command = new SqlCommand(query, connection))
+                    using (var command = new SqlCommand("SP_AuditLog_InsertFull", connection))
                     {
+                        command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@UserId", auditLog.UserId ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@Action", auditLog.Action ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@TableName", auditLog.TableName ?? (object)DBNull.Value);
@@ -45,17 +43,14 @@ namespace SECRON.Controllers
                         command.Parameters.AddWithValue("@IPAddress", auditLog.IPAddress ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@UserAgent", auditLog.UserAgent ?? (object)DBNull.Value);
 
-                        await command.ExecuteNonQueryAsync();
+                        await command.ExecuteScalarAsync();
                         return true;
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Log crítico - no mostrar al usuario pero registrar en sistema
                 System.Diagnostics.Debug.WriteLine($"Error registrando auditoría: {ex.Message}");
-
-                // Opcional: registrar en archivo de log como fallback
                 LogToFile($"Error AuditLog: {ex.Message} - Action: {auditLog.Action}");
                 return false;
             }
@@ -192,37 +187,38 @@ namespace SECRON.Controllers
         {
             try
             {
+                DateTime cutoffDate = DateTime.Now.AddDays(-daysToKeep);
+                int deletedRows;
+
                 using (var connection = new SqlConnection(connectionString))
                 {
                     await connection.OpenAsync();
 
-                    string query = @"
-                        DELETE FROM AuditLog 
-                        WHERE ActionDate < @cutoffDate";
-
-                    using (var command = new SqlCommand(query, connection))
+                    using (var command = new SqlCommand("SP_AuditLog_DeleteOld", connection))
                     {
-                        command.Parameters.AddWithValue("@cutoffDate", DateTime.Now.AddDays(-daysToKeep));
-                        var deletedRows = await command.ExecuteNonQueryAsync();
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@CutoffDate", cutoffDate);
 
-                        // Log la operación de limpieza
-                        if (deletedRows > 0)
-                        {
-                            var cleanupAudit = new Mdl_AudithLog_LoginResult
-                            {
-                                Action = "CLEANUP_AUDIT_LOG",
-                                TableName = "AuditLog",
-                                ActionDate = DateTime.Now,
-                                IPAddress = GetLocalIPAddress(),
-                                UserAgent = GetUserAgent()
-                            };
-                            cleanupAudit.SetNewValues(new { DeletedRows = deletedRows, CutoffDate = DateTime.Now.AddDays(-daysToKeep) });
-
-                            await LogAuditAsync(cleanupAudit);
-                        }
-
-                        return true;
+                        object result = await command.ExecuteScalarAsync();
+                        deletedRows = result == null ? 0 : Convert.ToInt32(result);
                     }
+
+                    if (deletedRows > 0)
+                    {
+                        var cleanupAudit = new Mdl_AudithLog_LoginResult
+                        {
+                            Action = "CLEANUP_AUDIT_LOG",
+                            TableName = "AuditLog",
+                            ActionDate = DateTime.Now,
+                            IPAddress = GetLocalIPAddress(),
+                            UserAgent = GetUserAgent()
+                        };
+                        cleanupAudit.SetNewValues(new { DeletedRows = deletedRows, CutoffDate = cutoffDate });
+
+                        await LogAuditAsync(cleanupAudit);
+                    }
+
+                    return true;
                 }
             }
             catch (Exception ex)

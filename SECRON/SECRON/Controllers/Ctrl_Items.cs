@@ -17,36 +17,27 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Items_Insert", connection))
                 {
-                    string query = @"INSERT INTO Items 
-                        (ItemCode, ItemName, Description, CategoryId, SubCategoryId, UnitId, 
-                         MinimumStock, MaximumStock, ReorderPoint, UnitCost, LastPurchasePrice, 
-                         HasLotControl, HasExpiryDate, IsActive, CreatedBy) 
-                        VALUES 
-                        (@ItemCode, @ItemName, @Description, @CategoryId, @SubCategoryId, @UnitId, 
-                         @MinimumStock, @MaximumStock, @ReorderPoint, @UnitCost, @LastPurchasePrice, 
-                         @HasLotControl, @HasExpiryDate, @IsActive, @CreatedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemCode", item.ItemCode ?? "");
+                    cmd.Parameters.AddWithValue("@ItemName", item.ItemName ?? "");
+                    cmd.Parameters.AddWithValue("@Description", (object)item.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CategoryId", item.CategoryId);
+                    cmd.Parameters.AddWithValue("@SubCategoryId", item.SubCategoryId);
+                    cmd.Parameters.AddWithValue("@UnitId", item.UnitId);
+                    cmd.Parameters.AddWithValue("@MinimumStock", item.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", (object)item.MaximumStock);
+                    cmd.Parameters.AddWithValue("@ReorderPoint", (object)item.ReorderPoint);
+                    cmd.Parameters.AddWithValue("@UnitCost", item.UnitCost);
+                    cmd.Parameters.AddWithValue("@LastPurchasePrice", (object)item.LastPurchasePrice);
+                    cmd.Parameters.AddWithValue("@HasLotControl", item.HasLotControl);
+                    cmd.Parameters.AddWithValue("@HasExpiryDate", item.HasExpiryDate);
+                    cmd.Parameters.AddWithValue("@IsActive", item.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)item.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemCode", item.ItemCode ?? "");
-                        cmd.Parameters.AddWithValue("@ItemName", item.ItemName ?? "");
-                        cmd.Parameters.AddWithValue("@Description", (object)item.Description ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@CategoryId", item.CategoryId);
-                        cmd.Parameters.AddWithValue("@SubCategoryId", item.SubCategoryId);
-                        cmd.Parameters.AddWithValue("@UnitId", item.UnitId);
-                        cmd.Parameters.AddWithValue("@MinimumStock", item.MinimumStock);
-                        cmd.Parameters.AddWithValue("@MaximumStock", (object)item.MaximumStock);
-                        cmd.Parameters.AddWithValue("@ReorderPoint", (object)item.ReorderPoint);
-                        cmd.Parameters.AddWithValue("@UnitCost", item.UnitCost);
-                        cmd.Parameters.AddWithValue("@LastPurchasePrice", (object)item.LastPurchasePrice);
-                        cmd.Parameters.AddWithValue("@HasLotControl", item.HasLotControl);
-                        cmd.Parameters.AddWithValue("@HasExpiryDate", item.HasExpiryDate);
-                        cmd.Parameters.AddWithValue("@IsActive", item.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)item.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -186,45 +177,28 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Items_Update", connection))
                 {
-                    string query = @"UPDATE Items SET
-                        ItemCode          = @ItemCode,
-                        ItemName          = @ItemName,
-                        Description       = @Description,
-                        CategoryId        = @CategoryId,
-                        SubCategoryId     = @SubCategoryId,
-                        UnitId            = @UnitId,
-                        MinimumStock      = @MinimumStock,
-                        MaximumStock      = @MaximumStock,
-                        ReorderPoint      = @ReorderPoint,
-                        UnitCost          = @UnitCost,
-                        LastPurchasePrice = @LastPurchasePrice,
-                        HasLotControl     = @HasLotControl,
-                        HasExpiryDate     = @HasExpiryDate,
-                        ModifiedDate      = GETDATE(),
-                        ModifiedBy        = @ModifiedBy
-                        WHERE ItemId = @ItemId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemId", item.ItemId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@ItemCode", item.ItemCode ?? "");
+                    cmd.Parameters.AddWithValue("@ItemName", item.ItemName ?? "");
+                    cmd.Parameters.AddWithValue("@Description", (object)item.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CategoryId", item.CategoryId);
+                    cmd.Parameters.AddWithValue("@SubCategoryId", item.SubCategoryId);
+                    cmd.Parameters.AddWithValue("@UnitId", item.UnitId);
+                    cmd.Parameters.AddWithValue("@MinimumStock", item.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", (object)item.MaximumStock);
+                    cmd.Parameters.AddWithValue("@ReorderPoint", (object)item.ReorderPoint);
+                    cmd.Parameters.AddWithValue("@UnitCost", item.UnitCost);
+                    cmd.Parameters.AddWithValue("@LastPurchasePrice", (object)item.LastPurchasePrice);
+                    cmd.Parameters.AddWithValue("@HasLotControl", item.HasLotControl);
+                    cmd.Parameters.AddWithValue("@HasExpiryDate", item.HasExpiryDate);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)item.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemId", item.ItemId);
-                        cmd.Parameters.AddWithValue("@ItemCode", item.ItemCode ?? "");
-                        cmd.Parameters.AddWithValue("@ItemName", item.ItemName ?? "");
-                        cmd.Parameters.AddWithValue("@Description", (object)item.Description ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@CategoryId", item.CategoryId);
-                        cmd.Parameters.AddWithValue("@SubCategoryId", item.SubCategoryId);
-                        cmd.Parameters.AddWithValue("@UnitId", item.UnitId);
-                        cmd.Parameters.AddWithValue("@MinimumStock", item.MinimumStock);
-                        cmd.Parameters.AddWithValue("@MaximumStock", (object)item.MaximumStock);
-                        cmd.Parameters.AddWithValue("@ReorderPoint", (object)item.ReorderPoint);
-                        cmd.Parameters.AddWithValue("@UnitCost", item.UnitCost);
-                        cmd.Parameters.AddWithValue("@LastPurchasePrice", (object)item.LastPurchasePrice);
-                        cmd.Parameters.AddWithValue("@HasLotControl", item.HasLotControl);
-                        cmd.Parameters.AddWithValue("@HasExpiryDate", item.HasExpiryDate);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)item.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -399,19 +373,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Items_Update", connection))
                 {
-                    string query = @"UPDATE Items SET
-                IsActive     = 0,
-                ModifiedDate = GETDATE(),
-                ModifiedBy   = @ModifiedBy
-            WHERE ItemId = @ItemId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemId", itemId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@ItemId", itemId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

@@ -183,5 +183,56 @@ namespace SECRON.Controllers
                 return null;
             }
         }
+
+        // MÉTODO: Obtener bodegas asignadas a un usuario (o todas si esAdmin=true), con su LocationId/LocationName resuelto
+        // Usado para llenar combos dependientes Sede -> Bodega filtrados por asignación (WarehouseManagers)
+        public static List<Mdl_WarehouseWithLocation> ObtenerBodegasAsignadasConLocation(int userId, bool esAdmin = false)
+        {
+            List<Mdl_WarehouseWithLocation> lista = new List<Mdl_WarehouseWithLocation>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = esAdmin
+                        ? @"SELECT w.WarehouseId, w.WarehouseName, l.LocationId, l.LocationName
+                    FROM Warehouses w
+                    INNER JOIN Locations l ON l.LocationId = w.LocationId
+                    WHERE w.IsActive = 1 AND l.IsActive = 1
+                    ORDER BY l.LocationName, w.WarehouseName"
+                        : @"SELECT w.WarehouseId, w.WarehouseName, l.LocationId, l.LocationName
+                    FROM WarehouseManagers wm
+                    INNER JOIN Warehouses w ON w.WarehouseId = wm.WarehouseId
+                    INNER JOIN Locations l ON l.LocationId = w.LocationId
+                    WHERE wm.UserId = @UserId AND wm.IsActive = 1
+                      AND w.IsActive = 1 AND l.IsActive = 1
+                    ORDER BY l.LocationName, w.WarehouseName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        if (!esAdmin)
+                            cmd.Parameters.AddWithValue("@UserId", userId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                lista.Add(new Mdl_WarehouseWithLocation
+                                {
+                                    WarehouseId = reader.GetInt32(0),
+                                    WarehouseName = reader.GetString(1),
+                                    LocationId = reader.GetInt32(2),
+                                    LocationName = reader.GetString(3)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener bodegas asignadas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
     }
 }

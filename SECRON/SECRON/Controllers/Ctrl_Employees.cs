@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -81,111 +82,42 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Employees_Insert", connection))
                 {
-                    string query = @"INSERT INTO Employees
-            (
-                EmployeeCode,
-                FirstName,
-                LastName,
-                IdentificationNumber,
-                Email,
-                InstitutionalEmail,
-                Phone,
-                MobilePhone,
-                Address,
-                BirthDate,
-                HireDate,
-                DepartmentId,
-                PositionId,
-                DirectSupervisorId,
-                EmployeeStatusId,
-                LocationId,
-                TipoContratacion,
-                EmergencyContactName,
-                EmergencyContactPhone,
-                EmergencyContactRelation,
-                nominal_salary,
-                base_salary,
-                additional_bonus,
-                legal_bonus,
-                IGSS,
-                ISR,
-                net_salary,
-                IGSS_MANUAL,
-                IsActive,
-                CreatedBy
-            )
-            VALUES
-            (
-                @EmployeeCode,
-                @FirstName,
-                @LastName,
-                @IdentificationNumber,
-                @Email,
-                @InstitutionalEmail,
-                @Phone,
-                @MobilePhone,
-                @Address,
-                @BirthDate,
-                @HireDate,
-                @DepartmentId,
-                @PositionId,
-                @DirectSupervisorId,
-                @EmployeeStatusId,
-                @LocationId,
-                @TipoContratacion,
-                @EmergencyContactName,
-                @EmergencyContactPhone,
-                @EmergencyContactRelation,
-                @NominalSalary,
-                @BaseSalary,
-                @AdditionalBonus,
-                @LegalBonus,
-                @IGSS,
-                @ISR,
-                @NetSalary,
-                @IGSSManual,
-                @IsActive,
-                @CreatedBy
-            )";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmployeeCode", empleado.EmployeeCode ?? "");
+                    cmd.Parameters.AddWithValue("@FirstName", empleado.FirstName ?? "");
+                    cmd.Parameters.AddWithValue("@LastName", empleado.LastName ?? "");
+                    cmd.Parameters.AddWithValue("@IdentificationNumber", empleado.IdentificationNumber ?? "");
+                    cmd.Parameters.AddWithValue("@Email", (object)empleado.Email ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@InstitutionalEmail", empleado.InstitutionalEmail ?? "");
+                    cmd.Parameters.AddWithValue("@Phone", (object)empleado.Phone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MobilePhone", (object)empleado.MobilePhone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)empleado.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BirthDate", (object)empleado.BirthDate ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@HireDate", empleado.HireDate);
+                    cmd.Parameters.AddWithValue("@DepartmentId", empleado.DepartmentId);
+                    cmd.Parameters.AddWithValue("@PositionId", empleado.PositionId);
+                    cmd.Parameters.AddWithValue("@DirectSupervisorId", (object)empleado.DirectSupervisorId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmployeeStatusId", empleado.EmployeeStatusId);
+                    cmd.Parameters.AddWithValue("@LocationId", (object)empleado.LocationId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TipoContratacion", (object)empleado.TipoContratacion ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmergencyContactName", (object)empleado.EmergencyContactName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmergencyContactPhone", (object)empleado.EmergencyContactPhone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmergencyContactRelation", (object)empleado.EmergencyContactRelation ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NominalSalary", (object)empleado.NominalSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BaseSalary", (object)empleado.BaseSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AdditionalBonus", (object)empleado.AdditionalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LegalBonus", (object)empleado.LegalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSS", (object)empleado.IGSS ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ISR", (object)empleado.ISR ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NetSalary", (object)empleado.NetSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSSManual", (object)empleado.IGSSManual ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsActive", empleado.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", (object)empleado.CreatedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EmployeeCode", empleado.EmployeeCode ?? "");
-                        cmd.Parameters.AddWithValue("@FirstName", empleado.FirstName ?? "");
-                        cmd.Parameters.AddWithValue("@LastName", empleado.LastName ?? "");
-                        cmd.Parameters.AddWithValue("@IdentificationNumber", empleado.IdentificationNumber ?? "");
-                        cmd.Parameters.AddWithValue("@Email", (object)empleado.Email ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@InstitutionalEmail", empleado.InstitutionalEmail ?? "");
-                        cmd.Parameters.AddWithValue("@Phone", (object)empleado.Phone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@MobilePhone", (object)empleado.MobilePhone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Address", (object)empleado.Address ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BirthDate", (object)empleado.BirthDate ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@HireDate", empleado.HireDate);
-                        cmd.Parameters.AddWithValue("@DepartmentId", empleado.DepartmentId);
-                        cmd.Parameters.AddWithValue("@PositionId", empleado.PositionId);
-                        cmd.Parameters.AddWithValue("@DirectSupervisorId", (object)empleado.DirectSupervisorId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmployeeStatusId", empleado.EmployeeStatusId);
-                        cmd.Parameters.AddWithValue("@LocationId", (object)empleado.LocationId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@TipoContratacion", (object)empleado.TipoContratacion ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmergencyContactName", (object)empleado.EmergencyContactName ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmergencyContactPhone", (object)empleado.EmergencyContactPhone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmergencyContactRelation", (object)empleado.EmergencyContactRelation ?? DBNull.Value);
-
-                        cmd.Parameters.AddWithValue("@NominalSalary", (object)empleado.NominalSalary ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BaseSalary", (object)empleado.BaseSalary ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AdditionalBonus", (object)empleado.AdditionalBonus ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@LegalBonus", (object)empleado.LegalBonus ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IGSS", (object)empleado.IGSS ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ISR", (object)empleado.ISR ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@NetSalary", (object)empleado.NetSalary ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IGSSManual", (object)empleado.IGSSManual ?? DBNull.Value);
-
-                        cmd.Parameters.AddWithValue("@IsActive", empleado.IsActive);
-                        cmd.Parameters.AddWithValue("@CreatedBy", (object)empleado.CreatedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -341,77 +273,43 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Employees_Update", connection))
                 {
-                    string query = @"UPDATE Employees SET
-                EmployeeCode = @EmployeeCode,
-                FirstName = @FirstName,
-                LastName = @LastName,
-                IdentificationNumber = @IdentificationNumber,
-                Email = @Email,
-                InstitutionalEmail = @InstitutionalEmail,
-                Phone = @Phone,
-                MobilePhone = @MobilePhone,
-                Address = @Address,
-                BirthDate = @BirthDate,
-                HireDate = @HireDate,
-                DepartmentId = @DepartmentId,
-                PositionId = @PositionId,
-                DirectSupervisorId = @DirectSupervisorId,
-                EmployeeStatusId = @EmployeeStatusId,
-                LocationId = @LocationId,
-                TipoContratacion = @TipoContratacion,
-                EmergencyContactName = @EmergencyContactName,
-                EmergencyContactPhone = @EmergencyContactPhone,
-                EmergencyContactRelation = @EmergencyContactRelation,
-                nominal_salary = @NominalSalary,
-                base_salary = @BaseSalary,
-                additional_bonus = @AdditionalBonus,
-                legal_bonus = @LegalBonus,
-                IGSS = @IGSS,
-                ISR = @ISR,
-                net_salary = @NetSalary,
-                IGSS_MANUAL = @IGSSManual,
-                ModifiedDate = GETDATE(),
-                ModifiedBy = @ModifiedBy
-            WHERE EmployeeId = @EmployeeId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmployeeId", empleado.EmployeeId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@EmployeeCode", empleado.EmployeeCode ?? "");
+                    cmd.Parameters.AddWithValue("@FirstName", empleado.FirstName ?? "");
+                    cmd.Parameters.AddWithValue("@LastName", empleado.LastName ?? "");
+                    cmd.Parameters.AddWithValue("@IdentificationNumber", empleado.IdentificationNumber ?? "");
+                    cmd.Parameters.AddWithValue("@Email", (object)empleado.Email ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@InstitutionalEmail", empleado.InstitutionalEmail ?? "");
+                    cmd.Parameters.AddWithValue("@Phone", (object)empleado.Phone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@MobilePhone", (object)empleado.MobilePhone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)empleado.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BirthDate", (object)empleado.BirthDate ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@HireDate", empleado.HireDate);
+                    cmd.Parameters.AddWithValue("@DepartmentId", empleado.DepartmentId);
+                    cmd.Parameters.AddWithValue("@PositionId", empleado.PositionId);
+                    cmd.Parameters.AddWithValue("@DirectSupervisorId", (object)empleado.DirectSupervisorId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmployeeStatusId", empleado.EmployeeStatusId);
+                    cmd.Parameters.AddWithValue("@LocationId", (object)empleado.LocationId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TipoContratacion", (object)empleado.TipoContratacion ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmergencyContactName", (object)empleado.EmergencyContactName ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmergencyContactPhone", (object)empleado.EmergencyContactPhone ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmergencyContactRelation", (object)empleado.EmergencyContactRelation ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NominalSalary", (object)empleado.NominalSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BaseSalary", (object)empleado.BaseSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AdditionalBonus", (object)empleado.AdditionalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LegalBonus", (object)empleado.LegalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSS", (object)empleado.IGSS ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ISR", (object)empleado.ISR ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NetSalary", (object)empleado.NetSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSSManual", (object)empleado.IGSSManual ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)empleado.ModifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EmployeeId", empleado.EmployeeId);
-                        cmd.Parameters.AddWithValue("@EmployeeCode", empleado.EmployeeCode ?? "");
-                        cmd.Parameters.AddWithValue("@FirstName", empleado.FirstName ?? "");
-                        cmd.Parameters.AddWithValue("@LastName", empleado.LastName ?? "");
-                        cmd.Parameters.AddWithValue("@IdentificationNumber", empleado.IdentificationNumber ?? "");
-                        cmd.Parameters.AddWithValue("@Email", (object)empleado.Email ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@InstitutionalEmail", empleado.InstitutionalEmail ?? "");
-                        cmd.Parameters.AddWithValue("@Phone", (object)empleado.Phone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@MobilePhone", (object)empleado.MobilePhone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Address", (object)empleado.Address ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BirthDate", (object)empleado.BirthDate ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@HireDate", empleado.HireDate);
-                        cmd.Parameters.AddWithValue("@DepartmentId", empleado.DepartmentId);
-                        cmd.Parameters.AddWithValue("@PositionId", empleado.PositionId);
-                        cmd.Parameters.AddWithValue("@DirectSupervisorId", (object)empleado.DirectSupervisorId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmployeeStatusId", empleado.EmployeeStatusId);
-                        cmd.Parameters.AddWithValue("@LocationId", (object)empleado.LocationId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@TipoContratacion", (object)empleado.TipoContratacion ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmergencyContactName", (object)empleado.EmergencyContactName ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmergencyContactPhone", (object)empleado.EmergencyContactPhone ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@EmergencyContactRelation", (object)empleado.EmergencyContactRelation ?? DBNull.Value);
-
-                        cmd.Parameters.AddWithValue("@NominalSalary", (object)empleado.NominalSalary ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BaseSalary", (object)empleado.BaseSalary ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@AdditionalBonus", (object)empleado.AdditionalBonus ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@LegalBonus", (object)empleado.LegalBonus ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IGSS", (object)empleado.IGSS ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ISR", (object)empleado.ISR ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@NetSalary", (object)empleado.NetSalary ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@IGSSManual", (object)empleado.IGSSManual ?? DBNull.Value);
-
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)empleado.ModifiedBy ?? DBNull.Value);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -427,16 +325,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Employees_Update", connection))
                 {
-                    string query = @"UPDATE Employees SET IsActive = 0, TerminationDate = GETDATE(), 
-                        ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy WHERE EmployeeId = @EmployeeId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -852,12 +749,11 @@ namespace SECRON.Controllers
         {
             try
             {
-                // Validar que el campo sea uno de los permitidos para evitar SQL injection
                 string[] camposPermitidos = {
             "FilePath_DPI", "FilePath_Titulos", "FilePath_RTU",
             "FilePath_Colegiado", "FilePath_RENAS",
             "FilePath_AntPoliciacos", "FilePath_AntPenales"
-        };
+                };
 
                 if (!Array.Exists(camposPermitidos, c => c == campo))
                 {
@@ -867,20 +763,16 @@ namespace SECRON.Controllers
                 }
 
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Employees_UpdateFilePath", connection))
                 {
-                    string query = $@"UPDATE Employees 
-                              SET {campo} = @Ruta,
-                                  ModifiedDate = GETDATE(),
-                                  ModifiedBy = @ModifiedBy
-                              WHERE EmployeeId = @EmployeeId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                    cmd.Parameters.AddWithValue("@Campo", campo);
+                    cmd.Parameters.AddWithValue("@Ruta", (object)ruta ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@Ruta", (object)ruta ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
-                        cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                        return cmd.ExecuteNonQuery() > 0;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
                 }
             }
             catch (Exception ex)

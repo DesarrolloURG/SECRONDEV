@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,19 +19,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_UserPermissions_Insert", connection))
                 {
-                    string query = @"INSERT INTO UserPermissions (UserId, PermissionId, IsGranted, GrantedBy) 
-                        VALUES (@UserId, @PermissionId, @IsGranted, @GrantedBy)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userPermission.UserId);
+                    cmd.Parameters.AddWithValue("@PermissionId", userPermission.PermissionId);
+                    cmd.Parameters.AddWithValue("@IsGranted", userPermission.IsGranted);
+                    cmd.Parameters.AddWithValue("@GrantedBy", userPermission.GrantedBy);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userPermission.UserId);
-                        cmd.Parameters.AddWithValue("@PermissionId", userPermission.PermissionId);
-                        cmd.Parameters.AddWithValue("@IsGranted", userPermission.IsGranted);
-                        cmd.Parameters.AddWithValue("@GrantedBy", userPermission.GrantedBy);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -46,45 +44,27 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_UserPermissions_AssignMultiple", connection))
                 {
-                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@GrantedBy", grantedBy);
+
+                    var sb = new StringBuilder();
+                    sb.Append("[");
+                    for (int i = 0; i < permissionsWithGrant.Count; i++)
                     {
-                        try
-                        {
-                            // Primero eliminamos los permisos específicos existentes del usuario
-                            string deleteQuery = "DELETE FROM UserPermissions WHERE UserId = @UserId";
-                            using (SqlCommand deleteCmd = new SqlCommand(deleteQuery, connection, transaction))
-                            {
-                                deleteCmd.Parameters.AddWithValue("@UserId", userId);
-                                deleteCmd.ExecuteNonQuery();
-                            }
-
-                            // Luego insertamos los nuevos permisos
-                            int count = 0;
-                            string insertQuery = @"INSERT INTO UserPermissions (UserId, PermissionId, IsGranted, GrantedBy) 
-                                VALUES (@UserId, @PermissionId, @IsGranted, @GrantedBy)";
-
-                            foreach (var permission in permissionsWithGrant)
-                            {
-                                using (SqlCommand insertCmd = new SqlCommand(insertQuery, connection, transaction))
-                                {
-                                    insertCmd.Parameters.AddWithValue("@UserId", userId);
-                                    insertCmd.Parameters.AddWithValue("@PermissionId", permission.Item1);
-                                    insertCmd.Parameters.AddWithValue("@IsGranted", permission.Item2);
-                                    insertCmd.Parameters.AddWithValue("@GrantedBy", grantedBy);
-                                    count += insertCmd.ExecuteNonQuery();
-                                }
-                            }
-
-                            transaction.Commit();
-                            return count;
-                        }
-                        catch
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
+                        if (i > 0) sb.Append(",");
+                        sb.Append("{\"PermissionId\":").Append(permissionsWithGrant[i].Item1)
+                          .Append(",\"IsGranted\":").Append(permissionsWithGrant[i].Item2 ? "true" : "false")
+                          .Append("}");
                     }
+                    sb.Append("]");
+
+                    cmd.Parameters.AddWithValue("@PermissionsJson", sb.ToString());
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -129,17 +109,14 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_UserPermissions_UpdateGrantStatus", connection))
                 {
-                    string query = @"UPDATE UserPermissions SET IsGranted = @IsGranted, GrantedDate = GETDATE() 
-                        WHERE UserPermissionId = @UserPermissionId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserPermissionId", userPermissionId);
+                    cmd.Parameters.AddWithValue("@IsGranted", isGranted);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserPermissionId", userPermissionId);
-                        cmd.Parameters.AddWithValue("@IsGranted", isGranted);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -155,14 +132,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_UserPermissions_Delete", connection))
                 {
-                    string query = "DELETE FROM UserPermissions WHERE UserPermissionId = @UserPermissionId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserPermissionId", userPermissionId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserPermissionId", userPermissionId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -178,14 +154,13 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_UserPermissions_DeleteAllByUser", connection))
                 {
-                    string query = "DELETE FROM UserPermissions WHERE UserId = @UserId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

@@ -10,10 +10,7 @@ namespace SECRON.Controllers
 {
     internal class Ctrl_FixedAssetTransfers
     {
-        // ══════════════════════════════════════════════
-        // MAESTRO
-        // ══════════════════════════════════════════════
-
+        
         #region Próximo código automático
 
         public static string ObtenerProximoCodigo()
@@ -211,10 +208,7 @@ namespace SECRON.Controllers
 
         #endregion
 
-        // ══════════════════════════════════════════════
-        // DETALLE
-        // ══════════════════════════════════════════════
-
+        
         #region READ Detalle
 
         public static List<Mdl_FixedAssetTransferDetail> MostrarDetalles(int transferId)

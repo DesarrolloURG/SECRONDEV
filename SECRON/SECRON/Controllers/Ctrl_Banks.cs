@@ -1,12 +1,13 @@
-﻿using System;
+﻿using SECRON.Configuration;
+using SECRON.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SECRON.Models;
-using SECRON.Configuration;
 
 namespace SECRON.Controllers
 {
@@ -18,18 +19,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Banks_Insert", connection))
                 {
-                    string query = @"INSERT INTO Banks (BankCode, BankName, IsActive) 
-                        VALUES (@BankCode, @BankName, @IsActive)";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@BankCode", banco.BankCode ?? "");
+                    cmd.Parameters.AddWithValue("@BankName", banco.BankName ?? "");
+                    cmd.Parameters.AddWithValue("@IsActive", banco.IsActive);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@BankCode", banco.BankCode ?? "");
-                        cmd.Parameters.AddWithValue("@BankName", banco.BankName ?? "");
-                        cmd.Parameters.AddWithValue("@IsActive", banco.IsActive);
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -73,18 +71,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Banks_Update", connection))
                 {
-                    string query = @"UPDATE Banks SET BankCode = @BankCode, BankName = @BankName 
-                        WHERE BankId = @BankId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@BankId", banco.BankId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@BankCode", banco.BankCode ?? "");
+                    cmd.Parameters.AddWithValue("@BankName", banco.BankName ?? "");
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@BankId", banco.BankId);
-                        cmd.Parameters.AddWithValue("@BankCode", banco.BankCode ?? "");
-                        cmd.Parameters.AddWithValue("@BankName", banco.BankName ?? "");
-
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -100,13 +96,16 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Banks_Update", connection))
                 {
-                    string query = "UPDATE Banks SET IsActive = 0 WHERE BankId = @BankId";
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@BankId", bankId);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@BankId", bankId);
+                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@BankCode", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BankName", DBNull.Value);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)

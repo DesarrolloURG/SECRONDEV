@@ -459,21 +459,15 @@ namespace SECRON.Controllers
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_FixedAssets_UpdateStatus", connection))
                 {
-                    string query = @"
-                UPDATE FixedAssets SET
-                    AssetStatus  = UPPER(@AssetStatus),
-                    ModifiedDate = GETDATE(),
-                    ModifiedBy   = @ModifiedBy
-                WHERE AssetId = @AssetId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@AssetId", assetId);
+                    cmd.Parameters.AddWithValue("@AssetStatus", nuevoEstado?.ToUpper() ?? "ACTIVO");
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@AssetId", assetId);
-                        cmd.Parameters.AddWithValue("@AssetStatus", nuevoEstado?.ToUpper() ?? "ACTIVO");
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
-                        return cmd.ExecuteNonQuery();
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -483,29 +477,21 @@ namespace SECRON.Controllers
                 return 0;
             }
         }
-        public static int ActualizarAsignacionActivo(
-        int assetId, int? empleadoId, int? bodegaId, int? modifiedBy = null)
+        public static int ActualizarAsignacionActivo(int assetId, int? empleadoId, int? bodegaId, int? modifiedBy = null)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_FixedAssets_UpdateAssignment", connection))
                 {
-                    string query = @"
-                UPDATE FixedAssets SET
-                    AssignedToEmployeeId = @EmpleadoId,
-                    CurrentWarehouseId   = @BodegaId,
-                    ModifiedDate         = GETDATE(),
-                    ModifiedBy           = @ModifiedBy
-                WHERE AssetId = @AssetId";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@AssetId", assetId);
+                    cmd.Parameters.AddWithValue("@EmpleadoId", (object)empleadoId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BodegaId", (object)bodegaId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@AssetId", assetId);
-                        cmd.Parameters.AddWithValue("@EmpleadoId", (object)empleadoId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@BodegaId", (object)bodegaId ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
-                        return cmd.ExecuteNonQuery() > 0 ? 1 : -1;
-                    }
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
                 }
             }
             catch (Exception ex)
@@ -515,5 +501,6 @@ namespace SECRON.Controllers
                 return 0;
             }
         }
+
     }
 }
