@@ -2891,7 +2891,7 @@ namespace SECRON.Views
                 if (CheckBox_LastComplement.Checked && CheckBox_Complemento.Checked && !string.IsNullOrWhiteSpace(Txt_Complemento.Text))
                 {
                     string numeroComplemento = Txt_Complemento.Text.Trim();
-                    bool marcado = Ctrl_Checks.MarcarLastComplement(numeroComplemento);
+                    bool marcado = Ctrl_Checks.MarcarLastComplement(numeroComplemento, UserData.UserId);
 
                     if (!marcado)
                     {
@@ -2952,15 +2952,15 @@ namespace SECRON.Views
                             Credit = abono
                         };
 
-                        if (Ctrl_AccountingEntryDetails.RegistrarDetalle(detalle) == 0)
-                        {
+                        if (Ctrl_AccountingEntryDetails.RegistrarDetalle(detalle, UserData.UserId) == 0)
+                            {
                             MessageBox.Show($"ERROR AL REGISTRAR DETALLE: {nombreCuenta}", "ERROR",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return false;
                         }
 
                         // Actualizar saldo de cuenta usando el nuevo método que verifica SIGNO
-                        Ctrl_Accounts.ActualizarSaldo(nombreCuenta, cargo, abono);
+                        Ctrl_Accounts.ActualizarSaldo(nombreCuenta, cargo, abono, UserData.UserId);
                     }
                 }
 
@@ -2970,7 +2970,7 @@ namespace SECRON.Views
                     int checkControlId = _checkControlIdActual.Value;
 
                     // INCREMENTAR SOLO ESTE RANGO
-                    int actualizado = Ctrl_CheckControl.SiguienteChequePorControl(checkControlId);
+                    int actualizado = Ctrl_CheckControl.SiguienteChequePorControl(checkControlId, UserData.UserId);
 
                     if (actualizado > 0)
                     {
@@ -2982,7 +2982,7 @@ namespace SECRON.Views
                             controlActualizado.CurrentCounter > controlActualizado.FinalLimit)
                         {
                             // ELIMINAR SOLO ESTE RANGO
-                            bool eliminado = Ctrl_CheckControl.EliminarControl(checkControlId);
+                            bool eliminado = Ctrl_CheckControl.EliminarControl(checkControlId, UserData.UserId);
 
                             if (eliminado)
                             {

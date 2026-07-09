@@ -1,8 +1,10 @@
 CREATE OR ALTER PROCEDURE SP_UserStatus_Insert
-    @StatusName VARCHAR(50), @Description VARCHAR(255) = NULL, @IsActive BIT
+    @StatusName VARCHAR(50), @Description VARCHAR(255) = NULL, @IsActive BIT, @CreatedBy INT
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @ctx BINARY(128) = CAST(CONVERT(BINARY(4), ISNULL(@CreatedBy, 0)) AS BINARY(128));
+    SET CONTEXT_INFO @ctx;
 
     BEGIN TRANSACTION
     BEGIN TRY

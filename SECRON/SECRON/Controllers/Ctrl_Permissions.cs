@@ -14,7 +14,7 @@ namespace SECRON.Controllers
     internal class Ctrl_Permissions
     {
         // MÉTODO PRINCIPAL: Registrar permiso
-        public static int RegistrarPermiso(Mdl_Permissions permiso)
+        public static int RegistrarPermiso(Mdl_Permissions permiso, int createdBy)
         {
             try
             {
@@ -28,6 +28,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@ModuleName", (object)permiso.ModuleName ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ActionType", (object)permiso.ActionType ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@IsActive", permiso.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -139,7 +140,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Actualizar permiso
-        public static int ActualizarPermiso(Mdl_Permissions permiso)
+        public static int ActualizarPermiso(Mdl_Permissions permiso, int modifiedBy)
         {
             try
             {
@@ -154,6 +155,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@Description", (object)permiso.Description ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ModuleName", (object)permiso.ModuleName ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ActionType", (object)permiso.ActionType ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -167,7 +169,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Inactivar permiso
-        public static int InactivarPermiso(int permissionId)
+        public static int InactivarPermiso(int permissionId, int modifiedBy)
         {
             try
             {
@@ -177,6 +179,7 @@ namespace SECRON.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@PermissionId", permissionId);
                     cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

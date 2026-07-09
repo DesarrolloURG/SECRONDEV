@@ -251,7 +251,7 @@ namespace SECRON.Controllers
         }
 
         // NUEVO MÉTODO: Marcar LastComplement como completado
-        public static bool MarcarLastComplement(string numeroCheque)
+        public static bool MarcarLastComplement(string numeroCheque, int modifiedBy)
         {
             try
             {
@@ -260,6 +260,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@CheckNumber", numeroCheque);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result != null && Convert.ToInt32(result) > 0;

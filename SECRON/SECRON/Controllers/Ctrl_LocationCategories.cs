@@ -68,7 +68,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Actualizar categoría de sede
-        public static int ActualizarCategoria(Mdl_LocationCategories categoria)
+        public static int ActualizarCategoria(Mdl_LocationCategories categoria, int modifiedBy)
         {
             try
             {
@@ -81,6 +81,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@CategoryCode", categoria.CategoryCode ?? "");
                     cmd.Parameters.AddWithValue("@CategoryName", categoria.CategoryName ?? "");
                     cmd.Parameters.AddWithValue("@Description", (object)categoria.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -94,7 +95,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Inactivar categoría de sede
-        public static int InactivarCategoria(int locationCategoryId)
+        public static int InactivarCategoria(int locationCategoryId, int modifiedBy)
         {
             try
             {
@@ -104,6 +105,7 @@ namespace SECRON.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@LocationCategoryId", locationCategoryId);
                     cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

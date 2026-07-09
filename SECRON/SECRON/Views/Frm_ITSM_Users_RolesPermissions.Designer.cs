@@ -1693,6 +1693,388 @@
             this.Panel_CRUD4.ResumeLayout(false);
             this.ResumeLayout(false);
 
+            // ====== InitializeComponent (agregar dentro del método) ======
+
+            this.Panel_GestionarRoles = new System.Windows.Forms.Panel();
+            this.Panel_Derecho0 = new System.Windows.Forms.Panel();
+            this.Panel_Izquierdo0 = new System.Windows.Forms.Panel();
+            this.panel_TopRoles = new System.Windows.Forms.Panel();
+            this.PanelTabla0 = new System.Windows.Forms.Panel();
+            this.PanelToolStrip0 = new System.Windows.Forms.Panel();
+            this.Panel_Busqueda0 = new System.Windows.Forms.Panel();
+            this.panel_BotonesRoles = new System.Windows.Forms.Panel();
+            this.Panel_Informacion0 = new System.Windows.Forms.Panel();
+            this.Tabla_Roles = new System.Windows.Forms.DataGridView();
+            this.Lbl_PaginasRoles = new System.Windows.Forms.Label();
+            this.Lbl_Info0 = new System.Windows.Forms.Label();
+            this.Lbl_TituloPanelIzquierdo0 = new System.Windows.Forms.Label();
+            this.Lbl_Subtitulo0 = new System.Windows.Forms.Label();
+            this.Lbl_RoleName = new System.Windows.Forms.Label();
+            this.Lbl_RoleDescription = new System.Windows.Forms.Label();
+            this.Txt_RoleName = new System.Windows.Forms.TextBox();
+            this.Txt_RoleDescription = new System.Windows.Forms.TextBox();
+            this.Txt_ValorBuscadoRoles = new System.Windows.Forms.TextBox();
+            this.Btn_SearchRoles = new System.Windows.Forms.Button();
+            this.Btn_CleanSearchRoles = new System.Windows.Forms.Button();
+            this.FiltroRolesEstado = new System.Windows.Forms.ComboBox();
+            this.Btn_SaveRole = new System.Windows.Forms.Button();
+            this.Btn_UpdateRole = new System.Windows.Forms.Button();
+            this.Btn_InactiveRole = new System.Windows.Forms.Button();
+            this.Btn_ClearRole = new System.Windows.Forms.Button();
+
+
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla_Roles)).BeginInit();
+
+            //
+            // Panel_GestionarRoles
+            //
+            this.Panel_GestionarRoles.BackColor = System.Drawing.Color.White;
+            this.Panel_GestionarRoles.Controls.Add(this.Panel_Derecho0);
+            this.Panel_GestionarRoles.Controls.Add(this.Panel_Izquierdo0);
+            this.Panel_GestionarRoles.Controls.Add(this.panel_TopRoles);
+            this.Panel_GestionarRoles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Panel_GestionarRoles.Location = new System.Drawing.Point(0, 55);
+            this.Panel_GestionarRoles.Name = "Panel_GestionarRoles";
+            this.Panel_GestionarRoles.Size = new System.Drawing.Size(1184, 806);
+            this.Panel_GestionarRoles.TabIndex = 56;
+
+            //
+            // Panel_Derecho0
+            //
+            this.Panel_Derecho0.Controls.Add(this.PanelTabla0);
+            this.Panel_Derecho0.Controls.Add(this.PanelToolStrip0);
+            this.Panel_Derecho0.Controls.Add(this.Panel_Busqueda0);
+            this.Panel_Derecho0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Panel_Derecho0.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Panel_Derecho0.ForeColor = System.Drawing.Color.Black;
+            this.Panel_Derecho0.Location = new System.Drawing.Point(415, 60);
+            this.Panel_Derecho0.Name = "Panel_Derecho0";
+            this.Panel_Derecho0.Size = new System.Drawing.Size(769, 746);
+            this.Panel_Derecho0.TabIndex = 56;
+
+            //
+            // PanelTabla0
+            //
+            this.PanelTabla0.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelTabla0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.PanelTabla0.Controls.Add(this.Tabla_Roles);
+            this.PanelTabla0.Location = new System.Drawing.Point(22, 211);
+            this.PanelTabla0.Name = "PanelTabla0";
+            this.PanelTabla0.Size = new System.Drawing.Size(725, 515);
+            this.PanelTabla0.TabIndex = 72;
+
+            //
+            // Tabla_Roles
+            //
+            this.Tabla_Roles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Tabla_Roles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tabla_Roles.Location = new System.Drawing.Point(0, 0);
+            this.Tabla_Roles.Name = "Tabla_Roles";
+            this.Tabla_Roles.Size = new System.Drawing.Size(725, 515);
+            this.Tabla_Roles.TabIndex = 1;
+
+            //
+            // PanelToolStrip0
+            //
+            this.PanelToolStrip0.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelToolStrip0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.PanelToolStrip0.Controls.Add(this.Lbl_PaginasRoles);
+            this.PanelToolStrip0.Location = new System.Drawing.Point(22, 168);
+            this.PanelToolStrip0.Name = "PanelToolStrip0";
+            this.PanelToolStrip0.Size = new System.Drawing.Size(725, 39);
+            this.PanelToolStrip0.TabIndex = 71;
+
+            //
+            // Lbl_PaginasRoles
+            //
+            this.Lbl_PaginasRoles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)));
+            this.Lbl_PaginasRoles.AutoSize = true;
+            this.Lbl_PaginasRoles.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_PaginasRoles.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_PaginasRoles.Location = new System.Drawing.Point(12, 11);
+            this.Lbl_PaginasRoles.Name = "Lbl_PaginasRoles";
+            this.Lbl_PaginasRoles.Size = new System.Drawing.Size(274, 20);
+            this.Lbl_PaginasRoles.TabIndex = 51;
+            this.Lbl_PaginasRoles.Text = "MOSTRANDO 10 ROLES";
+
+            //
+            // Panel_Busqueda0
+            //
+            this.Panel_Busqueda0.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_Busqueda0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Busqueda0.Controls.Add(this.Btn_CleanSearchRoles);
+            this.Panel_Busqueda0.Controls.Add(this.FiltroRolesEstado);
+            this.Panel_Busqueda0.Controls.Add(this.Btn_SearchRoles);
+            this.Panel_Busqueda0.Controls.Add(this.Txt_ValorBuscadoRoles);
+            this.Panel_Busqueda0.Location = new System.Drawing.Point(22, 20);
+            this.Panel_Busqueda0.Name = "Panel_Busqueda0";
+            this.Panel_Busqueda0.Size = new System.Drawing.Size(725, 120);
+            this.Panel_Busqueda0.TabIndex = 53;
+
+            //
+            // Btn_CleanSearchRoles
+            //
+            this.Btn_CleanSearchRoles.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_CleanSearchRoles.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_CleanSearchRoles.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_CleanSearchRoles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_CleanSearchRoles.Location = new System.Drawing.Point(675, 20);
+            this.Btn_CleanSearchRoles.Name = "Btn_CleanSearchRoles";
+            this.Btn_CleanSearchRoles.Size = new System.Drawing.Size(30, 28);
+            this.Btn_CleanSearchRoles.TabIndex = 71;
+            this.Btn_CleanSearchRoles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_CleanSearchRoles.UseVisualStyleBackColor = true;
+
+            //
+            // FiltroRolesEstado
+            //
+            this.FiltroRolesEstado.FormattingEnabled = true;
+            this.FiltroRolesEstado.Location = new System.Drawing.Point(16, 67);
+            this.FiltroRolesEstado.Name = "FiltroRolesEstado";
+            this.FiltroRolesEstado.Size = new System.Drawing.Size(219, 28);
+            this.FiltroRolesEstado.TabIndex = 70;
+
+            //
+            // Btn_SearchRoles
+            //
+            this.Btn_SearchRoles.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_SearchRoles.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SearchRoles.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_SearchRoles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_SearchRoles.Location = new System.Drawing.Point(568, 20);
+            this.Btn_SearchRoles.Name = "Btn_SearchRoles";
+            this.Btn_SearchRoles.Size = new System.Drawing.Size(101, 28);
+            this.Btn_SearchRoles.TabIndex = 54;
+            this.Btn_SearchRoles.Text = "BUSCAR";
+            this.Btn_SearchRoles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_SearchRoles.UseVisualStyleBackColor = true;
+
+            //
+            // Txt_ValorBuscadoRoles
+            //
+            this.Txt_ValorBuscadoRoles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.Txt_ValorBuscadoRoles.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_ValorBuscadoRoles.Location = new System.Drawing.Point(16, 23);
+            this.Txt_ValorBuscadoRoles.MaxLength = 100;
+            this.Txt_ValorBuscadoRoles.Name = "Txt_ValorBuscadoRoles";
+            this.Txt_ValorBuscadoRoles.Size = new System.Drawing.Size(540, 27);
+            this.Txt_ValorBuscadoRoles.TabIndex = 59;
+
+            //
+            // Panel_Izquierdo0
+            //
+            this.Panel_Izquierdo0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Izquierdo0.Controls.Add(this.panel_BotonesRoles);
+            this.Panel_Izquierdo0.Controls.Add(this.Panel_Informacion0);
+            this.Panel_Izquierdo0.Controls.Add(this.Lbl_TituloPanelIzquierdo0);
+            this.Panel_Izquierdo0.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Panel_Izquierdo0.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Panel_Izquierdo0.ForeColor = System.Drawing.Color.Black;
+            this.Panel_Izquierdo0.Location = new System.Drawing.Point(0, 60);
+            this.Panel_Izquierdo0.Name = "Panel_Izquierdo0";
+            this.Panel_Izquierdo0.Size = new System.Drawing.Size(415, 746);
+            this.Panel_Izquierdo0.TabIndex = 55;
+
+            //
+            // Lbl_TituloPanelIzquierdo0
+            //
+            this.Lbl_TituloPanelIzquierdo0.AutoSize = true;
+            this.Lbl_TituloPanelIzquierdo0.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Lbl_TituloPanelIzquierdo0.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_TituloPanelIzquierdo0.Location = new System.Drawing.Point(12, 10);
+            this.Lbl_TituloPanelIzquierdo0.Name = "Lbl_TituloPanelIzquierdo0";
+            this.Lbl_TituloPanelIzquierdo0.Size = new System.Drawing.Size(231, 21);
+            this.Lbl_TituloPanelIzquierdo0.TabIndex = 51;
+            this.Lbl_TituloPanelIzquierdo0.Text = "INFORMACIÓN DEL ROL";
+
+            //
+            // panel_BotonesRoles
+            //
+            this.panel_BotonesRoles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.panel_BotonesRoles.Controls.Add(this.Btn_ClearRole);
+            this.panel_BotonesRoles.Controls.Add(this.Btn_InactiveRole);
+            this.panel_BotonesRoles.Controls.Add(this.Btn_UpdateRole);
+            this.panel_BotonesRoles.Controls.Add(this.Btn_SaveRole);
+            this.panel_BotonesRoles.Location = new System.Drawing.Point(16, 40);
+            this.panel_BotonesRoles.Name = "panel_BotonesRoles";
+            this.panel_BotonesRoles.Size = new System.Drawing.Size(384, 47);
+            this.panel_BotonesRoles.TabIndex = 76;
+
+            //
+            // Btn_ClearRole
+            //
+            this.Btn_ClearRole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_ClearRole.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_ClearRole.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_ClearRole.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ClearRole.Location = new System.Drawing.Point(350, 3);
+            this.Btn_ClearRole.Name = "Btn_ClearRole";
+            this.Btn_ClearRole.Size = new System.Drawing.Size(33, 37);
+            this.Btn_ClearRole.TabIndex = 57;
+            this.Btn_ClearRole.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_ClearRole.UseVisualStyleBackColor = true;
+
+            //
+            // Btn_InactiveRole
+            //
+            this.Btn_InactiveRole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_InactiveRole.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_InactiveRole.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
+            this.Btn_InactiveRole.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_InactiveRole.Location = new System.Drawing.Point(224, 3);
+            this.Btn_InactiveRole.Name = "Btn_InactiveRole";
+            this.Btn_InactiveRole.Size = new System.Drawing.Size(124, 37);
+            this.Btn_InactiveRole.TabIndex = 56;
+            this.Btn_InactiveRole.Text = "INACTIVAR";
+            this.Btn_InactiveRole.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_InactiveRole.UseVisualStyleBackColor = true;
+
+            //
+            // Btn_UpdateRole
+            //
+            this.Btn_UpdateRole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_UpdateRole.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_UpdateRole.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
+            this.Btn_UpdateRole.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_UpdateRole.Location = new System.Drawing.Point(122, 3);
+            this.Btn_UpdateRole.Name = "Btn_UpdateRole";
+            this.Btn_UpdateRole.Size = new System.Drawing.Size(98, 37);
+            this.Btn_UpdateRole.TabIndex = 55;
+            this.Btn_UpdateRole.Text = "EDITAR";
+            this.Btn_UpdateRole.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_UpdateRole.UseVisualStyleBackColor = true;
+
+            //
+            // Btn_SaveRole
+            //
+            this.Btn_SaveRole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_SaveRole.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SaveRole.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_SaveRole.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_SaveRole.Location = new System.Drawing.Point(0, 3);
+            this.Btn_SaveRole.Name = "Btn_SaveRole";
+            this.Btn_SaveRole.Size = new System.Drawing.Size(117, 37);
+            this.Btn_SaveRole.TabIndex = 54;
+            this.Btn_SaveRole.Text = "GUARDAR";
+            this.Btn_SaveRole.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_SaveRole.UseVisualStyleBackColor = true;
+
+            //
+            // Panel_Informacion0
+            //
+            this.Panel_Informacion0.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)));
+            this.Panel_Informacion0.BackColor = System.Drawing.Color.White;
+            this.Panel_Informacion0.Controls.Add(this.Txt_RoleDescription);
+            this.Panel_Informacion0.Controls.Add(this.Lbl_RoleDescription);
+            this.Panel_Informacion0.Controls.Add(this.Txt_RoleName);
+            this.Panel_Informacion0.Controls.Add(this.Lbl_RoleName);
+            this.Panel_Informacion0.Controls.Add(this.Lbl_Subtitulo0);
+            this.Panel_Informacion0.Location = new System.Drawing.Point(16, 100);
+            this.Panel_Informacion0.Name = "Panel_Informacion0";
+            this.Panel_Informacion0.Size = new System.Drawing.Size(384, 626);
+            this.Panel_Informacion0.TabIndex = 52;
+
+            //
+            // Lbl_Subtitulo0
+            //
+            this.Lbl_Subtitulo0.AutoSize = true;
+            this.Lbl_Subtitulo0.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Subtitulo0.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Subtitulo0.Image = global::SECRON.Properties.Resources.DescripcionItemBlanco25x25;
+            this.Lbl_Subtitulo0.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Subtitulo0.Location = new System.Drawing.Point(10, 10);
+            this.Lbl_Subtitulo0.Name = "Lbl_Subtitulo0";
+            this.Lbl_Subtitulo0.Size = new System.Drawing.Size(203, 20);
+            this.Lbl_Subtitulo0.TabIndex = 1;
+            this.Lbl_Subtitulo0.Text = "      DETALLES DEL ROL";
+            this.Lbl_Subtitulo0.TextAlign = System.Drawing.ContentAlignment.TopRight;
+
+            //
+            // Lbl_RoleName
+            //
+            this.Lbl_RoleName.AutoSize = true;
+            this.Lbl_RoleName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_RoleName.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_RoleName.Location = new System.Drawing.Point(10, 45);
+            this.Lbl_RoleName.Name = "Lbl_RoleName";
+            this.Lbl_RoleName.Size = new System.Drawing.Size(170, 20);
+            this.Lbl_RoleName.TabIndex = 1;
+            this.Lbl_RoleName.Text = "NOMBRE DEL ROL *";
+
+            //
+            // Txt_RoleName
+            //
+            this.Txt_RoleName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_RoleName.Location = new System.Drawing.Point(14, 68);
+            this.Txt_RoleName.MaxLength = 100;
+            this.Txt_RoleName.Name = "Txt_RoleName";
+            this.Txt_RoleName.Size = new System.Drawing.Size(356, 27);
+            this.Txt_RoleName.TabIndex = 1;
+
+            //
+            // Lbl_RoleDescription
+            //
+            this.Lbl_RoleDescription.AutoSize = true;
+            this.Lbl_RoleDescription.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_RoleDescription.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_RoleDescription.Location = new System.Drawing.Point(10, 106);
+            this.Lbl_RoleDescription.Name = "Lbl_RoleDescription";
+            this.Lbl_RoleDescription.Size = new System.Drawing.Size(190, 20);
+            this.Lbl_RoleDescription.TabIndex = 68;
+            this.Lbl_RoleDescription.Text = "DESCRIPCIÓN";
+
+            //
+            // Txt_RoleDescription
+            //
+            this.Txt_RoleDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)));
+            this.Txt_RoleDescription.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_RoleDescription.Location = new System.Drawing.Point(14, 129);
+            this.Txt_RoleDescription.MaxLength = 255;
+            this.Txt_RoleDescription.Multiline = true;
+            this.Txt_RoleDescription.Name = "Txt_RoleDescription";
+            this.Txt_RoleDescription.Size = new System.Drawing.Size(356, 477);
+            this.Txt_RoleDescription.TabIndex = 76;
+
+            //
+            // panel_TopRoles
+            //
+            this.panel_TopRoles.BackColor = System.Drawing.Color.White;
+            this.panel_TopRoles.Controls.Add(this.Lbl_Info0);
+            this.panel_TopRoles.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel_TopRoles.Location = new System.Drawing.Point(0, 0);
+            this.panel_TopRoles.Name = "panel_TopRoles";
+            this.panel_TopRoles.Size = new System.Drawing.Size(1184, 60);
+            this.panel_TopRoles.TabIndex = 54;
+
+            //
+            // Lbl_Info0
+            //
+            this.Lbl_Info0.AutoSize = true;
+            this.Lbl_Info0.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Info0.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Info0.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
+            this.Lbl_Info0.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Info0.Location = new System.Drawing.Point(15, 20);
+            this.Lbl_Info0.Name = "Lbl_Info0";
+            this.Lbl_Info0.Size = new System.Drawing.Size(869, 19);
+            this.Lbl_Info0.TabIndex = 51;
+            this.Lbl_Info0.Text = "       Registre los roles del sistema. El nombre del rol debe ser único.";
+            this.Lbl_Info0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+            ((System.ComponentModel.ISupportInitialize)(this.Tabla_Roles)).EndInit();
+
         }
 
         #endregion
@@ -1814,5 +2196,35 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox FiltroU1;
         private System.Windows.Forms.TextBox Txt_ValorBuscadoUsuario;
+
+        private System.Windows.Forms.Panel Panel_GestionarRoles;
+        private System.Windows.Forms.Label Lbl_InfoRoles;
+        private System.Windows.Forms.DataGridView Tabla_Roles;
+        private System.Windows.Forms.TextBox Txt_RoleName;
+        private System.Windows.Forms.TextBox Txt_RoleDescription;
+        private System.Windows.Forms.Label Lbl_RoleName;
+        private System.Windows.Forms.Label Lbl_RoleDescription;
+        private System.Windows.Forms.Button Btn_SaveRole;
+        private System.Windows.Forms.Button Btn_UpdateRole;
+        private System.Windows.Forms.Button Btn_InactiveRole;
+        private System.Windows.Forms.Button Btn_ClearRole;
+        private System.Windows.Forms.TextBox Txt_ValorBuscadoRoles;
+        private System.Windows.Forms.Button Btn_SearchRoles;
+        private System.Windows.Forms.Button Btn_CleanSearchRoles;
+        private System.Windows.Forms.Label Lbl_PaginasRoles;
+        private System.Windows.Forms.ComboBox FiltroRolesEstado;
+
+        // ====== DECLARACIÓN DE CAMPOS ======
+        private System.Windows.Forms.Panel Panel_Derecho0;
+        private System.Windows.Forms.Panel Panel_Izquierdo0;
+        private System.Windows.Forms.Panel panel_TopRoles;
+        private System.Windows.Forms.Panel PanelTabla0;
+        private System.Windows.Forms.Panel PanelToolStrip0;
+        private System.Windows.Forms.Panel Panel_Busqueda0;
+        private System.Windows.Forms.Panel panel_BotonesRoles;
+        private System.Windows.Forms.Panel Panel_Informacion0;
+        private System.Windows.Forms.Label Lbl_Info0;
+        private System.Windows.Forms.Label Lbl_TituloPanelIzquierdo0;
+        private System.Windows.Forms.Label Lbl_Subtitulo0;
     }
 }

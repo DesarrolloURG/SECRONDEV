@@ -524,7 +524,7 @@ namespace SECRON.Views
 
                 _categoriaSeleccionada = ConvertirAMayusculas(_categoriaSeleccionada);
 
-                int resultado = Ctrl_LocationCategories.ActualizarCategoria(_categoriaSeleccionada);
+                int resultado = Ctrl_LocationCategories.ActualizarCategoria(_categoriaSeleccionada, UserData.UserId);
 
                 if (resultado > 0)
                 {
@@ -568,7 +568,7 @@ namespace SECRON.Views
 
                 if (confirmacion != DialogResult.Yes) return;
 
-                int resultado = Ctrl_LocationCategories.InactivarCategoria(_categoriaSeleccionada.LocationCategoryId);
+                int resultado = Ctrl_LocationCategories.InactivarCategoria(_categoriaSeleccionada.LocationCategoryId, UserData.UserId);
 
                 if (resultado > 0)
                 {

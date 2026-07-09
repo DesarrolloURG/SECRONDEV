@@ -120,7 +120,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Actualizar rol
-        public static int ActualizarRol(Mdl_Roles rol)
+        public static int ActualizarRol(Mdl_Roles rol, int modifiedBy)
         {
             try
             {
@@ -132,6 +132,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@IsInactivation", false);
                     cmd.Parameters.AddWithValue("@RoleName", rol.RoleName ?? "");
                     cmd.Parameters.AddWithValue("@Description", (object)rol.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -144,8 +145,9 @@ namespace SECRON.Controllers
             }
         }
 
+
         // MÉTODO PRINCIPAL: Inactivar rol
-        public static int InactivarRol(int roleId)
+        public static int InactivarRol(int roleId, int modifiedBy)
         {
             try
             {
@@ -155,6 +157,7 @@ namespace SECRON.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@RoleId", roleId);
                     cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -341,6 +344,38 @@ namespace SECRON.Controllers
                 MessageBox.Show("Error al obtener permisos del rol: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return permisos;
+        }
+        // MÉTODO: Obtener TODOS los roles sin filtro de estado (para combo de filtro Activos/Inactivos)
+        public static List<Mdl_Roles> MostrarTodosLosRolesSinFiltro(int pageNumber = 1, int pageSize = 100)
+        {
+            List<Mdl_Roles> lista = new List<Mdl_Roles>();
+            try
+            {
+                int offset = (pageNumber - 1) * pageSize;
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"SELECT * FROM Roles
+                ORDER BY RoleName
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@offset", offset);
+                        cmd.Parameters.AddWithValue("@pageSize", pageSize);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(MapearRol(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener roles: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
         }
     }
 }

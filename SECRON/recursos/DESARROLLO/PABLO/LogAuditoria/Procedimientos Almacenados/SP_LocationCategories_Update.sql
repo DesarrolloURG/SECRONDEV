@@ -1,12 +1,12 @@
--- @IsInactivation = 1 => solo IsActive=0 (InactivarCategoria)
--- @IsInactivation = 0 => update normal (ActualizarCategoria)
--- Ninguno de los métodos originales recibe usuario, por eso no lleva @ctx
 CREATE OR ALTER PROCEDURE SP_LocationCategories_Update
     @LocationCategoryId INT, @IsInactivation BIT,
-    @CategoryCode VARCHAR(20) = NULL, @CategoryName VARCHAR(150) = NULL, @Description VARCHAR(255) = NULL
+    @CategoryCode VARCHAR(20) = NULL, @CategoryName VARCHAR(150) = NULL, @Description VARCHAR(255) = NULL,
+    @ModifiedBy INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @ctx BINARY(128) = CAST(CONVERT(BINARY(4), ISNULL(@ModifiedBy, 0)) AS BINARY(128));
+    SET CONTEXT_INFO @ctx;
 
     BEGIN TRANSACTION
     BEGIN TRY

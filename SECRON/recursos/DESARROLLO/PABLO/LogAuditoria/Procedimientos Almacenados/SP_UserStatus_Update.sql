@@ -2,10 +2,13 @@
 -- @IsInactivation = 0 => update normal (ActualizarEstadoUsuario)
 CREATE OR ALTER PROCEDURE SP_UserStatus_Update
     @StatusId INT, @IsInactivation BIT,
-    @StatusName VARCHAR(50) = NULL, @Description VARCHAR(255) = NULL
+    @StatusName VARCHAR(50) = NULL, @Description VARCHAR(255) = NULL,
+    @ModifiedBy INT
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @ctx BINARY(128) = CAST(CONVERT(BINARY(4), ISNULL(@ModifiedBy, 0)) AS BINARY(128));
+    SET CONTEXT_INFO @ctx;
 
     BEGIN TRANSACTION
     BEGIN TRY

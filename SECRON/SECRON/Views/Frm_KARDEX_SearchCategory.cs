@@ -21,6 +21,7 @@ namespace SECRON.Views
         public string SelectedCategoryCode { get; private set; }
         public string SelectedCategoryName { get; private set; }
         public string SelectedDescription { get; private set; }
+        public Mdl_Security_UserInfo UserData { get; set; }
 
         public Frm_KARDEX_SearchCategory()
         {
@@ -388,7 +389,7 @@ namespace SECRON.Views
                     CategoryName = Txt_UnitName.Text.Trim().ToUpper(),
                     Description = Txt_Description.Text.Trim().ToUpper(),
                     IsActive = true,
-                    CreatedBy = null   // Si luego expones UserData, aquí lo asignas
+                    CreatedBy = UserData?.UserId
                 };
 
                 int resultado = Ctrl_ItemCategories.RegistrarCategoria(nuevaCategoria);
@@ -453,7 +454,7 @@ namespace SECRON.Views
                     IsActive = true
                 };
 
-                int resultado = Ctrl_ItemCategories.ActualizarCategoria(categoria);
+                int resultado = Ctrl_ItemCategories.ActualizarCategoria(categoria, UserData.UserId);
 
                 if (resultado > 0)
                 {
@@ -495,7 +496,7 @@ namespace SECRON.Views
                 if (confirm != DialogResult.Yes)
                     return;
 
-                int resultado = Ctrl_ItemCategories.InactivarCategoria(SelectedCategoryId.Value);
+                int resultado = Ctrl_ItemCategories.InactivarCategoria(SelectedCategoryId.Value, UserData.UserId);
 
                 if (resultado > 0)
                 {

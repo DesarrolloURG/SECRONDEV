@@ -21,6 +21,8 @@ namespace SECRON.Views
         public string SelectedUnitCode { get; private set; }
         public string SelectedUnitName { get; private set; }
         public string SelectedAbbreviation { get; private set; }
+        // Datos del usuario autenticado (para auditoría)
+        public Mdl_Security_UserInfo UserData { get; set; }
 
         public Frm_KARDEX_SearchMeasurementUnits()
         {
@@ -386,7 +388,7 @@ namespace SECRON.Views
                     IsActive = true
                 };
 
-                int resultado = Ctrl_MeasurementUnits.RegistrarUnidad(nuevaUnidad);
+                int resultado = Ctrl_MeasurementUnits.RegistrarUnidad(nuevaUnidad, UserData.UserId);
 
                 if (resultado > 0)
                 {
@@ -440,7 +442,7 @@ namespace SECRON.Views
                     IsActive = true
                 };
 
-                int resultado = Ctrl_MeasurementUnits.ActualizarUnidad(unidad);
+                int resultado = Ctrl_MeasurementUnits.ActualizarUnidad(unidad, UserData.UserId);
 
                 if (resultado > 0)
                 {
@@ -482,7 +484,7 @@ namespace SECRON.Views
                 if (confirm != DialogResult.Yes)
                     return;
 
-                int resultado = Ctrl_MeasurementUnits.InactivarUnidad(SelectedUnitId.Value);
+                int resultado = Ctrl_MeasurementUnits.InactivarUnidad(SelectedUnitId.Value, UserData.UserId);
 
                 if (resultado > 0)
                 {

@@ -12,7 +12,7 @@ namespace SECRON.Controllers
     internal class Ctrl_TransferStatus
     {
         // Registrar estado
-        public static int RegistrarEstado(Mdl_TransferStatus estado)
+        public static int RegistrarEstado(Mdl_TransferStatus estado, int createdBy)
         {
             try
             {
@@ -23,6 +23,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@StatusName", estado.StatusName ?? "");
                     cmd.Parameters.AddWithValue("@Description", (object)estado.Description ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@IsActive", estado.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

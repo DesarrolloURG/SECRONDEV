@@ -932,7 +932,7 @@ namespace SECRON.Views
                 if (confirmacion != DialogResult.Yes) return;
 
                 int resultado = Ctrl_ItemWarehouseStock.ActualizarLimitesStock(
-                    _stockSeleccionado.ItemWarehouseStockId, nuevoMinimo, nuevoMaximo, nuevoReorden);
+                    _stockSeleccionado.ItemWarehouseStockId, nuevoMinimo, nuevoMaximo, nuevoReorden, UserData.UserId);
 
                 if (resultado > 0)
                 {

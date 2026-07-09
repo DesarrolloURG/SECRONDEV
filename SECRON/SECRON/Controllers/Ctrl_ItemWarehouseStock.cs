@@ -96,7 +96,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO: Actualizar límites de stock (MinimumStock, MaximumStock, ReorderPoint)
-        public static int ActualizarLimitesStock(int itemWarehouseStockId, decimal minimumStock, decimal maximumStock, decimal reorderPoint)
+        public static int ActualizarLimitesStock(int itemWarehouseStockId, decimal minimumStock, decimal maximumStock, decimal reorderPoint, int modifiedBy)
         {
             try
             {
@@ -108,6 +108,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@MinimumStock", minimumStock);
                     cmd.Parameters.AddWithValue("@MaximumStock", maximumStock);
                     cmd.Parameters.AddWithValue("@ReorderPoint", reorderPoint);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -148,7 +149,7 @@ namespace SECRON.Controllers
             };
         }
 
-        public static int ActualizarStockCompleto(Mdl_ItemWarehouseStock stock)
+        public static int ActualizarStockCompleto(Mdl_ItemWarehouseStock stock, int modifiedBy)
         {
             try
             {
@@ -160,6 +161,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@CurrentStock", stock.CurrentStock);
                     cmd.Parameters.AddWithValue("@MinimumStock", stock.MinimumStock);
                     cmd.Parameters.AddWithValue("@MaximumStock", stock.MaximumStock);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -172,7 +174,7 @@ namespace SECRON.Controllers
             }
         }
 
-        public static int EliminarStockDeBodega(int itemWarehouseStockId)
+        public static int EliminarStockDeBodega(int itemWarehouseStockId, int deletedBy)
         {
             try
             {
@@ -181,6 +183,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@ItemWarehouseStockId", itemWarehouseStockId);
+                    cmd.Parameters.AddWithValue("@DeletedBy", deletedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

@@ -1178,7 +1178,7 @@ namespace SECRON.Views
             if (!Btn_SearchCategory.Enabled) return;
             try
             {
-                using (var frm = new Frm_KARDEX_SearchCategory())
+                using (var frm = new Frm_KARDEX_SearchCategory { UserData = this.UserData })
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
                     if (frm.ShowDialog(this) == DialogResult.OK)
@@ -1241,7 +1241,7 @@ namespace SECRON.Views
             if (!Btn_SearchMeasurementUnits.Enabled) return;
             try
             {
-                using (var frm = new Frm_KARDEX_SearchMeasurementUnits())
+                using (var frm = new Frm_KARDEX_SearchMeasurementUnits { UserData = this.UserData })
                 {
                     frm.StartPosition = FormStartPosition.CenterParent;
                     if (frm.ShowDialog(this) == DialogResult.OK)

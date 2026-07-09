@@ -284,7 +284,7 @@ namespace SECRON.Controllers
         }
 
         // ActualizarSaldo que verifica el SIGNO
-        public static int ActualizarSaldo(string accountName, decimal debit, decimal credit)
+        public static int ActualizarSaldo(string accountName, decimal debit, decimal credit, int modifiedBy)
         {
             try
             {
@@ -295,6 +295,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@AccountName", accountName ?? "");
                     cmd.Parameters.AddWithValue("@Debit", debit);
                     cmd.Parameters.AddWithValue("@Credit", credit);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
