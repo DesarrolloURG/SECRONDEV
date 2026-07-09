@@ -121,7 +121,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Actualizar estado de permiso (Conceder/Revocar)
-        public static int ActualizarEstadoPermiso(int rolePermissionId, bool isGranted)
+        public static int ActualizarEstadoPermiso(int rolePermissionId, bool isGranted, int modifiedBy)
         {
             try
             {
@@ -131,6 +131,7 @@ namespace SECRON.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@RolePermissionId", rolePermissionId);
                     cmd.Parameters.AddWithValue("@IsGranted", isGranted);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -144,7 +145,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Eliminar permiso de rol
-        public static int EliminarPermisoDeRol(int rolePermissionId)
+        public static int EliminarPermisoDeRol(int rolePermissionId, int deletedBy)
         {
             try
             {
@@ -153,6 +154,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@RolePermissionId", rolePermissionId);
+                    cmd.Parameters.AddWithValue("@DeletedBy", deletedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -166,7 +168,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Eliminar todos los permisos de un rol
-        public static int EliminarTodosLosPermisosDeRol(int roleId)
+        public static int EliminarTodosLosPermisosDeRol(int roleId, int deletedBy)
         {
             try
             {
@@ -175,6 +177,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@RoleId", roleId);
+                    cmd.Parameters.AddWithValue("@DeletedBy", deletedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

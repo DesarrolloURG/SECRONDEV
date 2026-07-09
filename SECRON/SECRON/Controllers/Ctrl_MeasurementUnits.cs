@@ -14,7 +14,7 @@ namespace SECRON.Controllers
     internal class Ctrl_MeasurementUnits
     {
         // MÉTODO PRINCIPAL: Registrar unidad
-        public static int RegistrarUnidad(Mdl_MeasurementUnits unidad)
+        public static int RegistrarUnidad(Mdl_MeasurementUnits unidad, int createdBy)
         {
             try
             {
@@ -26,6 +26,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@UnitName", unidad.UnitName ?? "");
                     cmd.Parameters.AddWithValue("@Abbreviation", unidad.Abbreviation ?? "");
                     cmd.Parameters.AddWithValue("@IsActive", unidad.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -67,7 +68,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Actualizar unidad
-        public static int ActualizarUnidad(Mdl_MeasurementUnits unidad)
+        public static int ActualizarUnidad(Mdl_MeasurementUnits unidad, int modifiedBy)
         {
             try
             {
@@ -80,6 +81,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@UnitCode", unidad.UnitCode ?? "");
                     cmd.Parameters.AddWithValue("@UnitName", unidad.UnitName ?? "");
                     cmd.Parameters.AddWithValue("@Abbreviation", unidad.Abbreviation ?? "");
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -93,7 +95,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Inactivar unidad
-        public static int InactivarUnidad(int unitId)
+        public static int InactivarUnidad(int unitId, int modifiedBy)
         {
             try
             {
@@ -103,6 +105,7 @@ namespace SECRON.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UnitId", unitId);
                     cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

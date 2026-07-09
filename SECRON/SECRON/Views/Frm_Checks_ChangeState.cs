@@ -840,16 +840,16 @@ namespace SECRON.Views
                         Credit = detalleOriginal.Debit,   // SE INVIERTEN
                         Remarks = $"REVERSO POR ANULACIÓN CHEQUE {cheque.CheckNumber}"
                     };
-
-                    if (Ctrl_AccountingEntryDetails.RegistrarDetalle(detalleReverso) == 0)
-                    {
+                    
+                    if (Ctrl_AccountingEntryDetails.RegistrarDetalle(detalleReverso, UserData.UserId) == 0)
+                        {
                         MessageBox.Show($"ERROR AL REGISTRAR DETALLE DE REVERSO",
                             "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
 
                     string nombreCuenta = ObtenerNombreCuenta(detalleOriginal.AccountId);
-                    Ctrl_Accounts.ActualizarSaldo(nombreCuenta, detalleReverso.Debit, detalleReverso.Credit);
+                    Ctrl_Accounts.ActualizarSaldo(nombreCuenta, detalleReverso.Debit, detalleReverso.Credit, UserData.UserId);
                 }
 
                 // ===== 5. AUDITORÍA =====

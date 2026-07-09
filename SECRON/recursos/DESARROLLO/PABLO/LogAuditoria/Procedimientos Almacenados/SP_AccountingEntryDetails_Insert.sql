@@ -1,9 +1,11 @@
 CREATE OR ALTER PROCEDURE SP_AccountingEntryDetails_Insert
     @EntryMasterId INT, @AccountId INT, @Debit DECIMAL(18,2),
-    @Credit DECIMAL(18,2), @Remarks VARCHAR(255) = NULL
+    @Credit DECIMAL(18,2), @Remarks VARCHAR(255) = NULL, @CreatedBy INT
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @ctx BINARY(128) = CAST(CONVERT(BINARY(4), ISNULL(@CreatedBy, 0)) AS BINARY(128));
+    SET CONTEXT_INFO @ctx;
 
     BEGIN TRANSACTION
     BEGIN TRY

@@ -90,7 +90,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Eliminar partida
-        public static int EliminarPartida(int entryMasterId)
+        public static int EliminarPartida(int entryMasterId, int deletedBy)
         {
             try
             {
@@ -99,6 +99,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@EntryMasterId", entryMasterId);
+                    cmd.Parameters.AddWithValue("@DeletedBy", deletedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

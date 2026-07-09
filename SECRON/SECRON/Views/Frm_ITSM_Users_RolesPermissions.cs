@@ -29,6 +29,10 @@ namespace SECRON.Views
                 await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
                 ConfigurarControlesPorPermisos();
             }
+
+            // Forzar recalculo de layout ahora que el formulario ya tiene su tamaño final
+            Panel_GestionarRoles.PerformLayout();
+            Panel_Derecho0.PerformLayout();
         }
 
         public Frm_ITSM_Users_RolesPermissions()
@@ -42,9 +46,9 @@ namespace SECRON.Views
         // Inicializar pestañas metodo 
         private void InicializarPestanas()
         {
-            // Crear pestañas con TabConfig - ¡SOLO 3 LÍNEAS!
             string[] nombresPestanas = new string[]
             {
+                "GESTIONAR ROLES",
                 "ASIGNAR ROL A USUARIOS",
                 "GESTIONAR PERMISOS DE ROLES",
                 "GESTIONAR PERMISOS",
@@ -53,10 +57,11 @@ namespace SECRON.Views
 
             tabControl = TabConfig.CrearTabControl(this, nombresPestanas, 275, 50, false);
         }
+
         // Cargar contenido de las pestañas
         private void CargarContenidoPestanas()
         {
-            // Cargar contenido de cada pestaña
+            CargarTab_GestionarRoles();
             CargarTab_AsignarRoles();
             CargarTab_GestionarPermisosRoles();
             CargarTab_GestionarPermisos();
@@ -68,16 +73,14 @@ namespace SECRON.Views
         // Pestaña Asignar Roles
         private void CargarTab_AsignarRoles()
         {
-            Panel panel = TabConfig.ObtenerPanel(tabControl, 0);
+            Panel panel = TabConfig.ObtenerPanel(tabControl, 1);   // era 0
             panel.Controls.Add(Panel_Asignar);
-
-            // Configurar la pestaña completa
             ConfigurarPestaña1_AsignarRoles();
         }
         // Pestaña Gestionar Permisos de Roles
         private void CargarTab_GestionarPermisosRoles()
         {
-            Panel panel = TabConfig.ObtenerPanel(tabControl, 1);
+            Panel panel = TabConfig.ObtenerPanel(tabControl, 2);
             panel.Controls.Add(Panel_PermisosRoles);
 
             // Configurar la pestaña completa
@@ -86,7 +89,7 @@ namespace SECRON.Views
         // Pestaña Gestionar Permisos
         private void CargarTab_GestionarPermisos()
         {
-            Panel panel = TabConfig.ObtenerPanel(tabControl, 2);
+            Panel panel = TabConfig.ObtenerPanel(tabControl, 3);
             panel.Controls.Add(Panel_GestionarPermisos);
 
             // Configurar la pestaña completa
@@ -95,7 +98,7 @@ namespace SECRON.Views
         // Pestaña Permisos Adicionales
         private void CargarTab_PermisosAdicionales()
         {
-            Panel panel = TabConfig.ObtenerPanel(tabControl, 3);
+            Panel panel = TabConfig.ObtenerPanel(tabControl, 4);
             panel.Controls.Add(Panel_PermisosAdicionales);
 
             // Configurar la pestaña completa
@@ -122,6 +125,14 @@ namespace SECRON.Views
             AsignarEventosPestaña1();
         }
 
+        private void CargarTab_GestionarRoles()
+        {
+            Panel panel = TabConfig.ObtenerPanel(tabControl, 0);
+            panel.Dock = DockStyle.Fill;
+            panel.Controls.Add(Panel_GestionarRoles);
+
+            ConfigurarPestañaRoles_GestionarRoles();
+        }
         private void ConfigurarTabla1()
         {
             Tabla1.Columns.Clear();
@@ -393,7 +404,7 @@ namespace SECRON.Views
 
                         if (Ctrl_Users.ActualizarUsuario(usuario) > 0)
                         {
-                            Ctrl_UserPermissions.EliminarTodosLosPermisosDeUsuario(userId);
+                            Ctrl_UserPermissions.EliminarTodosLosPermisosDeUsuario(userId, UserData.UserId);
                             exitosos++;
                         }
                     }
@@ -904,7 +915,7 @@ namespace SECRON.Views
 
                         if (permisoExistente != null && !permisoExistente.IsGranted)
                         {
-                            if (Ctrl_RolePermissions.ActualizarEstadoPermiso(permisoExistente.RolePermissionId, true) > 0)
+                            if (Ctrl_RolePermissions.ActualizarEstadoPermiso(permisoExistente.RolePermissionId, true, UserData.UserId) > 0)
                             {
                                 exitosos++;
                             }
@@ -990,7 +1001,7 @@ namespace SECRON.Views
 
                         if (permisoExistente != null && !permisoExistente.IsGranted)
                         {
-                            if (Ctrl_RolePermissions.ActualizarEstadoPermiso(permisoExistente.RolePermissionId, true) > 0)
+                            if (Ctrl_RolePermissions.ActualizarEstadoPermiso(permisoExistente.RolePermissionId, true, UserData.UserId) > 0)
                             {
                                 exitosos++;
                             }
@@ -1062,7 +1073,7 @@ namespace SECRON.Views
                 foreach (int rolePermissionId in rolePermissionsSeleccionados)
                 {
                     // Opción 1: Actualizar IsGranted = false (recomendado para mantener historial)
-                    if (Ctrl_RolePermissions.ActualizarEstadoPermiso(rolePermissionId, false) > 0)
+                    if (Ctrl_RolePermissions.ActualizarEstadoPermiso(rolePermissionId, false, UserData.UserId) > 0)
                     {
                         exitosos++;
                     }
@@ -1127,7 +1138,7 @@ namespace SECRON.Views
                 foreach (DataGridViewRow row in Tabla4.Rows)
                 {
                     int rolePermissionId = Convert.ToInt32(row.Cells["RolePermissionId"].Value);
-                    if (Ctrl_RolePermissions.ActualizarEstadoPermiso(rolePermissionId, false) > 0)
+                    if (Ctrl_RolePermissions.ActualizarEstadoPermiso(rolePermissionId, false, UserData.UserId) > 0)
                     {
                         exitosos++;
                     }
@@ -1444,7 +1455,7 @@ namespace SECRON.Views
                 };
 
                 // Registrar en base de datos
-                int resultado = Ctrl_Permissions.RegistrarPermiso(nuevoPermiso);
+                int resultado = Ctrl_Permissions.RegistrarPermiso(nuevoPermiso, UserData.UserId);
 
                 this.Cursor = Cursors.Default;
 
@@ -1531,7 +1542,7 @@ namespace SECRON.Views
                 };
 
                 // Actualizar en base de datos
-                int resultado = Ctrl_Permissions.ActualizarPermiso(permisoActualizado);
+                int resultado = Ctrl_Permissions.ActualizarPermiso(permisoActualizado, UserData.UserId);
 
                 this.Cursor = Cursors.Default;
 
@@ -1582,7 +1593,7 @@ namespace SECRON.Views
                 this.Cursor = Cursors.WaitCursor;
 
                 // Inactivar en base de datos
-                int resultado = Ctrl_Permissions.InactivarPermiso(_permisoSeleccionadoId);
+                int resultado = Ctrl_Permissions.InactivarPermiso(_permisoSeleccionadoId, UserData.UserId);
 
                 this.Cursor = Cursors.Default;
 
@@ -2386,7 +2397,7 @@ namespace SECRON.Views
                 int exitosos = 0;
                 foreach (int userPermissionId in permisosSeleccionados)
                 {
-                    if (Ctrl_UserPermissions.EliminarPermisoDeUsuario(userPermissionId) > 0)
+                    if (Ctrl_UserPermissions.EliminarPermisoDeUsuario(userPermissionId, UserData.UserId) > 0)
                     {
                         exitosos++;
                     }
@@ -2628,8 +2639,389 @@ namespace SECRON.Views
             // Permisos adicionales a usuario
             AplicarEstadoBotonPorPermiso(Btn_Add4, "FA_ITMS_TECH_ROLES_UPDATE");
             AplicarEstadoBotonPorPermiso(Btn_Remove4, "FA_ITMS_TECH_ROLES_UPDATE");
+
+            // CRUD Roles (pestaña nueva)
+            AplicarEstadoBotonPorPermiso(Btn_SearchRoles, "FA_ITMS_TECH_ROLES_READ");
+            AplicarEstadoBotonPorPermiso(Btn_SaveRole, "FA_ITMS_TECH_ROLES_CREATE");
+            AplicarEstadoBotonPorPermiso(Btn_UpdateRole, "FA_ITMS_TECH_ROLES_UPDATE");
+            AplicarEstadoBotonPorPermiso(Btn_InactiveRole, "FA_ITMS_TECH_ROLES_INACTIVE");
         }
 
         #endregion SistemaDePermisos
+
+        #region ConfiguracionInicialPestañaRoles
+        private int _rolSeleccionadoId = 0;
+
+        private void ConfigurarPestañaRoles_GestionarRoles()
+        {
+            ConfigurarEtiquetaInformativaPestañaRoles();
+            ConfigurarTablaRoles();
+            ConfigurarFiltroRolesEstado();
+            CargarRolesEnTablaRoles();
+            AsignarEventosPestañaRoles();
+            LimpiarCamposRol();
+        }
+
+        private void ConfigurarFiltroRolesEstado()
+        {
+            FiltroRolesEstado.Items.Clear();
+            FiltroRolesEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            FiltroRolesEstado.Items.AddRange(new object[] { "TODOS LOS ESTADOS", "ACTIVOS", "INACTIVOS" });
+            FiltroRolesEstado.SelectedIndex = 0;
+        }
+
+        private void ConfigurarEtiquetaInformativaPestañaRoles()
+        {
+            Lbl_Info0.AutoSize = false;
+            Lbl_Info0.Size = new Size(850, 40);
+            Lbl_Info0.Text = "        Registre los roles del sistema. El nombre del rol debe ser único.";
+            Lbl_Info0.BackColor = Color.FromArgb(217, 237, 247);
+            Lbl_Info0.ForeColor = Color.FromArgb(31, 45, 61);
+            Lbl_Info0.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            Lbl_Info0.Padding = new Padding(10, 8, 10, 8);
+            Lbl_Info0.BorderStyle = BorderStyle.FixedSingle;
+        }
+
+        private void ConfigurarTablaRoles()
+        {
+            Tabla_Roles.Columns.Clear();
+
+            Tabla_Roles.Columns.Add("RoleId", "ID");
+            Tabla_Roles.Columns.Add("RoleName", "NOMBRE DEL ROL");
+            Tabla_Roles.Columns.Add("Description", "DESCRIPCIÓN");
+            Tabla_Roles.Columns.Add("IsActive", "ESTADO");
+
+            Tabla_Roles.Columns["RoleId"].Visible = false;
+
+            Tabla_Roles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            Tabla_Roles.MultiSelect = false;
+            Tabla_Roles.ReadOnly = true;
+            Tabla_Roles.AllowUserToAddRows = false;
+            Tabla_Roles.AllowUserToDeleteRows = false;
+            Tabla_Roles.RowHeadersVisible = false;
+            Tabla_Roles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            Tabla_Roles.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(94, 53, 177);
+            Tabla_Roles.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            Tabla_Roles.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Tabla_Roles.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            Tabla_Roles.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 143, 109);
+            Tabla_Roles.DefaultCellStyle.SelectionForeColor = Color.White;
+            Tabla_Roles.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            Tabla_Roles.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+
+            Tabla_Roles.RowTemplate.Height = 35;
+            Tabla_Roles.ColumnHeadersHeight = 40;
+        }
+
+        private void AsignarEventosPestañaRoles()
+        {
+            Btn_SaveRole.Click += Btn_SaveRole_Click;
+            Btn_UpdateRole.Click += Btn_UpdateRole_Click;
+            Btn_InactiveRole.Click += Btn_InactiveRole_Click;
+            Btn_ClearRole.Click += Btn_ClearRole_Click;
+
+            Btn_SearchRoles.Click += Btn_SearchRoles_Click;
+            Btn_CleanSearchRoles.Click += Btn_CleanSearchRoles_Click;
+
+            Txt_ValorBuscadoRoles.KeyDown += Txt_ValorBuscadoRoles_KeyDown;
+
+            Tabla_Roles.SelectionChanged += Tabla_Roles_SelectionChanged;
+
+        }
+        #endregion ConfiguracionInicialPestañaRoles
+
+        #region CargaDatosRoles
+
+        private void CargarRolesEnTablaRoles(string filtro = "")
+        {
+            try
+            {
+                Tabla_Roles.Rows.Clear();
+
+                List<Mdl_Roles> roles = Ctrl_Roles.MostrarTodosLosRolesSinFiltro(1, 10000);
+
+                if (!string.IsNullOrWhiteSpace(filtro))
+                {
+                    string texto = filtro.ToUpper();
+                    roles = roles.Where(r =>
+                        (r.RoleName?.ToUpper().Contains(texto) ?? false) ||
+                        (r.Description?.ToUpper().Contains(texto) ?? false)).ToList();
+                }
+
+                string estadoSeleccionado = FiltroRolesEstado.SelectedItem?.ToString() ?? "TODOS LOS ESTADOS";
+                if (estadoSeleccionado == "ACTIVOS")
+                    roles = roles.Where(r => r.IsActive).ToList();
+                else if (estadoSeleccionado == "INACTIVOS")
+                    roles = roles.Where(r => !r.IsActive).ToList();
+
+                foreach (var rol in roles)
+                {
+                    string estado = rol.IsActive ? "ACTIVO" : "INACTIVO";
+
+                    int rowIndex = Tabla_Roles.Rows.Add(
+                        rol.RoleId,
+                        rol.RoleName,
+                        rol.Description ?? "",
+                        estado
+                    );
+
+                    if (!rol.IsActive)
+                        Tabla_Roles.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 200, 200);
+                }
+
+                Lbl_PaginasRoles.Text = $"MOSTRANDO {roles.Count} ROLES";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar roles: {ex.Message}",
+                               "Error SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LimpiarCamposRol()
+        {
+            _rolSeleccionadoId = 0;
+            Txt_RoleName.Clear();
+            Txt_RoleDescription.Clear();
+
+            AplicarEstadoBotonPorPermiso(Btn_SaveRole, "FA_ITMS_TECH_ROLES_CREATE");
+            Btn_UpdateRole.Enabled = false;
+            Btn_InactiveRole.Enabled = false;
+        }
+        #endregion CargaDatosRoles
+
+        #region EventosPestañaRoles
+        private void Tabla_Roles_SelectionChanged(object sender, EventArgs e)
+        {
+            if (Tabla_Roles.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = Tabla_Roles.SelectedRows[0];
+
+                _rolSeleccionadoId = Convert.ToInt32(row.Cells["RoleId"].Value);
+
+                var rol = Ctrl_Roles.ObtenerRolPorId(_rolSeleccionadoId);
+
+                if (rol != null)
+                {
+                    Txt_RoleName.Text = rol.RoleName;
+                    Txt_RoleDescription.Text = rol.Description ?? "";
+
+                    Btn_SaveRole.Enabled = false;
+                    AplicarEstadoBotonPorPermiso(Btn_UpdateRole, "FA_ITMS_TECH_ROLES_UPDATE");
+                    AplicarEstadoBotonPorPermiso(Btn_InactiveRole, "FA_ITMS_TECH_ROLES_INACTIVE");
+                }
+            }
+        }
+
+        private void Btn_SaveRole_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Txt_RoleName.Text))
+                {
+                    MessageBox.Show("EL NOMBRE DEL ROL ES OBLIGATORIO", "VALIDACIÓN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Txt_RoleName.Focus();
+                    return;
+                }
+
+                if (!Ctrl_Roles.ValidarNombreRolUnico(Txt_RoleName.Text.Trim().ToUpper()))
+                {
+                    MessageBox.Show("EL NOMBRE DEL ROL YA EXISTE", "VALIDACIÓN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Txt_RoleName.Focus();
+                    return;
+                }
+
+                var confirmacion = MessageBox.Show(
+                    "¿ESTÁ SEGURO DE REGISTRAR ESTE ROL?",
+                    "CONFIRMAR REGISTRO",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirmacion == DialogResult.No) return;
+
+                this.Cursor = Cursors.WaitCursor;
+
+                Mdl_Roles nuevoRol = new Mdl_Roles
+                {
+                    RoleName = Txt_RoleName.Text.Trim().ToUpper(),
+                    Description = string.IsNullOrWhiteSpace(Txt_RoleDescription.Text) ? null : Txt_RoleDescription.Text.Trim(),
+                    IsActive = true,
+                    CreatedBy = UserData?.UserId
+                };
+
+                int resultado = Ctrl_Roles.RegistrarRol(nuevoRol);
+
+                this.Cursor = Cursors.Default;
+
+                if (resultado > 0)
+                {
+                    MessageBox.Show("✓ ROL REGISTRADO CORRECTAMENTE", "ÉXITO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LimpiarCamposRol();
+                    CargarRolesEnTablaRoles();
+                }
+                else
+                {
+                    MessageBox.Show("NO SE PUDO REGISTRAR EL ROL", "ERROR",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Default;
+                MessageBox.Show($"ERROR AL REGISTRAR ROL: {ex.Message}",
+                    "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Btn_UpdateRole_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_rolSeleccionadoId == 0)
+                {
+                    MessageBox.Show("DEBE SELECCIONAR UN ROL DE LA TABLA", "VALIDACIÓN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(Txt_RoleName.Text))
+                {
+                    MessageBox.Show("EL NOMBRE DEL ROL ES OBLIGATORIO", "VALIDACIÓN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Txt_RoleName.Focus();
+                    return;
+                }
+
+                if (!Ctrl_Roles.ValidarNombreRolUnico(Txt_RoleName.Text.Trim().ToUpper(), _rolSeleccionadoId))
+                {
+                    MessageBox.Show("EL NOMBRE DEL ROL YA EXISTE", "VALIDACIÓN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Txt_RoleName.Focus();
+                    return;
+                }
+
+                var confirmacion = MessageBox.Show(
+                    "¿ESTÁ SEGURO DE ACTUALIZAR ESTE ROL?",
+                    "CONFIRMAR ACTUALIZACIÓN",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirmacion == DialogResult.No) return;
+
+                this.Cursor = Cursors.WaitCursor;
+
+                Mdl_Roles rolActualizado = new Mdl_Roles
+                {
+                    RoleId = _rolSeleccionadoId,
+                    RoleName = Txt_RoleName.Text.Trim().ToUpper(),
+                    Description = string.IsNullOrWhiteSpace(Txt_RoleDescription.Text) ? null : Txt_RoleDescription.Text.Trim()
+                };
+
+                int resultado = Ctrl_Roles.ActualizarRol(rolActualizado, UserData.UserId);
+
+                this.Cursor = Cursors.Default;
+
+                if (resultado > 0)
+                {
+                    MessageBox.Show("✓ ROL ACTUALIZADO CORRECTAMENTE", "ÉXITO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LimpiarCamposRol();
+                    CargarRolesEnTablaRoles();
+                }
+                else
+                {
+                    MessageBox.Show("NO SE PUDO ACTUALIZAR EL ROL", "ERROR",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Default;
+                MessageBox.Show($"ERROR AL ACTUALIZAR ROL: {ex.Message}",
+                    "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Btn_InactiveRole_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_rolSeleccionadoId == 0)
+                {
+                    MessageBox.Show("DEBE SELECCIONAR UN ROL DE LA TABLA", "VALIDACIÓN",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var confirmacion = MessageBox.Show(
+                    $"¿ESTÁ SEGURO DE INACTIVAR EL ROL '{Txt_RoleName.Text}'?\n\n" +
+                    "NOTA: Los usuarios asignados a este rol podrían verse afectados.",
+                    "CONFIRMAR INACTIVACIÓN",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (confirmacion == DialogResult.No) return;
+
+                this.Cursor = Cursors.WaitCursor;
+
+                int resultado = Ctrl_Roles.InactivarRol(_rolSeleccionadoId, UserData.UserId);
+
+                this.Cursor = Cursors.Default;
+
+                if (resultado > 0)
+                {
+                    MessageBox.Show("✓ ROL INACTIVADO CORRECTAMENTE", "ÉXITO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    LimpiarCamposRol();
+                    CargarRolesEnTablaRoles();
+                }
+                else
+                {
+                    MessageBox.Show("NO SE PUDO INACTIVAR EL ROL", "ERROR",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Default;
+                MessageBox.Show($"ERROR AL INACTIVAR ROL: {ex.Message}",
+                    "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Btn_ClearRole_Click(object sender, EventArgs e)
+        {
+            LimpiarCamposRol();
+        }
+
+        private void Btn_SearchRoles_Click(object sender, EventArgs e)
+        {
+            string filtro = Txt_ValorBuscadoRoles.Text.Trim();
+            CargarRolesEnTablaRoles(filtro);
+        }
+
+        private void Btn_CleanSearchRoles_Click(object sender, EventArgs e)
+        {
+            Txt_ValorBuscadoRoles.Clear();
+            CargarRolesEnTablaRoles();
+        }
+
+        private void Txt_ValorBuscadoRoles_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                Btn_SearchRoles_Click(sender, e);
+            }
+        }
+        #endregion EventosPestañaRoles
     }
 }

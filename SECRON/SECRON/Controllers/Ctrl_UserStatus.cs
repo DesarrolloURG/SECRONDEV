@@ -14,7 +14,7 @@ namespace SECRON.Controllers
     internal class Ctrl_UserStatus
     {
         // MÉTODO PRINCIPAL: Registrar estado de usuario
-        public static int RegistrarEstadoUsuario(Mdl_UserStatus estado)
+        public static int RegistrarEstadoUsuario(Mdl_UserStatus estado, int createdBy)
         {
             try
             {
@@ -25,6 +25,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@StatusName", estado.StatusName ?? "");
                     cmd.Parameters.AddWithValue("@Description", (object)estado.Description ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@IsActive", estado.IsActive);
+                    cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -119,7 +120,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Actualizar estado de usuario
-        public static int ActualizarEstadoUsuario(Mdl_UserStatus estado)
+        public static int ActualizarEstadoUsuario(Mdl_UserStatus estado, int modifiedBy)
         {
             try
             {
@@ -131,6 +132,7 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@IsInactivation", false);
                     cmd.Parameters.AddWithValue("@StatusName", estado.StatusName ?? "");
                     cmd.Parameters.AddWithValue("@Description", (object)estado.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -144,7 +146,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Inactivar estado de usuario
-        public static int InactivarEstadoUsuario(int statusId)
+        public static int InactivarEstadoUsuario(int statusId, int modifiedBy)
         {
             try
             {
@@ -154,6 +156,7 @@ namespace SECRON.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@StatusId", statusId);
                     cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);

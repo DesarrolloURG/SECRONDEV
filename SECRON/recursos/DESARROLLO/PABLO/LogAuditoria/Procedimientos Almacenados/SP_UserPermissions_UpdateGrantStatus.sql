@@ -1,9 +1,10 @@
--- Método original no recibe usuario, por eso no lleva @ctx
 CREATE OR ALTER PROCEDURE SP_UserPermissions_UpdateGrantStatus
-    @UserPermissionId INT, @IsGranted BIT
+    @UserPermissionId INT, @IsGranted BIT, @ModifiedBy INT
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @ctx BINARY(128) = CAST(CONVERT(BINARY(4), ISNULL(@ModifiedBy, 0)) AS BINARY(128));
+    SET CONTEXT_INFO @ctx;
 
     BEGIN TRANSACTION
     BEGIN TRY

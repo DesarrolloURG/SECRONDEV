@@ -1,12 +1,16 @@
 CREATE OR ALTER PROCEDURE SP_Checks_MarkLastComplement
-    @CheckNumber VARCHAR(20)
+    @CheckNumber VARCHAR(20), @ModifiedBy INT
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @ctx BINARY(128) = CAST(CONVERT(BINARY(4), ISNULL(@ModifiedBy, 0)) AS BINARY(128));
+    SET CONTEXT_INFO @ctx;
+
     BEGIN TRANSACTION
     BEGIN TRY
         UPDATE Checks SET LastComplement = 1 WHERE CheckNumber = @CheckNumber AND IsActive = 1;
         DECLARE @rows INT = @@ROWCOUNT;
+
         COMMIT TRANSACTION; SELECT @rows;
     END TRY
     BEGIN CATCH

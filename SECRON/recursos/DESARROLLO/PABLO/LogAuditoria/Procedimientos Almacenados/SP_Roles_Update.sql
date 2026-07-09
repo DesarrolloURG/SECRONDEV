@@ -1,12 +1,12 @@
--- @IsInactivation = 1 => solo IsActive=0 (InactivarRol)
--- @IsInactivation = 0 => update normal (ActualizarRol)
--- Ninguno de los métodos originales recibe usuario, por eso no lleva @ctx
 CREATE OR ALTER PROCEDURE SP_Roles_Update
     @RoleId INT, @IsInactivation BIT,
-    @RoleName VARCHAR(100) = NULL, @Description VARCHAR(255) = NULL
+    @RoleName VARCHAR(100) = NULL, @Description VARCHAR(255) = NULL,
+    @ModifiedBy INT
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
+    DECLARE @ctx BINARY(128) = CAST(CONVERT(BINARY(4), ISNULL(@ModifiedBy, 0)) AS BINARY(128));
+    SET CONTEXT_INFO @ctx;
 
     BEGIN TRANSACTION
     BEGIN TRY

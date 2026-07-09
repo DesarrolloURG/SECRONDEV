@@ -576,8 +576,8 @@ namespace SECRON.Views
                             return;
 
                         // SUSTITUIR: Eliminar el prioritario anterior
-                        if (!Ctrl_CheckControl.EliminarControl(controlPrioritarioExistente.CheckControlId))
-                        {
+                        if (!Ctrl_CheckControl.EliminarControl(controlPrioritarioExistente.CheckControlId, _frmPadre.UserData.UserId))
+                            {
                             MessageBox.Show("ERROR AL ELIMINAR RANGO PRIORITARIO ANTERIOR",
                                           "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
@@ -599,7 +599,7 @@ namespace SECRON.Views
                             return;
 
                         // SUSTITUIR: Eliminar el normal anterior
-                        if (!Ctrl_CheckControl.EliminarControl(controlNormalExistente.CheckControlId))
+                        if (!Ctrl_CheckControl.EliminarControl(controlNormalExistente.CheckControlId, _frmPadre.UserData.UserId))
                         {
                             MessageBox.Show("ERROR AL ELIMINAR RANGO ANTERIOR",
                                           "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -745,7 +745,7 @@ namespace SECRON.Views
                 if (confirmacion == DialogResult.No)
                     return;
 
-                if (Ctrl_CheckControl.EliminarControl(_rangoSeleccionadoId))
+                if (Ctrl_CheckControl.EliminarControl(_rangoSeleccionadoId, _frmPadre.UserData.UserId))
                 {
                     MessageBox.Show("RANGO ELIMINADO CORRECTAMENTE",
                                   "ÉXITO", MessageBoxButtons.OK, MessageBoxIcon.Information);

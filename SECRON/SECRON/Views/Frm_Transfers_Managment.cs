@@ -2986,15 +2986,15 @@ namespace SECRON.Views
                             Credit = abono
                         };
 
-                        if (Ctrl_AccountingEntryDetails.RegistrarDetalle(detalle) == 0)
-                        {
+                        if (Ctrl_AccountingEntryDetails.RegistrarDetalle(detalle, UserData.UserId) == 0)
+                            {
                             MessageBox.Show($"ERROR AL REGISTRAR DETALLE CONTABLE: {nombreCuenta}", "ERROR",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return false;
                         }
 
                         // Actualizar saldo de la cuenta
-                        Ctrl_Accounts.ActualizarSaldo(nombreCuenta, cargo, abono);
+                        Ctrl_Accounts.ActualizarSaldo(nombreCuenta, cargo, abono, UserData.UserId);
                     }
                 }
 

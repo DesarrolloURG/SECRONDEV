@@ -70,7 +70,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PRINCIPAL: Incrementar contador
-        public static int SiguienteCheque(int userId)
+        public static int SiguienteCheque(int userId, int modifiedBy)
         {
             try
             {
@@ -79,6 +79,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -92,7 +93,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO: Incrementar contador por rango específico (CheckControlId)
-        public static int SiguienteChequePorControl(int checkControlId)
+        public static int SiguienteChequePorControl(int checkControlId, int modifiedBy)
         {
             try
             {
@@ -101,6 +102,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -285,7 +287,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO: Eliminar control físicamente de BD
-        public static bool EliminarControl(int checkControlId)
+        public static bool EliminarControl(int checkControlId, int deletedBy)
         {
             try
             {
@@ -294,6 +296,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@CheckControlId", checkControlId);
+                    cmd.Parameters.AddWithValue("@DeletedBy", deletedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result != null && Convert.ToInt32(result) > 0;

@@ -477,13 +477,13 @@ namespace SECRON.Views
                     decimal creditRevertido = detalleReversion.Debit;  // Invertir
 
                     // Actualizar con los valores invertidos para cancelar el efecto de la anulación
-                    Ctrl_Accounts.ActualizarSaldo(nombreCuenta, debitRevertido, creditRevertido);
+                    Ctrl_Accounts.ActualizarSaldo(nombreCuenta, debitRevertido, creditRevertido, UserData.UserId);
                 }
 
                 // PASO 5: ELIMINAR DETALLES DE LA PARTIDA DE REVERSIÓN
                 foreach (var detalleReversion in detallesReversion)
                 {
-                    if (Ctrl_AccountingEntryDetails.EliminarDetalle(detalleReversion.EntryDetailId) == 0)
+                    if (Ctrl_AccountingEntryDetails.EliminarDetalle(detalleReversion.EntryDetailId, UserData.UserId) == 0) 
                     {
                         MessageBox.Show($"ERROR AL ELIMINAR DETALLE DE REVERSIÓN",
                             "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -492,8 +492,8 @@ namespace SECRON.Views
                 }
 
                 // PASO 6: ELIMINAR LA PARTIDA MAESTRA DE REVERSIÓN
-                if (Ctrl_AccountingEntryMaster.EliminarPartida(partidaReversionId) == 0)
-                {
+                if (Ctrl_AccountingEntryMaster.EliminarPartida(partidaReversionId, UserData.UserId) == 0)
+                    {
                     MessageBox.Show($"ERROR AL ELIMINAR PARTIDA DE REVERSIÓN",
                         "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;

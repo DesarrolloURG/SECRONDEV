@@ -1,9 +1,3 @@
--- =============================================
--- SP: usp_GenerateAuditTrigger
--- Genera/actualiza el trigger de auditoría para una tabla
--- Castea ignoran los tipos de dato (text/ntext/image)
--- ya que esos campos no son visibles desde un trigger "after"
--- =============================================
 CREATE OR ALTER PROCEDURE dbo.usp_GenerateAuditTrigger
     @TableName NVARCHAR(128)
 AS
@@ -16,7 +10,6 @@ BEGIN
         RETURN;
     END
 
-    -- Detectar PK (soporta compuesta)
     DECLARE @PKCols TABLE (ColName NVARCHAR(128), Ord INT);
     INSERT INTO @PKCols (ColName, Ord)
     SELECT c.name, ic.key_ordinal
@@ -34,7 +27,6 @@ BEGIN
     DECLARE @PKCol NVARCHAR(128) = (SELECT TOP 1 ColName FROM @PKCols ORDER BY Ord);
     DECLARE @TriggerName NVARCHAR(256) = 'TR_' + @TableName + '_Audit';
 
-    -- Lista explícita de columnas, casteando tipos deprecados para el FOR XML
     DECLARE @colList NVARCHAR(MAX);
     SELECT @colList = STRING_AGG(QUOTENAME(c.name), ', ') WITHIN GROUP (ORDER BY c.column_id)
     FROM sys.columns c
@@ -63,9 +55,14 @@ BEGIN
     DECLARE @ctx       BINARY(128) = CONTEXT_INFO();
 
     IF @ctx IS NOT NULL AND CONVERT(INT, SUBSTRING(@ctx, 1, 4)) <> 0
+    BEGIN
         SET @UserId = CONVERT(INT, SUBSTRING(@ctx, 1, 4));
+        SELECT @UserName = FullName FROM Users WHERE UserId = @UserId;
+    END
     ELSE
+    BEGIN
         SET @UserName = SUSER_SNAME();
+    END
 
     DECLARE @IPAddress NVARCHAR(50)  = CONVERT(NVARCHAR(50), CONNECTIONPROPERTY(''client_net_address''));
     DECLARE @HostName  NVARCHAR(100) = HOST_NAME();
