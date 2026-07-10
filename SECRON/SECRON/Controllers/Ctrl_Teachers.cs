@@ -476,8 +476,53 @@ namespace SECRON.Controllers
                 CreatedDate = reader.GetDateTime(20),
                 CreatedBy = reader[21] == DBNull.Value ? null : (int?)reader.GetInt32(21),
                 ModifiedDate = reader[22] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(22),
-                ModifiedBy = reader[23] == DBNull.Value ? null : (int?)reader.GetInt32(23)
+                ModifiedBy = reader[23] == DBNull.Value ? null : (int?)reader.GetInt32(23),
+                FilePath_DPI = reader[24] == DBNull.Value ? null : reader[24].ToString(),
+                FilePath_Titulos = reader[25] == DBNull.Value ? null : reader[25].ToString(),
+                FilePath_RTU = reader[26] == DBNull.Value ? null : reader[26].ToString(),
+                FilePath_Colegiado = reader[27] == DBNull.Value ? null : reader[27].ToString(),
+                FilePath_RENAS = reader[28] == DBNull.Value ? null : reader[28].ToString(),
+                FilePath_AntPoliciacos = reader[29] == DBNull.Value ? null : reader[29].ToString(),
+                FilePath_AntPenales = reader[30] == DBNull.Value ? null : reader[30].ToString()
             };
+        }
+
+        public static bool ActualizarFilePathDocente(int teacherId, string campo, string ruta, int modifiedBy)
+        {
+            try
+            {
+                string[] camposPermitidos = {
+                    "FilePath_DPI", "FilePath_Titulos", "FilePath_RTU",
+                    "FilePath_Colegiado", "FilePath_RENAS",
+                    "FilePath_AntPoliciacos", "FilePath_AntPenales"
+                };
+
+                if (!Array.Exists(camposPermitidos, c => c == campo))
+                {
+                    MessageBox.Show("CAMPO DE ARCHIVO NO VÁLIDO.", "ERROR SECRON",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Teachers_UpdateFilePath", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                    cmd.Parameters.AddWithValue("@Campo", campo);
+                    cmd.Parameters.AddWithValue("@Ruta", (object)ruta ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ACTUALIZAR ARCHIVO: " + ex.Message, "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
     }
 }

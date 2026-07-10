@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_ControlCenter_MDI));
-            this.PanelEmployees = new System.Windows.Forms.Panel();
-            this.BtnEmployeesInformation = new System.Windows.Forms.Button();
-            this.BtnEmployeesManagment = new System.Windows.Forms.Button();
+            this.PanelRRHH = new System.Windows.Forms.Panel();
+            this.BtnRRHH_MyProfile = new System.Windows.Forms.Button();
+            this.BtnRRHH_Planillas = new System.Windows.Forms.Button();
+            this.BtnRRHH_Calendario = new System.Windows.Forms.Button();
+            this.BtnRRHH_Docencia = new System.Windows.Forms.Button();
+            this.BtnRRHH_Trabajadores = new System.Windows.Forms.Button();
             this.PanelUsers = new System.Windows.Forms.Panel();
             this.Btn_ITSM_Technology = new System.Windows.Forms.Button();
             this.BtnUsersRolesPermisos = new System.Windows.Forms.Button();
@@ -101,47 +104,17 @@
             this.PanelSpace = new System.Windows.Forms.Panel();
             this.PanelPadding1 = new System.Windows.Forms.Panel();
             this.PanelNavegacion = new System.Windows.Forms.Panel();
-            this.Btn_Teachers = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos = new System.Windows.Forms.Button();
             this.BtnLocations = new System.Windows.Forms.Button();
             this.BtnBills = new System.Windows.Forms.Button();
             this.Btn_Inventory = new System.Windows.Forms.Button();
             this.BtnOrders = new System.Windows.Forms.Button();
             this.BtnFinances = new System.Windows.Forms.Button();
             this.BtnUsers = new System.Windows.Forms.Button();
-            this.BtnEmployees = new System.Windows.Forms.Button();
+            this.BtnRRHH = new System.Windows.Forms.Button();
             this.BtnHome = new System.Windows.Forms.Button();
             this.PicLogo = new System.Windows.Forms.PictureBox();
             this.PanelContenedor = new System.Windows.Forms.Panel();
-            this.PanelTeachers = new System.Windows.Forms.Panel();
-            this.BtnTeachersReports = new System.Windows.Forms.Button();
-            this.BtnTeachersSchedules = new System.Windows.Forms.Button();
-            this.BtnTeachersSections = new System.Windows.Forms.Button();
-            this.BtnTeachersPersonal = new System.Windows.Forms.Button();
-            this.BtnTeachersAcademicConfiguration = new System.Windows.Forms.Button();
-            this.PanelTeachers_1 = new System.Windows.Forms.Panel();
-            this.BtnTeachers_Pensum = new System.Windows.Forms.Button();
-            this.BtnTeachers_Courses = new System.Windows.Forms.Button();
-            this.BtnTeachers_Carrers = new System.Windows.Forms.Button();
-            this.BtnTeachers_Schedules = new System.Windows.Forms.Button();
-            this.PanelTeachers_2 = new System.Windows.Forms.Panel();
-            this.BtnTeachers_Assignment = new System.Windows.Forms.Button();
-            this.BtnTeachers_Teachers = new System.Windows.Forms.Button();
-            this.BtnTeachers_Coordinators = new System.Windows.Forms.Button();
-            this.PanelTeachers_3 = new System.Windows.Forms.Panel();
-            this.BtnTeachers_CoursesSection = new System.Windows.Forms.Button();
-            this.BtnTeachers_Sections = new System.Windows.Forms.Button();
-            this.PanelTeachers_4 = new System.Windows.Forms.Panel();
-            this.BtnTeachers_ScheduleReport = new System.Windows.Forms.Button();
-            this.BtnTeachers_TeachProgram = new System.Windows.Forms.Button();
-            this.BtnTeachers_SchedulesManagment = new System.Windows.Forms.Button();
-            this.PanelTeachers_5 = new System.Windows.Forms.Panel();
-            this.BtnTeachers_CoursesReports = new System.Windows.Forms.Button();
-            this.BtnTeachers_PensumReports = new System.Windows.Forms.Button();
-            this.BtnTeachers_ConflictReports = new System.Windows.Forms.Button();
-            this.BtnTeachers_AcademicReports = new System.Windows.Forms.Button();
-            this.BtnTeachers_SectionsReports = new System.Windows.Forms.Button();
-            this.BtnTeachers_CoordinatorsReports = new System.Windows.Forms.Button();
-            this.BtnTeachers_TeachersReports = new System.Windows.Forms.Button();
             this.PanelTransfers = new System.Windows.Forms.Panel();
             this.BtnTransfersReports = new System.Windows.Forms.Button();
             this.BtnTransfersManagment = new System.Windows.Forms.Button();
@@ -160,7 +133,23 @@
             this.PanelWarehouses = new System.Windows.Forms.Panel();
             this.BtnWarehouse_Reports = new System.Windows.Forms.Button();
             this.BtnWarehouse_Managment = new System.Windows.Forms.Button();
-            this.PanelEmployees.SuspendLayout();
+            this.PanelRRHH_1 = new System.Windows.Forms.Panel();
+            this.BtnRRHH_Trabajadores_Ficha = new System.Windows.Forms.Button();
+            this.PanelRRHH_2 = new System.Windows.Forms.Panel();
+            this.BtnRRHH_Docencia_ControlAsistencias = new System.Windows.Forms.Button();
+            this.BtnRRHH_Docencia_FichaCoordinador = new System.Windows.Forms.Button();
+            this.BtnRRHH_Docencia_FichaDocente = new System.Windows.Forms.Button();
+            this.PanelTeachers = new System.Windows.Forms.Panel();
+            this.BtnProcesosAcademicos_CalendariosAcademicos = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_HorariosOficiales = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_RevisionAsignaciones = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_PreasignacionCursos = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_AprobacionDocentes = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_RevisoresAprobados = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_TarifasCursos = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_PensumCursos = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_PensumCarreras = new System.Windows.Forms.Button();
+            this.PanelRRHH.SuspendLayout();
             this.PanelUsers.SuspendLayout();
             this.PanelSuppliers.SuspendLayout();
             this.PanelCounts.SuspendLayout();
@@ -178,68 +167,128 @@
             this.PanelConfiguration.SuspendLayout();
             this.PanelNavegacion.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).BeginInit();
-            this.PanelTeachers.SuspendLayout();
-            this.PanelTeachers_1.SuspendLayout();
-            this.PanelTeachers_2.SuspendLayout();
-            this.PanelTeachers_3.SuspendLayout();
-            this.PanelTeachers_4.SuspendLayout();
-            this.PanelTeachers_5.SuspendLayout();
             this.PanelTransfers.SuspendLayout();
             this.PanelInventory_1.SuspendLayout();
             this.PanelFinances.SuspendLayout();
             this.PanelWarehouses.SuspendLayout();
+            this.PanelRRHH_1.SuspendLayout();
+            this.PanelRRHH_2.SuspendLayout();
+            this.PanelTeachers.SuspendLayout();
             this.SuspendLayout();
             // 
-            // PanelEmployees
+            // PanelRRHH
             // 
-            this.PanelEmployees.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelEmployees.Controls.Add(this.BtnEmployeesInformation);
-            this.PanelEmployees.Controls.Add(this.BtnEmployeesManagment);
-            this.PanelEmployees.Location = new System.Drawing.Point(220, 1);
-            this.PanelEmployees.Name = "PanelEmployees";
-            this.PanelEmployees.Size = new System.Drawing.Size(300, 80);
-            this.PanelEmployees.TabIndex = 3;
-            this.PanelEmployees.Visible = false;
+            this.PanelRRHH.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelRRHH.Controls.Add(this.BtnRRHH_MyProfile);
+            this.PanelRRHH.Controls.Add(this.BtnRRHH_Planillas);
+            this.PanelRRHH.Controls.Add(this.BtnRRHH_Calendario);
+            this.PanelRRHH.Controls.Add(this.BtnRRHH_Docencia);
+            this.PanelRRHH.Controls.Add(this.BtnRRHH_Trabajadores);
+            this.PanelRRHH.Location = new System.Drawing.Point(220, 1);
+            this.PanelRRHH.Name = "PanelRRHH";
+            this.PanelRRHH.Size = new System.Drawing.Size(300, 200);
+            this.PanelRRHH.TabIndex = 3;
+            this.PanelRRHH.Visible = false;
             // 
-            // BtnEmployeesInformation
+            // BtnRRHH_MyProfile
             // 
-            this.BtnEmployeesInformation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnEmployeesInformation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployeesInformation.FlatAppearance.BorderSize = 0;
-            this.BtnEmployeesInformation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployeesInformation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployeesInformation.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployeesInformation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployeesInformation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesInformation.Location = new System.Drawing.Point(0, 35);
-            this.BtnEmployeesInformation.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployeesInformation.Name = "BtnEmployeesInformation";
-            this.BtnEmployeesInformation.Size = new System.Drawing.Size(300, 35);
-            this.BtnEmployeesInformation.TabIndex = 45;
-            this.BtnEmployeesInformation.Text = "MI PERFIL DE TRABAJO";
-            this.BtnEmployeesInformation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesInformation.UseVisualStyleBackColor = false;
-            this.BtnEmployeesInformation.Click += new System.EventHandler(this.BtnEmployeesInformation_Click);
+            this.BtnRRHH_MyProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_MyProfile.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_MyProfile.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_MyProfile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_MyProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_MyProfile.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_MyProfile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_MyProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_MyProfile.Location = new System.Drawing.Point(0, 140);
+            this.BtnRRHH_MyProfile.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_MyProfile.Name = "BtnRRHH_MyProfile";
+            this.BtnRRHH_MyProfile.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_MyProfile.TabIndex = 48;
+            this.BtnRRHH_MyProfile.Text = "MI PERFIL DE TRABAJO";
+            this.BtnRRHH_MyProfile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_MyProfile.UseVisualStyleBackColor = false;
+            this.BtnRRHH_MyProfile.Click += new System.EventHandler(this.BtnRRHH_MyProfile_Click);
             // 
-            // BtnEmployeesManagment
+            // BtnRRHH_Planillas
             // 
-            this.BtnEmployeesManagment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnEmployeesManagment.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployeesManagment.FlatAppearance.BorderSize = 0;
-            this.BtnEmployeesManagment.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployeesManagment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployeesManagment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployeesManagment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployeesManagment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesManagment.Location = new System.Drawing.Point(0, 0);
-            this.BtnEmployeesManagment.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployeesManagment.Name = "BtnEmployeesManagment";
-            this.BtnEmployeesManagment.Size = new System.Drawing.Size(300, 35);
-            this.BtnEmployeesManagment.TabIndex = 44;
-            this.BtnEmployeesManagment.Text = "FICHA DEL TRABAJADOR";
-            this.BtnEmployeesManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeesManagment.UseVisualStyleBackColor = false;
-            this.BtnEmployeesManagment.Click += new System.EventHandler(this.BtnEmployeesManagment_Click);
+            this.BtnRRHH_Planillas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Planillas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Planillas.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Planillas.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Planillas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Planillas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Planillas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Planillas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Planillas.Location = new System.Drawing.Point(0, 105);
+            this.BtnRRHH_Planillas.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Planillas.Name = "BtnRRHH_Planillas";
+            this.BtnRRHH_Planillas.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Planillas.TabIndex = 47;
+            this.BtnRRHH_Planillas.Text = "PLANILLAS";
+            this.BtnRRHH_Planillas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Planillas.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Planillas.Click += new System.EventHandler(this.BtnRRHH_Planillas_Click);
+            // 
+            // BtnRRHH_Calendario
+            // 
+            this.BtnRRHH_Calendario.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Calendario.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Calendario.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Calendario.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Calendario.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Calendario.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Calendario.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Calendario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Calendario.Location = new System.Drawing.Point(0, 70);
+            this.BtnRRHH_Calendario.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Calendario.Name = "BtnRRHH_Calendario";
+            this.BtnRRHH_Calendario.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Calendario.TabIndex = 46;
+            this.BtnRRHH_Calendario.Text = "CALENDARIO DE TRABAJO";
+            this.BtnRRHH_Calendario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Calendario.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Calendario.Click += new System.EventHandler(this.BtnRRHH_Calendario_Click);
+            // 
+            // BtnRRHH_Docencia
+            // 
+            this.BtnRRHH_Docencia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Docencia.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Docencia.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Docencia.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Docencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Docencia.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Docencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Docencia.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia.Location = new System.Drawing.Point(0, 35);
+            this.BtnRRHH_Docencia.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Docencia.Name = "BtnRRHH_Docencia";
+            this.BtnRRHH_Docencia.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Docencia.TabIndex = 45;
+            this.BtnRRHH_Docencia.Text = "DOCENCIA";
+            this.BtnRRHH_Docencia.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Docencia.Click += new System.EventHandler(this.BtnRRHH_Docencia_Click);
+            // 
+            // BtnRRHH_Trabajadores
+            // 
+            this.BtnRRHH_Trabajadores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Trabajadores.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Trabajadores.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Trabajadores.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Trabajadores.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Trabajadores.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Trabajadores.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Trabajadores.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Trabajadores.Location = new System.Drawing.Point(0, 0);
+            this.BtnRRHH_Trabajadores.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Trabajadores.Name = "BtnRRHH_Trabajadores";
+            this.BtnRRHH_Trabajadores.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Trabajadores.TabIndex = 44;
+            this.BtnRRHH_Trabajadores.Text = "TRABAJADORES";
+            this.BtnRRHH_Trabajadores.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Trabajadores.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Trabajadores.Click += new System.EventHandler(this.BtnRRHH_Trabajadores_Click);
             // 
             // PanelUsers
             // 
@@ -1422,14 +1471,14 @@
             // 
             // PanelNavegacion
             // 
-            this.PanelNavegacion.Controls.Add(this.Btn_Teachers);
+            this.PanelNavegacion.Controls.Add(this.BtnProcesosAcademicos);
             this.PanelNavegacion.Controls.Add(this.BtnLocations);
             this.PanelNavegacion.Controls.Add(this.BtnBills);
             this.PanelNavegacion.Controls.Add(this.Btn_Inventory);
             this.PanelNavegacion.Controls.Add(this.BtnOrders);
             this.PanelNavegacion.Controls.Add(this.BtnFinances);
             this.PanelNavegacion.Controls.Add(this.BtnUsers);
-            this.PanelNavegacion.Controls.Add(this.BtnEmployees);
+            this.PanelNavegacion.Controls.Add(this.BtnRRHH);
             this.PanelNavegacion.Controls.Add(this.BtnHome);
             this.PanelNavegacion.Controls.Add(this.PicLogo);
             this.PanelNavegacion.Dock = System.Windows.Forms.DockStyle.Left;
@@ -1438,28 +1487,28 @@
             this.PanelNavegacion.Size = new System.Drawing.Size(225, 735);
             this.PanelNavegacion.TabIndex = 17;
             // 
-            // Btn_Teachers
+            // BtnProcesosAcademicos
             // 
-            this.Btn_Teachers.BackColor = System.Drawing.Color.White;
-            this.Btn_Teachers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Btn_Teachers.FlatAppearance.BorderSize = 0;
-            this.Btn_Teachers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.Btn_Teachers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Btn_Teachers.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_Teachers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Btn_Teachers.Image = global::SECRON.Properties.Resources.GraduacionNegro25x25;
-            this.Btn_Teachers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Teachers.Location = new System.Drawing.Point(0, 395);
-            this.Btn_Teachers.Margin = new System.Windows.Forms.Padding(0);
-            this.Btn_Teachers.Name = "Btn_Teachers";
-            this.Btn_Teachers.Size = new System.Drawing.Size(225, 35);
-            this.Btn_Teachers.TabIndex = 55;
-            this.Btn_Teachers.Text = "DOCENCIA";
-            this.Btn_Teachers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Teachers.UseVisualStyleBackColor = false;
-            this.Btn_Teachers.Visible = false;
-            this.Btn_Teachers.Click += new System.EventHandler(this.Btn_Teachers_Click);
-            this.Btn_Teachers.MouseEnter += new System.EventHandler(this.Btn_Teachers_MouseEnter);
+            this.BtnProcesosAcademicos.BackColor = System.Drawing.Color.White;
+            this.BtnProcesosAcademicos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos.Image = global::SECRON.Properties.Resources.GraduacionNegro25x25;
+            this.BtnProcesosAcademicos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos.Location = new System.Drawing.Point(0, 395);
+            this.BtnProcesosAcademicos.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos.Name = "BtnProcesosAcademicos";
+            this.BtnProcesosAcademicos.Size = new System.Drawing.Size(225, 35);
+            this.BtnProcesosAcademicos.TabIndex = 55;
+            this.BtnProcesosAcademicos.Text = "CONTROL ACADÉMICO";
+            this.BtnProcesosAcademicos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos.Visible = false;
+            this.BtnProcesosAcademicos.Click += new System.EventHandler(this.Btn_Teachers_Click);
+            this.BtnProcesosAcademicos.MouseEnter += new System.EventHandler(this.Btn_Teachers_MouseEnter);
             // 
             // BtnLocations
             // 
@@ -1598,28 +1647,28 @@
             this.BtnUsers.Click += new System.EventHandler(this.BtnUsers_Click);
             this.BtnUsers.MouseEnter += new System.EventHandler(this.BtnUsers_MouseEnter);
             // 
-            // BtnEmployees
+            // BtnRRHH
             // 
-            this.BtnEmployees.BackColor = System.Drawing.Color.White;
-            this.BtnEmployees.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnEmployees.FlatAppearance.BorderSize = 0;
-            this.BtnEmployees.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnEmployees.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEmployees.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnEmployees.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnEmployees.Image = global::SECRON.Properties.Resources.UsersNegro25x25;
-            this.BtnEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployees.Location = new System.Drawing.Point(0, 150);
-            this.BtnEmployees.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnEmployees.Name = "BtnEmployees";
-            this.BtnEmployees.Size = new System.Drawing.Size(225, 35);
-            this.BtnEmployees.TabIndex = 43;
-            this.BtnEmployees.Text = "RECURSOS HUMANOS";
-            this.BtnEmployees.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployees.UseVisualStyleBackColor = false;
-            this.BtnEmployees.Visible = false;
-            this.BtnEmployees.Click += new System.EventHandler(this.BtnEmployees_Click);
-            this.BtnEmployees.MouseEnter += new System.EventHandler(this.BtnEmployees_MouseEnter);
+            this.BtnRRHH.BackColor = System.Drawing.Color.White;
+            this.BtnRRHH.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH.Image = global::SECRON.Properties.Resources.UsersNegro25x25;
+            this.BtnRRHH.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH.Location = new System.Drawing.Point(0, 150);
+            this.BtnRRHH.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH.Name = "BtnRRHH";
+            this.BtnRRHH.Size = new System.Drawing.Size(225, 35);
+            this.BtnRRHH.TabIndex = 43;
+            this.BtnRRHH.Text = "RECURSOS HUMANOS";
+            this.BtnRRHH.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH.UseVisualStyleBackColor = false;
+            this.BtnRRHH.Visible = false;
+            this.BtnRRHH.Click += new System.EventHandler(this.BtnRRHH_Click);
+            this.BtnRRHH.MouseEnter += new System.EventHandler(this.BtnEmployees_MouseEnter);
             // 
             // BtnHome
             // 
@@ -1661,564 +1710,6 @@
             this.PanelContenedor.Name = "PanelContenedor";
             this.PanelContenedor.Size = new System.Drawing.Size(1159, 665);
             this.PanelContenedor.TabIndex = 19;
-            // 
-            // PanelTeachers
-            // 
-            this.PanelTeachers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelTeachers.Controls.Add(this.BtnTeachersReports);
-            this.PanelTeachers.Controls.Add(this.BtnTeachersSchedules);
-            this.PanelTeachers.Controls.Add(this.BtnTeachersSections);
-            this.PanelTeachers.Controls.Add(this.BtnTeachersPersonal);
-            this.PanelTeachers.Controls.Add(this.BtnTeachersAcademicConfiguration);
-            this.PanelTeachers.Location = new System.Drawing.Point(220, 1);
-            this.PanelTeachers.Name = "PanelTeachers";
-            this.PanelTeachers.Size = new System.Drawing.Size(300, 200);
-            this.PanelTeachers.TabIndex = 20;
-            this.PanelTeachers.Visible = false;
-            // 
-            // BtnTeachersReports
-            // 
-            this.BtnTeachersReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachersReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachersReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachersReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachersReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachersReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachersReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachersReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersReports.Location = new System.Drawing.Point(0, 140);
-            this.BtnTeachersReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachersReports.Name = "BtnTeachersReports";
-            this.BtnTeachersReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachersReports.TabIndex = 48;
-            this.BtnTeachersReports.Text = "REPORTES ACADÉMICOS";
-            this.BtnTeachersReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersReports.UseVisualStyleBackColor = false;
-            this.BtnTeachersReports.Click += new System.EventHandler(this.BtnTeachersReports_Click);
-            // 
-            // BtnTeachersSchedules
-            // 
-            this.BtnTeachersSchedules.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachersSchedules.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachersSchedules.FlatAppearance.BorderSize = 0;
-            this.BtnTeachersSchedules.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachersSchedules.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachersSchedules.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachersSchedules.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachersSchedules.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersSchedules.Location = new System.Drawing.Point(0, 105);
-            this.BtnTeachersSchedules.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachersSchedules.Name = "BtnTeachersSchedules";
-            this.BtnTeachersSchedules.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachersSchedules.TabIndex = 47;
-            this.BtnTeachersSchedules.Text = "HORARIOS";
-            this.BtnTeachersSchedules.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersSchedules.UseVisualStyleBackColor = false;
-            this.BtnTeachersSchedules.Click += new System.EventHandler(this.BtnTeachersSchedules_Click);
-            // 
-            // BtnTeachersSections
-            // 
-            this.BtnTeachersSections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachersSections.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachersSections.FlatAppearance.BorderSize = 0;
-            this.BtnTeachersSections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachersSections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachersSections.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachersSections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachersSections.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersSections.Location = new System.Drawing.Point(0, 70);
-            this.BtnTeachersSections.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachersSections.Name = "BtnTeachersSections";
-            this.BtnTeachersSections.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachersSections.TabIndex = 46;
-            this.BtnTeachersSections.Text = "GESTIÓN DE SECCIONES";
-            this.BtnTeachersSections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersSections.UseVisualStyleBackColor = false;
-            this.BtnTeachersSections.Click += new System.EventHandler(this.BtnTeachersSections_Click);
-            // 
-            // BtnTeachersPersonal
-            // 
-            this.BtnTeachersPersonal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachersPersonal.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachersPersonal.FlatAppearance.BorderSize = 0;
-            this.BtnTeachersPersonal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachersPersonal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachersPersonal.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachersPersonal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachersPersonal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersPersonal.Location = new System.Drawing.Point(0, 35);
-            this.BtnTeachersPersonal.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachersPersonal.Name = "BtnTeachersPersonal";
-            this.BtnTeachersPersonal.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachersPersonal.TabIndex = 45;
-            this.BtnTeachersPersonal.Text = "PERSONAL ACADÉMICO";
-            this.BtnTeachersPersonal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersPersonal.UseVisualStyleBackColor = false;
-            this.BtnTeachersPersonal.Click += new System.EventHandler(this.BtnTeachersPersonal_Click);
-            // 
-            // BtnTeachersAcademicConfiguration
-            // 
-            this.BtnTeachersAcademicConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachersAcademicConfiguration.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachersAcademicConfiguration.FlatAppearance.BorderSize = 0;
-            this.BtnTeachersAcademicConfiguration.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachersAcademicConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachersAcademicConfiguration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachersAcademicConfiguration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachersAcademicConfiguration.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersAcademicConfiguration.Location = new System.Drawing.Point(0, 0);
-            this.BtnTeachersAcademicConfiguration.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachersAcademicConfiguration.Name = "BtnTeachersAcademicConfiguration";
-            this.BtnTeachersAcademicConfiguration.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachersAcademicConfiguration.TabIndex = 44;
-            this.BtnTeachersAcademicConfiguration.Text = "CONFIGURACIÓN ACADÉMICA";
-            this.BtnTeachersAcademicConfiguration.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachersAcademicConfiguration.UseVisualStyleBackColor = false;
-            this.BtnTeachersAcademicConfiguration.Click += new System.EventHandler(this.BtnTeachersAcademicConfiguration_Click);
-            // 
-            // PanelTeachers_1
-            // 
-            this.PanelTeachers_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelTeachers_1.Controls.Add(this.BtnTeachers_Pensum);
-            this.PanelTeachers_1.Controls.Add(this.BtnTeachers_Courses);
-            this.PanelTeachers_1.Controls.Add(this.BtnTeachers_Carrers);
-            this.PanelTeachers_1.Controls.Add(this.BtnTeachers_Schedules);
-            this.PanelTeachers_1.Location = new System.Drawing.Point(500, 1);
-            this.PanelTeachers_1.Name = "PanelTeachers_1";
-            this.PanelTeachers_1.Size = new System.Drawing.Size(300, 160);
-            this.PanelTeachers_1.TabIndex = 21;
-            this.PanelTeachers_1.Visible = false;
-            // 
-            // BtnTeachers_Pensum
-            // 
-            this.BtnTeachers_Pensum.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Pensum.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Pensum.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Pensum.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Pensum.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Pensum.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Pensum.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Pensum.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Pensum.Location = new System.Drawing.Point(0, 105);
-            this.BtnTeachers_Pensum.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Pensum.Name = "BtnTeachers_Pensum";
-            this.BtnTeachers_Pensum.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Pensum.TabIndex = 47;
-            this.BtnTeachers_Pensum.Text = "PENSUM CARRERAS";
-            this.BtnTeachers_Pensum.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Pensum.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Pensum.Click += new System.EventHandler(this.BtnTeachers_Pensum_Click);
-            // 
-            // BtnTeachers_Courses
-            // 
-            this.BtnTeachers_Courses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Courses.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Courses.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Courses.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Courses.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Courses.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Courses.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Courses.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Courses.Location = new System.Drawing.Point(0, 70);
-            this.BtnTeachers_Courses.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Courses.Name = "BtnTeachers_Courses";
-            this.BtnTeachers_Courses.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Courses.TabIndex = 46;
-            this.BtnTeachers_Courses.Text = "CATÁLOGO DE CURSOS";
-            this.BtnTeachers_Courses.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Courses.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Courses.Click += new System.EventHandler(this.BtnTeachers_Courses_Click);
-            // 
-            // BtnTeachers_Carrers
-            // 
-            this.BtnTeachers_Carrers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Carrers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Carrers.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Carrers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Carrers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Carrers.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Carrers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Carrers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Carrers.Location = new System.Drawing.Point(0, 35);
-            this.BtnTeachers_Carrers.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Carrers.Name = "BtnTeachers_Carrers";
-            this.BtnTeachers_Carrers.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Carrers.TabIndex = 45;
-            this.BtnTeachers_Carrers.Text = "CARRERAS UNIVERSITARIAS";
-            this.BtnTeachers_Carrers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Carrers.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Carrers.Click += new System.EventHandler(this.BtnTeachers_Carrers_Click);
-            // 
-            // BtnTeachers_Schedules
-            // 
-            this.BtnTeachers_Schedules.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Schedules.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Schedules.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Schedules.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Schedules.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Schedules.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Schedules.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Schedules.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Schedules.Location = new System.Drawing.Point(0, 0);
-            this.BtnTeachers_Schedules.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Schedules.Name = "BtnTeachers_Schedules";
-            this.BtnTeachers_Schedules.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Schedules.TabIndex = 44;
-            this.BtnTeachers_Schedules.Text = "CONFIGURACIÓN ACADÉMICA";
-            this.BtnTeachers_Schedules.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Schedules.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Schedules.Click += new System.EventHandler(this.BtnTeachers_Schedules_Click);
-            // 
-            // PanelTeachers_2
-            // 
-            this.PanelTeachers_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelTeachers_2.Controls.Add(this.BtnTeachers_Assignment);
-            this.PanelTeachers_2.Controls.Add(this.BtnTeachers_Teachers);
-            this.PanelTeachers_2.Controls.Add(this.BtnTeachers_Coordinators);
-            this.PanelTeachers_2.Location = new System.Drawing.Point(500, 1);
-            this.PanelTeachers_2.Name = "PanelTeachers_2";
-            this.PanelTeachers_2.Size = new System.Drawing.Size(300, 120);
-            this.PanelTeachers_2.TabIndex = 22;
-            this.PanelTeachers_2.Visible = false;
-            // 
-            // BtnTeachers_Assignment
-            // 
-            this.BtnTeachers_Assignment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Assignment.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Assignment.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Assignment.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Assignment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Assignment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Assignment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Assignment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Assignment.Location = new System.Drawing.Point(0, 70);
-            this.BtnTeachers_Assignment.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Assignment.Name = "BtnTeachers_Assignment";
-            this.BtnTeachers_Assignment.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Assignment.TabIndex = 46;
-            this.BtnTeachers_Assignment.Text = "ASIGNACIÓN DE CURSOS A DOCENTES";
-            this.BtnTeachers_Assignment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Assignment.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Assignment.Click += new System.EventHandler(this.BtnTeachers_Assignment_Click);
-            // 
-            // BtnTeachers_Teachers
-            // 
-            this.BtnTeachers_Teachers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Teachers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Teachers.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Teachers.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Teachers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Teachers.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Teachers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Teachers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Teachers.Location = new System.Drawing.Point(0, 35);
-            this.BtnTeachers_Teachers.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Teachers.Name = "BtnTeachers_Teachers";
-            this.BtnTeachers_Teachers.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Teachers.TabIndex = 45;
-            this.BtnTeachers_Teachers.Text = "DOCENTES";
-            this.BtnTeachers_Teachers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Teachers.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Teachers.Click += new System.EventHandler(this.BtnTeachers_Teachers_Click);
-            // 
-            // BtnTeachers_Coordinators
-            // 
-            this.BtnTeachers_Coordinators.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Coordinators.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Coordinators.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Coordinators.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Coordinators.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Coordinators.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Coordinators.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Coordinators.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Coordinators.Location = new System.Drawing.Point(0, 0);
-            this.BtnTeachers_Coordinators.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Coordinators.Name = "BtnTeachers_Coordinators";
-            this.BtnTeachers_Coordinators.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Coordinators.TabIndex = 44;
-            this.BtnTeachers_Coordinators.Text = "COORDINADORES";
-            this.BtnTeachers_Coordinators.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Coordinators.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Coordinators.Click += new System.EventHandler(this.BtnTeachers_Coordinators_Click);
-            // 
-            // PanelTeachers_3
-            // 
-            this.PanelTeachers_3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelTeachers_3.Controls.Add(this.BtnTeachers_CoursesSection);
-            this.PanelTeachers_3.Controls.Add(this.BtnTeachers_Sections);
-            this.PanelTeachers_3.Location = new System.Drawing.Point(500, 1);
-            this.PanelTeachers_3.Name = "PanelTeachers_3";
-            this.PanelTeachers_3.Size = new System.Drawing.Size(300, 80);
-            this.PanelTeachers_3.TabIndex = 23;
-            this.PanelTeachers_3.Visible = false;
-            // 
-            // BtnTeachers_CoursesSection
-            // 
-            this.BtnTeachers_CoursesSection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_CoursesSection.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_CoursesSection.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_CoursesSection.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_CoursesSection.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_CoursesSection.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_CoursesSection.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_CoursesSection.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoursesSection.Location = new System.Drawing.Point(0, 35);
-            this.BtnTeachers_CoursesSection.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_CoursesSection.Name = "BtnTeachers_CoursesSection";
-            this.BtnTeachers_CoursesSection.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_CoursesSection.TabIndex = 45;
-            this.BtnTeachers_CoursesSection.Text = "CURSOS POR SECCIÓN";
-            this.BtnTeachers_CoursesSection.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoursesSection.UseVisualStyleBackColor = false;
-            this.BtnTeachers_CoursesSection.Click += new System.EventHandler(this.BtnTeachers_CoursesSection_Click);
-            // 
-            // BtnTeachers_Sections
-            // 
-            this.BtnTeachers_Sections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_Sections.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_Sections.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_Sections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_Sections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_Sections.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_Sections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_Sections.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Sections.Location = new System.Drawing.Point(0, 0);
-            this.BtnTeachers_Sections.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_Sections.Name = "BtnTeachers_Sections";
-            this.BtnTeachers_Sections.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_Sections.TabIndex = 44;
-            this.BtnTeachers_Sections.Text = "SECCIONES";
-            this.BtnTeachers_Sections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_Sections.UseVisualStyleBackColor = false;
-            this.BtnTeachers_Sections.Click += new System.EventHandler(this.BtnTeachers_Sections_Click);
-            // 
-            // PanelTeachers_4
-            // 
-            this.PanelTeachers_4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelTeachers_4.Controls.Add(this.BtnTeachers_ScheduleReport);
-            this.PanelTeachers_4.Controls.Add(this.BtnTeachers_TeachProgram);
-            this.PanelTeachers_4.Controls.Add(this.BtnTeachers_SchedulesManagment);
-            this.PanelTeachers_4.Location = new System.Drawing.Point(500, 1);
-            this.PanelTeachers_4.Name = "PanelTeachers_4";
-            this.PanelTeachers_4.Size = new System.Drawing.Size(300, 120);
-            this.PanelTeachers_4.TabIndex = 24;
-            this.PanelTeachers_4.Visible = false;
-            // 
-            // BtnTeachers_ScheduleReport
-            // 
-            this.BtnTeachers_ScheduleReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_ScheduleReport.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_ScheduleReport.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_ScheduleReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_ScheduleReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_ScheduleReport.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_ScheduleReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_ScheduleReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_ScheduleReport.Location = new System.Drawing.Point(0, 70);
-            this.BtnTeachers_ScheduleReport.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_ScheduleReport.Name = "BtnTeachers_ScheduleReport";
-            this.BtnTeachers_ScheduleReport.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_ScheduleReport.TabIndex = 46;
-            this.BtnTeachers_ScheduleReport.Text = "ASIGNACIÓN DE CURSOS A DOCENTES";
-            this.BtnTeachers_ScheduleReport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_ScheduleReport.UseVisualStyleBackColor = false;
-            this.BtnTeachers_ScheduleReport.Click += new System.EventHandler(this.BtnTeachers_ScheduleReport_Click);
-            // 
-            // BtnTeachers_TeachProgram
-            // 
-            this.BtnTeachers_TeachProgram.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_TeachProgram.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_TeachProgram.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_TeachProgram.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_TeachProgram.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_TeachProgram.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_TeachProgram.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_TeachProgram.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_TeachProgram.Location = new System.Drawing.Point(0, 35);
-            this.BtnTeachers_TeachProgram.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_TeachProgram.Name = "BtnTeachers_TeachProgram";
-            this.BtnTeachers_TeachProgram.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_TeachProgram.TabIndex = 45;
-            this.BtnTeachers_TeachProgram.Text = "PROGRAMAR CLASES";
-            this.BtnTeachers_TeachProgram.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_TeachProgram.UseVisualStyleBackColor = false;
-            this.BtnTeachers_TeachProgram.Click += new System.EventHandler(this.BtnTeachers_TeachProgram_Click);
-            // 
-            // BtnTeachers_SchedulesManagment
-            // 
-            this.BtnTeachers_SchedulesManagment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_SchedulesManagment.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_SchedulesManagment.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_SchedulesManagment.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_SchedulesManagment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_SchedulesManagment.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_SchedulesManagment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_SchedulesManagment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_SchedulesManagment.Location = new System.Drawing.Point(0, 0);
-            this.BtnTeachers_SchedulesManagment.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_SchedulesManagment.Name = "BtnTeachers_SchedulesManagment";
-            this.BtnTeachers_SchedulesManagment.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_SchedulesManagment.TabIndex = 44;
-            this.BtnTeachers_SchedulesManagment.Text = "GESTIÓN DE HORARIOS";
-            this.BtnTeachers_SchedulesManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_SchedulesManagment.UseVisualStyleBackColor = false;
-            this.BtnTeachers_SchedulesManagment.Click += new System.EventHandler(this.BtnTeachers_SchedulesManagment_Click);
-            // 
-            // PanelTeachers_5
-            // 
-            this.PanelTeachers_5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.PanelTeachers_5.Controls.Add(this.BtnTeachers_CoursesReports);
-            this.PanelTeachers_5.Controls.Add(this.BtnTeachers_PensumReports);
-            this.PanelTeachers_5.Controls.Add(this.BtnTeachers_ConflictReports);
-            this.PanelTeachers_5.Controls.Add(this.BtnTeachers_AcademicReports);
-            this.PanelTeachers_5.Controls.Add(this.BtnTeachers_SectionsReports);
-            this.PanelTeachers_5.Controls.Add(this.BtnTeachers_CoordinatorsReports);
-            this.PanelTeachers_5.Controls.Add(this.BtnTeachers_TeachersReports);
-            this.PanelTeachers_5.Location = new System.Drawing.Point(520, 1);
-            this.PanelTeachers_5.Name = "PanelTeachers_5";
-            this.PanelTeachers_5.Size = new System.Drawing.Size(300, 280);
-            this.PanelTeachers_5.TabIndex = 25;
-            this.PanelTeachers_5.Visible = false;
-            // 
-            // BtnTeachers_CoursesReports
-            // 
-            this.BtnTeachers_CoursesReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_CoursesReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_CoursesReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_CoursesReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_CoursesReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_CoursesReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_CoursesReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_CoursesReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoursesReports.Location = new System.Drawing.Point(0, 210);
-            this.BtnTeachers_CoursesReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_CoursesReports.Name = "BtnTeachers_CoursesReports";
-            this.BtnTeachers_CoursesReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_CoursesReports.TabIndex = 50;
-            this.BtnTeachers_CoursesReports.Text = "REPORTERÍA DE CURSOS";
-            this.BtnTeachers_CoursesReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoursesReports.UseVisualStyleBackColor = false;
-            this.BtnTeachers_CoursesReports.Click += new System.EventHandler(this.BtnTeachers_CoursesReports_Click);
-            // 
-            // BtnTeachers_PensumReports
-            // 
-            this.BtnTeachers_PensumReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_PensumReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_PensumReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_PensumReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_PensumReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_PensumReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_PensumReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_PensumReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_PensumReports.Location = new System.Drawing.Point(0, 175);
-            this.BtnTeachers_PensumReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_PensumReports.Name = "BtnTeachers_PensumReports";
-            this.BtnTeachers_PensumReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_PensumReports.TabIndex = 49;
-            this.BtnTeachers_PensumReports.Text = "REPORTERÍA PENSUM POR CARRERAS";
-            this.BtnTeachers_PensumReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_PensumReports.UseVisualStyleBackColor = false;
-            this.BtnTeachers_PensumReports.Click += new System.EventHandler(this.BtnTeachers_PensumReports_Click);
-            // 
-            // BtnTeachers_ConflictReports
-            // 
-            this.BtnTeachers_ConflictReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_ConflictReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_ConflictReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_ConflictReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_ConflictReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_ConflictReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_ConflictReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_ConflictReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_ConflictReports.Location = new System.Drawing.Point(0, 140);
-            this.BtnTeachers_ConflictReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_ConflictReports.Name = "BtnTeachers_ConflictReports";
-            this.BtnTeachers_ConflictReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_ConflictReports.TabIndex = 48;
-            this.BtnTeachers_ConflictReports.Text = "REPORTES CONFLICTOS DE HORARIOS";
-            this.BtnTeachers_ConflictReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_ConflictReports.UseVisualStyleBackColor = false;
-            this.BtnTeachers_ConflictReports.Click += new System.EventHandler(this.BtnTeachers_ConflictReports_Click);
-            // 
-            // BtnTeachers_AcademicReports
-            // 
-            this.BtnTeachers_AcademicReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_AcademicReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_AcademicReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_AcademicReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_AcademicReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_AcademicReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_AcademicReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_AcademicReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_AcademicReports.Location = new System.Drawing.Point(0, 105);
-            this.BtnTeachers_AcademicReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_AcademicReports.Name = "BtnTeachers_AcademicReports";
-            this.BtnTeachers_AcademicReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_AcademicReports.TabIndex = 47;
-            this.BtnTeachers_AcademicReports.Text = "REPORTERÍA DE CARGA ACADÉMICA";
-            this.BtnTeachers_AcademicReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_AcademicReports.UseVisualStyleBackColor = false;
-            this.BtnTeachers_AcademicReports.Click += new System.EventHandler(this.BtnTeachers_AcademicReports_Click);
-            // 
-            // BtnTeachers_SectionsReports
-            // 
-            this.BtnTeachers_SectionsReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_SectionsReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_SectionsReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_SectionsReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_SectionsReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_SectionsReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_SectionsReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_SectionsReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_SectionsReports.Location = new System.Drawing.Point(0, 70);
-            this.BtnTeachers_SectionsReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_SectionsReports.Name = "BtnTeachers_SectionsReports";
-            this.BtnTeachers_SectionsReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_SectionsReports.TabIndex = 46;
-            this.BtnTeachers_SectionsReports.Text = "REPORTERÍA SECCIONES";
-            this.BtnTeachers_SectionsReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_SectionsReports.UseVisualStyleBackColor = false;
-            this.BtnTeachers_SectionsReports.Click += new System.EventHandler(this.BtnTeachers_SectionsReports_Click);
-            // 
-            // BtnTeachers_CoordinatorsReports
-            // 
-            this.BtnTeachers_CoordinatorsReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_CoordinatorsReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_CoordinatorsReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_CoordinatorsReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_CoordinatorsReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_CoordinatorsReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_CoordinatorsReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_CoordinatorsReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoordinatorsReports.Location = new System.Drawing.Point(0, 35);
-            this.BtnTeachers_CoordinatorsReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_CoordinatorsReports.Name = "BtnTeachers_CoordinatorsReports";
-            this.BtnTeachers_CoordinatorsReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_CoordinatorsReports.TabIndex = 45;
-            this.BtnTeachers_CoordinatorsReports.Text = "REPORTERÍA COORDINADORES";
-            this.BtnTeachers_CoordinatorsReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_CoordinatorsReports.UseVisualStyleBackColor = false;
-            this.BtnTeachers_CoordinatorsReports.Click += new System.EventHandler(this.BtnTeachers_CoordinatorsReports_Click);
-            // 
-            // BtnTeachers_TeachersReports
-            // 
-            this.BtnTeachers_TeachersReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.BtnTeachers_TeachersReports.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnTeachers_TeachersReports.FlatAppearance.BorderSize = 0;
-            this.BtnTeachers_TeachersReports.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnTeachers_TeachersReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeachers_TeachersReports.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.BtnTeachers_TeachersReports.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.BtnTeachers_TeachersReports.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_TeachersReports.Location = new System.Drawing.Point(0, 0);
-            this.BtnTeachers_TeachersReports.Margin = new System.Windows.Forms.Padding(0);
-            this.BtnTeachers_TeachersReports.Name = "BtnTeachers_TeachersReports";
-            this.BtnTeachers_TeachersReports.Size = new System.Drawing.Size(300, 35);
-            this.BtnTeachers_TeachersReports.TabIndex = 44;
-            this.BtnTeachers_TeachersReports.Text = "REPORTERÍA DOCENTES";
-            this.BtnTeachers_TeachersReports.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnTeachers_TeachersReports.UseVisualStyleBackColor = false;
-            this.BtnTeachers_TeachersReports.Click += new System.EventHandler(this.BtnTeachers_TeachersReports_Click);
             // 
             // PanelTransfers
             // 
@@ -2550,21 +2041,316 @@
             this.BtnWarehouse_Managment.UseVisualStyleBackColor = false;
             this.BtnWarehouse_Managment.Click += new System.EventHandler(this.BtnWarehouse_Managment_Click);
             // 
+            // PanelRRHH_1
+            // 
+            this.PanelRRHH_1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelRRHH_1.Controls.Add(this.BtnRRHH_Trabajadores_Ficha);
+            this.PanelRRHH_1.Location = new System.Drawing.Point(520, 1);
+            this.PanelRRHH_1.Name = "PanelRRHH_1";
+            this.PanelRRHH_1.Size = new System.Drawing.Size(300, 40);
+            this.PanelRRHH_1.TabIndex = 30;
+            this.PanelRRHH_1.Visible = false;
+            // 
+            // BtnRRHH_Trabajadores_Ficha
+            // 
+            this.BtnRRHH_Trabajadores_Ficha.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Trabajadores_Ficha.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Trabajadores_Ficha.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Trabajadores_Ficha.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Trabajadores_Ficha.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Trabajadores_Ficha.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Trabajadores_Ficha.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Trabajadores_Ficha.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Trabajadores_Ficha.Location = new System.Drawing.Point(0, 0);
+            this.BtnRRHH_Trabajadores_Ficha.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Trabajadores_Ficha.Name = "BtnRRHH_Trabajadores_Ficha";
+            this.BtnRRHH_Trabajadores_Ficha.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Trabajadores_Ficha.TabIndex = 44;
+            this.BtnRRHH_Trabajadores_Ficha.Text = "FICHA DEL TRABAJADOR";
+            this.BtnRRHH_Trabajadores_Ficha.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Trabajadores_Ficha.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Trabajadores_Ficha.Click += new System.EventHandler(this.BtnRRHH_Trabajadores_Ficha_Click);
+            // 
+            // PanelRRHH_2
+            // 
+            this.PanelRRHH_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelRRHH_2.Controls.Add(this.BtnRRHH_Docencia_ControlAsistencias);
+            this.PanelRRHH_2.Controls.Add(this.BtnRRHH_Docencia_FichaCoordinador);
+            this.PanelRRHH_2.Controls.Add(this.BtnRRHH_Docencia_FichaDocente);
+            this.PanelRRHH_2.Location = new System.Drawing.Point(520, 1);
+            this.PanelRRHH_2.Name = "PanelRRHH_2";
+            this.PanelRRHH_2.Size = new System.Drawing.Size(300, 120);
+            this.PanelRRHH_2.TabIndex = 31;
+            this.PanelRRHH_2.Visible = false;
+            // 
+            // BtnRRHH_Docencia_ControlAsistencias
+            // 
+            this.BtnRRHH_Docencia_ControlAsistencias.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Docencia_ControlAsistencias.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Docencia_ControlAsistencias.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Docencia_ControlAsistencias.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Docencia_ControlAsistencias.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Docencia_ControlAsistencias.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Docencia_ControlAsistencias.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Docencia_ControlAsistencias.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_ControlAsistencias.Location = new System.Drawing.Point(0, 70);
+            this.BtnRRHH_Docencia_ControlAsistencias.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Docencia_ControlAsistencias.Name = "BtnRRHH_Docencia_ControlAsistencias";
+            this.BtnRRHH_Docencia_ControlAsistencias.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Docencia_ControlAsistencias.TabIndex = 46;
+            this.BtnRRHH_Docencia_ControlAsistencias.Text = "CONTROL DE ASISTENCIAS";
+            this.BtnRRHH_Docencia_ControlAsistencias.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_ControlAsistencias.UseVisualStyleBackColor = false;
+            // 
+            // BtnRRHH_Docencia_FichaCoordinador
+            // 
+            this.BtnRRHH_Docencia_FichaCoordinador.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Docencia_FichaCoordinador.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Docencia_FichaCoordinador.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Docencia_FichaCoordinador.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Docencia_FichaCoordinador.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Docencia_FichaCoordinador.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Docencia_FichaCoordinador.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Docencia_FichaCoordinador.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_FichaCoordinador.Location = new System.Drawing.Point(0, 35);
+            this.BtnRRHH_Docencia_FichaCoordinador.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Docencia_FichaCoordinador.Name = "BtnRRHH_Docencia_FichaCoordinador";
+            this.BtnRRHH_Docencia_FichaCoordinador.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Docencia_FichaCoordinador.TabIndex = 45;
+            this.BtnRRHH_Docencia_FichaCoordinador.Text = "FICHA DEL COORDINADOR";
+            this.BtnRRHH_Docencia_FichaCoordinador.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_FichaCoordinador.UseVisualStyleBackColor = false;
+            // 
+            // BtnRRHH_Docencia_FichaDocente
+            // 
+            this.BtnRRHH_Docencia_FichaDocente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Docencia_FichaDocente.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Docencia_FichaDocente.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Docencia_FichaDocente.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Docencia_FichaDocente.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Docencia_FichaDocente.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Docencia_FichaDocente.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Docencia_FichaDocente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_FichaDocente.Location = new System.Drawing.Point(0, 0);
+            this.BtnRRHH_Docencia_FichaDocente.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Docencia_FichaDocente.Name = "BtnRRHH_Docencia_FichaDocente";
+            this.BtnRRHH_Docencia_FichaDocente.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Docencia_FichaDocente.TabIndex = 44;
+            this.BtnRRHH_Docencia_FichaDocente.Text = "FICHA DEL DOCENTE";
+            this.BtnRRHH_Docencia_FichaDocente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_FichaDocente.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Docencia_FichaDocente.Click += new System.EventHandler(this.BtnRRHH_Docencia_FichaDocente_Click);
+            // 
+            // PanelTeachers
+            // 
+            this.PanelTeachers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_CalendariosAcademicos);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_HorariosOficiales);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_RevisionAsignaciones);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PreasignacionCursos);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_AprobacionDocentes);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_RevisoresAprobados);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_TarifasCursos);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumCursos);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumCarreras);
+            this.PanelTeachers.Location = new System.Drawing.Point(220, 1);
+            this.PanelTeachers.Name = "PanelTeachers";
+            this.PanelTeachers.Size = new System.Drawing.Size(300, 360);
+            this.PanelTeachers.TabIndex = 20;
+            this.PanelTeachers.Visible = false;
+            // 
+            // BtnProcesosAcademicos_CalendariosAcademicos
+            // 
+            this.BtnProcesosAcademicos_CalendariosAcademicos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_CalendariosAcademicos.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_CalendariosAcademicos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_CalendariosAcademicos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_CalendariosAcademicos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_CalendariosAcademicos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Location = new System.Drawing.Point(0, 280);
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Name = "BtnProcesosAcademicos_CalendariosAcademicos";
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_CalendariosAcademicos.TabIndex = 61;
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Text = "CALENDARIOS ACADÉMICOS";
+            this.BtnProcesosAcademicos_CalendariosAcademicos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_CalendariosAcademicos.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_CalendariosAcademicos.Click += new System.EventHandler(this.BtnProcesosAcademicos_CalendariosAcademicos_Click);
+            // 
+            // BtnProcesosAcademicos_HorariosOficiales
+            // 
+            this.BtnProcesosAcademicos_HorariosOficiales.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_HorariosOficiales.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_HorariosOficiales.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_HorariosOficiales.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_HorariosOficiales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_HorariosOficiales.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_HorariosOficiales.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_HorariosOficiales.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_HorariosOficiales.Location = new System.Drawing.Point(0, 245);
+            this.BtnProcesosAcademicos_HorariosOficiales.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_HorariosOficiales.Name = "BtnProcesosAcademicos_HorariosOficiales";
+            this.BtnProcesosAcademicos_HorariosOficiales.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_HorariosOficiales.TabIndex = 60;
+            this.BtnProcesosAcademicos_HorariosOficiales.Text = "HORARIOS OFICIALES";
+            this.BtnProcesosAcademicos_HorariosOficiales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_HorariosOficiales.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_HorariosOficiales.Click += new System.EventHandler(this.BtnProcesosAcademicos_HorariosOficiales_Click);
+            // 
+            // BtnProcesosAcademicos_RevisionAsignaciones
+            // 
+            this.BtnProcesosAcademicos_RevisionAsignaciones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_RevisionAsignaciones.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_RevisionAsignaciones.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_RevisionAsignaciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_RevisionAsignaciones.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_RevisionAsignaciones.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Location = new System.Drawing.Point(0, 210);
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Name = "BtnProcesosAcademicos_RevisionAsignaciones";
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_RevisionAsignaciones.TabIndex = 59;
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Text = "REVISIÓN DE ASIGNACIONES";
+            this.BtnProcesosAcademicos_RevisionAsignaciones.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_RevisionAsignaciones.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_RevisionAsignaciones.Click += new System.EventHandler(this.BtnProcesosAcademicos_RevisionAsignaciones_Click);
+            // 
+            // BtnProcesosAcademicos_PreasignacionCursos
+            // 
+            this.BtnProcesosAcademicos_PreasignacionCursos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_PreasignacionCursos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_PreasignacionCursos.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_PreasignacionCursos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_PreasignacionCursos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_PreasignacionCursos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_PreasignacionCursos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_PreasignacionCursos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PreasignacionCursos.Location = new System.Drawing.Point(0, 175);
+            this.BtnProcesosAcademicos_PreasignacionCursos.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_PreasignacionCursos.Name = "BtnProcesosAcademicos_PreasignacionCursos";
+            this.BtnProcesosAcademicos_PreasignacionCursos.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_PreasignacionCursos.TabIndex = 58;
+            this.BtnProcesosAcademicos_PreasignacionCursos.Text = "PREASIGNACIÓN DE CURSOS";
+            this.BtnProcesosAcademicos_PreasignacionCursos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PreasignacionCursos.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_PreasignacionCursos.Click += new System.EventHandler(this.BtnProcesosAcademicos_PreasignacionCursos_Click);
+            // 
+            // BtnProcesosAcademicos_AprobacionDocentes
+            // 
+            this.BtnProcesosAcademicos_AprobacionDocentes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_AprobacionDocentes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_AprobacionDocentes.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_AprobacionDocentes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_AprobacionDocentes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_AprobacionDocentes.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_AprobacionDocentes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_AprobacionDocentes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_AprobacionDocentes.Location = new System.Drawing.Point(0, 140);
+            this.BtnProcesosAcademicos_AprobacionDocentes.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_AprobacionDocentes.Name = "BtnProcesosAcademicos_AprobacionDocentes";
+            this.BtnProcesosAcademicos_AprobacionDocentes.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_AprobacionDocentes.TabIndex = 57;
+            this.BtnProcesosAcademicos_AprobacionDocentes.Text = "APROBACIÓN DE DOCENTES";
+            this.BtnProcesosAcademicos_AprobacionDocentes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_AprobacionDocentes.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_AprobacionDocentes.Click += new System.EventHandler(this.BtnProcesosAcademicos_AprobacionDocentes_Click);
+            // 
+            // BtnProcesosAcademicos_RevisoresAprobados
+            // 
+            this.BtnProcesosAcademicos_RevisoresAprobados.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_RevisoresAprobados.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_RevisoresAprobados.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_RevisoresAprobados.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_RevisoresAprobados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_RevisoresAprobados.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_RevisoresAprobados.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_RevisoresAprobados.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_RevisoresAprobados.Location = new System.Drawing.Point(0, 105);
+            this.BtnProcesosAcademicos_RevisoresAprobados.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_RevisoresAprobados.Name = "BtnProcesosAcademicos_RevisoresAprobados";
+            this.BtnProcesosAcademicos_RevisoresAprobados.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_RevisoresAprobados.TabIndex = 56;
+            this.BtnProcesosAcademicos_RevisoresAprobados.Text = "REVISORES APROBADOS";
+            this.BtnProcesosAcademicos_RevisoresAprobados.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_RevisoresAprobados.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_RevisoresAprobados.Click += new System.EventHandler(this.BtnProcesosAcademicos_RevisoresAprobados_Click);
+            // 
+            // BtnProcesosAcademicos_TarifasCursos
+            // 
+            this.BtnProcesosAcademicos_TarifasCursos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_TarifasCursos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_TarifasCursos.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_TarifasCursos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_TarifasCursos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_TarifasCursos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_TarifasCursos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_TarifasCursos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_TarifasCursos.Location = new System.Drawing.Point(0, 70);
+            this.BtnProcesosAcademicos_TarifasCursos.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_TarifasCursos.Name = "BtnProcesosAcademicos_TarifasCursos";
+            this.BtnProcesosAcademicos_TarifasCursos.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_TarifasCursos.TabIndex = 55;
+            this.BtnProcesosAcademicos_TarifasCursos.Text = "TARIFAS DE CURSOS POR SEDES";
+            this.BtnProcesosAcademicos_TarifasCursos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_TarifasCursos.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_TarifasCursos.Click += new System.EventHandler(this.BtnProcesosAcademicos_TarifasCursos_Click);
+            // 
+            // BtnProcesosAcademicos_PensumCursos
+            // 
+            this.BtnProcesosAcademicos_PensumCursos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_PensumCursos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_PensumCursos.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_PensumCursos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_PensumCursos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_PensumCursos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_PensumCursos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_PensumCursos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PensumCursos.Location = new System.Drawing.Point(0, 35);
+            this.BtnProcesosAcademicos_PensumCursos.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_PensumCursos.Name = "BtnProcesosAcademicos_PensumCursos";
+            this.BtnProcesosAcademicos_PensumCursos.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_PensumCursos.TabIndex = 54;
+            this.BtnProcesosAcademicos_PensumCursos.Text = "PENSUM DE CURSOS";
+            this.BtnProcesosAcademicos_PensumCursos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PensumCursos.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_PensumCursos.Click += new System.EventHandler(this.BtnProcesosAcademicos_PensumCursos_Click);
+            // 
+            // BtnProcesosAcademicos_PensumCarreras
+            // 
+            this.BtnProcesosAcademicos_PensumCarreras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_PensumCarreras.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_PensumCarreras.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_PensumCarreras.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_PensumCarreras.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_PensumCarreras.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_PensumCarreras.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_PensumCarreras.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PensumCarreras.Location = new System.Drawing.Point(0, 0);
+            this.BtnProcesosAcademicos_PensumCarreras.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_PensumCarreras.Name = "BtnProcesosAcademicos_PensumCarreras";
+            this.BtnProcesosAcademicos_PensumCarreras.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_PensumCarreras.TabIndex = 53;
+            this.BtnProcesosAcademicos_PensumCarreras.Text = "PENSUM CARRERAS";
+            this.BtnProcesosAcademicos_PensumCarreras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PensumCarreras.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_PensumCarreras.Click += new System.EventHandler(this.BtnProcesosAcademicos_PensumCarreras_Click);
+            // 
             // Frm_ControlCenter_MDI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1384, 736);
+            this.Controls.Add(this.PanelRRHH_2);
+            this.Controls.Add(this.PanelRRHH_1);
             this.Controls.Add(this.PanelWarehouses);
             this.Controls.Add(this.PanelFinances);
             this.Controls.Add(this.PanelInventory_1);
             this.Controls.Add(this.PanelTransfers);
-            this.Controls.Add(this.PanelTeachers_5);
-            this.Controls.Add(this.PanelTeachers_4);
-            this.Controls.Add(this.PanelTeachers_3);
-            this.Controls.Add(this.PanelTeachers_2);
-            this.Controls.Add(this.PanelTeachers_1);
             this.Controls.Add(this.PanelTeachers);
             this.Controls.Add(this.PanelProfile);
             this.Controls.Add(this.PanelStaticItems);
@@ -2578,7 +2364,7 @@
             this.Controls.Add(this.PanelCounts);
             this.Controls.Add(this.PanelSuppliers);
             this.Controls.Add(this.PanelUsers);
-            this.Controls.Add(this.PanelEmployees);
+            this.Controls.Add(this.PanelRRHH);
             this.Controls.Add(this.PanelContenedor);
             this.Controls.Add(this.PanelHeader);
             this.Controls.Add(this.PanelNavegacion);
@@ -2590,7 +2376,7 @@
             this.Text = "SECRON";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frm_ControlCenter_MDI_FormClosing);
             this.Resize += new System.EventHandler(this.Frm_ControlCenter_MDI_Resize);
-            this.PanelEmployees.ResumeLayout(false);
+            this.PanelRRHH.ResumeLayout(false);
             this.PanelUsers.ResumeLayout(false);
             this.PanelSuppliers.ResumeLayout(false);
             this.PanelCounts.ResumeLayout(false);
@@ -2610,24 +2396,20 @@
             this.PanelConfiguration.PerformLayout();
             this.PanelNavegacion.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).EndInit();
-            this.PanelTeachers.ResumeLayout(false);
-            this.PanelTeachers_1.ResumeLayout(false);
-            this.PanelTeachers_2.ResumeLayout(false);
-            this.PanelTeachers_3.ResumeLayout(false);
-            this.PanelTeachers_4.ResumeLayout(false);
-            this.PanelTeachers_5.ResumeLayout(false);
             this.PanelTransfers.ResumeLayout(false);
             this.PanelInventory_1.ResumeLayout(false);
             this.PanelFinances.ResumeLayout(false);
             this.PanelWarehouses.ResumeLayout(false);
+            this.PanelRRHH_1.ResumeLayout(false);
+            this.PanelRRHH_2.ResumeLayout(false);
+            this.PanelTeachers.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Panel PanelEmployees;
-        private System.Windows.Forms.Button BtnEmployeesManagment;
-        private System.Windows.Forms.Button BtnEmployeesInformation;
+        private System.Windows.Forms.Panel PanelRRHH;
+        private System.Windows.Forms.Button BtnRRHH_Trabajadores;
         private System.Windows.Forms.Panel PanelUsers;
         private System.Windows.Forms.Button BtnUsersRolesPermisos;
         private System.Windows.Forms.Button BtnUsersManagment;
@@ -2694,44 +2476,14 @@
         private System.Windows.Forms.Button BtnOrders;
         private System.Windows.Forms.Button BtnFinances;
         private System.Windows.Forms.Button BtnUsers;
-        private System.Windows.Forms.Button BtnEmployees;
+        private System.Windows.Forms.Button BtnRRHH;
         private System.Windows.Forms.Button BtnHome;
         private System.Windows.Forms.PictureBox PicLogo;
         private System.Windows.Forms.Panel PanelContenedor;
         private System.Windows.Forms.Label LblRol;
         private System.Windows.Forms.Label LblUser;
         private System.Windows.Forms.Label LblUsername;
-        private System.Windows.Forms.Button Btn_Teachers;
-        private System.Windows.Forms.Panel PanelTeachers;
-        private System.Windows.Forms.Button BtnTeachersReports;
-        private System.Windows.Forms.Button BtnTeachersSchedules;
-        private System.Windows.Forms.Button BtnTeachersSections;
-        private System.Windows.Forms.Button BtnTeachersPersonal;
-        private System.Windows.Forms.Button BtnTeachersAcademicConfiguration;
-        private System.Windows.Forms.Panel PanelTeachers_1;
-        private System.Windows.Forms.Button BtnTeachers_Pensum;
-        private System.Windows.Forms.Button BtnTeachers_Courses;
-        private System.Windows.Forms.Button BtnTeachers_Carrers;
-        private System.Windows.Forms.Button BtnTeachers_Schedules;
-        private System.Windows.Forms.Panel PanelTeachers_2;
-        private System.Windows.Forms.Button BtnTeachers_Assignment;
-        private System.Windows.Forms.Button BtnTeachers_Teachers;
-        private System.Windows.Forms.Button BtnTeachers_Coordinators;
-        private System.Windows.Forms.Panel PanelTeachers_3;
-        private System.Windows.Forms.Button BtnTeachers_CoursesSection;
-        private System.Windows.Forms.Button BtnTeachers_Sections;
-        private System.Windows.Forms.Panel PanelTeachers_4;
-        private System.Windows.Forms.Button BtnTeachers_ScheduleReport;
-        private System.Windows.Forms.Button BtnTeachers_TeachProgram;
-        private System.Windows.Forms.Button BtnTeachers_SchedulesManagment;
-        private System.Windows.Forms.Panel PanelTeachers_5;
-        private System.Windows.Forms.Button BtnTeachers_AcademicReports;
-        private System.Windows.Forms.Button BtnTeachers_SectionsReports;
-        private System.Windows.Forms.Button BtnTeachers_CoordinatorsReports;
-        private System.Windows.Forms.Button BtnTeachers_TeachersReports;
-        private System.Windows.Forms.Button BtnTeachers_ConflictReports;
-        private System.Windows.Forms.Button BtnTeachers_PensumReports;
-        private System.Windows.Forms.Button BtnTeachers_CoursesReports;
+        private System.Windows.Forms.Button BtnProcesosAcademicos;
         private System.Windows.Forms.Button BtnChecksFileControl;
         private System.Windows.Forms.Panel PanelTransfers;
         private System.Windows.Forms.Button BtnTransfersReports;
@@ -2756,5 +2508,25 @@
         private System.Windows.Forms.Button BtnWarehouse_Reports;
         private System.Windows.Forms.Button BtnWarehouse_Managment;
         private System.Windows.Forms.Button Btn_ITSM_Technology;
+        private System.Windows.Forms.Panel PanelRRHH_1;
+        private System.Windows.Forms.Button BtnRRHH_Trabajadores_Ficha;
+        private System.Windows.Forms.Button BtnRRHH_Docencia;
+        private System.Windows.Forms.Button BtnRRHH_MyProfile;
+        private System.Windows.Forms.Button BtnRRHH_Planillas;
+        private System.Windows.Forms.Panel PanelRRHH_2;
+        private System.Windows.Forms.Button BtnRRHH_Docencia_FichaDocente;
+        private System.Windows.Forms.Button BtnRRHH_Docencia_FichaCoordinador;
+        private System.Windows.Forms.Button BtnRRHH_Docencia_ControlAsistencias;
+        private System.Windows.Forms.Panel PanelTeachers;
+        private System.Windows.Forms.Button BtnRRHH_Calendario;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_CalendariosAcademicos;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_HorariosOficiales;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_RevisionAsignaciones;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_PreasignacionCursos;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_AprobacionDocentes;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_RevisoresAprobados;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_TarifasCursos;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_PensumCursos;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_PensumCarreras;
     }
 }

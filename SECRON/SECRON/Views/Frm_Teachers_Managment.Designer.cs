@@ -140,6 +140,7 @@
             this.Tabla.Name = "Tabla";
             this.Tabla.Size = new System.Drawing.Size(725, 575);
             this.Tabla.TabIndex = 1;
+            this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
             this.Tabla.SelectionChanged += new System.EventHandler(this.Tabla_SelectionChanged);
             // 
             // PanelToolStrip

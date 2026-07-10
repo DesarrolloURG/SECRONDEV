@@ -372,6 +372,7 @@ namespace SECRON.Views
                 Tabla.DataSource = null;
                 Tabla.DataSource = paginaActualData;
                 ConfigurarDataGridView();
+                AgregarColumnasArchivos();
                 ActualizarInfoPaginacion();
             }
             catch (Exception ex)
@@ -457,6 +458,106 @@ namespace SECRON.Views
             {
                 MessageBox.Show($"Error al configurar tabla: {ex.Message}",
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        // Nombres de los 7 documentos (deben coincidir con los sufijos de FilePath_* del modelo)
+        private readonly string[] _docsArchivos = { "DPI", "Titulos", "RTU", "Colegiado", "RENAS", "AntPoliciacos", "AntPenales" };
+        private readonly string[] _headersAbrir = { "DPI (ABRIR)", "TÍTULOS (ABRIR)", "RTU (ABRIR)", "COLEGIADO (ABRIR)", "RENAS (ABRIR)", "ANT.POL. (ABRIR)", "ANT.PEN. (ABRIR)" };
+        private readonly string[] _headersCargar = { "DPI (CARGAR)", "TÍTULOS (CARGAR)", "RTU (CARGAR)", "COLEGIADO (CARGAR)", "RENAS (CARGAR)", "ANT.POL. (CARGAR)", "ANT.PEN. (CARGAR)" };
+        private readonly string[] _headersEstado = { "DPI (ESTADO)", "TÍTULOS (ESTADO)", "RTU (ESTADO)", "COLEGIADO (ESTADO)", "RENAS (ESTADO)", "ANT.POL. (ESTADO)", "ANT.PEN. (ESTADO)" };
+
+        // Agrega las 21 columnas de imagen (ABRIR/CARGAR/ESTADO por documento) al final del grid.
+        // Oculta las 7 columnas de texto FilePath_* que el binding genera automaticamente.
+        private void AgregarColumnasArchivos()
+        {
+            if (Tabla.Columns.Count == 0) return;
+
+            // Ocultar las columnas de texto autogeneradas por el DataSource
+            foreach (string doc in _docsArchivos)
+            {
+                string colTexto = "FilePath_" + doc;
+                if (Tabla.Columns.Contains(colTexto))
+                    Tabla.Columns[colTexto].Visible = false;
+            }
+
+            // Evitar duplicar columnas si el metodo se llama varias veces
+            if (Tabla.Columns.Contains("ColAbrir_DPI")) return;
+
+            for (int i = 0; i < _docsArchivos.Length; i++)
+            {
+                var colAbrir = new DataGridViewImageColumn();
+                colAbrir.Name = $"ColAbrir_{_docsArchivos[i]}";
+                colAbrir.HeaderText = _headersAbrir[i];
+                colAbrir.Width = 110;
+                colAbrir.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                colAbrir.DefaultCellStyle.NullValue = Properties.Resources.SearchNegro25x25;
+                colAbrir.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                colAbrir.ToolTipText = _headersAbrir[i];
+                Tabla.Columns.Add(colAbrir);
+
+                var colCargar = new DataGridViewImageColumn();
+                colCargar.Name = $"ColCargar_{_docsArchivos[i]}";
+                colCargar.HeaderText = _headersCargar[i];
+                colCargar.Width = 110;
+                colCargar.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                colCargar.DefaultCellStyle.NullValue = Properties.Resources.UploadFileBlack25x25;
+                colCargar.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                colCargar.ToolTipText = _headersCargar[i];
+                Tabla.Columns.Add(colCargar);
+
+                var colEstado = new DataGridViewImageColumn();
+                colEstado.Name = $"ColEstado_{_docsArchivos[i]}";
+                colEstado.HeaderText = _headersEstado[i];
+                colEstado.Width = 110;
+                colEstado.ImageLayout = DataGridViewImageCellLayout.Zoom;
+                colEstado.DefaultCellStyle.NullValue = Properties.Resources.InactivarRojo25x25;
+                colEstado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                colEstado.ToolTipText = _headersEstado[i];
+                Tabla.Columns.Add(colEstado);
+            }
+
+            // El icono verde de ESTADO se pinta segun haya o no ruta (via CellFormatting)
+            Tabla.CellFormatting -= Tabla_CellFormatting_Archivos;
+            Tabla.CellFormatting += Tabla_CellFormatting_Archivos;
+
+            Tabla.CellClick -= Tabla_CellClick_Archivos;
+            Tabla.CellClick += Tabla_CellClick_Archivos;
+        }
+
+        // Pinta el icono de ESTADO (verde si hay archivo) leyendo del modelo enlazado a la fila
+        private void Tabla_CellFormatting_Archivos(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            string colName = Tabla.Columns[e.ColumnIndex].Name;
+            if (!colName.StartsWith("ColEstado_")) return;
+
+            var docente = Tabla.Rows[e.RowIndex].DataBoundItem as Mdl_Teachers;
+            if (docente == null) return;
+
+            string doc = colName.Substring("ColEstado_".Length);
+            string ruta = ObtenerRutaPorDoc(docente, doc);
+
+            if (!string.IsNullOrWhiteSpace(ruta))
+            {
+                e.Value = Properties.Resources.SaveVerde25x25;
+                e.FormattingApplied = true;
+            }
+        }
+
+        // Devuelve la ruta almacenada en el modelo para un documento dado
+        private string ObtenerRutaPorDoc(Mdl_Teachers d, string doc)
+        {
+            switch (doc)
+            {
+                case "DPI": return d.FilePath_DPI;
+                case "Titulos": return d.FilePath_Titulos;
+                case "RTU": return d.FilePath_RTU;
+                case "Colegiado": return d.FilePath_Colegiado;
+                case "RENAS": return d.FilePath_RENAS;
+                case "AntPoliciacos": return d.FilePath_AntPoliciacos;
+                case "AntPenales": return d.FilePath_AntPenales;
+                default: return null;
             }
         }
         #endregion CargarDatos
@@ -837,6 +938,114 @@ namespace SECRON.Views
             {
                 MessageBox.Show($"Error al seleccionar docente: {ex.Message}",
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Tabla_CellClick_Archivos(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            string colName = Tabla.Columns[e.ColumnIndex].Name;
+            if (!colName.StartsWith("ColAbrir_") && !colName.StartsWith("ColCargar_")) return;
+
+            var docente = Tabla.Rows[e.RowIndex].DataBoundItem as Mdl_Teachers;
+            if (docente == null) return;
+
+            int teacherId = docente.TeacherId;
+
+            // ===== ABRIR ARCHIVO =====
+            if (colName.StartsWith("ColAbrir_"))
+            {
+                string doc = colName.Substring("ColAbrir_".Length);
+                string campo = "FilePath_" + doc;
+                string filePath = ObtenerRutaPorDoc(docente, doc);
+
+                if (string.IsNullOrWhiteSpace(filePath))
+                {
+                    MessageBox.Show("ESTE DOCENTE NO TIENE ESTE ARCHIVO VINCULADO.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!System.IO.File.Exists(filePath))
+                {
+                    Ctrl_Teachers.ActualizarFilePathDocente(teacherId, campo, null, UserData.UserId);
+                    MessageBox.Show("EL ARCHIVO NO SE ENCUENTRA EN LA RUTA INDICADA.\nSE HA LIMPIADO EL VÍNCULO AUTOMÁTICAMENTE.",
+                        "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    CargarDocentes();
+                    return;
+                }
+
+                System.Diagnostics.Process.Start(filePath);
+                return;
+            }
+
+            // ===== CARGAR ARCHIVO =====
+            if (colName.StartsWith("ColCargar_"))
+            {
+                string doc = colName.Substring("ColCargar_".Length);
+                string campo = "FilePath_" + doc;
+                string rutaActual = ObtenerRutaPorDoc(docente, doc);
+                string nombreArchivo = NombreArchivoPorDoc(doc);
+
+                if (!string.IsNullOrWhiteSpace(rutaActual))
+                {
+                    if (MessageBox.Show("ESTE DOCENTE YA TIENE ESTE ARCHIVO VINCULADO.\n¿DESEA REEMPLAZARLO?",
+                        "CONFIRMAR", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        return;
+                }
+
+                using (OpenFileDialog dlg = new OpenFileDialog())
+                {
+                    dlg.Title = "SELECCIONAR ARCHIVO PDF";
+                    dlg.Filter = "Archivos PDF (*.pdf)|*.pdf";
+
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            string carpetaDestino = $@"\\Uregional\Shared$\SECRONDEV\RECURSOS HUMANOS\DOCENCIA\DOCENTES\{teacherId}\";
+                            //string carpetaDestino = $@"\\Uregional\Shared$\SECRONQA\RECURSOS HUMANOS\DOCENCIA\DOCENTES\{teacherId}\";
+                            //string carpetaDestino = $@"\\Uregional\Shared$\SECRON\RECURSOS HUMANOS\DOCENCIA\DOCENTES\{teacherId}\";
+
+                            if (!System.IO.Directory.Exists(carpetaDestino))
+                                System.IO.Directory.CreateDirectory(carpetaDestino);
+
+                            string rutaDestino = System.IO.Path.Combine(carpetaDestino, nombreArchivo);
+
+                            System.IO.File.Copy(dlg.FileName, rutaDestino, overwrite: true);
+
+                            bool ok = Ctrl_Teachers.ActualizarFilePathDocente(teacherId, campo, rutaDestino, UserData.UserId);
+                            if (ok)
+                            {
+                                MessageBox.Show("ARCHIVO VINCULADO CORRECTAMENTE.", "ÉXITO",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                CargarDocentes();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("ERROR AL COPIAR ARCHIVO: " + ex.Message, "ERROR SECRON",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Nombre fijo del PDF por tipo de documento
+        private string NombreArchivoPorDoc(string doc)
+        {
+            switch (doc)
+            {
+                case "DPI": return "DPI.pdf";
+                case "Titulos": return "TITULOS.pdf";
+                case "RTU": return "RTU.pdf";
+                case "Colegiado": return "COLEGIADO.pdf";
+                case "RENAS": return "RENAS.pdf";
+                case "AntPoliciacos": return "ANT_POLICIACOS.pdf";
+                case "AntPenales": return "ANT_PENALES.pdf";
+                default: return doc + ".pdf";
             }
         }
 
@@ -1599,7 +1808,6 @@ namespace SECRON.Views
             }
         }
         #endregion EventosFaltantes
-
         #region SistemaDePermisos
 
         private Ctrl_Security_Auth authController;

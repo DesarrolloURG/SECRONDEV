@@ -276,6 +276,17 @@ CREATE TABLE Teachers (
     CONSTRAINT FK_Teachers_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
 );
 
+-- =============================================
+ALTER TABLE Teachers ADD
+    FilePath_DPI            NVARCHAR(500) NULL,
+    FilePath_Titulos        NVARCHAR(500) NULL,
+    FilePath_RTU            NVARCHAR(500) NULL,
+    FilePath_Colegiado      NVARCHAR(500) NULL,
+    FilePath_RENAS          NVARCHAR(500) NULL,
+    FilePath_AntPoliciacos  NVARCHAR(500) NULL,
+    FilePath_AntPenales     NVARCHAR(500) NULL;
+GO
+
 -- -----------------------------------------------------
 -- 9. TABLA: TeacherCourses (Detalle: Cursos que imparte el Docente)
 -- Qué cursos está capacitado para impartir un docente

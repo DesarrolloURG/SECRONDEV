@@ -917,9 +917,9 @@ namespace SECRON.Views
             this.Lbl_CorreoInstitucional.ForeColor = System.Drawing.Color.Black;
             this.Lbl_CorreoInstitucional.Location = new System.Drawing.Point(10, 111);
             this.Lbl_CorreoInstitucional.Name = "Lbl_CorreoInstitucional";
-            this.Lbl_CorreoInstitucional.Size = new System.Drawing.Size(198, 20);
+            this.Lbl_CorreoInstitucional.Size = new System.Drawing.Size(187, 20);
             this.Lbl_CorreoInstitucional.TabIndex = 7;
-            this.Lbl_CorreoInstitucional.Text = "CORREO INSTITUCIONAL *";
+            this.Lbl_CorreoInstitucional.Text = "CORREO INSTITUCIONAL";
             // 
             // Lbl_CorreoPersonal
             // 

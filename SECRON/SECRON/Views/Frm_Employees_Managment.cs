@@ -52,6 +52,7 @@ namespace SECRON.Views
 
                 ConfigurarTabIndexYFocus();
                 ConfigurarPlaceHoldersTextbox();
+                ConfigurarAutocompletadoCorreoInstitucional();
                 ConfigurarMaxLengthTextBox();
                 ConfigurarDateTimePickers();
                 ConfigurarComboBoxes();
@@ -123,6 +124,43 @@ namespace SECRON.Views
             Txt_Telefono2.MaxLength = 12;
             Txt_TelefonoEmergencia.MaxLength = 12;
         }
+        private const string DOMINIO_CORREO_INSTITUCIONAL = "@uregionalregion2.edu.gt";
+
+        private void ConfigurarAutocompletadoCorreoInstitucional()
+        {
+            Txt_CorreoInstitucional.KeyPress += (s, e) =>
+            {
+                if (e.KeyChar == '@')
+                {
+                    e.Handled = true;
+                }
+            };
+
+            Txt_CorreoInstitucional.GotFocus += (s, e) =>
+            {
+                if (Txt_CorreoInstitucional.Text.EndsWith(DOMINIO_CORREO_INSTITUCIONAL,
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    Txt_CorreoInstitucional.Text = Txt_CorreoInstitucional.Text.Substring(
+                        0, Txt_CorreoInstitucional.Text.Length - DOMINIO_CORREO_INSTITUCIONAL.Length);
+                    Txt_CorreoInstitucional.SelectionStart = Txt_CorreoInstitucional.Text.Length;
+                }
+            };
+
+            Txt_CorreoInstitucional.LostFocus += (s, e) =>
+            {
+                string alias = Txt_CorreoInstitucional.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(alias) || alias == "CORREO INSTITUCIONAL")
+                    return;
+
+                if (!alias.EndsWith(DOMINIO_CORREO_INSTITUCIONAL, StringComparison.OrdinalIgnoreCase))
+                {
+                    Txt_CorreoInstitucional.Text = alias + DOMINIO_CORREO_INSTITUCIONAL;
+                    Txt_CorreoInstitucional.ForeColor = Color.Black;
+                }
+            };
+        }
         // Metodo para configurar placeholders en los TextBox
         private void ConfigurarPlaceHoldersTextbox()
         {
@@ -193,10 +231,11 @@ namespace SECRON.Views
             DTP_Nacimiento.Format = DateTimePickerFormat.Short;
 
             // ===== CONFIGURAR DTP_Ingreso =====
-            // Primero establecer MinDate, luego MaxDate, luego Value
+            // MaxDate al FINAL del dia de hoy para evitar que la hora actual
+            // supere el limite por milisegundos (causaba error intermitente)
             DTP_Ingreso.MinDate = new DateTime(2010, 1, 1);
-            DTP_Ingreso.MaxDate = DateTime.Now;
-            DTP_Ingreso.Value = DateTime.Now; // Fecha actual por defecto
+            DTP_Ingreso.MaxDate = DateTime.Today.AddDays(1).AddSeconds(-1); // hoy 23:59:59
+            DTP_Ingreso.Value = DateTime.Today;                             // hoy 00:00:00
             DTP_Ingreso.Format = DateTimePickerFormat.Short;
         }
         #endregion ConfigurarDateTimePicker
@@ -1337,17 +1376,10 @@ namespace SECRON.Views
                 return false;
             }
 
-            // 4. Validar CORREO INSTITUCIONAL*
-            if (TienePlaceholder(Txt_CorreoInstitucional, "CORREO INSTITUCIONAL"))
-            {
-                MessageBox.Show("El campo CORREO INSTITUCIONAL es obligatorio", "Validación",
-                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Txt_CorreoInstitucional.Focus();
-                return false;
-            }
-
-            // Validar formato de email
+            // 4. Validar CORREO INSTITUCIONAL (OPCIONAL)
+            // El dominio se autocompleta; solo se valida que el alias no quede corrupto si lo capturan
             if (!TienePlaceholder(Txt_CorreoInstitucional, "CORREO INSTITUCIONAL") &&
+                !string.IsNullOrWhiteSpace(Txt_CorreoInstitucional.Text) &&
                 !Txt_CorreoInstitucional.Text.Contains("@"))
             {
                 MessageBox.Show("El CORREO INSTITUCIONAL debe tener un formato válido", "Validación",
@@ -1356,14 +1388,7 @@ namespace SECRON.Views
                 return false;
             }
 
-            // 5. Validar TELÉFONO*
-            if (TienePlaceholder(Txt_Telefono1, "+502"))
-            {
-                MessageBox.Show("El campo TELÉFONO es obligatorio", "Validación",
-                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Txt_Telefono1.Focus();
-                return false;
-            }
+            // 5. TELÉFONO (OPCIONAL) - ya no es obligatorio
 
             // 6. Validar DEPARTAMENTO*
             if (ComboBox_Departamento.SelectedIndex < 0 || ComboBox_Departamento.SelectedValue == null)

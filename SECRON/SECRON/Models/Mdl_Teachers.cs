@@ -49,6 +49,15 @@ namespace SECRON.Models
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
 
+        // Rutas de archivos
+        public string FilePath_DPI { get; set; }
+        public string FilePath_Titulos { get; set; }
+        public string FilePath_RTU { get; set; }
+        public string FilePath_Colegiado { get; set; }
+        public string FilePath_RENAS { get; set; }
+        public string FilePath_AntPoliciacos { get; set; }
+        public string FilePath_AntPenales { get; set; }
+
         public Mdl_Teachers()
         {
             IsActive = true;
