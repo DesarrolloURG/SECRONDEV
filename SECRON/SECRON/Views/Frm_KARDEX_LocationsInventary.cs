@@ -836,7 +836,7 @@ namespace SECRON.Views
 
                 _stockSeleccionado.CurrentStock = (decimal)Txt_AddStock.Value;
 
-                int resultado = Ctrl_ItemWarehouseStock.ActualizarStockCompleto(_stockSeleccionado);
+                int resultado = Ctrl_ItemWarehouseStock.ActualizarStockCompleto(_stockSeleccionado, UserData.UserId);
 
                 if (resultado > 0)
                 {
@@ -880,7 +880,7 @@ namespace SECRON.Views
                 if (confirmacion != DialogResult.Yes) return;
 
                 int resultado = Ctrl_ItemWarehouseStock.EliminarStockDeBodega(
-                    _stockSeleccionado.ItemWarehouseStockId);
+                    _stockSeleccionado.ItemWarehouseStockId, UserData.UserId);
 
                 if (resultado > 0)
                 {
