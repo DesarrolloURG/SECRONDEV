@@ -18,6 +18,8 @@ namespace SECRON.Models
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
+        public string LocationCode { get; set; }
+        public string LocationName { get; set; }
 
         public Mdl_Warehouse()
         {

@@ -1684,9 +1684,10 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
+            Frm_LocationStaffAssignments frm = new Frm_LocationStaffAssignments();
             frm.Text = "Personal Por Sede";
             frm.BackColor = Color.White;
+            frm.UserData = this.UserData;
 
             AbrirFormularioConPestana(frm, "Personal Por Sede", "LocationsStaff");
         }
@@ -1988,12 +1989,12 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
+            Frm_Warehouse_Managment frm = new Frm_Warehouse_Managment();
             frm.Text = "Administrar Bodegas";
             frm.BackColor = Color.White;
 
             //Pasamos los datos del usuario
-            //frm.UserData = this.UserData;
+            frm.UserData = this.UserData;
 
             AbrirFormularioConPestana(frm, "Administrar Bodegas", "WarehouseManagment");
         }

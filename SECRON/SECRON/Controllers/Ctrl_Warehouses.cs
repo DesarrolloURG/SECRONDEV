@@ -149,7 +149,9 @@ namespace SECRON.Controllers
                 CreatedDate = reader.GetDateTime(reader.GetOrdinal("CreatedDate")),
                 CreatedBy = reader["CreatedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("CreatedBy")),
                 ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("ModifiedDate")),
-                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy"))
+                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? (int?)null : reader.GetInt32(reader.GetOrdinal("ModifiedBy")),
+                LocationCode = reader["LocationCode"] == DBNull.Value ? null : reader["LocationCode"].ToString(),
+                LocationName = reader["LocationName"] == DBNull.Value ? null : reader["LocationName"].ToString()
             };
         }
 
@@ -233,6 +235,159 @@ namespace SECRON.Controllers
                 MessageBox.Show("Error al obtener bodegas asignadas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return lista;
+        }
+
+        public static int Create(Mdl_Warehouse warehouse)
+        {
+            int resultado = 0;
+
+            using (SqlConnection conn = DatabaseConfig.StartConection())
+            {
+                using (SqlCommand cmd = new SqlCommand("SP_Warehouses_Create", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@LocationId", warehouse.LocationId);
+                    cmd.Parameters.AddWithValue("@WarehouseName", warehouse.WarehouseName);
+                    cmd.Parameters.AddWithValue("@Description", (object)warehouse.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)warehouse.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", (object)warehouse.PhoneNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@WarehouseType", warehouse.WarehouseType);
+                    cmd.Parameters.AddWithValue("@CreatedBy", warehouse.CreatedBy);
+
+                    SqlParameter returnParam = cmd.Parameters.Add("@ReturnValue", System.Data.SqlDbType.Int);
+                    returnParam.Direction = System.Data.ParameterDirection.ReturnValue;
+
+                    cmd.ExecuteNonQuery();
+
+                    resultado = (int)returnParam.Value;
+                }
+            }
+
+            return resultado;
+        }
+
+        public static int Update(Mdl_Warehouse warehouse, bool isInactivation)
+        {
+            int resultado = 0;
+
+            using (SqlConnection conn = DatabaseConfig.StartConection())
+            {
+                using (SqlCommand cmd = new SqlCommand("SP_Warehouses_Update", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@WarehouseId", warehouse.WarehouseId);
+                    cmd.Parameters.AddWithValue("@WarehouseName", warehouse.WarehouseName);
+                    cmd.Parameters.AddWithValue("@Description", (object)warehouse.Description ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", (object)warehouse.Address ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", (object)warehouse.PhoneNumber ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@WarehouseType", warehouse.WarehouseType);
+                    cmd.Parameters.AddWithValue("@IsInactivation", isInactivation);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", warehouse.ModifiedBy);
+
+                    SqlParameter returnParam = cmd.Parameters.Add("@ReturnValue", System.Data.SqlDbType.Int);
+                    returnParam.Direction = System.Data.ParameterDirection.ReturnValue;
+
+                    cmd.ExecuteNonQuery();
+
+                    resultado = (int)returnParam.Value;
+                }
+            }
+
+            return resultado;
+        }
+
+        public static List<Mdl_Warehouse> BuscarBodegas(
+            string textoBusqueda, string tipoFiltro, bool? isActive, int pageNumber, int pageSize)
+        {
+            List<Mdl_Warehouse> lista = new List<Mdl_Warehouse>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    int offset = (pageNumber - 1) * pageSize;
+                    string texto = (textoBusqueda ?? "").Trim();
+
+                    string condicionTexto = tipoFiltro == "BUSCAR POR NOMBRE"
+                        ? "w.WarehouseName LIKE @Texto"
+                        : tipoFiltro == "BUSCAR POR CODIGO"
+                            ? "w.WarehouseCode LIKE @Texto"
+                            : "(w.WarehouseCode LIKE @Texto OR w.WarehouseName LIKE @Texto)";
+
+                    string query = $@"
+                        SELECT w.WarehouseId, w.WarehouseCode, w.WarehouseName, w.Description,
+                               w.Address, w.PhoneNumber, w.ManagerUserId, w.WarehouseType,
+                               w.LocationId, w.IsActive, w.CreatedDate, w.CreatedBy, w.ModifiedDate, w.ModifiedBy,
+                               l.LocationCode, l.LocationName
+                        FROM   Warehouses w
+                        INNER JOIN Locations l ON l.LocationId = w.LocationId
+                        WHERE  (@IsActive IS NULL OR w.IsActive = @IsActive)
+                          AND  (@TextoVacio = 1 OR {condicionTexto})
+                        ORDER  BY w.WarehouseName
+                        OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@IsActive", (object)isActive ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TextoVacio", string.IsNullOrEmpty(texto));
+                        cmd.Parameters.AddWithValue("@Texto", "%" + texto + "%");
+                        cmd.Parameters.AddWithValue("@Offset", offset);
+                        cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(MapearBodega(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar bodegas: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
+
+        public static int ContarTotalBodegas(string textoBusqueda, string tipoFiltro, bool? isActive)
+        {
+            int total = 0;
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string texto = (textoBusqueda ?? "").Trim();
+
+                    string condicionTexto = tipoFiltro == "BUSCAR POR NOMBRE"
+                        ? "w.WarehouseName LIKE @Texto"
+                        : tipoFiltro == "BUSCAR POR CODIGO"
+                            ? "w.WarehouseCode LIKE @Texto"
+                            : "(w.WarehouseCode LIKE @Texto OR w.WarehouseName LIKE @Texto)";
+
+                    string query = $@"
+                        SELECT COUNT(1)
+                        FROM   Warehouses w
+                        WHERE  (@IsActive IS NULL OR w.IsActive = @IsActive)
+                          AND  (@TextoVacio = 1 OR {condicionTexto})";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@IsActive", (object)isActive ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@TextoVacio", string.IsNullOrEmpty(texto));
+                        cmd.Parameters.AddWithValue("@Texto", "%" + texto + "%");
+
+                        total = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al contar bodegas: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return total;
         }
     }
 }
