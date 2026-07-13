@@ -28,6 +28,7 @@ namespace SECRON.Views
         private DateTime? _ultimaFechaInicio = null;
         private DateTime? _ultimaFechaFin = null;
         private List<Mdl_Checks> _listaCompletaFiltrada = null;
+        private HashSet<int> _checksIdsSeleccionados = new HashSet<int>(); // Persiste selección entre páginas
         private string _ultimoRangoInicio = null;
         private string _ultimoRangoFin = null;
         private List<DateTime> _mesesExcluidos = new List<DateTime>();
@@ -43,6 +44,7 @@ namespace SECRON.Views
         private ToolStrip toolStripPaginacion;
         private ToolStripButton btnAnterior;
         private ToolStripButton btnSiguiente;
+        
 
         public Frm_Checks_FileControl()
         {
@@ -2051,5 +2053,48 @@ namespace SECRON.Views
         }
 
         #endregion ActualizarFileControl
+
+        private void Btn_SelectDeselectAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Tabla.Rows.Count == 0) return;
+
+                // ¿Ya están todas las filas de ESTA página seleccionadas?
+                bool todosSeleccionados = Tabla.Rows.Cast<DataGridViewRow>()
+                    .All(fila => fila.Cells["Seleccionar"].Value != null &&
+                                (bool)fila.Cells["Seleccionar"].Value == true);
+
+                bool nuevoValor = !todosSeleccionados;
+
+                foreach (DataGridViewRow fila in Tabla.Rows)
+                {
+                    fila.Cells["Seleccionar"].Value = nuevoValor;
+
+                    int checkId = Convert.ToInt32(fila.Cells["CheckId"].Value);
+                    if (nuevoValor)
+                        _checksIdsSeleccionados.Add(checkId);
+                    else
+                        _checksIdsSeleccionados.Remove(checkId);
+                }
+
+                ActualizarTextoBotonSelectDeselect();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR AL SELECCIONAR/DESELECCIONAR: {ex.Message}",
+                               "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void ActualizarTextoBotonSelectDeselect()
+        {
+            if (Btn_SelectDeselectAll == null) return;
+
+            bool todosSeleccionados = Tabla.Rows.Count > 0 &&
+                Tabla.Rows.Cast<DataGridViewRow>().All(fila =>
+                    fila.Cells["Seleccionar"].Value != null && (bool)fila.Cells["Seleccionar"].Value == true);
+
+            Btn_SelectDeselectAll.Text = todosSeleccionados ? "DESELECCIONAR TODO" : "SELECCIONAR TODO";
+        }
     }
 }

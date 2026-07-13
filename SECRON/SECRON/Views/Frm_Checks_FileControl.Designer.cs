@@ -96,6 +96,7 @@
             this.PanelTabla = new System.Windows.Forms.Panel();
             this.Tabla = new System.Windows.Forms.DataGridView();
             this.PanelToolStrip = new System.Windows.Forms.Panel();
+            this.Btn_SelectDeselectAll = new System.Windows.Forms.Button();
             this.Btn_Update = new System.Windows.Forms.Button();
             this.ComboBox_FileState = new System.Windows.Forms.ComboBox();
             this.Lbl_Paginas = new System.Windows.Forms.Label();
@@ -870,9 +871,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.PanelTabla.Controls.Add(this.Tabla);
-            this.PanelTabla.Location = new System.Drawing.Point(22, 253);
+            this.PanelTabla.Location = new System.Drawing.Point(22, 302);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(776, 534);
+            this.PanelTabla.Size = new System.Drawing.Size(776, 492);
             this.PanelTabla.TabIndex = 75;
             // 
             // Tabla
@@ -881,7 +882,7 @@
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(776, 534);
+            this.Tabla.Size = new System.Drawing.Size(776, 492);
             this.Tabla.TabIndex = 1;
             // 
             // PanelToolStrip
@@ -889,24 +890,37 @@
             this.PanelToolStrip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.PanelToolStrip.Controls.Add(this.Btn_SelectDeselectAll);
             this.PanelToolStrip.Controls.Add(this.Btn_Update);
             this.PanelToolStrip.Controls.Add(this.ComboBox_FileState);
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(22, 169);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(776, 78);
+            this.PanelToolStrip.Size = new System.Drawing.Size(776, 127);
             this.PanelToolStrip.TabIndex = 74;
+            // 
+            // Btn_SelectDeselectAll
+            // 
+            this.Btn_SelectDeselectAll.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SelectDeselectAll.Image = global::SECRON.Properties.Resources.SeleccionarNegro20x20;
+            this.Btn_SelectDeselectAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_SelectDeselectAll.Location = new System.Drawing.Point(16, 5);
+            this.Btn_SelectDeselectAll.Name = "Btn_SelectDeselectAll";
+            this.Btn_SelectDeselectAll.Size = new System.Drawing.Size(207, 30);
+            this.Btn_SelectDeselectAll.TabIndex = 92;
+            this.Btn_SelectDeselectAll.Text = "SELECCIONAR";
+            this.Btn_SelectDeselectAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_SelectDeselectAll.UseVisualStyleBackColor = true;
+            this.Btn_SelectDeselectAll.Click += new System.EventHandler(this.Btn_SelectDeselectAll_Click);
             // 
             // Btn_Update
             // 
-            this.Btn_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Update.Location = new System.Drawing.Point(16, 3);
+            this.Btn_Update.Location = new System.Drawing.Point(16, 54);
             this.Btn_Update.Name = "Btn_Update";
-            this.Btn_Update.Size = new System.Drawing.Size(207, 37);
+            this.Btn_Update.Size = new System.Drawing.Size(207, 35);
             this.Btn_Update.TabIndex = 70;
             this.Btn_Update.Text = "ESTADO EN ARCHIVO";
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -918,7 +932,7 @@
             this.ComboBox_FileState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.ComboBox_FileState.FormattingEnabled = true;
-            this.ComboBox_FileState.Location = new System.Drawing.Point(16, 44);
+            this.ComboBox_FileState.Location = new System.Drawing.Point(16, 92);
             this.ComboBox_FileState.Name = "ComboBox_FileState";
             this.ComboBox_FileState.Size = new System.Drawing.Size(207, 28);
             this.ComboBox_FileState.TabIndex = 69;
@@ -930,7 +944,7 @@
             this.Lbl_Paginas.AutoSize = true;
             this.Lbl_Paginas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Paginas.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Paginas.Location = new System.Drawing.Point(436, 44);
+            this.Lbl_Paginas.Location = new System.Drawing.Point(496, 69);
             this.Lbl_Paginas.Name = "Lbl_Paginas";
             this.Lbl_Paginas.Size = new System.Drawing.Size(267, 20);
             this.Lbl_Paginas.TabIndex = 51;
@@ -1281,5 +1295,6 @@
         private System.Windows.Forms.Button Btn_ExportList;
         private System.Windows.Forms.Button Btn_FiltrosFechas;
         private System.Windows.Forms.Label Lbl_ResumenExclusiones;
+        private System.Windows.Forms.Button Btn_SelectDeselectAll;
     }
 }

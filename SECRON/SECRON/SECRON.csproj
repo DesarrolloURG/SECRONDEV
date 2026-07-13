@@ -552,12 +552,6 @@
     <Compile Include="Views\Frm_Locations_Managment.Designer.cs">
       <DependentUpon>Frm_Locations_Managment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Frm_Pruebas.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Frm_Pruebas.Designer.cs">
-      <DependentUpon>Frm_Pruebas.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Frm_RRHH_Coordinator_File.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -808,9 +802,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Locations_Managment.resx">
       <DependentUpon>Frm_Locations_Managment.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_Pruebas.resx">
-      <DependentUpon>Frm_Pruebas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_RRHH_Coordinator_File.resx">
       <DependentUpon>Frm_RRHH_Coordinator_File.cs</DependentUpon>
