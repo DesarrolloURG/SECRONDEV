@@ -7,66 +7,43 @@ DROP TABLE Teachers
 -- 1. TABLA: Coordinators (Coordinadores Académicos)
 -- Entidad independiente - pueden o no tener usuario
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS Coordinators;
+GO
+
 CREATE TABLE Coordinators (
-    CoordinatorId INT IDENTITY(1,1) PRIMARY KEY,
-    CoordinatorCode NVARCHAR(20) NOT NULL UNIQUE,
-    
-    -- Información Personal
-    FullName NVARCHAR(255) NOT NULL,
-    Phone NVARCHAR(20),
-    Email NVARCHAR(100),
-    DPI NVARCHAR(20),
-    NIT NVARCHAR(20),
-    
-    -- Información Académica/Profesional
-    AcademicTitle NVARCHAR(255),
-    Specialization NVARCHAR(255),
-    
-    -- Información Bancaria
-    BankAccountNumber NVARCHAR(30),
-    BankId INT,
-    
-    -- Asignación de Sede principal
-    LocationId INT NOT NULL,
-    
-    -- Relación con Usuario (opcional)
-    UserId INT NULL,  -- NULL si no tiene usuario del sistema
-    
-    -- Control
-    IsActive BIT DEFAULT 1,
-    CreatedDate DATETIME DEFAULT GETDATE(),
-    CreatedBy INT,
-    ModifiedDate DATETIME,
-    ModifiedBy INT,
-    
-    CONSTRAINT FK_Coordinators_Bank FOREIGN KEY (BankId) REFERENCES Banks(BankId),
-    CONSTRAINT FK_Coordinators_Location FOREIGN KEY (LocationId) REFERENCES Locations(LocationId),
-    CONSTRAINT FK_Coordinators_User FOREIGN KEY (UserId) REFERENCES Users(UserId),
-    CONSTRAINT FK_Coordinators_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
-    CONSTRAINT FK_Coordinators_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
+    CoordinatorId             INT IDENTITY(1,1) PRIMARY KEY,   -- 0
+    CoordinatorCode           NVARCHAR(20) NOT NULL,           -- 1
+    FullName                  NVARCHAR(150) NOT NULL,          -- 2
+    Phone                     NVARCHAR(20) NULL,               -- 3
+    Email                     NVARCHAR(150) NULL,              -- 4
+    DPI                       NVARCHAR(20) NULL,               -- 5
+    NIT                       NVARCHAR(20) NULL,               -- 6
+    Address                   NVARCHAR(255) NULL,              -- 7
+    AcademicTitle             NVARCHAR(100) NULL,              -- 8
+    Specialization            NVARCHAR(150) NULL,              -- 9
+    IsCollegiateActive        BIT NOT NULL DEFAULT 0,          -- 10
+    CollegiateNumber          NVARCHAR(50) NULL,               -- 11
+    BankAccountNumber         NVARCHAR(50) NULL,               -- 12
+    BankId                    INT NULL,                        -- 13
+    LocationId                INT NULL,                        -- 14  (NULLABLE)
+    HireDate                  DATETIME NULL,                   -- 15
+    ContractType              NVARCHAR(50) NULL,               -- 16
+    UserId                    INT NULL,                        -- 17
+    RegisteredByCoordinatorId INT NULL,                        -- 18
+    IsActive                  BIT NOT NULL DEFAULT 1,          -- 19
+    CreatedDate               DATETIME NOT NULL DEFAULT GETDATE(), -- 20
+    CreatedBy                 INT NULL,                        -- 21
+    ModifiedDate              DATETIME NULL,                   -- 22
+    ModifiedBy                INT NULL,                        -- 23
+    FilePath_DPI              NVARCHAR(500) NULL,              -- 24
+    FilePath_Titulos          NVARCHAR(500) NULL,              -- 25
+    FilePath_RTU              NVARCHAR(500) NULL,              -- 26
+    FilePath_Colegiado        NVARCHAR(500) NULL,              -- 27
+    FilePath_RENAS            NVARCHAR(500) NULL,              -- 28
+    FilePath_AntPoliciacos    NVARCHAR(500) NULL,              -- 29
+    FilePath_AntPenales       NVARCHAR(500) NULL               -- 30
 );
-
--- 1) Permitir LocationId NULL (un coordinador puede no tener sede)
-ALTER TABLE Coordinators ALTER COLUMN LocationId INT NULL;
 GO
-
--- 2) Agregar columnas de datos faltantes + columnas de archivos
-ALTER TABLE Coordinators ADD
-    Address                   NVARCHAR(255) NULL,
-    IsCollegiateActive        BIT NOT NULL DEFAULT 0,
-    CollegiateNumber          NVARCHAR(50) NULL,
-    HireDate                  DATETIME NULL,
-    ContractType              NVARCHAR(50) NULL,
-    RegisteredByCoordinatorId INT NULL,
-    FilePath_DPI              NVARCHAR(500) NULL,
-    FilePath_Titulos          NVARCHAR(500) NULL,
-    FilePath_RTU              NVARCHAR(500) NULL,
-    FilePath_Colegiado        NVARCHAR(500) NULL,
-    FilePath_RENAS            NVARCHAR(500) NULL,
-    FilePath_AntPoliciacos    NVARCHAR(500) NULL,
-    FilePath_AntPenales       NVARCHAR(500) NULL;
-GO
-
 
 -- -----------------------------------------------------
 -- 2. TABLA: ScheduleTypes (Tipos de Horario)
