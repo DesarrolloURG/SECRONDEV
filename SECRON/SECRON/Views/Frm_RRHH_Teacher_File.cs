@@ -11,7 +11,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SECRON.Views
 {
-    public partial class Frm_Teachers_Managment : Form
+    public partial class Frm_RRHH_Teacher_File : Form
     {
         #region PropiedadesIniciales
         // Variables Globales para mantener los filtros activos
@@ -77,7 +77,7 @@ namespace SECRON.Views
             }
         }
 
-        public Frm_Teachers_Managment()
+        public Frm_RRHH_Teacher_File()
         {
             InitializeComponent();
             this.Resize += FormularioResize;
@@ -370,6 +370,7 @@ namespace SECRON.Views
                     .ToList();
 
                 Tabla.DataSource = null;
+                EliminarColumnasArchivos();
                 Tabla.DataSource = paginaActualData;
                 ConfigurarDataGridView();
                 AgregarColumnasArchivos();
@@ -558,6 +559,26 @@ namespace SECRON.Views
                 case "AntPoliciacos": return d.FilePath_AntPoliciacos;
                 case "AntPenales": return d.FilePath_AntPenales;
                 default: return null;
+            }
+        }
+
+        // Elimina las 21 columnas de imagen antes de reasignar el DataSource,
+        // para que al recrearlas queden siempre AL FINAL y no se desordenen.
+        private void EliminarColumnasArchivos()
+        {
+            // Quitar handlers para evitar que se disparen durante la limpieza
+            Tabla.CellFormatting -= Tabla_CellFormatting_Archivos;
+            Tabla.CellClick -= Tabla_CellClick_Archivos;
+
+            for (int i = Tabla.Columns.Count - 1; i >= 0; i--)
+            {
+                string name = Tabla.Columns[i].Name;
+                if (name.StartsWith("ColAbrir_") ||
+                    name.StartsWith("ColCargar_") ||
+                    name.StartsWith("ColEstado_"))
+                {
+                    Tabla.Columns.RemoveAt(i);
+                }
             }
         }
         #endregion CargarDatos

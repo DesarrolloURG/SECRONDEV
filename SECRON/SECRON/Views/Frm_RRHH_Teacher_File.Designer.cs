@@ -1,6 +1,6 @@
 ﻿namespace SECRON.Views
 {
-    partial class Frm_Teachers_Managment
+    partial class Frm_RRHH_Teacher_File
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Teachers_Managment));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_RRHH_Teacher_File));
             this.Panel_Derecho = new System.Windows.Forms.Panel();
             this.PanelTabla = new System.Windows.Forms.Panel();
             this.Tabla = new System.Windows.Forms.DataGridView();
@@ -850,11 +850,11 @@
             this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
             this.Lbl_Formulario.Location = new System.Drawing.Point(8, 13);
             this.Lbl_Formulario.Name = "Lbl_Formulario";
-            this.Lbl_Formulario.Size = new System.Drawing.Size(224, 25);
+            this.Lbl_Formulario.Size = new System.Drawing.Size(198, 25);
             this.Lbl_Formulario.TabIndex = 50;
-            this.Lbl_Formulario.Text = "GESTIÓN DE DOCENTES";
+            this.Lbl_Formulario.Text = "FICHA DEL DOCENTE";
             // 
-            // Frm_Teachers_Managment
+            // Frm_RRHH_Teacher_File
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -863,8 +863,8 @@
             this.Controls.Add(this.Panel_Izquierdo);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Frm_Teachers_Managment";
-            this.Text = "SECRON - GESTIÓN DE DOCENTES";
+            this.Name = "Frm_RRHH_Teacher_File";
+            this.Text = "SECRON - FICHA DEL DOCENTE";
             this.Load += new System.EventHandler(this.Frm_Teachers_Managment_Load);
             this.Panel_Derecho.ResumeLayout(false);
             this.PanelTabla.ResumeLayout(false);

@@ -336,11 +336,11 @@
     <Compile Include="Views\Frm_ControlCenter_MDI.Designer.cs">
       <DependentUpon>Frm_ControlCenter_MDI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Frm_Employees_Managment.cs">
+    <Compile Include="Views\Frm_RRHH_Employee_File.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Frm_Employees_Managment.Designer.cs">
-      <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
+    <Compile Include="Views\Frm_RRHH_Employee_File.Designer.cs">
+      <DependentUpon>Frm_RRHH_Employee_File.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_FA_SearchEmployee.cs">
       <SubType>Form</SubType>
@@ -608,11 +608,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Frm_Teachers_Managment.cs">
+    <Compile Include="Views\Frm_RRHH_Teacher_File.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Frm_Teachers_Managment.Designer.cs">
-      <DependentUpon>Frm_Teachers_Managment.cs</DependentUpon>
+    <Compile Include="Views\Frm_RRHH_Teacher_File.Designer.cs">
+      <DependentUpon>Frm_RRHH_Teacher_File.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_Transfers_Managment.cs">
       <SubType>Form</SubType>
@@ -701,8 +701,8 @@
     <EmbeddedResource Include="Views\Frm_ControlCenter_MDI.resx">
       <DependentUpon>Frm_ControlCenter_MDI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_Employees_Managment.resx">
-      <DependentUpon>Frm_Employees_Managment.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Frm_RRHH_Employee_File.resx">
+      <DependentUpon>Frm_RRHH_Employee_File.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FA_SearchEmployee.resx">
       <DependentUpon>Frm_FA_SearchEmployee.cs</DependentUpon>
@@ -841,8 +841,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_Teachers_Managment.resx">
-      <DependentUpon>Frm_Teachers_Managment.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Frm_RRHH_Teacher_File.resx">
+      <DependentUpon>Frm_RRHH_Teacher_File.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Transfers_Managment.resx">
       <DependentUpon>Frm_Transfers_Managment.cs</DependentUpon>

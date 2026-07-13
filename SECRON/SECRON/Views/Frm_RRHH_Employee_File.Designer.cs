@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace SECRON.Views
 {
-    partial class Frm_Employees_Managment
+    partial class Frm_RRHH_Employee_File
     {
         private bool _cargandoEmpleado = false;
 
@@ -127,7 +127,7 @@ namespace SECRON.Views
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_Employees_Managment));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Frm_RRHH_Employee_File));
             this.Panel_Superior = new System.Windows.Forms.Panel();
             this.Btn_Import = new System.Windows.Forms.Button();
             this.Btn_Export = new System.Windows.Forms.Button();
@@ -279,9 +279,9 @@ namespace SECRON.Views
             this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
             this.Lbl_Formulario.Location = new System.Drawing.Point(8, 13);
             this.Lbl_Formulario.Name = "Lbl_Formulario";
-            this.Lbl_Formulario.Size = new System.Drawing.Size(288, 25);
+            this.Lbl_Formulario.Size = new System.Drawing.Size(234, 25);
             this.Lbl_Formulario.TabIndex = 50;
-            this.Lbl_Formulario.Text = "GESTIÓN DE COLABORADORES";
+            this.Lbl_Formulario.Text = "FICHA DEL TRABAJADOR";
             // 
             // Panel_Izquierdo
             // 
@@ -1228,7 +1228,7 @@ namespace SECRON.Views
             this.Txt_ValorBuscado.TabIndex = 59;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
-            // Frm_Employees_Managment
+            // Frm_RRHH_Employee_File
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1238,8 +1238,8 @@ namespace SECRON.Views
             this.Controls.Add(this.Panel_Izquierdo);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Frm_Employees_Managment";
-            this.Text = "SECRON - GESTIÓN DE COLABORADORES";
+            this.Name = "Frm_RRHH_Employee_File";
+            this.Text = "SECRON - FICHA DEL TRABAJADOR";
             this.Load += new System.EventHandler(this.Frm_Employees_Managment_Load);
             this.Panel_Superior.ResumeLayout(false);
             this.Panel_Superior.PerformLayout();

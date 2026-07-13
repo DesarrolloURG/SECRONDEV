@@ -14,7 +14,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SECRON.Views
 {
-    public partial class Frm_Employees_Managment : Form
+    public partial class Frm_RRHH_Employee_File : Form
     {
         #region PropiedadesIniciales
         // Variables globales
@@ -93,7 +93,7 @@ namespace SECRON.Views
             }
         }
         // Constructor del formulario
-        public Frm_Employees_Managment()
+        public Frm_RRHH_Employee_File()
         {
             // Llamar al método InitializeComponent
             InitializeComponent();

@@ -427,42 +427,42 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO AUXILIAR: Mapear datos del SqlDataReader al modelo Mdl_Coordinators
-        // NOTA: LocationId (indice 14) se lee como int? porque en Coordinators es NULLABLE
+        // Lee por NOMBRE de columna para ser inmune al orden fisico de la tabla
         private static Mdl_Coordinators MapearCoordinador(SqlDataReader reader)
         {
             return new Mdl_Coordinators
             {
-                CoordinatorId = reader.GetInt32(0),
-                CoordinatorCode = reader[1].ToString(),
-                FullName = reader[2].ToString(),
-                Phone = reader[3] == DBNull.Value ? null : reader[3].ToString(),
-                Email = reader[4] == DBNull.Value ? null : reader[4].ToString(),
-                DPI = reader[5] == DBNull.Value ? null : reader[5].ToString(),
-                NIT = reader[6] == DBNull.Value ? null : reader[6].ToString(),
-                Address = reader[7] == DBNull.Value ? null : reader[7].ToString(),
-                AcademicTitle = reader[8] == DBNull.Value ? null : reader[8].ToString(),
-                Specialization = reader[9] == DBNull.Value ? null : reader[9].ToString(),
-                IsCollegiateActive = reader.GetBoolean(10),
-                CollegiateNumber = reader[11] == DBNull.Value ? null : reader[11].ToString(),
-                BankAccountNumber = reader[12] == DBNull.Value ? null : reader[12].ToString(),
-                BankId = reader[13] == DBNull.Value ? null : (int?)reader.GetInt32(13),
-                LocationId = reader[14] == DBNull.Value ? null : (int?)reader.GetInt32(14),
-                HireDate = reader[15] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(15),
-                ContractType = reader[16] == DBNull.Value ? null : reader[16].ToString(),
-                UserId = reader[17] == DBNull.Value ? null : (int?)reader.GetInt32(17),
-                RegisteredByCoordinatorId = reader[18] == DBNull.Value ? null : (int?)reader.GetInt32(18),
-                IsActive = reader.GetBoolean(19),
-                CreatedDate = reader.GetDateTime(20),
-                CreatedBy = reader[21] == DBNull.Value ? null : (int?)reader.GetInt32(21),
-                ModifiedDate = reader[22] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(22),
-                ModifiedBy = reader[23] == DBNull.Value ? null : (int?)reader.GetInt32(23),
-                FilePath_DPI = reader[24] == DBNull.Value ? null : reader[24].ToString(),
-                FilePath_Titulos = reader[25] == DBNull.Value ? null : reader[25].ToString(),
-                FilePath_RTU = reader[26] == DBNull.Value ? null : reader[26].ToString(),
-                FilePath_Colegiado = reader[27] == DBNull.Value ? null : reader[27].ToString(),
-                FilePath_RENAS = reader[28] == DBNull.Value ? null : reader[28].ToString(),
-                FilePath_AntPoliciacos = reader[29] == DBNull.Value ? null : reader[29].ToString(),
-                FilePath_AntPenales = reader[30] == DBNull.Value ? null : reader[30].ToString()
+                CoordinatorId = Convert.ToInt32(reader["CoordinatorId"]),
+                CoordinatorCode = reader["CoordinatorCode"]?.ToString(),
+                FullName = reader["FullName"]?.ToString(),
+                Phone = reader["Phone"] == DBNull.Value ? null : reader["Phone"].ToString(),
+                Email = reader["Email"] == DBNull.Value ? null : reader["Email"].ToString(),
+                DPI = reader["DPI"] == DBNull.Value ? null : reader["DPI"].ToString(),
+                NIT = reader["NIT"] == DBNull.Value ? null : reader["NIT"].ToString(),
+                Address = reader["Address"] == DBNull.Value ? null : reader["Address"].ToString(),
+                AcademicTitle = reader["AcademicTitle"] == DBNull.Value ? null : reader["AcademicTitle"].ToString(),
+                Specialization = reader["Specialization"] == DBNull.Value ? null : reader["Specialization"].ToString(),
+                IsCollegiateActive = reader["IsCollegiateActive"] != DBNull.Value && Convert.ToBoolean(reader["IsCollegiateActive"]),
+                CollegiateNumber = reader["CollegiateNumber"] == DBNull.Value ? null : reader["CollegiateNumber"].ToString(),
+                BankAccountNumber = reader["BankAccountNumber"] == DBNull.Value ? null : reader["BankAccountNumber"].ToString(),
+                BankId = reader["BankId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["BankId"]),
+                LocationId = reader["LocationId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["LocationId"]),
+                HireDate = reader["HireDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["HireDate"]),
+                ContractType = reader["ContractType"] == DBNull.Value ? null : reader["ContractType"].ToString(),
+                UserId = reader["UserId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["UserId"]),
+                RegisteredByCoordinatorId = reader["RegisteredByCoordinatorId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["RegisteredByCoordinatorId"]),
+                IsActive = reader["IsActive"] != DBNull.Value && Convert.ToBoolean(reader["IsActive"]),
+                CreatedDate = reader["CreatedDate"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(reader["CreatedDate"]),
+                CreatedBy = reader["CreatedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["CreatedBy"]),
+                ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["ModifiedDate"]),
+                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["ModifiedBy"]),
+                FilePath_DPI = reader["FilePath_DPI"] == DBNull.Value ? null : reader["FilePath_DPI"].ToString(),
+                FilePath_Titulos = reader["FilePath_Titulos"] == DBNull.Value ? null : reader["FilePath_Titulos"].ToString(),
+                FilePath_RTU = reader["FilePath_RTU"] == DBNull.Value ? null : reader["FilePath_RTU"].ToString(),
+                FilePath_Colegiado = reader["FilePath_Colegiado"] == DBNull.Value ? null : reader["FilePath_Colegiado"].ToString(),
+                FilePath_RENAS = reader["FilePath_RENAS"] == DBNull.Value ? null : reader["FilePath_RENAS"].ToString(),
+                FilePath_AntPoliciacos = reader["FilePath_AntPoliciacos"] == DBNull.Value ? null : reader["FilePath_AntPoliciacos"].ToString(),
+                FilePath_AntPenales = reader["FilePath_AntPenales"] == DBNull.Value ? null : reader["FilePath_AntPenales"].ToString()
             };
         }
 

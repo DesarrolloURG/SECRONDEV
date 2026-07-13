@@ -372,6 +372,7 @@ namespace SECRON.Views
                     .ToList();
 
                 Tabla.DataSource = null;
+                EliminarColumnasArchivos();
                 Tabla.DataSource = paginaActualData;
                 ConfigurarDataGridView();
                 AgregarColumnasArchivos();
@@ -468,6 +469,26 @@ namespace SECRON.Views
         private readonly string[] _headersAbrir = { "DPI (ABRIR)", "TÍTULOS (ABRIR)", "RTU (ABRIR)", "COLEGIADO (ABRIR)", "RENAS (ABRIR)", "ANT.POL. (ABRIR)", "ANT.PEN. (ABRIR)" };
         private readonly string[] _headersCargar = { "DPI (CARGAR)", "TÍTULOS (CARGAR)", "RTU (CARGAR)", "COLEGIADO (CARGAR)", "RENAS (CARGAR)", "ANT.POL. (CARGAR)", "ANT.PEN. (CARGAR)" };
         private readonly string[] _headersEstado = { "DPI (ESTADO)", "TÍTULOS (ESTADO)", "RTU (ESTADO)", "COLEGIADO (ESTADO)", "RENAS (ESTADO)", "ANT.POL. (ESTADO)", "ANT.PEN. (ESTADO)" };
+
+        // Elimina las 21 columnas de imagen antes de reasignar el DataSource,
+        // para que al recrearlas queden siempre AL FINAL y no se desordenen.
+        private void EliminarColumnasArchivos()
+        {
+            // Quitar handlers para evitar que se disparen durante la limpieza
+            Tabla.CellFormatting -= Tabla_CellFormatting_Archivos;
+            Tabla.CellClick -= Tabla_CellClick_Archivos;
+
+            for (int i = Tabla.Columns.Count - 1; i >= 0; i--)
+            {
+                string name = Tabla.Columns[i].Name;
+                if (name.StartsWith("ColAbrir_") ||
+                    name.StartsWith("ColCargar_") ||
+                    name.StartsWith("ColEstado_"))
+                {
+                    Tabla.Columns.RemoveAt(i);
+                }
+            }
+        }
 
         // Agrega las 21 columnas de imagen (ABRIR/CARGAR/ESTADO por documento) al final del grid.
         // Oculta las 7 columnas de texto FilePath_* que el binding genera automaticamente.

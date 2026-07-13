@@ -2050,7 +2050,7 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_Employees_Managment frm = new Frm_Employees_Managment();
+            Frm_RRHH_Employee_File frm = new Frm_RRHH_Employee_File();
             frm.Text = "Ficha del Trabajador";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
@@ -2061,7 +2061,7 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_Teachers_Managment frm = new Frm_Teachers_Managment();
+            Frm_RRHH_Teacher_File frm = new Frm_RRHH_Teacher_File();
             frm.Text = "Ficha de Docentes";
             frm.BackColor = Color.White;
 
