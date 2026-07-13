@@ -127,6 +127,7 @@
     <Compile Include="Controllers\Ctrl_ItemWarehouseStock.cs" />
     <Compile Include="Controllers\Ctrl_LocationCategories.cs" />
     <Compile Include="Controllers\Ctrl_Locations.cs" />
+    <Compile Include="Controllers\Ctrl_LocationStaffAssignments.cs" />
     <Compile Include="Controllers\Ctrl_MeasurementUnits.cs" />
     <Compile Include="Controllers\Ctrl_MovementTypes.cs" />
     <Compile Include="Controllers\Ctrl_Permissions.cs" />
@@ -195,6 +196,8 @@
     <Compile Include="Models\Mdl_LocationCategories.cs" />
     <Compile Include="Models\Mdl_LocationCategory.cs" />
     <Compile Include="Models\Mdl_Locations.cs" />
+    <Compile Include="Models\Mdl_LocationStaffAssignments.cs" />
+    <Compile Include="Models\Mdl_LocationStaffRoles.cs" />
     <Compile Include="Models\Mdl_MeasurementUnits.cs" />
     <Compile Include="Models\Mdl_MovementTypes.cs" />
     <Compile Include="Models\Mdl_Municipality.cs" />
@@ -296,6 +299,18 @@
     </Compile>
     <Compile Include="Views\Frm_Checks_ReverseCancellation.Designer.cs">
       <DependentUpon>Frm_Checks_ReverseCancellation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_LocationStaffAssignments_SearchUsers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_LocationStaffAssignments_SearchUsers.Designer.cs">
+      <DependentUpon>Frm_LocationStaffAssignments_SearchUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_LocationStaffAssignments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_LocationStaffAssignments.Designer.cs">
+      <DependentUpon>Frm_LocationStaffAssignments.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_KARDEX_SearchEmployee.cs">
       <SubType>Form</SubType>
@@ -525,6 +540,12 @@
     <Compile Include="Views\Frm_KARDEX_WarehouseDispatch.Designer.cs">
       <DependentUpon>Frm_KARDEX_WarehouseDispatch.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_Warehouse_Managment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_Warehouse_Managment.Designer.cs">
+      <DependentUpon>Frm_Warehouse_Managment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_Locations_Managment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -662,6 +683,12 @@
     <EmbeddedResource Include="Views\Frm_Checks_ReverseCancellation.resx">
       <DependentUpon>Frm_Checks_ReverseCancellation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_LocationStaffAssignments_SearchUsers.resx">
+      <DependentUpon>Frm_LocationStaffAssignments_SearchUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_LocationStaffAssignments.resx">
+      <DependentUpon>Frm_LocationStaffAssignments.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_SearchEmployee.resx">
       <DependentUpon>Frm_KARDEX_SearchEmployee.cs</DependentUpon>
     </EmbeddedResource>
@@ -775,6 +802,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_WarehouseDispatch.resx">
       <DependentUpon>Frm_KARDEX_WarehouseDispatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_Warehouse_Managment.resx">
+      <DependentUpon>Frm_Warehouse_Managment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Locations_Managment.resx">
       <DependentUpon>Frm_Locations_Managment.cs</DependentUpon>
