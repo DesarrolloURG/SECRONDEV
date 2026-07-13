@@ -1792,17 +1792,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Equipos de Tecnología", "ITSM_Technology");
         }
-        private void BtnRRHH_Trabajadores_Ficha_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_Employees_Managment frm = new Frm_Employees_Managment();
-            frm.Text = "Ficha del Trabajador";
-            frm.BackColor = Color.White;
-            //Pasamos los datos del usuario
-            frm.UserData = this.UserData;
-            AbrirFormularioConPestana(frm, "Ficha del Trabajador", "EmployeesManagment");
-        }
         private void BtnRRHH_Trabajadores_Click(object sender, EventArgs e)
         {
             ConfigurarSubPanelesVisibles(BtnRRHH_Trabajadores);
@@ -1832,20 +1821,6 @@ namespace SECRON.Views
             frm.BackColor = Color.White;
 
             AbrirFormularioConPestana(frm, "Mi Perfil de Trabajo", "EmployeesInformation");
-        }
-        private void BtnRRHH_Docencia_FichaDocente_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_Teachers_Managment frm = new Frm_Teachers_Managment();
-            frm.Text = "Ficha de Docentes";
-            frm.BackColor = Color.White;
-
-            //Pasamos los datos del usuario
-            frm.UserData = this.UserData;
-
-            AbrirFormularioConPestana(frm, "Ficha de Docentes", "TeachersManagment");
-
         }
         private void BtnProcesosAcademicos_PensumCarreras_Click(object sender, EventArgs e)
         {
@@ -1883,7 +1858,6 @@ namespace SECRON.Views
         {
 
         }
-
         #endregion EventosClickSubmenuNavegacion
         #region EventosClickSubSubmenuNavegacion
         private void BtnKardexInsumosSedes_Click(object sender, EventArgs e)
@@ -1898,7 +1872,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Control de Insumos en Sedes", "KardexInsumosSedes");
         }
-
         private void BtnKardexInventory_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1911,7 +1884,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Control de Inventarios por Sede", "KardexInventory");
         }
-
         private void BtnKardexInventoryReport_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1922,28 +1894,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Reportes de Inventarios", "KardexInventoryReport");
         }
-
-        private void BtnKardexValorizacion_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Valorización y Costos";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Valorización y Costos", "KardexValorizacion");
-        }
-        private void BtnStaticItemsDepreciation_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
-            frm.Text = "Depreciación y Valuación";
-            frm.BackColor = Color.White;
-
-            AbrirFormularioConPestana(frm, "Depreciación y Valuación", "StaticItemsDepreciation");
-        }
-
         private void BtnStaticItemsMaintenance_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1954,7 +1904,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Mantenimiento y Soporte", "StaticItemsMaintenance");
         }
-
         private void BtnStaticItemsManagment_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1965,7 +1914,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Catálogo General de Activos", "StaticItemsManagment");
         }
-
         private void BtnStaticItemsMovementsController_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1978,7 +1926,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Traslados de Activos", "StaticItemsMovementsController");
         }
-
         private void BtnStaticItemsReports_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -1989,7 +1936,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Reportes de Activos", "StaticItemsReports");
         }
-
         private void BtnStaticItemsResponsabilityLetter_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2025,7 +1971,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Gestión de Artículos", "KardexCatalogo");
         }
-
         private void BtnKARDEX_CatalogLocationsCategories_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2039,7 +1984,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Catálogo de Artículos por Categorías", "CatalogLocationsCategories");
         }
-
         private void BtnWarehouse_Managment_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2053,7 +1997,6 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Administrar Bodegas", "WarehouseManagment");
         }
-
         private void BtnWarehouse_Reports_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
@@ -2067,59 +2010,65 @@ namespace SECRON.Views
 
             AbrirFormularioConPestana(frm, "Reportería Bodegas", "WarehouseReports");
         }
-
-        private void BtnTeachers_Schedules_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            MessageBox.Show("Módulo de CONFIGURACIÓN ACADÉMICA en desarrollo", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void BtnTeachers_Carrers_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            MessageBox.Show("Módulo de Carreras en desarrollo", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void BtnTeachers_Courses_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            MessageBox.Show("Módulo de Cursos en desarrollo", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void BtnTeachers_Pensum_Click(object sender, EventArgs e)
-        {
-            CerrarTodosLosPaneles();
-            MessageBox.Show("Módulo de Pensum en desarrollo", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
         private void BtnSuppliers_Click(object sender, EventArgs e)
         {
             ConfigurarSubPanelesVisibles(BtnSuppliers);
         }
-
         private void BtnFinances_Accounts_Click(object sender, EventArgs e)
         {
             ConfigurarSubPanelesVisibles(BtnFinances_Accounts);
         }
-
         private void BtnFinances_Checks_Click(object sender, EventArgs e)
         {
             ConfigurarSubPanelesVisibles(BtnFinances_Checks);
         }
-
         private void BtnFinances_Transfers_Click(object sender, EventArgs e)
         {
             ConfigurarSubPanelesVisibles(BtnFinances_Transfers);
         }
-
         private void BtnFinances_Banks_Click(object sender, EventArgs e)
         {
             ConfigurarSubPanelesVisibles(BtnFinances_Banks);
         }
-
         private void BtnFinances_AccountingBooks_Click(object sender, EventArgs e)
         {
             ConfigurarSubPanelesVisibles(BtnFinances_AccountingBooks);
+        }
+        private void BtnRRHH_Docencia_FichaCoordinador_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_RRHH_Coordinator_File frm = new Frm_RRHH_Coordinator_File();
+            frm.Text = "Ficha del Coordinador";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+            AbrirFormularioConPestana(frm, "Ficha del Coordinador", "CoordinatorManagment");
+        }
+        private void BtnRRHH_Trabajadores_Ficha_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_Employees_Managment frm = new Frm_Employees_Managment();
+            frm.Text = "Ficha del Trabajador";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+            AbrirFormularioConPestana(frm, "Ficha del Trabajador", "EmployeesManagment");
+        }
+        private void BtnRRHH_Docencia_FichaDocente_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_Teachers_Managment frm = new Frm_Teachers_Managment();
+            frm.Text = "Ficha de Docentes";
+            frm.BackColor = Color.White;
+
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Ficha de Docentes", "TeachersManagment");
+
         }
         #endregion EventosClickSubSubmenuNavegacion
         #region EventoResizeFormulario

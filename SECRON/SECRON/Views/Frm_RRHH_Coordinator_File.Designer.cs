@@ -193,6 +193,7 @@
             this.Btn_CleanSearch.TabIndex = 71;
             this.Btn_CleanSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_CleanSearch.UseVisualStyleBackColor = true;
+            this.Btn_CleanSearch.Click += new System.EventHandler(this.Btn_Limpiar_Click);
             // 
             // Filtro3
             // 
@@ -223,6 +224,7 @@
             this.Btn_Search.Text = "BUSCAR";
             this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Search.UseVisualStyleBackColor = true;
+            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
             // 
             // Filtro1
             // 
@@ -242,6 +244,7 @@
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
             this.Txt_ValorBuscado.Size = new System.Drawing.Size(540, 27);
             this.Txt_ValorBuscado.TabIndex = 59;
+            this.Txt_ValorBuscado.TextChanged += new System.EventHandler(this.Txt_ValorBuscado_TextChanged);
             // 
             // Panel_Izquierdo
             // 
@@ -360,6 +363,7 @@
             this.Btn_Clear.TabIndex = 57;
             this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Clear.UseVisualStyleBackColor = true;
+            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
             // 
             // Btn_Inactive
             // 
@@ -375,6 +379,7 @@
             this.Btn_Inactive.Text = "INACTIVAR";
             this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Inactive.UseVisualStyleBackColor = true;
+            this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
             // 
             // Btn_Update
             // 
@@ -390,6 +395,7 @@
             this.Btn_Update.Text = "EDITAR";
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Update.UseVisualStyleBackColor = true;
+            this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
             // 
             // Btn_Save
             // 
@@ -405,6 +411,7 @@
             this.Btn_Save.Text = "GUARDAR";
             this.Btn_Save.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
             // 
             // Panel_3
             // 
@@ -830,6 +837,7 @@
             this.Btn_Export.Text = "EXPORTAR";
             this.Btn_Export.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Export.UseVisualStyleBackColor = true;
+            this.Btn_Export.Click += new System.EventHandler(this.Btn_Export_Click);
             // 
             // Lbl_Formulario
             // 
@@ -855,6 +863,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Frm_RRHH_Coordinator_File";
             this.Text = "SECRON - FICHA DEL COORDINADOR";
+            this.Load += new System.EventHandler(this.Frm_RRHH_Coordinator_File_Load);
             this.Panel_Derecho.ResumeLayout(false);
             this.PanelTabla.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).EndInit();

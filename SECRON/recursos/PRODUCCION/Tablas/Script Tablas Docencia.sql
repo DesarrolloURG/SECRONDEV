@@ -46,6 +46,28 @@ CREATE TABLE Coordinators (
     CONSTRAINT FK_Coordinators_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
 );
 
+-- 1) Permitir LocationId NULL (un coordinador puede no tener sede)
+ALTER TABLE Coordinators ALTER COLUMN LocationId INT NULL;
+GO
+
+-- 2) Agregar columnas de datos faltantes + columnas de archivos
+ALTER TABLE Coordinators ADD
+    Address                   NVARCHAR(255) NULL,
+    IsCollegiateActive        BIT NOT NULL DEFAULT 0,
+    CollegiateNumber          NVARCHAR(50) NULL,
+    HireDate                  DATETIME NULL,
+    ContractType              NVARCHAR(50) NULL,
+    RegisteredByCoordinatorId INT NULL,
+    FilePath_DPI              NVARCHAR(500) NULL,
+    FilePath_Titulos          NVARCHAR(500) NULL,
+    FilePath_RTU              NVARCHAR(500) NULL,
+    FilePath_Colegiado        NVARCHAR(500) NULL,
+    FilePath_RENAS            NVARCHAR(500) NULL,
+    FilePath_AntPoliciacos    NVARCHAR(500) NULL,
+    FilePath_AntPenales       NVARCHAR(500) NULL;
+GO
+
+
 -- -----------------------------------------------------
 -- 2. TABLA: ScheduleTypes (Tipos de Horario)
 -- Configurable: Lun-Mié, Lun-Vie, Sábados, Domingos, etc.

@@ -2120,6 +2120,7 @@
             this.BtnRRHH_Docencia_FichaCoordinador.Text = "FICHA DEL COORDINADOR";
             this.BtnRRHH_Docencia_FichaCoordinador.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnRRHH_Docencia_FichaCoordinador.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Docencia_FichaCoordinador.Click += new System.EventHandler(this.BtnRRHH_Docencia_FichaCoordinador_Click);
             // 
             // BtnRRHH_Docencia_FichaDocente
             // 

@@ -1667,45 +1667,7 @@ namespace SECRON.Views
         // Evento cuando cambia la seleccion en el DataGridView
         private void Tabla_SelectionChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (Tabla.DataSource == null || Tabla.SelectedRows.Count == 0)
-                {
-                    return;
-                }
 
-                if (!Tabla.Columns.Contains("CoordinatorId"))
-                {
-                    return;
-                }
-
-                DataGridViewRow row = Tabla.SelectedRows[0];
-
-                if (row.Cells["CoordinatorId"].Value == null ||
-                    row.Cells["CoordinatorId"].Value == DBNull.Value)
-                {
-                    return;
-                }
-
-                int coordinatorId = Convert.ToInt32(row.Cells["CoordinatorId"].Value);
-
-                var coordinador = Ctrl_Coordinators.ObtenerCoordinadorPorId(coordinatorId);
-
-                if (coordinador != null)
-                {
-                    _coordinadorSeleccionado = coordinador;
-                    CargarDatosEnFormulario(coordinador);
-                    HabilitarBotonesEdicionEliminacion(true);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!ex.Message.Contains("SelectedIndex") && !ex.Message.Contains("InvalidArgument"))
-                {
-                    MessageBox.Show($"Error al seleccionar coordinador: {ex.Message}",
-                                  "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
         }
 
         // Evento del boton de busqueda en el panel de busqueda
