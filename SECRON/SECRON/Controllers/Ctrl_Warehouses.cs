@@ -17,11 +17,13 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT WarehouseId, WarehouseCode, WarehouseName, Description,
-                               Address, PhoneNumber, ManagerUserId, WarehouseType,
-                               LocationId, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
-                        FROM   Warehouses
-                        WHERE  IsActive = 1
+                        SELECT a.WarehouseId, a.WarehouseCode, a.WarehouseName, a.Description,
+                               a.Address, a.PhoneNumber, a.ManagerUserId, a.WarehouseType,
+                               a.LocationId, a.IsActive, a.CreatedDate, a.CreatedBy, a.ModifiedDate, a.ModifiedBy,
+                               b.LocationCode, b.LocationName
+                        FROM   Warehouses a, Locations b
+                        WHERE  a.IsActive = 1
+                          and a.LocationId = b.LocationId
                         ORDER  BY WarehouseName";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -48,12 +50,14 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT WarehouseId, WarehouseCode, WarehouseName, Description,
-                               Address, PhoneNumber, ManagerUserId, WarehouseType,
-                               LocationId, IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
-                        FROM   Warehouses
-                        WHERE  IsActive = 1
-                        AND   (WarehouseCode LIKE @texto OR WarehouseName LIKE @texto)
+                        SELECT a.WarehouseId, a.WarehouseCode, a.WarehouseName, a.Description,
+                               a.Address, a.PhoneNumber, a.ManagerUserId, a.WarehouseType,
+                               a.LocationId, a.IsActive, a.CreatedDate, a.CreatedBy, a.ModifiedDate, a.ModifiedBy,
+                               b.LocationCode, b.LocationName
+                        FROM   Warehouses a, Locations b
+                        WHERE  a.IsActive = 1
+                          and a.LocationId = b.LocationId
+                          AND   (a.WarehouseCode LIKE @texto OR a.WarehouseName LIKE @texto)
                         ORDER  BY WarehouseName";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -163,11 +167,12 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT w.WarehouseId
+                        SELECT TOP 1 w.WarehouseId
                         FROM   Warehouses w
                         INNER JOIN Locations l ON l.LocationId = w.LocationId
                         WHERE  l.LocationCode = '1'
-                        AND    w.IsActive = 1";
+                        AND    w.IsActive = 1
+                        ORDER BY w.WarehouseId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {

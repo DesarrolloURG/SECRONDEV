@@ -35,11 +35,27 @@ namespace SECRON.Views
             Panel_Derecho0.PerformLayout();
         }
 
+        private void ConfigurarRedimensionamientoGestionarRoles()
+        {
+            const int AnchoMinimo = 1600;
+            const int AltoMinimo = 806;
+
+            Panel_GestionarRoles.Resize += (s, e) =>
+            {
+                int anchoDisponible = Panel_GestionarRoles.ClientSize.Width;
+                int altoDisponible = Panel_GestionarRoles.ClientSize.Height;
+
+                Panel_GestionarRolesContent.Width = Math.Max(AnchoMinimo, anchoDisponible);
+                Panel_GestionarRolesContent.Height = Math.Max(AltoMinimo, altoDisponible);
+            };
+        }
+
         public Frm_ITSM_Users_RolesPermissions()
         {
             InitializeComponent();
             InicializarPestanas();
             CargarContenidoPestanas();
+            ConfigurarRedimensionamientoGestionarRoles();
         }
         #endregion
         #region InicializacionPestanas

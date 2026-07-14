@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE SP_WarehouseDispatch_Create
+ALTER   PROCEDURE [dbo].[SP_WarehouseDispatch_Create]
     @WarehouseId            INT,
     @PermissionCode         VARCHAR(50),
     @DestinationWarehouseId INT = NULL,
@@ -24,8 +24,12 @@ BEGIN
             SELECT @CentralWarehouseId = w.WarehouseId
               FROM Warehouses w
               JOIN Locations l ON l.LocationId = w.LocationId
-             WHERE l.LocationCode = '1';
+             WHERE l.LocationCode = '1'
+               and w.WarehouseId = @WarehouseId;
 
+            IF @CentralWarehouseId IS NULL OR @WarehouseId <> @CentralWarehouseId
+            BEGIN ROLLBACK TRANSACTION; SELECT -1; RETURN; END
+            
             IF @WarehouseId <> @CentralWarehouseId
             BEGIN ROLLBACK TRANSACTION; SELECT -1; RETURN; END
 
@@ -94,4 +98,3 @@ BEGIN
         ROLLBACK TRANSACTION; SELECT 0;
     END CATCH
 END
-GO

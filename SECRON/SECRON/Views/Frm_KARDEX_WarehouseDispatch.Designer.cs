@@ -28,13 +28,13 @@
             this.PanelTabla_Resultados = new System.Windows.Forms.Panel();
             this.Tabla_Resultados = new System.Windows.Forms.DataGridView();
             this.Col_ItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Col_Codigo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Col_Articulo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Col_StockDisponible = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Col_Menos = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Col_Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Col_Mas = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Col_Agregar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Col_Codigo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Col_Articulo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Col_StockDisponible = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Panel_Destino = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.RadioButton_Bodega = new System.Windows.Forms.RadioButton();
@@ -192,6 +192,28 @@
             this.Col_ItemId.Name = "Col_ItemId";
             this.Col_ItemId.Visible = false;
             // 
+            // Col_Codigo
+            // 
+            this.Col_Codigo.HeaderText = "CÓDIGO";
+            this.Col_Codigo.Name = "Col_Codigo";
+            this.Col_Codigo.ReadOnly = true;
+            this.Col_Codigo.Width = 110;
+            // 
+            // Col_Articulo
+            // 
+            this.Col_Articulo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Col_Articulo.HeaderText = "ARTÍCULO";
+            this.Col_Articulo.MinimumWidth = 200;
+            this.Col_Articulo.Name = "Col_Articulo";
+            this.Col_Articulo.ReadOnly = true;
+            // 
+            // Col_StockDisponible
+            // 
+            this.Col_StockDisponible.HeaderText = "DISPONIBLE";
+            this.Col_StockDisponible.Name = "Col_StockDisponible";
+            this.Col_StockDisponible.ReadOnly = true;
+            this.Col_StockDisponible.Width = 130;
+            // 
             // Col_Menos
             // 
             this.Col_Menos.HeaderText = "";
@@ -221,28 +243,6 @@
             this.Col_Agregar.Text = "AGREGAR";
             this.Col_Agregar.UseColumnTextForButtonValue = true;
             this.Col_Agregar.Width = 80;
-            // 
-            // Col_Codigo
-            // 
-            this.Col_Codigo.HeaderText = "CÓDIGO";
-            this.Col_Codigo.Name = "Col_Codigo";
-            this.Col_Codigo.ReadOnly = true;
-            this.Col_Codigo.Width = 110;
-            // 
-            // Col_Articulo
-            // 
-            this.Col_Articulo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Col_Articulo.HeaderText = "ARTÍCULO";
-            this.Col_Articulo.MinimumWidth = 200;
-            this.Col_Articulo.Name = "Col_Articulo";
-            this.Col_Articulo.ReadOnly = true;
-            // 
-            // Col_StockDisponible
-            // 
-            this.Col_StockDisponible.HeaderText = "DISPONIBLE";
-            this.Col_StockDisponible.Name = "Col_StockDisponible";
-            this.Col_StockDisponible.ReadOnly = true;
-            this.Col_StockDisponible.Width = 130;
             // 
             // Panel_Destino
             // 
