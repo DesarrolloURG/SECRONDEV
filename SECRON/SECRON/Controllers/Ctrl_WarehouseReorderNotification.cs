@@ -355,10 +355,10 @@ namespace SECRON.Controllers
             </body>
             </html>";
 
-            //foreach (string correo in destinatarios)
-                //mail.To.Add(correo);
+            foreach (string correo in destinatarios)
+                mail.To.Add(correo);
 
-            mail.To.Add("phernandez@uregionalregion2.edu.gt");
+            //mail.To.Add("phernandez@uregionalregion2.edu.gt");
 
             smtpClient.Send(mail);
         }
