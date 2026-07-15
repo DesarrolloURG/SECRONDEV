@@ -51,6 +51,48 @@ namespace SECRON.Controllers
             return lista;
         }
 
+        // MÉTODO: Listar bodegas donde el usuario tiene un permiso específico de bodega (ej. ADMIN_BODEGA)
+        // Usado para combos que solo deben mostrar las bodegas que el usuario puede administrar
+        public static List<KeyValuePair<int, string>> ObtenerBodegasAdministradas(int userId, string permissionCode)
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"SELECT DISTINCT w.WarehouseId, w.WarehouseName
+                        FROM WarehouseManagers a
+                        INNER JOIN WarehouseManagerPermissions b ON a.WarehouseManagerId = b.WarehouseManagerId
+                        INNER JOIN WarehousePermissions c ON c.WarehousePermissionId = b.WarehousePermissionId
+                        INNER JOIN Warehouses w ON w.WarehouseId = a.WarehouseId
+                        WHERE a.UserId = @UserId
+                          AND a.IsActive = 1
+                          AND w.IsActive = 1
+                          AND c.PermissionCode = @PermissionCode
+                        ORDER BY w.WarehouseName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        cmd.Parameters.AddWithValue("@PermissionCode", permissionCode);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                lista.Add(new KeyValuePair<int, string>(
+                                    reader.GetInt32(0), reader.GetString(1)));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener bodegas administradas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
+
         // MÉTODO: Obtener WarehouseManagerId de una combinación usuario+bodega (activa), o null si no existe
         public static int? ObtenerWarehouseManagerId(int userId, int warehouseId)
         {
