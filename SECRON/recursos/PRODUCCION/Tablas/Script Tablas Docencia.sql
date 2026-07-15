@@ -1,3 +1,33 @@
+-- =====================================================================
+-- SECRON - DROP ordenado de tablas del modulo DOCENCIA
+-- Ejecutar en QA y PRODUCCION antes de recrear
+-- Orden: de tablas hijas (mas dependientes) a padres (menos dependientes)
+-- =====================================================================
+
+DROP TABLE IF EXISTS ScheduleDetails;
+GO
+DROP TABLE IF EXISTS Schedules;
+GO
+DROP TABLE IF EXISTS SectionCourses;
+GO
+DROP TABLE IF EXISTS TeacherCourses;
+GO
+DROP TABLE IF EXISTS Sections;
+GO
+DROP TABLE IF EXISTS Teachers;
+GO
+DROP TABLE IF EXISTS CareerCourses;
+GO
+DROP TABLE IF EXISTS Courses;
+GO
+DROP TABLE IF EXISTS Careers;
+GO
+DROP TABLE IF EXISTS ScheduleTypes;
+GO
+DROP TABLE IF EXISTS Coordinators;
+GO
+
+
 -- =====================================================
 -- MÓDULO DE DOCENCIA - SECRON 2.0
 -- Sistema de Gestión Académica Completo
@@ -274,6 +304,18 @@ CREATE TABLE Teachers (
     CONSTRAINT FK_Teachers_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
     CONSTRAINT FK_Teachers_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
 );
+
+ALTER TABLE Teachers ADD
+    FilePath_DPI            NVARCHAR(500) NULL,
+    FilePath_Titulos        NVARCHAR(500) NULL,
+    FilePath_RTU            NVARCHAR(500) NULL,
+    FilePath_Colegiado      NVARCHAR(500) NULL,
+    FilePath_RENAS          NVARCHAR(500) NULL,
+    FilePath_AntPoliciacos  NVARCHAR(500) NULL,
+    FilePath_AntPenales     NVARCHAR(500) NULL;
+GO
+
+
 
 -- -----------------------------------------------------
 -- 9. TABLA: TeacherCourses (Detalle: Cursos que imparte el Docente)
