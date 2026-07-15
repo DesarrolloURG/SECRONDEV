@@ -1,4 +1,4 @@
-ALTER   PROCEDURE [dbo].[SP_WarehouseDispatch_Create]
+CREATE OR ALTER   PROCEDURE [dbo].[SP_WarehouseDispatch_Create]
     @WarehouseId            INT,
     @PermissionCode         VARCHAR(50),
     @DestinationWarehouseId INT = NULL,

@@ -136,6 +136,70 @@ namespace SECRON.Controllers
             return lista;
         }
 
+        // MÉTODO: Obtener la categoría (LocationCategoryId) de la sede padre de una bodega
+        public static int ObtenerCategoriaIdDeBodega(int warehouseId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"SELECT ISNULL(l.LocationCategoryId, 0)
+                        FROM Warehouses w
+                        INNER JOIN Locations l ON l.LocationId = w.LocationId
+                        WHERE w.WarehouseId = @WarehouseId";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@WarehouseId", warehouseId);
+                        object resultado = cmd.ExecuteScalar();
+                        return resultado == null || resultado == DBNull.Value ? 0 : Convert.ToInt32(resultado);
+                    }
+                }
+            }
+            catch { return 0; }
+        }
+
+        // MÉTODO: Obtener bodegas activas cuya sede padre comparte la categoría de la sede de la bodega dada (excluye la bodega activa)
+        public static List<KeyValuePair<int, string>> ObtenerBodegasMismaCategoria(int warehouseId)
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"SELECT w.WarehouseId, w.WarehouseName
+                        FROM Warehouses w
+                        INNER JOIN Locations l ON l.LocationId = w.LocationId
+                        WHERE l.LocationCategoryId = (
+                            SELECT lx.LocationCategoryId
+                            FROM Warehouses wx
+                            INNER JOIN Locations lx ON lx.LocationId = wx.LocationId
+                            WHERE wx.WarehouseId = @WarehouseId
+                        )
+                        AND w.WarehouseId <> @WarehouseId
+                        AND w.IsActive = 1
+                        AND l.IsActive = 1
+                        ORDER BY w.WarehouseName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@WarehouseId", warehouseId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener bodegas de la misma categoría: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
+
         private static Mdl_Warehouse MapearBodega(SqlDataReader reader)
         {
             return new Mdl_Warehouse
@@ -238,6 +302,55 @@ namespace SECRON.Controllers
             catch (Exception ex)
             {
                 MessageBox.Show("Error al obtener bodegas asignadas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
+        }
+
+        // MÉTODO: Obtener bodegas donde el usuario tiene un permiso específico (ej. ADMIN_BODEGA), con su LocationId/LocationName resuelto
+        // Usado para combos dependientes Sede -> Bodega, filtrados por permiso puntual (no solo membresía en WarehouseManagers)
+        public static List<Mdl_WarehouseWithLocation> ObtenerBodegasAdministradasConLocation(int userId, string permissionCode)
+        {
+            List<Mdl_WarehouseWithLocation> lista = new List<Mdl_WarehouseWithLocation>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"SELECT DISTINCT w.WarehouseId, w.WarehouseName, l.LocationId, l.LocationName
+                        FROM WarehouseManagers wm
+                        INNER JOIN WarehouseManagerPermissions wmp ON wmp.WarehouseManagerId = wm.WarehouseManagerId
+                        INNER JOIN WarehousePermissions wp ON wp.WarehousePermissionId = wmp.WarehousePermissionId
+                        INNER JOIN Warehouses w ON w.WarehouseId = wm.WarehouseId
+                        INNER JOIN Locations l ON l.LocationId = w.LocationId
+                        WHERE wm.UserId = @UserId
+                          AND wm.IsActive = 1
+                          AND w.IsActive = 1
+                          AND l.IsActive = 1
+                          AND wp.PermissionCode = @PermissionCode
+                        ORDER BY l.LocationName, w.WarehouseName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        cmd.Parameters.AddWithValue("@PermissionCode", permissionCode);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                lista.Add(new Mdl_WarehouseWithLocation
+                                {
+                                    WarehouseId = reader.GetInt32(0),
+                                    WarehouseName = reader.GetString(1),
+                                    LocationId = reader.GetInt32(2),
+                                    LocationName = reader.GetString(3)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener bodegas administradas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return lista;
         }

@@ -81,8 +81,8 @@ namespace SECRON.Views
                     await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
                     ConfigurarControlesPorPermisos();
                 }
-                
-                
+
+
 
                 this.Cursor = Cursors.Default;
             }
@@ -141,7 +141,7 @@ namespace SECRON.Views
             Txt_CurrentStock.Enabled = false;
             Txt_MinimumStock.Enabled = false;
             Txt_MaximumStock.Enabled = false;
-            Txt_AddStock.Enabled    = false;
+            Txt_AddStock.Enabled = false;
             Txt_ReorderPoint.Enabled = false;
             Txt_UnitCost.Enabled = false;
             Txt_LastPurchasePrice.Enabled = false;
@@ -157,7 +157,7 @@ namespace SECRON.Views
             Filtro1.Enabled = true;
             Filtro2.Enabled = true;
             Filtro3.Enabled = true;
-            Btn_Search.Enabled = true;
+            AplicarEstadoBotonPorPermiso(Btn_Search, "KARDEX_INVENTORY_READ");
             Btn_CleanSearch.Enabled = true;
             //Txt_CurrentStock.Enabled = true;
             Txt_AddStock.Enabled = true;
@@ -167,7 +167,7 @@ namespace SECRON.Views
             //Txt_UnitCost.Enabled = true;
             //Txt_LastPurchasePrice.Enabled = true;
             Btn_Clear.Enabled = true;
-            Btn_Export.Enabled = true;
+            AplicarEstadoBotonPorPermiso(Btn_Export, "KARDEX_INVENTORY_EXPORT");
             Btn_Update.Enabled = false;
             Btn_Delete.Enabled = false;
         }
@@ -178,7 +178,7 @@ namespace SECRON.Views
             ConfigurarPlaceHolder(Txt_Codigo, "CÓDIGO DEL ARTÍCULO");
             ConfigurarPlaceHolder(Txt_Articulo, "NOMBRE DEL ARTÍCULO");
             ConfigurarPlaceHolder(Txt_Descripcion, "DESCRIPCIÓN DEL ARTÍCULO");
-            ConfigurarPlaceHolder(Txt_MinimumStock, "0.00");        
+            ConfigurarPlaceHolder(Txt_MinimumStock, "0.00");
             ConfigurarPlaceHolder(Txt_MaximumStock, "0.00");
             ConfigurarPlaceHolder(Txt_CurrentStock, "0.00");
             ConfigurarPlaceHolder(Txt_ReorderPoint, "0.00");
@@ -254,7 +254,7 @@ namespace SECRON.Views
             ComboBox_Location.Items.Clear();
             ComboBox_Location.Items.Add("SELECCIONAR SEDE...");
 
-            var bodegasAsignadas = Ctrl_Warehouses.ObtenerBodegasAsignadasConLocation(UserData.UserId, false);
+            var bodegasAsignadas = Ctrl_Warehouses.ObtenerBodegasAdministradasConLocation(UserData.UserId, "ADMIN_BODEGA");
 
             var sedesUnicas = bodegasAsignadas
                 .GroupBy(b => new { b.LocationId, b.LocationName })
@@ -297,7 +297,7 @@ namespace SECRON.Views
             _bodegaActivaId = null;
             _bodegaActivaNombre = "";
 
-            var bodegasAsignadas = Ctrl_Warehouses.ObtenerBodegasAsignadasConLocation(UserData.UserId, false);
+            var bodegasAsignadas = Ctrl_Warehouses.ObtenerBodegasAdministradasConLocation(UserData.UserId, "ADMIN_BODEGA");
             var bodegasDeLaSede = bodegasAsignadas
                 .Where(b => b.LocationId == _sedeActivaId.Value)
                 .OrderBy(b => b.WarehouseName)
@@ -352,6 +352,13 @@ namespace SECRON.Views
 
         private void RefrescarListado()
         {
+            if (!TienePermiso("KARDEX_INVENTORY_READ"))
+            {
+                _stockList = new List<Mdl_ItemWarehouseStock>();
+                AsignarDataSource();
+                return;
+            }
+
             if (_bodegaActivaId.HasValue)
             {
                 _stockList = Ctrl_ItemWarehouseStock.ObtenerStockPorBodegaConDetalle(_bodegaActivaId.Value);
@@ -506,8 +513,8 @@ namespace SECRON.Views
                 if (_stockSeleccionado != null)
                 {
                     CargarDatosEnFormulario();
-                    Btn_Update.Enabled = true;
-                    Btn_Delete.Enabled = true;
+                    AplicarEstadoBotonPorPermiso(Btn_Update, "KARDEX_INVENTORY_UPDATE");
+                    AplicarEstadoBotonPorPermiso(Btn_Delete, "KARDEX_INVENTORY_INACTIVE");
                 }
             }
             catch (Exception ex)
@@ -530,8 +537,8 @@ namespace SECRON.Views
                 _stockSeleccionado.MaximumStock.ToString("0.00"), "0.00");
             SetTextBoxFromValue(Txt_CurrentStock,
                 _stockSeleccionado.CurrentStock.ToString("0.00"), "0.00");
-            
-            Txt_AddStock.Value= decimal.TryParse(Txt_CurrentStock.Text.Trim(), out decimal cStock) ? cStock : 0;
+
+            Txt_AddStock.Value = decimal.TryParse(Txt_CurrentStock.Text.Trim(), out decimal cStock) ? cStock : 0;
             Txt_AddStock.Maximum = decimal.TryParse(Txt_MaximumStock.Text.Trim(), out decimal max) ? max : 0;
 
             var items = Ctrl_Items.MostrarArticulos(1, 9999);

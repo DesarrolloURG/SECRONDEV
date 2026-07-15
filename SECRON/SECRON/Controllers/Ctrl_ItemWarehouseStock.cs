@@ -95,6 +95,34 @@ namespace SECRON.Controllers
             return lista;
         }
 
+        // MÉTODO: Registrar stock inicial de un artículo en una bodega (usado al copiar desde plantilla/sede base)
+        public static int RegistrarStockInicial(Mdl_ItemWarehouseStock stock, int createdBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_ItemWarehouseStock_Insert", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemId", stock.ItemId);
+                    cmd.Parameters.AddWithValue("@WarehouseId", stock.WarehouseId);
+                    cmd.Parameters.AddWithValue("@CurrentStock", stock.CurrentStock);
+                    cmd.Parameters.AddWithValue("@MinimumStock", stock.MinimumStock);
+                    cmd.Parameters.AddWithValue("@MaximumStock", (object)stock.MaximumStock == null ? DBNull.Value : (object)stock.MaximumStock);
+                    cmd.Parameters.AddWithValue("@ReorderPoint", (object)stock.ReorderPoint == null ? DBNull.Value : (object)stock.ReorderPoint);
+                    cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al registrar stock inicial: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
         // MÉTODO: Actualizar límites de stock (MinimumStock, MaximumStock, ReorderPoint)
         public static int ActualizarLimitesStock(int itemWarehouseStockId, decimal minimumStock, decimal maximumStock, decimal reorderPoint, int modifiedBy)
         {
