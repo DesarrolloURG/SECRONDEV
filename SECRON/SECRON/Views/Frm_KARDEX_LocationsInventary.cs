@@ -539,7 +539,7 @@ namespace SECRON.Views
                 _stockSeleccionado.CurrentStock.ToString("0.00"), "0.00");
 
             Txt_AddStock.Value = decimal.TryParse(Txt_CurrentStock.Text.Trim(), out decimal cStock) ? cStock : 0;
-            Txt_AddStock.Maximum = decimal.TryParse(Txt_MaximumStock.Text.Trim(), out decimal max) ? max : 0;
+            //Txt_AddStock.Maximum = decimal.TryParse(Txt_MaximumStock.Text.Trim(), out decimal max) ? max : 0;
 
             var items = Ctrl_Items.MostrarArticulos(1, 9999);
             var item = items.FirstOrDefault(i => i.ItemId == _stockSeleccionado.ItemId);
@@ -1146,6 +1146,7 @@ namespace SECRON.Views
             AplicarEstadoBotonPorPermiso(Btn_Delete, "KARDEX_INVENTORY_INACTIVE");
             AplicarEstadoBotonPorPermiso(Btn_Search, "KARDEX_INVENTORY_READ");
             AplicarEstadoBotonPorPermiso(Btn_Export, "KARDEX_INVENTORY_EXPORT");
+            AplicarEstadoBotonPorPermiso(Btn_Template, "KARDEX_INVENTORY_TEMPLATE");
         }
         #endregion SistemaDePermisos
     }
