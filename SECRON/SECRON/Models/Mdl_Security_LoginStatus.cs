@@ -13,7 +13,9 @@ namespace SECRON.Models
         InvalidPassword,       // Contraseña incorrecta
         UserDisabled,          // Usuario deshabilitado
         UserLocked,            // Usuario bloqueado por intentos fallidos
-        PasswordExpired,       // Contraseña temporal que debe cambiarse
-        MaxAttemptsReached     // Se alcanzó el máximo de intentos
+        PasswordExpired,       // Contraseña temporal o caducada que debe cambiarse
+        MaxAttemptsReached,    // Se alcanzó el máximo de intentos
+        TwoFactorSetupRequired, // Usuario debe vincular su Authenticator (primera vez)
+        TwoFactorRequired      // Usuario debe ingresar el código de su Authenticator
     }
 }

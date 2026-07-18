@@ -108,9 +108,9 @@ namespace SECRON.Controllers
             return lista;
         }
         #endregion CRUD
-        
+
         // MÉTODO PRINCIPAL: Búsqueda con múltiples filtros
-        public static List<Mdl_Users> BuscarUsuarios(string textoBusqueda = "", int? roleId = null,int? statusId = null,bool? isLocked = null,int pageNumber = 1,int pageSize = 100)
+        public static List<Mdl_Users> BuscarUsuarios(string textoBusqueda = "", int? roleId = null, int? statusId = null, bool? isLocked = null, int pageNumber = 1, int pageSize = 100)
         {
             List<Mdl_Users> lista = new List<Mdl_Users>();
             try
@@ -408,7 +408,8 @@ namespace SECRON.Controllers
         // Orden de campos en SELECT: UserId(0), Username(1), PasswordHash(2), FullName(3), RoleId(4), 
         // StatusId(5), NotificationsEnabled(6), LastConnectionDate(7), IsTemporaryPassword(8), 
         // CreatedDate(9), CreatedBy(10), ModifiedDate(11), ModifiedBy(12), InstitutionalEmail(13), 
-        // EmployeeId(14), PasswordExpiryDate(15), FailedLoginAttempts(16), IsLocked(17), LastLoginDate(18)
+        // EmployeeId(14), PasswordExpiryDate(15), FailedLoginAttempts(16), IsLocked(17), LastLoginDate(18),
+        // LastPasswordChanged, PasswordNeverExpires (leídos por nombre de columna, agregados al final de la tabla)
         private static Mdl_Users MapearUsuario(SqlDataReader reader)
         {
             return new Mdl_Users
@@ -431,7 +432,9 @@ namespace SECRON.Controllers
                 PasswordExpiryDate = reader[15] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(15),
                 FailedLoginAttempts = reader.GetInt32(16),
                 IsLocked = reader.GetBoolean(17),
-                LastLoginDate = reader[18] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(18)
+                LastLoginDate = reader[18] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(18),
+                LastPasswordChanged = reader["LastPasswordChanged"] == DBNull.Value ? null : (DateTime?)reader["LastPasswordChanged"],
+                PasswordNeverExpires = reader["PasswordNeverExpires"] != DBNull.Value && (bool)reader["PasswordNeverExpires"]
             };
         }
 
@@ -460,7 +463,7 @@ namespace SECRON.Controllers
         }
 
         // MÉTODO PARA CONTAR TOTAL DE REGISTROS (PARA PAGINACIÓN)
-        public static int ContarTotalUsuarios(string textoBusqueda = "",int? roleId = null,int? statusId = null, bool? isLocked = null)
+        public static int ContarTotalUsuarios(string textoBusqueda = "", int? roleId = null, int? statusId = null, bool? isLocked = null)
         {
             try
             {
@@ -633,6 +636,36 @@ namespace SECRON.Controllers
                 MessageBox.Show("Error al desbloquear usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
+        }
+
+        // MÉTODO PRINCIPAL: Validar expiración de contraseña (post-login)
+        public static bool ValidarExpiracionPassword(int userId, out int diasRestantes)
+        {
+            diasRestantes = 0;
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Users_ValidarExpiracionPassword", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            bool expirada = reader.GetBoolean(0);
+                            diasRestantes = reader.GetInt32(1);
+                            return expirada;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al validar expiración de contraseña: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return false;
         }
     }
 }

@@ -19,6 +19,11 @@ namespace SECRON.Models
         public int? EmployeeId { get; set; }
         public DateTime? LastLoginDate { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime? LastPasswordChanged { get; set; }
+        public bool PasswordNeverExpires { get; set; }
+        public string TwoFactorSecret { get; set; }
+        public DateTime? TwoFactorEnabledDate { get; set; }
+        public bool TwoFactorExempt { get; set; }
 
         // Propiedades adicionales útiles
         public string RoleName { get; set; }        // Se puede cargar con JOIN
@@ -39,7 +44,7 @@ namespace SECRON.Models
             RoleId = roleId;
         }
 
-        // Método para verificar si la contraseña ha expirado
+        // Método para verificar si la contraseña ha expirado (por fecha de expiración explícita, ej. temporal)
         public bool IsPasswordExpired()
         {
             return PasswordExpiryDate.HasValue && PasswordExpiryDate.Value <= DateTime.Now;

@@ -138,7 +138,7 @@
             this.Lbl_Paginas.Location = new System.Drawing.Point(16, 14);
             this.Lbl_Paginas.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Paginas.Name = "Lbl_Paginas";
-            this.Lbl_Paginas.Size = new System.Drawing.Size(308, 25);
+            this.Lbl_Paginas.Size = new System.Drawing.Size(244, 20);
             this.Lbl_Paginas.TabIndex = 51;
             this.Lbl_Paginas.Text = "MOSTRANDO 1-10 DE 100 SEDES";
             // 
@@ -180,7 +180,7 @@
             this.Filtro2.Location = new System.Drawing.Point(336, 82);
             this.Filtro2.Margin = new System.Windows.Forms.Padding(4);
             this.Filtro2.Name = "Filtro2";
-            this.Filtro2.Size = new System.Drawing.Size(291, 33);
+            this.Filtro2.Size = new System.Drawing.Size(291, 28);
             this.Filtro2.TabIndex = 69;
             // 
             // Btn_Search
@@ -206,7 +206,7 @@
             this.Filtro1.Location = new System.Drawing.Point(21, 82);
             this.Filtro1.Margin = new System.Windows.Forms.Padding(4);
             this.Filtro1.Name = "Filtro1";
-            this.Filtro1.Size = new System.Drawing.Size(291, 33);
+            this.Filtro1.Size = new System.Drawing.Size(291, 28);
             this.Filtro1.TabIndex = 68;
             // 
             // Txt_ValorBuscado
@@ -218,7 +218,7 @@
             this.Txt_ValorBuscado.Margin = new System.Windows.Forms.Padding(4);
             this.Txt_ValorBuscado.MaxLength = 15;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(720, 32);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(720, 27);
             this.Txt_ValorBuscado.TabIndex = 59;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
@@ -358,7 +358,7 @@
             this.ComboBox_WarehouseType.Location = new System.Drawing.Point(20, 478);
             this.ComboBox_WarehouseType.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_WarehouseType.Name = "ComboBox_WarehouseType";
-            this.ComboBox_WarehouseType.Size = new System.Drawing.Size(468, 33);
+            this.ComboBox_WarehouseType.Size = new System.Drawing.Size(468, 28);
             this.ComboBox_WarehouseType.TabIndex = 76;
             // 
             // Lbl_WarehouseType
@@ -367,7 +367,7 @@
             this.Lbl_WarehouseType.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_WarehouseType.Location = new System.Drawing.Point(14, 449);
             this.Lbl_WarehouseType.Name = "Lbl_WarehouseType";
-            this.Lbl_WarehouseType.Size = new System.Drawing.Size(69, 25);
+            this.Lbl_WarehouseType.Size = new System.Drawing.Size(54, 20);
             this.Lbl_WarehouseType.TabIndex = 75;
             this.Lbl_WarehouseType.Text = "TIPO *";
             // 
@@ -391,7 +391,7 @@
             this.label2.Location = new System.Drawing.Point(14, 217);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(136, 25);
+            this.label2.Size = new System.Drawing.Size(106, 20);
             this.label2.TabIndex = 74;
             this.label2.Text = "DESCRIPCIÓN";
             // 
@@ -402,7 +402,7 @@
             this.ComboBox_LocationId.Location = new System.Drawing.Point(20, 401);
             this.ComboBox_LocationId.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_LocationId.Name = "ComboBox_LocationId";
-            this.ComboBox_LocationId.Size = new System.Drawing.Size(468, 33);
+            this.ComboBox_LocationId.Size = new System.Drawing.Size(468, 28);
             this.ComboBox_LocationId.TabIndex = 72;
             // 
             // Lbl_Location
@@ -411,7 +411,7 @@
             this.Lbl_Location.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Location.Location = new System.Drawing.Point(14, 372);
             this.Lbl_Location.Name = "Lbl_Location";
-            this.Lbl_Location.Size = new System.Drawing.Size(71, 25);
+            this.Lbl_Location.Size = new System.Drawing.Size(55, 20);
             this.Lbl_Location.TabIndex = 14;
             this.Lbl_Location.Text = "SEDE *";
             // 
@@ -422,7 +422,7 @@
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.MaxLength = 15;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(468, 32);
+            this.textBox1.Size = new System.Drawing.Size(468, 27);
             this.textBox1.TabIndex = 11;
             // 
             // label1
@@ -433,7 +433,7 @@
             this.label1.Location = new System.Drawing.Point(14, 286);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 25);
+            this.label1.Size = new System.Drawing.Size(95, 20);
             this.label1.TabIndex = 12;
             this.label1.Text = "TELEFONO *";
             // 
@@ -457,7 +457,7 @@
             this.Lbl_Address.Location = new System.Drawing.Point(12, 523);
             this.Lbl_Address.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Address.Name = "Lbl_Address";
-            this.Lbl_Address.Size = new System.Drawing.Size(112, 25);
+            this.Lbl_Address.Size = new System.Drawing.Size(89, 20);
             this.Lbl_Address.TabIndex = 10;
             this.Lbl_Address.Text = "DIRECCIÓN";
             // 
@@ -468,7 +468,7 @@
             this.Txt_Name.Margin = new System.Windows.Forms.Padding(4);
             this.Txt_Name.MaxLength = 15;
             this.Txt_Name.Name = "Txt_Name";
-            this.Txt_Name.Size = new System.Drawing.Size(468, 32);
+            this.Txt_Name.Size = new System.Drawing.Size(468, 27);
             this.Txt_Name.TabIndex = 3;
             // 
             // Txt_Code
@@ -478,7 +478,8 @@
             this.Txt_Code.Margin = new System.Windows.Forms.Padding(4);
             this.Txt_Code.MaxLength = 15;
             this.Txt_Code.Name = "Txt_Code";
-            this.Txt_Code.Size = new System.Drawing.Size(468, 32);
+            this.Txt_Code.ReadOnly = true;
+            this.Txt_Code.Size = new System.Drawing.Size(468, 27);
             this.Txt_Code.TabIndex = 1;
             // 
             // Lbl_Name
@@ -489,7 +490,7 @@
             this.Lbl_Name.Location = new System.Drawing.Point(13, 137);
             this.Lbl_Name.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Name.Name = "Lbl_Name";
-            this.Lbl_Name.Size = new System.Drawing.Size(107, 25);
+            this.Lbl_Name.Size = new System.Drawing.Size(85, 20);
             this.Lbl_Name.TabIndex = 3;
             this.Lbl_Name.Text = "NOMBRE *";
             // 
@@ -501,7 +502,7 @@
             this.Lbl_Code.Location = new System.Drawing.Point(13, 55);
             this.Lbl_Code.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Code.Name = "Lbl_Code";
-            this.Lbl_Code.Size = new System.Drawing.Size(211, 25);
+            this.Lbl_Code.Size = new System.Drawing.Size(167, 20);
             this.Lbl_Code.TabIndex = 1;
             this.Lbl_Code.Text = "CÓDIGO DE BODEGA *";
             // 
@@ -515,7 +516,7 @@
             this.Lbl_Subtitulo1.Location = new System.Drawing.Point(13, 12);
             this.Lbl_Subtitulo1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Subtitulo1.Name = "Lbl_Subtitulo1";
-            this.Lbl_Subtitulo1.Size = new System.Drawing.Size(316, 25);
+            this.Lbl_Subtitulo1.Size = new System.Drawing.Size(253, 20);
             this.Lbl_Subtitulo1.TabIndex = 1;
             this.Lbl_Subtitulo1.Text = "      INFORMACIÓN DE LA BODEGA";
             this.Lbl_Subtitulo1.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -528,7 +529,7 @@
             this.Lbl_TituloPanelIzquierdo.Location = new System.Drawing.Point(16, 12);
             this.Lbl_TituloPanelIzquierdo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_TituloPanelIzquierdo.Name = "Lbl_TituloPanelIzquierdo";
-            this.Lbl_TituloPanelIzquierdo.Size = new System.Drawing.Size(304, 28);
+            this.Lbl_TituloPanelIzquierdo.Size = new System.Drawing.Size(241, 21);
             this.Lbl_TituloPanelIzquierdo.TabIndex = 51;
             this.Lbl_TituloPanelIzquierdo.Text = "INFORMACIÓN DE LA BODEGA";
             // 
@@ -571,7 +572,7 @@
             this.Lbl_Formulario.Location = new System.Drawing.Point(11, 16);
             this.Lbl_Formulario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Formulario.Name = "Lbl_Formulario";
-            this.Lbl_Formulario.Size = new System.Drawing.Size(272, 32);
+            this.Lbl_Formulario.Size = new System.Drawing.Size(215, 25);
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "GESTIÓN DE BODEGAS";
             // 

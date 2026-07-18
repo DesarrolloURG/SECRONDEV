@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SECRON.Utils;
 
 namespace SECRON.Views
 {
@@ -26,6 +27,11 @@ namespace SECRON.Views
         #region PropiedadesIniciales
         //Propiedades iniciales
         private Ctrl_Security_Auth authController;
+        private System.Windows.Forms.Timer timerInactividad;
+        private DateTime ultimaActividad;
+        private int tiempoSesionActivaMinutos = 15;
+        private Cls_ActivityMessageFilter activityFilter;
+        private bool sesionCerradaPorInactividad = false;
 
         // Importaciones de la API de Windows para personalizar la barra de título
         [DllImport("dwmapi.dll")]
@@ -651,12 +657,142 @@ namespace SECRON.Views
             ConfigurarBarraTitulo();
             // Configurar el authController
             authController = new Ctrl_Security_Auth();
+            InicializarControlInactividad();
             // Configurar El Evento Formulario Load
             this.Load += Frm_ControlCenter_MDI_Load;
             // Inicializar Pestañas de Sistema
             InicializarSistemaPestanas();
         }
         #endregion PropiedadesIniciales
+
+
+        #region ControlInactividadSesion
+
+        // Inicializa el timer y el filtro de actividad global
+        private void InicializarControlInactividad()
+        {
+            ultimaActividad = DateTime.Now;
+
+            activityFilter = new Cls_ActivityMessageFilter();
+            activityFilter.OnActivity = () => { ultimaActividad = DateTime.Now; };
+            Application.AddMessageFilter(activityFilter);
+
+            timerInactividad = new System.Windows.Forms.Timer();
+            timerInactividad.Interval = 10000; // Revisar cada 10 segundos (ajustar a 60000 en producción)
+            timerInactividad.Tick += TimerInactividad_Tick;
+            timerInactividad.Start();
+
+            // Cargar el tiempo configurado desde ParametersConfiguration
+            CargarTiempoSesionActivaAsync();
+        }
+        // Carga el parámetro TiempoSesionActivaMinutos desde la BD
+        private async void CargarTiempoSesionActivaAsync()
+        {
+            tiempoSesionActivaMinutos = await Ctrl_Parameters.ObtenerValorIntAsync("TiempoSesionActivaMinutos", 15);
+        }
+        // Revisa periódicamente si el tiempo de inactividad fue superado
+        private void TimerInactividad_Tick(object sender, EventArgs e)
+        {
+            double minutosInactivo = (DateTime.Now - ultimaActividad).TotalMinutes;
+
+            if (minutosInactivo >= tiempoSesionActivaMinutos)
+            {
+                timerInactividad.Stop();
+                CerrarSesionPorInactividad();
+            }
+        }
+        // Cierra la sesión automáticamente por inactividad
+        // Cierra la sesión automáticamente por inactividad
+        private async void CerrarSesionPorInactividad()
+        {
+            sesionCerradaPorInactividad = true;
+            cierreConfirmado = true; // Evita el MessageBox de confirmación del FormClosing normal
+
+            Application.RemoveMessageFilter(activityFilter);
+
+            MessageBox.Show(
+                "Su sesión ha expirado por inactividad. Debe iniciar sesión nuevamente.",
+                "Sesión expirada",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            // Registrar logout en auditoría
+            if (UserData != null)
+            {
+                try { await authController.LogoutUserAsync(UserData.UserId, UserData.Username); }
+                catch { /* No bloquear el cierre por error de auditoría */ }
+            }
+
+            // Cerrar formularios hijos
+            foreach (Form childForm in this.MdiChildren)
+            {
+                childForm.Close();
+            }
+
+            // Cerrar todas las pestañas
+            if (tabControl != null)
+            {
+                while (tabControl.TabPages.Count > 0)
+                {
+                    TabPage tab = tabControl.TabPages[0];
+                    Form formulario = tab.Controls.OfType<Form>().FirstOrDefault();
+                    if (formulario != null)
+                        formulario.Close();
+                    tabControl.TabPages.RemoveAt(0);
+                }
+            }
+
+            Application.Restart();
+            Application.Exit();
+        }
+        #endregion ControlInactividadSesion
+
+        private async void BtnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult resultado = MessageBox.Show(
+                "¿ESTÁS SEGURO QUE DESEAS CERRAR SESIÓN?",
+                "CONFIRMAR CIERRE DE SESIÓN",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultado != DialogResult.Yes) return;
+
+            // Detener el control de inactividad para que no interfiera
+            timerInactividad?.Stop();
+            Application.RemoveMessageFilter(activityFilter);
+
+            if (UserData != null)
+            {
+                try { await authController.LogoutUserAsync(UserData.UserId, UserData.Username); }
+                catch { /* No bloquear el cierre por error de auditoría */ }
+            }
+
+            cierreConfirmado = true;
+
+            // Cerrar formularios hijos
+            foreach (Form childForm in this.MdiChildren)
+            {
+                childForm.Close();
+            }
+
+            // Cerrar todas las pestañas
+            if (tabControl != null)
+            {
+                while (tabControl.TabPages.Count > 0)
+                {
+                    TabPage tab = tabControl.TabPages[0];
+                    Form formulario = tab.Controls.OfType<Form>().FirstOrDefault();
+                    if (formulario != null)
+                        formulario.Close();
+                    tabControl.TabPages.RemoveAt(0);
+                }
+            }
+
+            Application.Restart();
+            Application.Exit();
+        }
+
+
         #region CargarDatosUsuario
         // Método para cargar datos del usuario
         private async void CargarDatosUsuario(string username)
