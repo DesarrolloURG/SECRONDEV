@@ -32,6 +32,8 @@ namespace SECRON.Models
         public int FailedLoginAttempts { get; set; }
         public bool IsLocked { get; set; }
         public DateTime? LastLoginDate { get; set; }
+        public DateTime? LastPasswordChanged { get; set; }
+        public bool PasswordNeverExpires { get; set; }
 
         // Constructor vacío
         public Mdl_Users()
