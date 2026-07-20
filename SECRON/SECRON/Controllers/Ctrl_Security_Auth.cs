@@ -1,4 +1,6 @@
 ﻿using BCrypt.Net;
+using OtpNet;
+using QRCoder;
 using SECRON.Configuration;
 using SECRON.Models;
 using System;
@@ -118,6 +120,47 @@ namespace SECRON.Controllers
                         };
                     }
 
+                    // 6.6 Verificar doble factor de autenticación (TOTP), salvo usuarios exentos
+                    if (!userInfo.TwoFactorExempt)
+                    {
+                        if (string.IsNullOrEmpty(userInfo.TwoFactorSecret))
+                        {
+                            return new Mdl_Security_UserLoginResult(userInfo, "Debe vincular su aplicación de autenticación")
+                            {
+                                ErrorType = Mdl_Security_LoginStatus.TwoFactorSetupRequired
+                            };
+                        }
+                        else
+                        {
+                            return new Mdl_Security_UserLoginResult(userInfo, "Ingrese el código de su aplicación de autenticación")
+                            {
+                                ErrorType = Mdl_Security_LoginStatus.TwoFactorRequired
+                            };
+                        }
+                    }
+
+                    // 6.5 Verificar si la contraseña expiró o está por vencer (política de días de vida)
+                    if (!userInfo.PasswordNeverExpires)
+                    {
+                        var (expirada, diasRestantes) = await GetPasswordExpirationInfoAsync(connection, userInfo.UserId);
+
+                        if (expirada)
+                        {
+                            return new Mdl_Security_UserLoginResult(userInfo, "Su contraseña ha caducado, cámbiela para iniciar sesión")
+                            {
+                                ErrorType = Mdl_Security_LoginStatus.PasswordExpired
+                            };
+                        }
+
+                        if (diasRestantes <= 3)
+                        {
+                            return new Mdl_Security_UserLoginResult(userInfo, "Inicio de sesión exitoso")
+                            {
+                                DiasRestantesPassword = diasRestantes
+                            };
+                        }
+                    }
+
                     // 7. Login completamente exitoso
                     return new Mdl_Security_UserLoginResult(userInfo, "Inicio de sesión exitoso");
                 }
@@ -218,7 +261,9 @@ namespace SECRON.Controllers
                    u.IsTemporaryPassword, u.PasswordExpiryDate, u.InstitutionalEmail,
                    u.EmployeeId, u.LastLoginDate, u.CreatedDate, u.NotificationsEnabled,
                    ISNULL(r.RoleName, '') AS RoleName, 
-                   ISNULL(s.StatusName, '') AS StatusName
+                   ISNULL(s.StatusName, '') AS StatusName,
+                   u.LastPasswordChanged, u.PasswordNeverExpires,
+                   u.TwoFactorSecret, u.TwoFactorEnabledDate, u.TwoFactorExempt
             FROM Users u
             LEFT JOIN Roles r ON u.RoleId = r.RoleId
             LEFT JOIN UserStatus s ON u.StatusId = s.StatusId
@@ -239,7 +284,7 @@ namespace SECRON.Controllers
                             // 0=UserId, 1=Username, 2=FullName, 3=RoleId, 4=StatusId, 
                             // 5=IsTemporaryPassword, 6=PasswordExpiryDate, 7=InstitutionalEmail,
                             // 8=EmployeeId, 9=LastLoginDate, 10=CreatedDate, 11=NotificationsEnabled,
-                            // 12=RoleName, 13=StatusName
+                            // 12=RoleName, 13=StatusName, 14=LastPasswordChanged, 15=PasswordNeverExpires
 
                             try { userInfo.UserId = reader.GetInt32(0); }
                             catch { System.Diagnostics.Debug.WriteLine("Error leyendo UserId"); }
@@ -282,6 +327,21 @@ namespace SECRON.Controllers
 
                             try { userInfo.StatusName = reader.GetString(13); } // CORREGIDO: usar índice 13
                             catch { userInfo.StatusName = ""; }
+
+                            try { userInfo.LastPasswordChanged = reader.IsDBNull(14) ? (DateTime?)null : reader.GetDateTime(14); }
+                            catch { userInfo.LastPasswordChanged = null; }
+
+                            try { userInfo.PasswordNeverExpires = reader.GetBoolean(15); }
+                            catch { userInfo.PasswordNeverExpires = false; }
+
+                            try { userInfo.TwoFactorSecret = reader.IsDBNull(16) ? null : reader.GetString(16); }
+                            catch { userInfo.TwoFactorSecret = null; }
+
+                            try { userInfo.TwoFactorEnabledDate = reader.IsDBNull(17) ? (DateTime?)null : reader.GetDateTime(17); }
+                            catch { userInfo.TwoFactorEnabledDate = null; }
+
+                            try { userInfo.TwoFactorExempt = reader.GetBoolean(18); }
+                            catch { userInfo.TwoFactorExempt = false; }
 
                             return userInfo;
                         }
@@ -409,6 +469,24 @@ namespace SECRON.Controllers
                 await command.ExecuteScalarAsync();
             }
         }
+        // Verificar expiración de contraseña según la política de días de vida (ParametersConfiguration)
+        private async Task<(bool Expirada, int DiasRestantes)> GetPasswordExpirationInfoAsync(SqlConnection connection, int userId)
+        {
+            using (var command = new SqlCommand("SP_Users_ValidarExpiracionPassword", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@UserId", userId);
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        return (reader.GetBoolean(0), reader.GetInt32(1));
+                    }
+                }
+            }
+            return (false, int.MaxValue);
+        }
         // Verificar contraseña usando BCrypt
         private bool VerifyPassword(string password, string hash)
         {
@@ -488,5 +566,69 @@ namespace SECRON.Controllers
             return permisos;
         }
         #endregion MetodosPermisos
+        #region DobleFactorAutenticacion
+        // Genera un nuevo secreto Base32 aleatorio para un usuario (160 bits, estándar)
+        public string GenerateTwoFactorSecret()
+        {
+            var key = KeyGeneration.GenerateRandomKey(20);
+            return Base32Encoding.ToString(key);
+        }
+
+        // Genera el QR (PNG en bytes) para vincular la app autenticadora
+        public byte[] GenerateTwoFactorQrCode(string secretBase32, string username)
+        {
+            string uri = new OtpUri(OtpType.Totp, secretBase32, username, "SECRON").ToString();
+
+            using (var qrGenerator = new QRCodeGenerator())
+            using (var qrCodeData = qrGenerator.CreateQrCode(uri, QRCodeGenerator.ECCLevel.Q))
+            using (var qrCode = new PngByteQRCode(qrCodeData))
+            {
+                return qrCode.GetGraphic(10);
+            }
+        }
+
+        // Valida un código TOTP de 6 dígitos contra el secreto del usuario
+        public bool VerifyTwoFactorCode(string secretBase32, string code)
+        {
+            if (string.IsNullOrWhiteSpace(secretBase32) || string.IsNullOrWhiteSpace(code))
+                return false;
+
+            try
+            {
+                var secretBytes = Base32Encoding.ToBytes(secretBase32);
+                var totp = new Totp(secretBytes);
+                return totp.VerifyTotp(code.Trim(), out long timeWindowUsed, VerificationWindow.RfcSpecifiedNetworkDelay);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Confirma y guarda el secreto tras validar el primer código (vinculación inicial)
+        public async Task<bool> ConfirmTwoFactorSetupAsync(int userId, string secretBase32)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (var command = new SqlCommand("SP_Users_SetTwoFactorSecret", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        command.Parameters.AddWithValue("@TwoFactorSecret", secretBase32);
+                        var result = await command.ExecuteScalarAsync();
+                        return Convert.ToInt32(result) > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error en ConfirmTwoFactorSetupAsync: {ex.Message}");
+                return false;
+            }
+        }
+        #endregion DobleFactorAutenticacion
     }
 }

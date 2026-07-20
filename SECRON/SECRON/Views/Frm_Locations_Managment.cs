@@ -160,6 +160,12 @@ namespace SECRON.Views
                 else
                     ComboBox_LocationCategoryId.SelectedIndex = 0;
 
+                CargarBodegasPrimarias(_ubicacionSeleccionada.LocationId);
+                if (_ubicacionSeleccionada.PrimaryWarehouseId.HasValue)
+                    ComboBox_PrimaryWarehouseId.SelectedValue = _ubicacionSeleccionada.PrimaryWarehouseId.Value;
+                else
+                    ComboBox_PrimaryWarehouseId.SelectedIndex = 0;
+
                 int countryIndex = ComboBox_Country.FindStringExact(_ubicacionSeleccionada.CountryName ?? "");
                 ComboBox_Country.SelectedIndex = countryIndex >= 0 ? countryIndex : 0;
 
@@ -376,6 +382,49 @@ namespace SECRON.Views
             }
         }
 
+        // MÉTODO: Cargar el combo de bodega principal, limitado a las bodegas activas de la sede seleccionada.
+        // Si no hay sede seleccionada (registro nuevo) el combo queda vacío/deshabilitado,
+        // ya que una bodega no puede existir sin una sede (LocationId) previamente creada.
+        private void CargarBodegasPrimarias(int? locationId)
+        {
+            bool estadoAnterior = _cargandoUbicacion;
+            _cargandoUbicacion = true;
+
+            try
+            {
+                ComboBox_PrimaryWarehouseId.DataSource = null;
+
+                if (!locationId.HasValue || locationId.Value <= 0)
+                {
+                    ComboBox_PrimaryWarehouseId.Items.Clear();
+                    ComboBox_PrimaryWarehouseId.Enabled = false;
+                    return;
+                }
+
+                var bodegas = Ctrl_Warehouses.ObtenerBodegasPorLocation(locationId.Value);
+                bodegas.Insert(0, new KeyValuePair<int, string>(0, "SELECCIONE"));
+
+                ComboBox_PrimaryWarehouseId.DataSource = bodegas;
+                ComboBox_PrimaryWarehouseId.DisplayMember = "Value";
+                ComboBox_PrimaryWarehouseId.ValueMember = "Key";
+                ComboBox_PrimaryWarehouseId.Enabled = true;
+                ComboBox_PrimaryWarehouseId.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al cargar bodegas de la sede: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+            finally
+            {
+                _cargandoUbicacion = estadoAnterior;
+            }
+        }
+
         #endregion
 
         #region Placeholders
@@ -584,8 +633,8 @@ namespace SECRON.Views
         }
 
         private void Btn_Search_Click(object sender, EventArgs e)
-        { 
-            if(!Btn_Search.Enabled)return;
+        {
+            if (!Btn_Search.Enabled) return;
             EjecutarBusqueda();
         }
 
@@ -1005,8 +1054,7 @@ namespace SECRON.Views
                 ComboBox_Municipality.DataSource = null;
                 ComboBox_LocationCategoryId.SelectedIndex = 0;
 
-                if (ComboBox_PrimaryWarehouseId.Items.Count > 0)
-                    ComboBox_PrimaryWarehouseId.SelectedIndex = 0;
+                CargarBodegasPrimarias(null);
             }
             finally
             {

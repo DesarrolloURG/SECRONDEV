@@ -15,6 +15,7 @@ namespace SECRON.Models
         public Mdl_Security_LoginStatus ErrorType { get; set; }
         public DateTime LoginAttemptTime { get; set; }
         public int RemainingAttempts { get; set; }
+        public int? DiasRestantesPassword { get; set; }
 
         // Constructor por defecto
         public Mdl_Security_UserLoginResult()
@@ -58,6 +59,24 @@ namespace SECRON.Models
         public bool RequiresPasswordChange()
         {
             return ErrorType == Mdl_Security_LoginStatus.PasswordExpired && IsSuccess;
+        }
+
+        // Método para verificar si debe avisarse próxima expiración (login exitoso, sin forzar cambio)
+        public bool RequiresPasswordExpiryWarning()
+        {
+            return IsSuccess && !RequiresPasswordChange() && DiasRestantesPassword.HasValue;
+        }
+
+        // Método para verificar si debe vincular su Authenticator por primera vez
+        public bool RequiresTwoFactorSetup()
+        {
+            return ErrorType == Mdl_Security_LoginStatus.TwoFactorSetupRequired && IsSuccess;
+        }
+
+        // Método para verificar si debe ingresar el código de su Authenticator
+        public bool RequiresTwoFactor()
+        {
+            return ErrorType == Mdl_Security_LoginStatus.TwoFactorRequired && IsSuccess;
         }
     }
 }

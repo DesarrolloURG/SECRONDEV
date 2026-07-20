@@ -283,7 +283,7 @@ namespace SECRON
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
         private const int DWMWA_CAPTION_COLOR = 35;
         private const int DWMWA_TEXT_COLOR = 36;
-        
+
         // Establece el color de la barra de título del formulario
         public void SetTitleBarColor(Color backgroundColor, Color textColor)
         {
@@ -536,13 +536,34 @@ namespace SECRON
 
                 if (loginResult.IsSuccess)
                 {
-                    // Verificar si necesita cambiar contraseña
-                    if (loginResult.RequiresPasswordChange())
+                    // Verificar si debe vincular su Authenticator (primera vez)
+                    if (loginResult.RequiresTwoFactorSetup())
                     {
+                        await HandleTwoFactorSetupRequired(loginResult.UserData);
+                    }
+                    // Verificar si debe ingresar el código de su Authenticator
+                    else if (loginResult.RequiresTwoFactor())
+                    {
+                        await HandleTwoFactorVerifyRequired(loginResult.UserData);
+                    }
+                    // Verificar si necesita cambiar contraseña (temporal o caducada)
+                    else if (loginResult.RequiresPasswordChange())
+                    {
+                        MessageBox.Show(loginResult.Message, "Contraseña caducada",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         await HandlePasswordChangeRequired(loginResult.UserData);
                     }
                     else
                     {
+                        // Aviso de próxima expiración (últimos 3 días), sin bloquear el ingreso
+                        if (loginResult.RequiresPasswordExpiryWarning())
+                        {
+                            MessageBox.Show(
+                                $"Su contraseña vence en {loginResult.DiasRestantesPassword} día(s).",
+                                "Aviso de expiración de contraseña",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+
                         // Login exitoso, ir al menú principal
                         await OpenMainMenuAsync(loginResult.UserData);
                     }
@@ -566,6 +587,76 @@ namespace SECRON
                 isLoading = false;
             }
         }
+        // Maneja cuando se requiere vincular el Authenticator por primera vez
+        private async Task HandleTwoFactorSetupRequired(Mdl_Security_UserInfo userData)
+        {
+            try
+            {
+                var frm_TwoFactorSetup = new Frm_Security_TwoFactorSetup();
+                frm_TwoFactorSetup.Username = userData.Username;
+                frm_TwoFactorSetup.UserId = userData.UserId;
+
+                this.Hide();
+                var dialogResult = frm_TwoFactorSetup.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    // Vinculación exitosa, continuar con el flujo normal (reintentar login)
+                    Clear();
+                    this.Show();
+                }
+                else
+                {
+                    // Usuario canceló/cerró sin completar: no puede continuar, vuelve al login
+                    Clear();
+                    this.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al procesar la vinculación de doble factor", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Debug.WriteLine($"Error en HandleTwoFactorSetupRequired: {ex.Message}");
+
+                Clear();
+                this.Show();
+            }
+        }
+
+        // Maneja cuando se requiere el código del Authenticator ya vinculado
+        private async Task HandleTwoFactorVerifyRequired(Mdl_Security_UserInfo userData)
+        {
+            try
+            {
+                var frm_TwoFactorVerify = new Frm_Security_TwoFactorVerify();
+                frm_TwoFactorVerify.UserData = userData;
+
+                this.Hide();
+                var dialogResult = frm_TwoFactorVerify.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    // Código válido, proceder al menú principal
+                    await OpenMainMenuAsync(userData);
+                }
+                else
+                {
+                    // Usuario canceló/cerró sin completar: vuelve al login
+                    Clear();
+                    this.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al procesar la verificación de doble factor", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Debug.WriteLine($"Error en HandleTwoFactorVerifyRequired: {ex.Message}");
+
+                Clear();
+                this.Show();
+            }
+        }
+
         // Maneja cuando se requiere cambio de contraseña
         private async Task HandlePasswordChangeRequired(Mdl_Security_UserInfo userData)
         {
