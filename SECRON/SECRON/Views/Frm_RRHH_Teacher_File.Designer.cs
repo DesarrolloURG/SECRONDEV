@@ -93,6 +93,7 @@
             this.Btn_Import = new System.Windows.Forms.Button();
             this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
+            this.Btn_Contratos = new System.Windows.Forms.Button();
             this.Panel_Derecho.SuspendLayout();
             this.PanelTabla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
@@ -801,6 +802,7 @@
             // Panel_Superior
             // 
             this.Panel_Superior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
+            this.Panel_Superior.Controls.Add(this.Btn_Contratos);
             this.Panel_Superior.Controls.Add(this.Btn_Import);
             this.Panel_Superior.Controls.Add(this.Btn_Export);
             this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
@@ -853,6 +855,22 @@
             this.Lbl_Formulario.Size = new System.Drawing.Size(198, 25);
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "FICHA DEL DOCENTE";
+            // 
+            // Btn_Contratos
+            // 
+            this.Btn_Contratos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Contratos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Contratos.Image = global::SECRON.Properties.Resources.CheckNegro25x25;
+            this.Btn_Contratos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Contratos.Location = new System.Drawing.Point(785, 13);
+            this.Btn_Contratos.Name = "Btn_Contratos";
+            this.Btn_Contratos.Size = new System.Drawing.Size(137, 30);
+            this.Btn_Contratos.TabIndex = 54;
+            this.Btn_Contratos.Text = "CONTRATOS";
+            this.Btn_Contratos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Contratos.UseVisualStyleBackColor = true;
+            this.Btn_Contratos.Click += new System.EventHandler(this.Btn_Contratos_Click);
             // 
             // Frm_RRHH_Teacher_File
             // 
@@ -956,5 +974,6 @@
         private System.Windows.Forms.Label Lbl_ContractType;
         private System.Windows.Forms.ComboBox ComboBox_Location;
         private System.Windows.Forms.Label Lbl_Location;
+        private System.Windows.Forms.Button Btn_Contratos;
     }
 }

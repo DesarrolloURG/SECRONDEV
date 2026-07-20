@@ -1881,5 +1881,10 @@ namespace SECRON.Views
         }
 
         #endregion SistemaDePermisos
+
+        private void Btn_Contratos_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
