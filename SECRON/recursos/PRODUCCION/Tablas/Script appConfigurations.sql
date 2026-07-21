@@ -1,14 +1,3 @@
--- Columna en Users
-ALTER TABLE Users ADD LastPasswordChanged DATETIME NULL;
-ALTER TABLE Users ADD PasswordNeverExpires BIT NOT NULL DEFAULT 0;
-ALTER TABLE Users ADD TwoFactorSecret VARCHAR(64) NULL;
-ALTER TABLE Users ADD TwoFactorEnabledDate DATETIME NULL;
-ALTER TABLE Users ADD TwoFactorExempt BIT NOT NULL DEFAULT 0;
-
--- Inicializar con fecha actual para no forzar cambio a usuarios existentes
-UPDATE Users SET LastPasswordChanged = GETDATE() WHERE LastPasswordChanged IS NULL;
-
-
 -- Tabla de parámetros
 CREATE TABLE ParametersConfiguration (
     ParameterId INT IDENTITY(1,1) PRIMARY KEY,

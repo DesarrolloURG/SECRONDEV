@@ -97,3 +97,14 @@ CREATE TABLE UserPermissions (
     CONSTRAINT FK_UserPermissions_GrantedBy FOREIGN KEY (GrantedBy) REFERENCES Users(UserId),
     CONSTRAINT UQ_UserPermissions UNIQUE (UserId, PermissionId)
 );
+
+
+-- Columna en Users
+ALTER TABLE Users ADD LastPasswordChanged DATETIME NULL;
+ALTER TABLE Users ADD PasswordNeverExpires BIT NOT NULL DEFAULT 0;
+ALTER TABLE Users ADD TwoFactorSecret VARCHAR(64) NULL;
+ALTER TABLE Users ADD TwoFactorEnabledDate DATETIME NULL;
+ALTER TABLE Users ADD TwoFactorExempt BIT NOT NULL DEFAULT 0;
+
+-- Inicializar con fecha actual para no forzar cambio a usuarios existentes
+UPDATE Users SET LastPasswordChanged = GETDATE() WHERE LastPasswordChanged IS NULL;
