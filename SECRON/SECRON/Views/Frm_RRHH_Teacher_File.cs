@@ -1881,10 +1881,23 @@ namespace SECRON.Views
         }
 
         #endregion SistemaDePermisos
-
+        #region ContratosTemporal
         private void Btn_Contratos_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                using (Frm_RRHH_Teacher_TempContratos frmContratos = new Frm_RRHH_Teacher_TempContratos())
+                {
+                    frmContratos.UserData = UserData;
+                    frmContratos.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ABRIR EL FORMULARIO DE CONTRATOS: " + ex.Message,
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+        #endregion ContratosTemporal
     }
 }

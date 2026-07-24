@@ -664,8 +664,6 @@ namespace SECRON.Views
             InicializarSistemaPestanas();
         }
         #endregion PropiedadesIniciales
-
-
         #region ControlInactividadSesion
 
         // Inicializa el timer y el filtro de actividad global
@@ -746,7 +744,7 @@ namespace SECRON.Views
             Application.Exit();
         }
         #endregion ControlInactividadSesion
-
+        #region PanelProfile
         private async void BtnLogout_Click(object sender, EventArgs e)
         {
             DialogResult resultado = MessageBox.Show(
@@ -791,8 +789,7 @@ namespace SECRON.Views
             Application.Restart();
             Application.Exit();
         }
-
-
+        #endregion PanelProfile
         #region CargarDatosUsuario
         // Método para cargar datos del usuario
         private async void CargarDatosUsuario(string username)

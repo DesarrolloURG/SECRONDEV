@@ -59,11 +59,18 @@
     <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net-Next.4.0.3\lib\net48\BCrypt.Net-Next.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Otp.NET, Version=1.4.1.0, Culture=neutral, PublicKeyToken=38a48df817e173a6, processorArchitecture=MSIL">
       <HintPath>..\packages\Otp.NET.1.4.1\lib\net461\Otp.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfiumViewer.2.13.0.0\lib\net20\PdfiumViewer.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -116,6 +123,8 @@
     <Compile Include="Controllers\Ctrl_CheckStatus.cs" />
     <Compile Include="Controllers\Ctrl_Coordinators.cs" />
     <Compile Include="Controllers\Ctrl_Departments.cs" />
+    <Compile Include="Controllers\Ctrl_DocentesTemporal.cs" />
+    <Compile Include="Controllers\Ctrl_DocentesTemporal_Cursos.cs" />
     <Compile Include="Controllers\Ctrl_EmployeeStatus.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeDefinitions.cs" />
     <Compile Include="Controllers\Ctrl_FixedAssetAttributeValues.cs" />
@@ -183,6 +192,8 @@
     <Compile Include="Models\Mdl_Country.cs" />
     <Compile Include="Models\Mdl_Department.cs" />
     <Compile Include="Models\Mdl_Departments.cs" />
+    <Compile Include="Models\Mdl_DocentesTemporal.cs" />
+    <Compile Include="Models\Mdl_DocentesTemporal_Cursos.cs" />
     <Compile Include="Models\Mdl_Employees.cs" />
     <Compile Include="Models\Mdl_AudithLog_LoginResult.cs" />
     <Compile Include="Models\Mdl_EmployeeStatus.cs" />
@@ -551,6 +562,18 @@
     <Compile Include="Views\Frm_KARDEX_WarehouseDispatch.Designer.cs">
       <DependentUpon>Frm_KARDEX_WarehouseDispatch.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_RRHH_Teachers_TempGenerarContratos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_RRHH_Teachers_TempGenerarContratos.Designer.cs">
+      <DependentUpon>Frm_RRHH_Teachers_TempGenerarContratos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_RRHH_Teacher_TempContratos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_RRHH_Teacher_TempContratos.Designer.cs">
+      <DependentUpon>Frm_RRHH_Teacher_TempContratos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_Security_TwoFactorSetup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -819,6 +842,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_KARDEX_WarehouseDispatch.resx">
       <DependentUpon>Frm_KARDEX_WarehouseDispatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_RRHH_Teachers_TempGenerarContratos.resx">
+      <DependentUpon>Frm_RRHH_Teachers_TempGenerarContratos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_RRHH_Teacher_TempContratos.resx">
+      <DependentUpon>Frm_RRHH_Teacher_TempContratos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Security_TwoFactorSetup.resx">
       <DependentUpon>Frm_Security_TwoFactorSetup.cs</DependentUpon>

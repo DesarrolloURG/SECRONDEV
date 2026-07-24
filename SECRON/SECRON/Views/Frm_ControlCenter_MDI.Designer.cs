@@ -91,8 +91,8 @@
             this.BtnStaticItemsResponsabilityLetter = new System.Windows.Forms.Button();
             this.BtnStaticItemsManagment = new System.Windows.Forms.Button();
             this.PanelProfile = new System.Windows.Forms.Panel();
-            this.LblRol = new System.Windows.Forms.Label();
             this.BtnLogout = new System.Windows.Forms.Button();
+            this.LblRol = new System.Windows.Forms.Label();
             this.LblUser = new System.Windows.Forms.Label();
             this.PanelPictureProfile = new System.Windows.Forms.Panel();
             this.BtnPhoto = new System.Windows.Forms.Button();
@@ -1317,6 +1317,7 @@
             // PanelProfile
             // 
             this.PanelProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelProfile.Controls.Add(this.BtnLogout);
             this.PanelProfile.Controls.Add(this.LblRol);
             this.PanelProfile.Controls.Add(this.LblUser);
             this.PanelProfile.Controls.Add(this.PanelPictureProfile);
@@ -1325,11 +1326,20 @@
             this.PanelProfile.Size = new System.Drawing.Size(400, 200);
             this.PanelProfile.TabIndex = 15;
             this.PanelProfile.Visible = false;
-            this.PanelProfile.Controls.Add(this.BtnLogout);
-            this.PanelProfile.Controls.Add(this.LblRol);
-            this.PanelProfile.Controls.Add(this.LblUser);
-            this.PanelProfile.Controls.Add(this.PanelPictureProfile);
-
+            // 
+            // BtnLogout
+            // 
+            this.BtnLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnLogout.FlatAppearance.BorderSize = 0;
+            this.BtnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnLogout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.BtnLogout.Location = new System.Drawing.Point(204, 140);
+            this.BtnLogout.Name = "BtnLogout";
+            this.BtnLogout.Size = new System.Drawing.Size(150, 35);
+            this.BtnLogout.TabIndex = 3;
+            this.BtnLogout.Text = "CERRAR SESIÓN";
+            this.BtnLogout.UseVisualStyleBackColor = false;
+            this.BtnLogout.Click += new System.EventHandler(this.BtnLogout_Click);
             // 
             // LblRol
             // 
@@ -1354,23 +1364,6 @@
             this.LblUser.Size = new System.Drawing.Size(46, 20);
             this.LblUser.TabIndex = 1;
             this.LblUser.Text = "USER";
-
-            // 
-            // BtnLogout
-            // 
-            this.BtnLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.BtnLogout.FlatAppearance.BorderSize = 0;
-            this.BtnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnLogout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.BtnLogout.Location = new System.Drawing.Point(204, 140);
-            this.BtnLogout.Name = "BtnLogout";
-            this.BtnLogout.Size = new System.Drawing.Size(150, 35);
-            this.BtnLogout.TabIndex = 3;
-            this.BtnLogout.Text = "CERRAR SESIÓN";
-            this.BtnLogout.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.BtnLogout.UseVisualStyleBackColor = false;
-            this.BtnLogout.Click += new System.EventHandler(this.BtnLogout_Click);
-
             // 
             // PanelPictureProfile
             // 
