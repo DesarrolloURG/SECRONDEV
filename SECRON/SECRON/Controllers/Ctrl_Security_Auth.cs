@@ -630,5 +630,81 @@ namespace SECRON.Controllers
             }
         }
         #endregion DobleFactorAutenticacion
+
+        #region CargaInicialConsolidada
+        // Carga en una sola llamada: datos de usuario, permisos y parámetro de sesión.
+        // Reduce a 1 round-trip lo que antes eran 3 llamadas secuenciales (crítico en VPN).
+        public async Task<(Mdl_Security_UserInfo UserInfo, List<string> Permisos, int TiempoSesionMinutos)> CargarDatosInicialesAsync(string username)
+        {
+            Mdl_Security_UserInfo userInfo = null;
+            List<string> permisos = new List<string>();
+            int tiempoSesion = 5;
+
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (var command = new SqlCommand("SP_Auth_CargaInicialUsuario", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@Username", username);
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            // Result Set 1: Usuario
+                            if (await reader.ReadAsync())
+                            {
+                                userInfo = new Mdl_Security_UserInfo();
+                                try { userInfo.UserId = reader.GetInt32(0); } catch { }
+                                try { userInfo.Username = reader.GetString(1); } catch { userInfo.Username = ""; }
+                                try { userInfo.FullName = reader.GetString(2); } catch { userInfo.FullName = ""; }
+                                try { userInfo.RoleId = reader.GetInt32(3); } catch { userInfo.RoleId = 0; }
+                                try { userInfo.StatusId = reader.GetInt32(4); } catch { userInfo.StatusId = 0; }
+                                try { userInfo.IsTemporaryPassword = reader.GetBoolean(5); } catch { userInfo.IsTemporaryPassword = false; }
+                                try { userInfo.PasswordExpiryDate = reader.IsDBNull(6) ? (DateTime?)null : reader.GetDateTime(6); } catch { userInfo.PasswordExpiryDate = null; }
+                                try { userInfo.InstitutionalEmail = reader.IsDBNull(7) ? null : reader.GetString(7); } catch { userInfo.InstitutionalEmail = null; }
+                                try { userInfo.EmployeeId = reader.IsDBNull(8) ? (int?)null : reader.GetInt32(8); } catch { userInfo.EmployeeId = null; }
+                                try { userInfo.LastLoginDate = reader.IsDBNull(9) ? (DateTime?)null : reader.GetDateTime(9); } catch { userInfo.LastLoginDate = null; }
+                                try { userInfo.CreatedDate = reader.GetDateTime(10); } catch { userInfo.CreatedDate = DateTime.Now; }
+                                try { userInfo.NotificationsEnabled = reader.GetBoolean(11); } catch { userInfo.NotificationsEnabled = true; }
+                                try { userInfo.RoleName = reader.GetString(12); } catch { userInfo.RoleName = ""; }
+                                try { userInfo.StatusName = reader.GetString(13); } catch { userInfo.StatusName = ""; }
+                                try { userInfo.LastPasswordChanged = reader.IsDBNull(14) ? (DateTime?)null : reader.GetDateTime(14); } catch { userInfo.LastPasswordChanged = null; }
+                                try { userInfo.PasswordNeverExpires = reader.GetBoolean(15); } catch { userInfo.PasswordNeverExpires = false; }
+                                try { userInfo.TwoFactorSecret = reader.IsDBNull(16) ? null : reader.GetString(16); } catch { userInfo.TwoFactorSecret = null; }
+                                try { userInfo.TwoFactorEnabledDate = reader.IsDBNull(17) ? (DateTime?)null : reader.GetDateTime(17); } catch { userInfo.TwoFactorEnabledDate = null; }
+                                try { userInfo.TwoFactorExempt = reader.GetBoolean(18); } catch { userInfo.TwoFactorExempt = false; }
+                            }
+
+                            // Result Set 2: Permisos
+                            if (await reader.NextResultAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    permisos.Add(reader.GetString(0));
+                                }
+                            }
+
+                            // Result Set 3: Parámetro de sesión
+                            if (await reader.NextResultAsync())
+                            {
+                                if (await reader.ReadAsync())
+                                {
+                                    int.TryParse(reader[0].ToString(), out tiempoSesion);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error en CargarDatosInicialesAsync: {ex.Message}");
+            }
+
+            return (userInfo, permisos, tiempoSesion);
+        }
+        #endregion CargaInicialConsolidada
     }
 }
