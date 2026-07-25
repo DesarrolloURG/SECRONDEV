@@ -93,6 +93,7 @@ namespace SECRON.Views
             // Boton Configurado
             //ConfigurarBotonImagenSinFondo(Btn_Visible);
         }
+        
         // Método para configurar un botón imagen sin fondo
         private void ConfigurarBotonImagenSinFondo(Button boton)
         {
@@ -676,12 +677,11 @@ namespace SECRON.Views
             Application.AddMessageFilter(activityFilter);
 
             timerInactividad = new System.Windows.Forms.Timer();
-            timerInactividad.Interval = 10000; // Revisar cada 10 segundos (ajustar a 60000 en producción)
+            timerInactividad.Interval = 10000;
             timerInactividad.Tick += TimerInactividad_Tick;
             timerInactividad.Start();
 
-            // Cargar el tiempo configurado desde ParametersConfiguration
-            CargarTiempoSesionActivaAsync();
+            // Ya no se llama CargarTiempoSesionActivaAsync() -- viene incluido en CargarDatosInicialesAsync
         }
         // Carga el parámetro TiempoSesionActivaMinutos desde la BD
         private async void CargarTiempoSesionActivaAsync()
@@ -796,7 +796,8 @@ namespace SECRON.Views
         {
             try
             {
-                var userInfo = await authController.ObtenerDatosUsuarioAsync(username);
+                var (userInfo, permisos, tiempoSesion) = await authController.CargarDatosInicialesAsync(username);
+
                 if (userInfo != null)
                 {
                     // CONVERTIR TODOS LOS DATOS A MAYÚSCULAS
@@ -808,10 +809,14 @@ namespace SECRON.Views
                     // Configurar interfaz con datos del usuario
                     ConfigurarInterfazConDatosUsuario(userInfo);
 
-                    //   CARGAR PERMISOS DEL USUARIO
-                    await CargarPermisosUsuario(userInfo.UserId, userInfo.RoleId);
+                    // Asignar permisos ya cargados (sin segunda llamada)
+                    permisosUsuario = permisos;
+                    System.Diagnostics.Debug.WriteLine($"Permisos cargados: {permisosUsuario.Count}");
 
-                    //   CONFIGURAR VISIBILIDAD DE BOTONES SEGÚN PERMISOS
+                    // Aplicar tiempo de sesión ya cargado (sin tercera llamada)
+                    tiempoSesionActivaMinutos = tiempoSesion;
+
+                    // CONFIGURAR VISIBILIDAD DE BOTONES SEGÚN PERMISOS
                     ConfigurarVisibilidadBotonesPrincipales();
                     ConfigurarVisibilidadSubmenus();
                 }
