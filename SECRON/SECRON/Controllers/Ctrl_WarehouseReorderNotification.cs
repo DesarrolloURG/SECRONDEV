@@ -54,47 +54,20 @@ namespace SECRON.Controllers
 
         private static void NotificarErrorAAdministradores(Exception error, int warehouseId)
         {
-            try
-            {
-                List<string> correosAdmin = ObtenerCorreosAdministradores();
-                if (correosAdmin.Count == 0) return;
+            List<string> correosAdmin = ObtenerCorreosAdministradores();
+            if (correosAdmin.Count == 0) return;
 
-                string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-                string contraseñaEmisor = "F0rza01.";
+            string cuerpo = $@"
+<html>
+<body style='font-family: Calibri, Arial, sans-serif; color:#333;'>
+    <p>Ocurrió un error al verificar/notificar el punto de reorden para la bodega con ID <strong>{warehouseId}</strong>.</p>
+    <p><strong>Mensaje de error:</strong></p>
+    <pre style='background:#F2F2F2; padding:10px; border:1px solid #D9D9D9;'>{System.Net.WebUtility.HtmlEncode(error.ToString())}</pre>
+    <p>Fecha: {DateTime.Now:yyyy-MM-dd HH:mm:ss}</p>
+</body>
+</html>";
 
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-                    EnableSsl = true
-                };
-
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(correoEmisor, "Notificaciones SECRON"),
-                    Subject = "ERROR - Falló notificación de reorder point",
-                    IsBodyHtml = true
-                };
-
-                mail.Body = $@"
-        <html>
-        <body style='font-family: Calibri, Arial, sans-serif; color:#333;'>
-            <p>Ocurrió un error al verificar/notificar el punto de reorden para la bodega con ID <strong>{warehouseId}</strong>.</p>
-            <p><strong>Mensaje de error:</strong></p>
-            <pre style='background:#F2F2F2; padding:10px; border:1px solid #D9D9D9;'>{System.Net.WebUtility.HtmlEncode(error.ToString())}</pre>
-            <p>Fecha: {DateTime.Now:yyyy-MM-dd HH:mm:ss}</p>
-        </body>
-        </html>";
-
-                foreach (string correo in correosAdmin)
-                    mail.To.Add(correo);
-
-                smtpClient.Send(mail);
-            }
-            catch
-            {
-                // Si también falla el envío del correo de error (ej. SMTP caído), morir en silencio
-            }
+            Cls_EmailService.EnviarCorreo(correosAdmin, "ERROR - Falló notificación de reorder point", cuerpo);
         }
 
         private static List<string> ObtenerCorreosAdministradores()
@@ -273,24 +246,6 @@ namespace SECRON.Controllers
 
         private static void EnviarCorreoReorden(string nombreBodega, List<ArticuloEnReorden> articulos, List<string> destinatarios)
         {
-            string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-            string contraseñaEmisor = "F0rza01.";
-
-            SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-            {
-                Port = 587,
-                Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-                EnableSsl = true
-            };
-
-            MailMessage mail = new MailMessage
-            {
-                From = new MailAddress(correoEmisor, "Notificaciones SECRON"),
-                Subject = $"Alerta de reabastecimiento - {nombreBodega.ToUpper()}",
-                IsBodyHtml = true,
-                Priority = MailPriority.High
-            };
-
             StringBuilder filas = new StringBuilder();
             bool alterna = false;
             foreach (var a in articulos)
@@ -299,68 +254,65 @@ namespace SECRON.Controllers
                 alterna = !alterna;
 
                 filas.Append($@"
-                <tr style='background-color:{fondoFila};'>
-                    <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px;'>{a.ItemCode}</td>
-                    <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px;'>{a.ItemName}</td>
-                    <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px; text-align:center;'>{a.CurrentStock:0.##}</td>
-                    <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px; text-align:center;'>{a.ReorderPoint:0.##}</td>
-                </tr>");
+        <tr style='background-color:{fondoFila};'>
+            <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px;'>{a.ItemCode}</td>
+            <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px;'>{a.ItemName}</td>
+            <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px; text-align:center;'>{a.CurrentStock:0.##}</td>
+            <td style='padding:10px 14px; border:1px solid #D9D9D9; font-family:Calibri,Arial,sans-serif; font-size:13px; text-align:center;'>{a.ReorderPoint:0.##}</td>
+        </tr>");
             }
 
-            mail.Body = $@"
-            <html>
-            <body style='font-family: Calibri, Arial, sans-serif; color:#333; margin:0; padding:0;'>
-                <div style='max-width:680px; margin:0 auto; padding:24px;'>
+            string cuerpo = $@"
+    <html>
+    <body style='font-family: Calibri, Arial, sans-serif; color:#333; margin:0; padding:0;'>
+        <div style='max-width:680px; margin:0 auto; padding:24px;'>
 
-                    <p style='text-align:right; font-size:13px; color:#555; margin:0 0 18px 0;'>
-                        Guatemala, {DateTime.Now:d 'DE' MMMM 'DE' yyyy}
-                    </p>
+            <p style='text-align:right; font-size:13px; color:#555; margin:0 0 18px 0;'>
+                Guatemala, {DateTime.Now:d 'DE' MMMM 'DE' yyyy}
+            </p>
 
-                    <h2 style='text-align:center; font-size:18px; letter-spacing:0.5px; color:#1F1F1F; margin:0 0 24px 0; text-transform:uppercase;'>
-                        Alerta de Reabastecimiento de Inventario
-                    </h2>
+            <h2 style='text-align:center; font-size:18px; letter-spacing:0.5px; color:#1F1F1F; margin:0 0 24px 0; text-transform:uppercase;'>
+                Alerta de Reabastecimiento de Inventario
+            </h2>
 
-                    <table style='width:100%; border-collapse:collapse; margin-bottom:18px; font-size:13px;'>
-                        <tr>
-                            <td style='padding:4px 0; width:140px; font-weight:bold; color:#1F1F1F;'>BODEGA:</td>
-                            <td style='padding:4px 0; color:#1F1F1F;'>{nombreBodega.ToUpper()}</td>
-                        </tr>
-                        <tr>
-                            <td style='padding:4px 0; font-weight:bold; color:#1F1F1F;'>DE:</td>
-                            <td style='padding:4px 0; color:#1F1F1F;'>SISTEMA DE CONTROL DE INVENTARIO - SECRON</td>
-                        </tr>
-                    </table>
+            <table style='width:100%; border-collapse:collapse; margin-bottom:18px; font-size:13px;'>
+                <tr>
+                    <td style='padding:4px 0; width:140px; font-weight:bold; color:#1F1F1F;'>BODEGA:</td>
+                    <td style='padding:4px 0; color:#1F1F1F;'>{nombreBodega.ToUpper()}</td>
+                </tr>
+                <tr>
+                    <td style='padding:4px 0; font-weight:bold; color:#1F1F1F;'>DE:</td>
+                    <td style='padding:4px 0; color:#1F1F1F;'>SISTEMA DE CONTROL DE INVENTARIO - SECRON</td>
+                </tr>
+            </table>
 
-                    <p style='font-size:13px; line-height:1.6; color:#333; margin:0 0 18px 0; text-align:justify;'>
-                        Por medio de la presente se notifica que los siguientes artículos en la bodega indicada
-                        se encuentran en o por debajo de su punto de reorden establecido, por lo que se recomienda
-                        gestionar el reabastecimiento correspondiente a la brevedad posible.
-                    </p>
+            <p style='font-size:13px; line-height:1.6; color:#333; margin:0 0 18px 0; text-align:justify;'>
+                Por medio de la presente se notifica que los siguientes artículos en la bodega indicada
+                se encuentran en o por debajo de su punto de reorden establecido, por lo que se recomienda
+                gestionar el reabastecimiento correspondiente a la brevedad posible.
+            </p>
 
-                    <table style='width:100%; border-collapse:collapse; margin-bottom:20px;'>
-                        <tr style='background-color:#2F5496;'>
-                            <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:left; text-transform:uppercase;'>Código</th>
-                            <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:left; text-transform:uppercase;'>Artículo</th>
-                            <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:center; text-transform:uppercase;'>Stock Actual</th>
-                            <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:center; text-transform:uppercase;'>Punto de Reorden</th>
-                        </tr>
-                        {filas}
-                    </table>
+            <table style='width:100%; border-collapse:collapse; margin-bottom:20px;'>
+                <tr style='background-color:#2F5496;'>
+                    <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:left; text-transform:uppercase;'>Código</th>
+                    <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:left; text-transform:uppercase;'>Artículo</th>
+                    <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:center; text-transform:uppercase;'>Stock Actual</th>
+                    <th style='padding:10px 14px; border:1px solid #2F5496; color:#FFFFFF; font-size:12px; text-align:center; text-transform:uppercase;'>Punto de Reorden</th>
+                </tr>
+                {filas}
+            </table>
 
-                    <p style='font-size:13px; color:#555; margin:24px 0 4px 0;'>Atentamente,</p>
-                    <p style='font-size:13px; color:#1F1F1F; font-weight:bold; margin:0;'>Servicio Automático de Notificaciones, SECRON</p>
-                    <p style='font-size:13px; color:#1F1F1F; margin:0;'>Universidad Regional de Guatemala, Región 2</p>
+            <p style='font-size:13px; color:#555; margin:24px 0 4px 0;'>Atentamente,</p>
+            <p style='font-size:13px; color:#1F1F1F; font-weight:bold; margin:0;'>Servicio Automático de Notificaciones, SECRON</p>
+            <p style='font-size:13px; color:#1F1F1F; margin:0;'>Universidad Regional de Guatemala, Región 2</p>
 
-                </div>
-            </body>
-            </html>";
+        </div>
+    </body>
+    </html>";
 
-            foreach (string correo in destinatarios)
-                mail.To.Add(correo);
+            Cls_EmailService.EnviarCorreo(destinatarios, $"Alerta de reabastecimiento - {nombreBodega.ToUpper()}", cuerpo, prioridadAlta: true);
 
-            //mail.To.Add("phernandez@uregionalregion2.edu.gt");
-
-            smtpClient.Send(mail);
+            //Cls_EmailService.EnviarCorreo(new List<string> { "phernandez@uregionalregion2.edu.gt" }, $"Alerta de reabastecimiento - {nombreBodega.ToUpper()}", cuerpo, prioridadAlta: true);
         }
 
         #endregion Correo

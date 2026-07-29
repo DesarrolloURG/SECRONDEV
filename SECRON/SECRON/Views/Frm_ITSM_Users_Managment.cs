@@ -1077,72 +1077,68 @@ namespace SECRON.Views
                     return;
                 }
 
-                // ===== CONFIGURACIÓN DEL CORREO =====
-                string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-                string contraseñaEmisor = "F0rza01.";
+                // ===== CUERPO DEL CORREO =====
+                string cuerpo = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+            <div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;'>
+                <h2 style='color: #2A7AE2; text-align: center;'>SECRON - Sistema de Control Regional</h2>
+                <p>Estimado/a <strong>{_usuarioSeleccionado.FullName}</strong>,</p>
+                <p>Le hacemos llegar sus credenciales de acceso al sistema SECRON:</p>
+                <table style='border-collapse: collapse; width: 100%; margin: 20px 0;'>
+                    <tr>
+                        <td style='border: 1px solid #ddd; padding: 12px; background-color: #f9f9f9;'><strong>Usuario:</strong></td>
+                        <td style='border: 1px solid #ddd; padding: 12px;'>{_usuarioSeleccionado.Username}</td>
+                    </tr>
+                    <tr>
+                        <td style='border: 1px solid #ddd; padding: 12px; background-color: #f9f9f9;'><strong>Contraseña temporal:</strong></td>
+                        <td style='border: 1px solid #ddd; padding: 12px; font-family: Consolas, monospace; font-size: 16px;'><strong>{passwordTemporal}</strong></td>
+                    </tr>
+                    <tr>
+                        <td style='border: 1px solid #ddd; padding: 12px; background-color: #f9f9f9;'><strong>Estado:</strong></td>
+                        <td style='border: 1px solid #ddd; padding: 12px;'>{(ComboBox_UserStatus.Text ?? "ACTIVO")}</td>
+                    </tr>
+                </table>
+                
+                <div style='background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;'>
+                    <p style='margin: 0;'><strong>IMPORTANTE:</strong></p>
+                    <ul style='margin: 10px 0;'>
+                        <li>Esta contraseña es <strong>temporal</strong> y vence en 30 días</li>
+                        <li>Cámbiela en su primer inicio de sesión</li>
+                        <li>Sus credenciales son personales e intransferibles</li>
+                        <li>NO comparta su contraseña con nadie</li>
+                        <li>En caso de olvido, contacte al administrador del sistema</li>
+                    </ul>
+                </div>
+                
+                <p style='color: #555; margin-top: 30px;'>Atentamente,</p>
+                <p><strong>Equipo de Desarrollo SECRON</strong></p>
+                <hr style='border: none; border-top: 1px solid #ddd; margin: 20px 0;'>
+                <p style='font-size: 12px; color: #888; text-align: center;'>
+                    Este es un mensaje automático del Sistema de Control Regional (SECRON)<br>
+                    No responder a este correo
+                </p>
+            </div>
+        </body>
+        </html>";
 
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-                    EnableSsl = true
-                };
-
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(correoEmisor, "SECRON - Sistema de Control Regional"),
-                    Subject = "Credenciales de Acceso - SECRON",
-                    IsBodyHtml = true,
-                };
-
-                mail.Body = $@"
-                <html>
-                <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-                    <div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;'>
-                        <h2 style='color: #2A7AE2; text-align: center;'>SECRON - Sistema de Control Regional</h2>
-                        <p>Estimado/a <strong>{_usuarioSeleccionado.FullName}</strong>,</p>
-                        <p>Le hacemos llegar sus credenciales de acceso al sistema SECRON:</p>
-                        <table style='border-collapse: collapse; width: 100%; margin: 20px 0;'>
-                            <tr>
-                                <td style='border: 1px solid #ddd; padding: 12px; background-color: #f9f9f9;'><strong>Usuario:</strong></td>
-                                <td style='border: 1px solid #ddd; padding: 12px;'>{_usuarioSeleccionado.Username}</td>
-                            </tr>
-                            <tr>
-                                <td style='border: 1px solid #ddd; padding: 12px; background-color: #f9f9f9;'><strong>Contraseña temporal:</strong></td>
-                                <td style='border: 1px solid #ddd; padding: 12px; font-family: Consolas, monospace; font-size: 16px;'><strong>{passwordTemporal}</strong></td>
-                            </tr>
-                            <tr>
-                                <td style='border: 1px solid #ddd; padding: 12px; background-color: #f9f9f9;'><strong>Estado:</strong></td>
-                                <td style='border: 1px solid #ddd; padding: 12px;'>{(ComboBox_UserStatus.Text ?? "ACTIVO")}</td>
-                            </tr>
-                        </table>
-                        
-                        <div style='background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;'>
-                            <p style='margin: 0;'><strong>IMPORTANTE:</strong></p>
-                            <ul style='margin: 10px 0;'>
-                                <li>Esta contraseña es <strong>temporal</strong> y vence en 30 días</li>
-                                <li>Cámbiela en su primer inicio de sesión</li>
-                                <li>Sus credenciales son personales e intransferibles</li>
-                                <li>NO comparta su contraseña con nadie</li>
-                                <li>En caso de olvido, contacte al administrador del sistema</li>
-                            </ul>
-                        </div>
-                        
-                        <p style='color: #555; margin-top: 30px;'>Atentamente,</p>
-                        <p><strong>Equipo de Desarrollo SECRON</strong></p>
-                        <hr style='border: none; border-top: 1px solid #ddd; margin: 20px 0;'>
-                        <p style='font-size: 12px; color: #888; text-align: center;'>
-                            Este es un mensaje automático del Sistema de Control Regional (SECRON)<br>
-                            No responder a este correo
-                        </p>
-                    </div>
-                </body>
-                </html>";
-
-                mail.To.Add(_usuarioSeleccionado.InstitutionalEmail);
-                smtpClient.Send(mail);
+                bool enviado = Cls_EmailService.EnviarCorreo(
+                    new List<string> { _usuarioSeleccionado.InstitutionalEmail },
+                    "Credenciales de Acceso - SECRON",
+                    cuerpo,
+                    nombreRemitente: "SECRON - Sistema de Control Regional"
+                );
 
                 this.Cursor = Cursors.Default;
+
+                if (!enviado)
+                {
+                    MessageBox.Show(
+                        "La contrasena fue restablecida, pero el correo NO pudo enviarse.\n\n" +
+                        "Use el boton Restablecer Contrasena para asignar una nueva manualmente.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 MessageBox.Show("Las credenciales han sido enviadas exitosamente al correo institucional", "Éxito",
                                MessageBoxButtons.OK, MessageBoxIcon.Information);

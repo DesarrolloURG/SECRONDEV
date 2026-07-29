@@ -525,23 +525,6 @@ namespace SECRON.Views
         {
             try
             {
-                string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-                string contraseña = "F0rza01.";
-
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential(correoEmisor, contraseña),
-                    EnableSsl = true
-                };
-
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(correoEmisor, "Notificaciones URegional"),
-                    Subject = $"TRASLADO INICIADO - {datos.CodigoTraslado}",
-                    IsBodyHtml = true
-                };
-
                 string detallesHtml = "";
                 foreach (var d in datos.Detalles)
                 {
@@ -549,53 +532,57 @@ namespace SECRON.Views
                         ? d.FromWarehouseName : d.FromEmployeeName ?? "";
                     string destino = d.ToWarehouseName ?? "";
                     detallesHtml += $@"
-                <tr>
-                    <td style='padding:5px;'>{d.AssetCode}</td>
-                    <td style='padding:5px;'>{d.AssetName}</td>
-                    <td style='padding:5px;'>{origen}</td>
-                    <td style='padding:5px;'>{destino}</td>
-                </tr>";
+        <tr>
+            <td style='padding:5px;'>{d.AssetCode}</td>
+            <td style='padding:5px;'>{d.AssetName}</td>
+            <td style='padding:5px;'>{origen}</td>
+            <td style='padding:5px;'>{destino}</td>
+        </tr>";
                 }
 
-                mail.Body = $@"
-        <html>
-        <body style='font-family: Arial, sans-serif; color: #333; max-width:700px;'>
-            <h2 style='color: #1E50A0; border-bottom: 2px solid #E07328; padding-bottom:8px;'>
-                PROCESO DE TRASLADO INICIADO
-            </h2>
-            <table style='width:100%; margin-bottom:15px;'>
-                <tr><td><strong>Código de Traslado:</strong></td><td>{datos.CodigoTraslado}</td></tr>
-                <tr><td><strong>Fecha:</strong></td><td>{datos.Fecha}</td></tr>
-                <tr><td><strong>Sede Destino:</strong></td><td>{datos.SedeDestino}</td></tr>
-                <tr><td><strong>Motivo:</strong></td><td>{datos.Motivo}</td></tr>
-                <tr><td><strong>Emitido por:</strong></td><td>{datos.EmitidoPor}</td></tr>
-            </table>
-            <table border='1' cellpadding='5' cellspacing='0'
-                   style='border-collapse:collapse; width:100%; font-size:13px;'>
-                <tr style='background-color:#1E50A0; color:white;'>
-                    <th>CÓDIGO ACTIVO</th>
-                    <th>NOMBRE</th>
-                    <th>UBICACIÓN ORIGEN</th>
-                    <th>DESTINO</th>
-                </tr>
-                {detallesHtml}
-            </table>
-            <br/>
-            <p style='color:#555; font-size:12px;'>
-                Servicio automático de notificaciones, <strong>SECRON</strong>
-            </p>
-            <p style='color:#000; font-size:11px; font-weight:bold; border-top:1px solid #ccc; padding-top:8px;'>
-                NO RESPONDER A ESTE MENSAJE
-            </p>
-        </body>
-        </html>";
+                string cuerpo = $@"
+<html>
+<body style='font-family: Arial, sans-serif; color: #333; max-width:700px;'>
+    <h2 style='color: #1E50A0; border-bottom: 2px solid #E07328; padding-bottom:8px;'>
+        PROCESO DE TRASLADO INICIADO
+    </h2>
+    <table style='width:100%; margin-bottom:15px;'>
+        <tr><td><strong>Código de Traslado:</strong></td><td>{datos.CodigoTraslado}</td></tr>
+        <tr><td><strong>Fecha:</strong></td><td>{datos.Fecha}</td></tr>
+        <tr><td><strong>Sede Destino:</strong></td><td>{datos.SedeDestino}</td></tr>
+        <tr><td><strong>Motivo:</strong></td><td>{datos.Motivo}</td></tr>
+        <tr><td><strong>Emitido por:</strong></td><td>{datos.EmitidoPor}</td></tr>
+    </table>
+    <table border='1' cellpadding='5' cellspacing='0'
+           style='border-collapse:collapse; width:100%; font-size:13px;'>
+        <tr style='background-color:#1E50A0; color:white;'>
+            <th>CÓDIGO ACTIVO</th>
+            <th>NOMBRE</th>
+            <th>UBICACIÓN ORIGEN</th>
+            <th>DESTINO</th>
+        </tr>
+        {detallesHtml}
+    </table>
+    <br/>
+    <p style='color:#555; font-size:12px;'>
+        Servicio automático de notificaciones, <strong>SECRON</strong>
+    </p>
+    <p style='color:#000; font-size:11px; font-weight:bold; border-top:1px solid #ccc; padding-top:8px;'>
+        NO RESPONDER A ESTE MENSAJE
+    </p>
+</body>
+</html>";
 
-                if (!string.IsNullOrEmpty(UserData?.InstitutionalEmail))
-                    mail.To.Add(UserData.InstitutionalEmail);
-                else
-                    mail.To.Add(correoEmisor);
+                string destinatario = !string.IsNullOrEmpty(UserData?.InstitutionalEmail)
+                    ? UserData.InstitutionalEmail
+                    : Cls_EmailConfigCache.SmtpUser;
 
-                smtpClient.Send(mail);
+                Cls_EmailService.EnviarCorreo(
+                    new List<string> { destinatario },
+                    $"TRASLADO INICIADO - {datos.CodigoTraslado}",
+                    cuerpo,
+                    nombreRemitente: "Notificaciones URegional"
+                );
             }
             catch (Exception ex)
             {

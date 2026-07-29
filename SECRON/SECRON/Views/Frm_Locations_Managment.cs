@@ -52,10 +52,12 @@ namespace SECRON.Views
 
         private async void Frm_Locations_Managment_Load(object sender, EventArgs e)
         {
+
             ConfigurarTabIndexYFocus();
             CargarCountries();
             CrearToolStripPaginacion();
             paginaActual = 1;
+
 
             if (UserData != null)
             {
