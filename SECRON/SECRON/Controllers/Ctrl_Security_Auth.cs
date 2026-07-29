@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using SECRON.Utils;
 
 namespace SECRON.Controllers
 {
@@ -280,67 +281,61 @@ namespace SECRON.Controllers
                         {
                             var userInfo = new Mdl_Security_UserInfo();
 
-                            // ÍNDICES CORREGIDOS según el orden en tu SELECT:
-                            // 0=UserId, 1=Username, 2=FullName, 3=RoleId, 4=StatusId, 
-                            // 5=IsTemporaryPassword, 6=PasswordExpiryDate, 7=InstitutionalEmail,
-                            // 8=EmployeeId, 9=LastLoginDate, 10=CreatedDate, 11=NotificationsEnabled,
-                            // 12=RoleName, 13=StatusName, 14=LastPasswordChanged, 15=PasswordNeverExpires
-
-                            try { userInfo.UserId = reader.GetInt32(0); }
+                            try { userInfo.UserId = reader.GetInt32(reader.GetOrdinal("UserId")); }
                             catch { System.Diagnostics.Debug.WriteLine("Error leyendo UserId"); }
 
-                            try { userInfo.Username = reader.GetString(1); }
+                            try { userInfo.Username = reader["Username"] as string ?? ""; }
                             catch { userInfo.Username = ""; }
 
-                            try { userInfo.FullName = reader.GetString(2); } // CORREGIDO: era 3, ahora es 2
+                            try { userInfo.FullName = reader["FullName"] as string ?? ""; }
                             catch { userInfo.FullName = ""; }
 
-                            try { userInfo.RoleId = reader.GetInt32(3); } // CORREGIDO: era 4, ahora es 3
+                            try { userInfo.RoleId = reader.GetInt32(reader.GetOrdinal("RoleId")); }
                             catch { userInfo.RoleId = 0; }
 
-                            try { userInfo.StatusId = reader.GetInt32(4); } // CORREGIDO: era 5, ahora es 4
+                            try { userInfo.StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")); }
                             catch { userInfo.StatusId = 0; }
 
-                            try { userInfo.IsTemporaryPassword = reader.GetBoolean(5); } // CORREGIDO: era 8, ahora es 5
+                            try { userInfo.IsTemporaryPassword = reader.GetBoolean(reader.GetOrdinal("IsTemporaryPassword")); }
                             catch { userInfo.IsTemporaryPassword = false; }
 
-                            try { userInfo.PasswordExpiryDate = reader.IsDBNull(6) ? (DateTime?)null : reader.GetDateTime(6); } // CORREGIDO: era 15, ahora es 6
+                            try { userInfo.PasswordExpiryDate = reader["PasswordExpiryDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["PasswordExpiryDate"]; }
                             catch { userInfo.PasswordExpiryDate = null; }
 
-                            try { userInfo.InstitutionalEmail = reader.IsDBNull(7) ? null : reader.GetString(7); } // CORREGIDO: era 13, ahora es 7
+                            try { userInfo.InstitutionalEmail = reader["InstitutionalEmail"] == DBNull.Value ? null : (string)reader["InstitutionalEmail"]; }
                             catch { userInfo.InstitutionalEmail = null; }
 
-                            try { userInfo.EmployeeId = reader.IsDBNull(8) ? (int?)null : reader.GetInt32(8); } // CORREGIDO: era 14, ahora es 8
+                            try { userInfo.EmployeeId = reader["EmployeeId"] == DBNull.Value ? (int?)null : (int)reader["EmployeeId"]; }
                             catch { userInfo.EmployeeId = null; }
 
-                            try { userInfo.LastLoginDate = reader.IsDBNull(9) ? (DateTime?)null : reader.GetDateTime(9); } // CORREGIDO: era 18, ahora es 9
+                            try { userInfo.LastLoginDate = reader["LastLoginDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastLoginDate"]; }
                             catch { userInfo.LastLoginDate = null; }
 
-                            try { userInfo.CreatedDate = reader.GetDateTime(10); } // CORREGIDO: era 9, ahora es 10
+                            try { userInfo.CreatedDate = (DateTime)reader["CreatedDate"]; }
                             catch { userInfo.CreatedDate = DateTime.Now; }
 
-                            try { userInfo.NotificationsEnabled = reader.GetBoolean(11); } // CORREGIDO: era 6, ahora es 11
+                            try { userInfo.NotificationsEnabled = reader.GetBoolean(reader.GetOrdinal("NotificationsEnabled")); }
                             catch { userInfo.NotificationsEnabled = true; }
 
-                            try { userInfo.RoleName = reader.GetString(12); } // CORREGIDO: usar índice 12
+                            try { userInfo.RoleName = reader["RoleName"] as string ?? ""; }
                             catch { userInfo.RoleName = ""; }
 
-                            try { userInfo.StatusName = reader.GetString(13); } // CORREGIDO: usar índice 13
+                            try { userInfo.StatusName = reader["StatusName"] as string ?? ""; }
                             catch { userInfo.StatusName = ""; }
 
-                            try { userInfo.LastPasswordChanged = reader.IsDBNull(14) ? (DateTime?)null : reader.GetDateTime(14); }
+                            try { userInfo.LastPasswordChanged = reader["LastPasswordChanged"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastPasswordChanged"]; }
                             catch { userInfo.LastPasswordChanged = null; }
 
-                            try { userInfo.PasswordNeverExpires = reader.GetBoolean(15); }
+                            try { userInfo.PasswordNeverExpires = reader.GetBoolean(reader.GetOrdinal("PasswordNeverExpires")); }
                             catch { userInfo.PasswordNeverExpires = false; }
 
-                            try { userInfo.TwoFactorSecret = reader.IsDBNull(16) ? null : reader.GetString(16); }
+                            try { userInfo.TwoFactorSecret = reader["TwoFactorSecret"] == DBNull.Value ? null : (string)reader["TwoFactorSecret"]; }
                             catch { userInfo.TwoFactorSecret = null; }
 
-                            try { userInfo.TwoFactorEnabledDate = reader.IsDBNull(17) ? (DateTime?)null : reader.GetDateTime(17); }
+                            try { userInfo.TwoFactorEnabledDate = reader["TwoFactorEnabledDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["TwoFactorEnabledDate"]; }
                             catch { userInfo.TwoFactorEnabledDate = null; }
 
-                            try { userInfo.TwoFactorExempt = reader.GetBoolean(18); }
+                            try { userInfo.TwoFactorExempt = reader.GetBoolean(reader.GetOrdinal("TwoFactorExempt")); }
                             catch { userInfo.TwoFactorExempt = false; }
 
                             return userInfo;
@@ -630,7 +625,6 @@ namespace SECRON.Controllers
             }
         }
         #endregion DobleFactorAutenticacion
-
         #region CargaInicialConsolidada
         // Carga en una sola llamada: datos de usuario, permisos y parámetro de sesión.
         // Reduce a 1 round-trip lo que antes eran 3 llamadas secuenciales (crítico en VPN).
@@ -638,7 +632,7 @@ namespace SECRON.Controllers
         {
             Mdl_Security_UserInfo userInfo = null;
             List<string> permisos = new List<string>();
-            int tiempoSesion = 5;
+            int tiempoSesion = 15;
 
             try
             {
@@ -656,25 +650,25 @@ namespace SECRON.Controllers
                             if (await reader.ReadAsync())
                             {
                                 userInfo = new Mdl_Security_UserInfo();
-                                try { userInfo.UserId = reader.GetInt32(0); } catch { }
-                                try { userInfo.Username = reader.GetString(1); } catch { userInfo.Username = ""; }
-                                try { userInfo.FullName = reader.GetString(2); } catch { userInfo.FullName = ""; }
-                                try { userInfo.RoleId = reader.GetInt32(3); } catch { userInfo.RoleId = 0; }
-                                try { userInfo.StatusId = reader.GetInt32(4); } catch { userInfo.StatusId = 0; }
-                                try { userInfo.IsTemporaryPassword = reader.GetBoolean(5); } catch { userInfo.IsTemporaryPassword = false; }
-                                try { userInfo.PasswordExpiryDate = reader.IsDBNull(6) ? (DateTime?)null : reader.GetDateTime(6); } catch { userInfo.PasswordExpiryDate = null; }
-                                try { userInfo.InstitutionalEmail = reader.IsDBNull(7) ? null : reader.GetString(7); } catch { userInfo.InstitutionalEmail = null; }
-                                try { userInfo.EmployeeId = reader.IsDBNull(8) ? (int?)null : reader.GetInt32(8); } catch { userInfo.EmployeeId = null; }
-                                try { userInfo.LastLoginDate = reader.IsDBNull(9) ? (DateTime?)null : reader.GetDateTime(9); } catch { userInfo.LastLoginDate = null; }
-                                try { userInfo.CreatedDate = reader.GetDateTime(10); } catch { userInfo.CreatedDate = DateTime.Now; }
-                                try { userInfo.NotificationsEnabled = reader.GetBoolean(11); } catch { userInfo.NotificationsEnabled = true; }
-                                try { userInfo.RoleName = reader.GetString(12); } catch { userInfo.RoleName = ""; }
-                                try { userInfo.StatusName = reader.GetString(13); } catch { userInfo.StatusName = ""; }
-                                try { userInfo.LastPasswordChanged = reader.IsDBNull(14) ? (DateTime?)null : reader.GetDateTime(14); } catch { userInfo.LastPasswordChanged = null; }
-                                try { userInfo.PasswordNeverExpires = reader.GetBoolean(15); } catch { userInfo.PasswordNeverExpires = false; }
-                                try { userInfo.TwoFactorSecret = reader.IsDBNull(16) ? null : reader.GetString(16); } catch { userInfo.TwoFactorSecret = null; }
-                                try { userInfo.TwoFactorEnabledDate = reader.IsDBNull(17) ? (DateTime?)null : reader.GetDateTime(17); } catch { userInfo.TwoFactorEnabledDate = null; }
-                                try { userInfo.TwoFactorExempt = reader.GetBoolean(18); } catch { userInfo.TwoFactorExempt = false; }
+                                try { userInfo.UserId = reader.GetInt32(reader.GetOrdinal("UserId")); } catch { }
+                                try { userInfo.Username = reader["Username"] as string ?? ""; } catch { userInfo.Username = ""; }
+                                try { userInfo.FullName = reader["FullName"] as string ?? ""; } catch { userInfo.FullName = ""; }
+                                try { userInfo.RoleId = reader.GetInt32(reader.GetOrdinal("RoleId")); } catch { userInfo.RoleId = 0; }
+                                try { userInfo.StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")); } catch { userInfo.StatusId = 0; }
+                                try { userInfo.IsTemporaryPassword = reader.GetBoolean(reader.GetOrdinal("IsTemporaryPassword")); } catch { userInfo.IsTemporaryPassword = false; }
+                                try { userInfo.PasswordExpiryDate = reader["PasswordExpiryDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["PasswordExpiryDate"]; } catch { userInfo.PasswordExpiryDate = null; }
+                                try { userInfo.InstitutionalEmail = reader["InstitutionalEmail"] == DBNull.Value ? null : (string)reader["InstitutionalEmail"]; } catch { userInfo.InstitutionalEmail = null; }
+                                try { userInfo.EmployeeId = reader["EmployeeId"] == DBNull.Value ? (int?)null : (int)reader["EmployeeId"]; } catch { userInfo.EmployeeId = null; }
+                                try { userInfo.LastLoginDate = reader["LastLoginDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastLoginDate"]; } catch { userInfo.LastLoginDate = null; }
+                                try { userInfo.CreatedDate = (DateTime)reader["CreatedDate"]; } catch { userInfo.CreatedDate = DateTime.Now; }
+                                try { userInfo.NotificationsEnabled = reader.GetBoolean(reader.GetOrdinal("NotificationsEnabled")); } catch { userInfo.NotificationsEnabled = true; }
+                                try { userInfo.RoleName = reader["RoleName"] as string ?? ""; } catch { userInfo.RoleName = ""; }
+                                try { userInfo.StatusName = reader["StatusName"] as string ?? ""; } catch { userInfo.StatusName = ""; }
+                                try { userInfo.LastPasswordChanged = reader["LastPasswordChanged"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastPasswordChanged"]; } catch { userInfo.LastPasswordChanged = null; }
+                                try { userInfo.PasswordNeverExpires = reader.GetBoolean(reader.GetOrdinal("PasswordNeverExpires")); } catch { userInfo.PasswordNeverExpires = false; }
+                                try { userInfo.TwoFactorSecret = reader["TwoFactorSecret"] == DBNull.Value ? null : (string)reader["TwoFactorSecret"]; } catch { userInfo.TwoFactorSecret = null; }
+                                try { userInfo.TwoFactorEnabledDate = reader["TwoFactorEnabledDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["TwoFactorEnabledDate"]; } catch { userInfo.TwoFactorEnabledDate = null; }
+                                try { userInfo.TwoFactorExempt = reader.GetBoolean(reader.GetOrdinal("TwoFactorExempt")); } catch { userInfo.TwoFactorExempt = false; }
                             }
 
                             // Result Set 2: Permisos
@@ -693,6 +687,18 @@ namespace SECRON.Controllers
                                 {
                                     int.TryParse(reader[0].ToString(), out tiempoSesion);
                                 }
+                            }
+
+                            // Result Set 4: Configuración SMTP (llena Cls_EmailConfigCache directamente)
+                            if (await reader.NextResultAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    string nombreParam = reader.GetString(0);
+                                    string valorParam = reader.GetString(1);
+                                    Cls_EmailConfigCache.AsignarValor(nombreParam, valorParam);
+                                }
+                                Cls_EmailConfigCache.MarcarComoCargado();
                             }
                         }
                     }

@@ -264,62 +264,49 @@ namespace SECRON.Views
                 Random random = new Random();
                 int noGestion = random.Next(10000, 100000);
 
-                // Configuración del correo emisor
-                string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-                string contraseñaEmisor = "F0rza01.";
+                // ========== CORREO: PARA EL EQUIPO DE SOPORTE ==========
+                string cuerpo = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+            <h2 style='color: #2A7AE2;'>Solicitud de Restablecimiento de Contraseña</h2>
+            <p><strong>No. de Gestión: {noGestion}</strong></p>
+            <p>Estimado equipo de soporte,</p>
+            <p>Se ha recibido una solicitud para restablecer la contraseña con los siguientes datos:</p>
+            <table style='border-collapse: collapse; width: 100%;'>
+                <tr>
+                    <td style='border: 1px solid #ddd; padding: 8px;'><strong>Usuario:</strong></td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{usuarioData.Username}</td>
+                </tr>
+                <tr>
+                    <td style='border: 1px solid #ddd; padding: 8px;'><strong>Nombre Completo:</strong></td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{usuarioData.FullName}</td>
+                </tr>
+                <tr>
+                    <td style='border: 1px solid #ddd; padding: 8px;'><strong>Contraseña Temporal:</strong></td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{passwordTemporal}</td>
+                </tr>
+                <tr>
+                    <td style='border: 1px solid #ddd; padding: 8px;'><strong>Correo Institucional:</strong></td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{usuarioData.InstitutionalEmail}</td>
+                </tr>
+                <tr>
+                    <td style='border: 1px solid #ddd; padding: 8px;'><strong>Fecha de Solicitud:</strong></td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{DateTime.Now:dd/MM/yyyy HH:mm:ss}</td>
+                </tr>
+            </table>
+            <p>Por favor, procedan a verificar y atender la solicitud lo antes posible.</p>
+            <p style='color: #555;'>Gracias,</p>
+            <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
+        </body>
+        </html>";
 
-                // ========== CORREO 1: PARA EL EQUIPO DE SOPORTE ==========
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-                    EnableSsl = true
-                };
+                Cls_EmailService.EnviarCorreo(
+                    new List<string> { usuarioData.InstitutionalEmail },
+                    "Restablecimiento de Contraseña - SECRON",
+                    cuerpo,
+                    nombreRemitente: "Soporte Institucional"
+                );
 
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(correoEmisor, "Soporte Institucional"),
-                    Subject = "Restablecimiento de Contraseña - SECRON",
-                    IsBodyHtml = true,
-                };
-
-                mail.Body = $@"
-                <html>
-                <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-                    <h2 style='color: #2A7AE2;'>Solicitud de Restablecimiento de Contraseña</h2>
-                    <p><strong>No. de Gestión: {noGestion}</strong></p>
-                    <p>Estimado equipo de soporte,</p>
-                    <p>Se ha recibido una solicitud para restablecer la contraseña con los siguientes datos:</p>
-                    <table style='border-collapse: collapse; width: 100%;'>
-                        <tr>
-                            <td style='border: 1px solid #ddd; padding: 8px;'><strong>Usuario:</strong></td>
-                            <td style='border: 1px solid #ddd; padding: 8px;'>{usuarioData.Username}</td>
-                        </tr>
-                        <tr>
-                            <td style='border: 1px solid #ddd; padding: 8px;'><strong>Nombre Completo:</strong></td>
-                            <td style='border: 1px solid #ddd; padding: 8px;'>{usuarioData.FullName}</td>
-                        </tr>
-                        <tr>
-                            <td style='border: 1px solid #ddd; padding: 8px;'><strong>Contraseña Temporal:</strong></td>
-                            <td style='border: 1px solid #ddd; padding: 8px;'>{passwordTemporal}</td>
-                        </tr>
-                        <tr>
-                            <td style='border: 1px solid #ddd; padding: 8px;'><strong>Correo Institucional:</strong></td>
-                            <td style='border: 1px solid #ddd; padding: 8px;'>{usuarioData.InstitutionalEmail}</td>
-                        </tr>
-                        <tr>
-                            <td style='border: 1px solid #ddd; padding: 8px;'><strong>Fecha de Solicitud:</strong></td>
-                            <td style='border: 1px solid #ddd; padding: 8px;'>{DateTime.Now:dd/MM/yyyy HH:mm:ss}</td>
-                        </tr>
-                    </table>
-                    <p>Por favor, procedan a verificar y atender la solicitud lo antes posible.</p>
-                    <p style='color: #555;'>Gracias,</p>
-                    <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
-                </body>
-                </html>";
-
-                mail.To.Add(usuarioData.InstitutionalEmail);
-                smtpClient.Send(mail);
                 this.Close();
             }
             catch (Exception ex)

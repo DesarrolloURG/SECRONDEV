@@ -107,6 +107,7 @@
     <Compile Include="Configuration\DatabaseConfig.cs" />
     <Compile Include="Configuration\NavegadorTabConfig .cs" />
     <Compile Include="Configuration\TabConfig.cs" />
+    <Compile Include="Utils\Cls_EmailConfigCache.cs" />
     <Compile Include="Controllers\Ctrl_AccountingEntryChecks.cs" />
     <Compile Include="Controllers\Ctrl_AccountingEntryDetails.cs" />
     <Compile Include="Controllers\Ctrl_AccountingEntryMaster.cs" />
@@ -256,6 +257,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utils\Cls_ActivityMessageFilter.cs" />
+    <Compile Include="Utils\Cls_EmailEncryption.cs" />
+    <Compile Include="Utils\Cls_EmailService.cs" />
     <Compile Include="Views\Frm_Accounts_Managment.cs">
       <SubType>Form</SubType>
     </Compile>

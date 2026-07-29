@@ -3048,124 +3048,53 @@ namespace SECRON.Views
             catch { }
         }
 
-        // LEGACY Enviar correo de notificación
-        //private void EnviarCorreoNotificacion()
-        //{
-        //    try
-        //    {
-        //        string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-        //        string contraseñaEmisor = "F0rza01.";
-
-        //        SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-        //        {
-        //            Port = 587,
-        //            Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-        //            EnableSsl = true
-        //        };
-
-        //        MailMessage mail = new MailMessage
-        //        {
-        //            From = new MailAddress(correoEmisor, "Notificaciones URegional"),
-        //            Subject = "Información de TRANSFERENCIA Emitido",
-        //            IsBodyHtml = true
-        //        };
-
-        //        Mdl_Users usuarioActual = Ctrl_Users.ObtenerUsuarioPorId(UserData.UserId);
-        //        string nombreUsuario = usuarioActual?.FullName ?? "USUARIO DESCONOCIDO";
-
-        //        mail.Body = $@"
-        //<html>
-        //<body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-        //    <h2 style='color: #2A7AE2;'>Información de TRANSFERENCIA Emitido</h2>
-        //    <p><strong>TRANSFERENCIA a nombre de:</strong> {ObtenerTextoReal(Txt_Beneficiario).ToUpper()}</p>
-        //    <p><strong>Fecha y Hora de Emisión:</strong> {DateTime.Now}</p>
-        //    <p><strong>Valor del TRANSFERENCIA:</strong> Q.{ObtenerValorDecimal(Txt_ValorImpresoTRANSFERENCIA):N2}</p>
-        //    <p><strong>Persona que emitió el TRANSFERENCIA:</strong> {nombreUsuario.ToUpper()}</p>
-        //    <p><strong>No.TRANSFERENCIA:</strong> {Txt_NoTRANSFERENCIA.Text}</p>
-        //    <p><strong>Concepto del TRANSFERENCIA:</strong> {ObtenerTextoReal(Txt_Concepto).ToUpper()}</p>
-        //    <p>Por favor, verifique la información y proceda con la gestión correspondiente.</p>
-        //    <p style='color: #555;'>Gracias,</p>
-        //    <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
-        //</body>
-        //</html>";
-
-        //        mail.To.Add("TRANSFERENCIAs@uregionalregion2.edu.gt");
-        //        mail.CC.Add("afolgar@uregionalregion2.edu.gt");
-        //        mail.CC.Add("avfolgar@uregionalregion2.edu.gt");
-        //        mail.CC.Add("shvanegas@uregionalregion2.edu.gt");
-        //        mail.To.Add("aportillo@uregionalregion2.edu.gt");
-
-        //        smtpClient.Send(mail);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"ERROR AL ENVIAR CORREO: {ex.Message}", "ADVERTENCIA",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //    }
-        //}
         private void EnviarCorreoNotificacion(string numeroTRANSFERENCIA, string beneficiario, decimal valorImpreso, string concepto)
         {
             try
             {
-                string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-                string contraseñaEmisor = "F0rza01.";
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-                    EnableSsl = true
-                };
-
-                // ⭐ VERIFICAR SI ES TRANSFERENCIA IMPORTANTE
+                // VERIFICAR SI ES TRANSFERENCIA IMPORTANTE
                 bool esTRANSFERENCIAImportante = CheckBox_AlertaPrioridad.Checked; ;
-
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(correoEmisor, "Notificaciones URegional"),
-                    Subject = esTRANSFERENCIAImportante ? "URGENTE - TRANSFERENCIA Importante Emitido" : "Información de TRANSFERENCIA Emitido",
-                    IsBodyHtml = true
-                };
-
-                // ⭐ ESTABLECER PRIORIDAD ALTA SI ES IMPORTANTE
-                if (esTRANSFERENCIAImportante)
-                {
-                    mail.Priority = MailPriority.High;
-                }
 
                 Mdl_Users usuarioActual = Ctrl_Users.ObtenerUsuarioPorId(UserData.UserId);
                 string nombreUsuario = usuarioActual?.FullName ?? "USUARIO DESCONOCIDO";
 
-                // ⭐ GENERAR CUERPO DEL CORREO CON ALERTA SI ES IMPORTANTE
+                // GENERAR CUERPO DEL CORREO CON ALERTA SI ES IMPORTANTE
                 string alertaImportante = esTRANSFERENCIAImportante ? $@"
-                <div style='background-color: #FF4444; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;'>
-                    <h3 style='margin: 0; color: white;'>TRANSFERENCIA MARCADA COMO IMPORTANTE</h3>
-                    <p style='margin: 5px 0 0 0; color: white;'>Transferencia requiere atención prioritaria</p>
-                </div>" : "";
+        <div style='background-color: #FF4444; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;'>
+            <h3 style='margin: 0; color: white;'>TRANSFERENCIA MARCADA COMO IMPORTANTE</h3>
+            <p style='margin: 5px 0 0 0; color: white;'>Transferencia requiere atención prioritaria</p>
+        </div>" : "";
 
                 string colorTitulo = esTRANSFERENCIAImportante ? "#FF4444" : "#2A7AE2";
 
-                mail.Body = $@"
-                <html>
-                <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-                    {alertaImportante}
-                    <h2 style='color: {colorTitulo};'>TRANSFERENCIA EMITIDA</h2>
-                    <p><strong>Transferencia a nombre de:</strong> {beneficiario}</p>
-                    <p><strong>Fecha y Hora de Emisión:</strong> {DateTime.Now}</p>
-                    <p><strong>Valor del Transferencia:</strong> Q.{valorImpreso:N2}</p>
-                    <p><strong>Persona que emitió la transferencia:</strong> {nombreUsuario.ToUpper()}</p>
-                    <p><strong>No.Transferencia:</strong> {numeroTRANSFERENCIA}</p>
-                    <p><strong>Concepto de la Transferencia:</strong> {concepto}</p>
-                    <p>Por favor, verifique la información y proceda con la gestión correspondiente.</p>
-                    <p style='color: #555;'>Gracias,</p>
-                    <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
-                </body>
-                </html>";
-                mail.To.Add("transferencias@uregionalregion2.edu.gt");
-                mail.CC.Add("afolgar@uregionalregion2.edu.gt");
-                mail.CC.Add("avfolgar@uregionalregion2.edu.gt");
-                mail.CC.Add("shvanegas@uregionalregion2.edu.gt");
-                mail.To.Add("aportillo@uregionalregion2.edu.gt");
-                smtpClient.Send(mail);
+                string cuerpo = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+            {alertaImportante}
+            <h2 style='color: {colorTitulo};'>TRANSFERENCIA EMITIDA</h2>
+            <p><strong>Transferencia a nombre de:</strong> {beneficiario}</p>
+            <p><strong>Fecha y Hora de Emisión:</strong> {DateTime.Now}</p>
+            <p><strong>Valor del Transferencia:</strong> Q.{valorImpreso:N2}</p>
+            <p><strong>Persona que emitió la transferencia:</strong> {nombreUsuario.ToUpper()}</p>
+            <p><strong>No.Transferencia:</strong> {numeroTRANSFERENCIA}</p>
+            <p><strong>Concepto de la Transferencia:</strong> {concepto}</p>
+            <p>Por favor, verifique la información y proceda con la gestión correspondiente.</p>
+            <p style='color: #555;'>Gracias,</p>
+            <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
+        </body>
+        </html>";
+
+                List<string> destinatarios = new List<string> { "transferencias@uregionalregion2.edu.gt", "aportillo@uregionalregion2.edu.gt" };
+                List<string> conCopia = new List<string> { "afolgar@uregionalregion2.edu.gt", "avfolgar@uregionalregion2.edu.gt", "shvanegas@uregionalregion2.edu.gt" };
+
+                Cls_EmailService.EnviarCorreo(
+                    destinatarios,
+                    esTRANSFERENCIAImportante ? "URGENTE - TRANSFERENCIA Importante Emitido" : "Información de TRANSFERENCIA Emitido",
+                    cuerpo,
+                    conCopia: conCopia,
+                    nombreRemitente: "Notificaciones URegional",
+                    prioridadAlta: esTRANSFERENCIAImportante
+                );
             }
             catch (Exception ex)
             {

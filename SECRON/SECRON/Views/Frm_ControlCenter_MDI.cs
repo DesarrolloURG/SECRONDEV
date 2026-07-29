@@ -19,6 +19,25 @@ namespace SECRON.Views
 {
     public partial class Frm_ControlCenter_MDI : Form
     {
+        // Constructor del formulario
+        public Frm_ControlCenter_MDI()
+        {
+            // Inicializar Componentes
+            InitializeComponent();
+            // Configurar medidas iniciales del MDI
+            MedidasInicialesMDI();
+            // Configuraciones para personalizar la barra de título
+            ConfigurarBarraTitulo();
+            // Configurar el authController
+            authController = new Ctrl_Security_Auth();
+            InicializarControlInactividad();
+            // Configurar El Evento Formulario Load
+            this.Load += Frm_ControlCenter_MDI_Load;
+            // Inicializar Pestañas de Sistema
+            InicializarSistemaPestanas();
+
+        }
+
         #region PropiedadesRecibidas
         //Propiedades del formulario previo
         public string Usuario { get; set; }
@@ -647,23 +666,8 @@ namespace SECRON.Views
             this.StartPosition = FormStartPosition.CenterScreen; // Centrado en pantalla
             this.WindowState = FormWindowState.Maximized; // Maximizado al iniciar
         }
-        // Constructor del formulario
-        public Frm_ControlCenter_MDI()
-        {
-            // Inicializar Componentes
-            InitializeComponent();
-            // Configurar medidas iniciales del MDI
-            MedidasInicialesMDI();
-            // Configuraciones para personalizar la barra de título
-            ConfigurarBarraTitulo();
-            // Configurar el authController
-            authController = new Ctrl_Security_Auth();
-            InicializarControlInactividad();
-            // Configurar El Evento Formulario Load
-            this.Load += Frm_ControlCenter_MDI_Load;
-            // Inicializar Pestañas de Sistema
-            InicializarSistemaPestanas();
-        }
+        
+
         #endregion PropiedadesIniciales
         #region ControlInactividadSesion
 

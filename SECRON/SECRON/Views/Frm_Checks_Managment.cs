@@ -3032,125 +3032,53 @@ namespace SECRON.Views
             catch { }
         }
 
-        // LEGACY Enviar correo de notificación
-        //private void EnviarCorreoNotificacion()
-        //{
-        //    try
-        //    {
-        //        string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-        //        string contraseñaEmisor = "F0rza01.";
-
-        //        SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-        //        {
-        //            Port = 587,
-        //            Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-        //            EnableSsl = true
-        //        };
-
-        //        MailMessage mail = new MailMessage
-        //        {
-        //            From = new MailAddress(correoEmisor, "Notificaciones URegional"),
-        //            Subject = "Información de Cheque Emitido",
-        //            IsBodyHtml = true
-        //        };
-
-        //        Mdl_Users usuarioActual = Ctrl_Users.ObtenerUsuarioPorId(UserData.UserId);
-        //        string nombreUsuario = usuarioActual?.FullName ?? "USUARIO DESCONOCIDO";
-
-        //        mail.Body = $@"
-        //<html>
-        //<body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-        //    <h2 style='color: #2A7AE2;'>Información de Cheque Emitido</h2>
-        //    <p><strong>Cheque a nombre de:</strong> {ObtenerTextoReal(Txt_Beneficiario).ToUpper()}</p>
-        //    <p><strong>Fecha y Hora de Emisión:</strong> {DateTime.Now}</p>
-        //    <p><strong>Valor del Cheque:</strong> Q.{ObtenerValorDecimal(Txt_ValorImpresoCheque):N2}</p>
-        //    <p><strong>Persona que emitió el Cheque:</strong> {nombreUsuario.ToUpper()}</p>
-        //    <p><strong>No.Cheque:</strong> {Txt_NoCheque.Text}</p>
-        //    <p><strong>Concepto del Cheque:</strong> {ObtenerTextoReal(Txt_Concepto).ToUpper()}</p>
-        //    <p>Por favor, verifique la información y proceda con la gestión correspondiente.</p>
-        //    <p style='color: #555;'>Gracias,</p>
-        //    <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
-        //</body>
-        //</html>";
-
-        //        mail.To.Add("cheques@uregionalregion2.edu.gt");
-        //        mail.CC.Add("afolgar@uregionalregion2.edu.gt");
-        //        mail.CC.Add("avfolgar@uregionalregion2.edu.gt");
-        //        mail.CC.Add("shvanegas@uregionalregion2.edu.gt");
-        //        mail.To.Add("aportillo@uregionalregion2.edu.gt");
-
-        //        smtpClient.Send(mail);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"ERROR AL ENVIAR CORREO: {ex.Message}", "ADVERTENCIA",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //    }
-        //}
         private void EnviarCorreoNotificacion(string numeroCheque, string beneficiario, decimal valorImpreso, string concepto)
         {
             try
             {
-                string correoEmisor = "notificaciones@uregionalregion2.edu.gt";
-                string contraseñaEmisor = "F0rza01.";
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential(correoEmisor, contraseñaEmisor),
-                    EnableSsl = true
-                };
-
-                // ⭐ VERIFICAR SI ES CHEQUE IMPORTANTE
+                // VERIFICAR SI ES CHEQUE IMPORTANTE
                 bool esChequeImportante = CheckBox_AlertaPrioridad.Checked;
-
-                MailMessage mail = new MailMessage
-                {
-                    From = new MailAddress(correoEmisor, "Notificaciones URegional"),
-                    Subject = esChequeImportante ? "URGENTE - Cheque Importante Emitido" : "Información de Cheque Emitido",
-                    IsBodyHtml = true
-                };
-
-                // ⭐ ESTABLECER PRIORIDAD ALTA SI ES IMPORTANTE
-                if (esChequeImportante)
-                {
-                    mail.Priority = MailPriority.High;
-                }
 
                 Mdl_Users usuarioActual = Ctrl_Users.ObtenerUsuarioPorId(UserData.UserId);
                 string nombreUsuario = usuarioActual?.FullName ?? "USUARIO DESCONOCIDO";
 
-                // ⭐ GENERAR CUERPO DEL CORREO CON ALERTA SI ES IMPORTANTE
+                // GENERAR CUERPO DEL CORREO CON ALERTA SI ES IMPORTANTE
                 string alertaImportante = esChequeImportante ? $@"
-                <div style='background-color: #FF4444; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;'>
-                    <h3 style='margin: 0; color: white;'>CHEQUE MARCADO COMO IMPORTANTE</h3>
-                    <p style='margin: 5px 0 0 0; color: white;'>Este cheque requiere atención prioritaria</p>
-                </div>" : "";
+        <div style='background-color: #FF4444; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;'>
+            <h3 style='margin: 0; color: white;'>CHEQUE MARCADO COMO IMPORTANTE</h3>
+            <p style='margin: 5px 0 0 0; color: white;'>Este cheque requiere atención prioritaria</p>
+        </div>" : "";
 
                 string colorTitulo = esChequeImportante ? "#FF4444" : "#2A7AE2";
 
-                mail.Body = $@"
-                <html>
-                <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-                    {alertaImportante}
-                    <h2 style='color: {colorTitulo};'>Información de Cheque Emitido</h2>
-                    <p><strong>Cheque a nombre de:</strong> {beneficiario}</p>
-                    <p><strong>Fecha y Hora de Emisión:</strong> {DateTime.Now}</p>
-                    <p><strong>Valor del Cheque:</strong> Q.{valorImpreso:N2}</p>
-                    <p><strong>Persona que emitió el Cheque:</strong> {nombreUsuario.ToUpper()}</p>
-                    <p><strong>No.Cheque:</strong> {numeroCheque}</p>
-                    <p><strong>Concepto del Cheque:</strong> {concepto}</p>
-                    <p>Por favor, verifique la información y proceda con la gestión correspondiente.</p>
-                    <p style='color: #555;'>Gracias,</p>
-                    <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
-                </body>
-                </html>";
-                
-                mail.To.Add("cheques@uregionalregion2.edu.gt");
-                mail.CC.Add("afolgar@uregionalregion2.edu.gt");
-                mail.CC.Add("avfolgar@uregionalregion2.edu.gt");
-                mail.CC.Add("shvanegas@uregionalregion2.edu.gt");
-                mail.To.Add("aportillo@uregionalregion2.edu.gt");
-                smtpClient.Send(mail);
+                string cuerpo = $@"
+        <html>
+        <body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+            {alertaImportante}
+            <h2 style='color: {colorTitulo};'>Información de Cheque Emitido</h2>
+            <p><strong>Cheque a nombre de:</strong> {beneficiario}</p>
+            <p><strong>Fecha y Hora de Emisión:</strong> {DateTime.Now}</p>
+            <p><strong>Valor del Cheque:</strong> Q.{valorImpreso:N2}</p>
+            <p><strong>Persona que emitió el Cheque:</strong> {nombreUsuario.ToUpper()}</p>
+            <p><strong>No.Cheque:</strong> {numeroCheque}</p>
+            <p><strong>Concepto del Cheque:</strong> {concepto}</p>
+            <p>Por favor, verifique la información y proceda con la gestión correspondiente.</p>
+            <p style='color: #555;'>Gracias,</p>
+            <p><strong>Servicio automático de notificaciones, SECRON</strong></p>
+        </body>
+        </html>";
+
+                List<string> destinatarios = new List<string> { "cheques@uregionalregion2.edu.gt", "aportillo@uregionalregion2.edu.gt" };
+                List<string> conCopia = new List<string> { "afolgar@uregionalregion2.edu.gt", "avfolgar@uregionalregion2.edu.gt", "shvanegas@uregionalregion2.edu.gt" };
+
+                Cls_EmailService.EnviarCorreo(
+                    destinatarios,
+                    esChequeImportante ? "URGENTE - Cheque Importante Emitido" : "Información de Cheque Emitido",
+                    cuerpo,
+                    conCopia: conCopia,
+                    nombreRemitente: "Notificaciones URegional",
+                    prioridadAlta: esChequeImportante
+                );
             }
             catch (Exception ex)
             {
