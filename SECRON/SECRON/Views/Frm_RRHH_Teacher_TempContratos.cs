@@ -178,6 +178,7 @@ namespace SECRON.Views
                 var cursosExistentesEnBD = new Dictionary<string, int>();
                 var dpiYaVistoEnArchivo = new HashSet<string>();
                 var cursosAsignadosEnArchivo = new Dictionary<string, int>();
+                var sedesValidadasEnArchivo = new Dictionary<string, int?>(); 
 
                 for (int row = 2; row <= totalFilas; row++)
                 {
@@ -269,6 +270,15 @@ namespace SECRON.Views
 
                     if (string.IsNullOrWhiteSpace(fila.AcademicLocation))
                         motivos.Add("SEDE_ACADEMICA requerida");
+                    else
+                    {
+                        if (!sedesValidadasEnArchivo.ContainsKey(fila.AcademicLocation))
+                            sedesValidadasEnArchivo[fila.AcademicLocation] =
+                                Ctrl_Locations.ObtenerLocationIdPorNombreExacto(fila.AcademicLocation);
+
+                        if (sedesValidadasEnArchivo[fila.AcademicLocation] == null)
+                            motivos.Add($"SEDE_ACADEMICA \"{fila.AcademicLocation}\" no existe en SECRON (debe coincidir EXACTO con el nombre de la sede)");
+                    }
 
                     if (string.IsNullOrWhiteSpace(fila.CourseToTeach))
                         motivos.Add("CURSO_A_IMPARTIR requerido");

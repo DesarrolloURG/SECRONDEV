@@ -45,3 +45,24 @@ CREATE INDEX IX_DocentesTemporal_DPI ON DocentesTemporal (DPI);
 GO
 CREATE INDEX IX_DocentesTemporal_Cursos_TeacherTempId ON DocentesTemporal_Cursos (TeacherTempId);
 GO
+
+CREATE TABLE Portal_Contratos_Vigencia (
+    VigenciaId      INT IDENTITY(1,1) PRIMARY KEY,
+    FechaInicio     DATETIME NOT NULL,
+    FechaFin        DATETIME NOT NULL,
+    Activo          BIT NOT NULL DEFAULT 1,
+    Observaciones   VARCHAR(200) NULL,
+    CreatedBy       INT NULL,
+    CreatedDate     DATETIME NOT NULL DEFAULT GETDATE(),
+    ModifiedBy      INT NULL,
+    ModifiedDate    DATETIME NULL
+);
+GO
+-------------------------------- VALOR DE EJEMPLO PARA INSERCIÓN DE PERIODO DE TIEMPO HABILITADO -----------------------------
+USE SECRONDEV;
+GO
+
+INSERT INTO Portal_Contratos_Vigencia (FechaInicio, FechaFin, Activo, Observaciones, CreatedBy, CreatedDate)
+VALUES ('2026-07-01', '2026-08-31', 1, 'VENTANA DE PRUEBA PARA DESARROLLO', NULL, GETDATE());
+
+GO-------------------------------- ************************************************************* -----------------------------

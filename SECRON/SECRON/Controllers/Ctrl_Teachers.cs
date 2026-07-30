@@ -449,6 +449,8 @@ namespace SECRON.Controllers
 
         // MÉTODO AUXILIAR: Mapear datos del SqlDataReader al modelo Mdl_Teachers
         // Convierte cada registro de la base de datos en un objeto del modelo
+        // MÉTODO AUXILIAR: Mapear datos del SqlDataReader al modelo Mdl_Teachers
+        // Convierte cada registro de la base de datos en un objeto del modelo
         private static Mdl_Teachers MapearDocente(SqlDataReader reader)
         {
             return new Mdl_Teachers
@@ -483,7 +485,9 @@ namespace SECRON.Controllers
                 FilePath_Colegiado = reader[27] == DBNull.Value ? null : reader[27].ToString(),
                 FilePath_RENAS = reader[28] == DBNull.Value ? null : reader[28].ToString(),
                 FilePath_AntPoliciacos = reader[29] == DBNull.Value ? null : reader[29].ToString(),
-                FilePath_AntPenales = reader[30] == DBNull.Value ? null : reader[30].ToString()
+                FilePath_AntPenales = reader[30] == DBNull.Value ? null : reader[30].ToString(),
+                FilePath_CV = reader[31] == DBNull.Value ? null : reader[31].ToString(),
+                FilePath_ContratoFirmado = reader[32] == DBNull.Value ? null : reader[32].ToString()
             };
         }
 
@@ -494,7 +498,8 @@ namespace SECRON.Controllers
                 string[] camposPermitidos = {
                     "FilePath_DPI", "FilePath_Titulos", "FilePath_RTU",
                     "FilePath_Colegiado", "FilePath_RENAS",
-                    "FilePath_AntPoliciacos", "FilePath_AntPenales"
+                    "FilePath_AntPoliciacos", "FilePath_AntPenales",
+                    "FilePath_CV", "FilePath_ContratoFirmado"
                 };
 
                 if (!Array.Exists(camposPermitidos, c => c == campo))

@@ -171,6 +171,36 @@ namespace SECRON.Controllers
 
         #region Consultas principales
 
+        // Busca el LocationId por coincidencia EXACTA del nombre de sede (case-sensitive según collation de la BD).
+        // Devuelve null si no existe ninguna sede activa con ese nombre exacto.
+        public static int? ObtenerLocationIdPorNombreExacto(string nombreSede)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                        SELECT LocationId 
+                        FROM Locations 
+                        WHERE LocationName = @NombreSede AND IsActive = 1";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@NombreSede", nombreSede.Trim());
+
+                        object resultado = cmd.ExecuteScalar();
+                        return resultado != null ? Convert.ToInt32(resultado) : (int?)null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL BUSCAR SEDE POR NOMBRE: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
         public static List<Mdl_Locations> MostrarUbicaciones(int pageNumber = 1, int pageSize = 100)
         {
             return BuscarUbicaciones(

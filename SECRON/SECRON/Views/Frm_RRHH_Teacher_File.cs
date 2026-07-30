@@ -461,11 +461,11 @@ namespace SECRON.Views
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        // Nombres de los 7 documentos (deben coincidir con los sufijos de FilePath_* del modelo)
-        private readonly string[] _docsArchivos = { "DPI", "Titulos", "RTU", "Colegiado", "RENAS", "AntPoliciacos", "AntPenales" };
-        private readonly string[] _headersAbrir = { "DPI (ABRIR)", "TÍTULOS (ABRIR)", "RTU (ABRIR)", "COLEGIADO (ABRIR)", "RENAS (ABRIR)", "ANT.POL. (ABRIR)", "ANT.PEN. (ABRIR)" };
-        private readonly string[] _headersCargar = { "DPI (CARGAR)", "TÍTULOS (CARGAR)", "RTU (CARGAR)", "COLEGIADO (CARGAR)", "RENAS (CARGAR)", "ANT.POL. (CARGAR)", "ANT.PEN. (CARGAR)" };
-        private readonly string[] _headersEstado = { "DPI (ESTADO)", "TÍTULOS (ESTADO)", "RTU (ESTADO)", "COLEGIADO (ESTADO)", "RENAS (ESTADO)", "ANT.POL. (ESTADO)", "ANT.PEN. (ESTADO)" };
+        // Nombres de los 9 documentos (deben coincidir con los sufijos de FilePath_* del modelo)
+        private readonly string[] _docsArchivos = { "DPI", "Titulos", "RTU", "Colegiado", "RENAS", "AntPoliciacos", "AntPenales", "CV", "ContratoFirmado" };
+        private readonly string[] _headersAbrir = { "DPI (ABRIR)", "TÍTULOS (ABRIR)", "RTU (ABRIR)", "COLEGIADO (ABRIR)", "RENAS (ABRIR)", "ANT.POL. (ABRIR)", "ANT.PEN. (ABRIR)", "CV (ABRIR)", "CONTRATO FIRMADO (ABRIR)" };
+        private readonly string[] _headersCargar = { "DPI (CARGAR)", "TÍTULOS (CARGAR)", "RTU (CARGAR)", "COLEGIADO (CARGAR)", "RENAS (CARGAR)", "ANT.POL. (CARGAR)", "ANT.PEN. (CARGAR)", "CV (CARGAR)", "CONTRATO FIRMADO (CARGAR)" };
+        private readonly string[] _headersEstado = { "DPI (ESTADO)", "TÍTULOS (ESTADO)", "RTU (ESTADO)", "COLEGIADO (ESTADO)", "RENAS (ESTADO)", "ANT.POL. (ESTADO)", "ANT.PEN. (ESTADO)", "CV (ESTADO)", "CONTRATO FIRMADO (ESTADO)" };
 
         // Agrega las 21 columnas de imagen (ABRIR/CARGAR/ESTADO por documento) al final del grid.
         // Oculta las 7 columnas de texto FilePath_* que el binding genera automaticamente.
@@ -558,6 +558,8 @@ namespace SECRON.Views
                 case "RENAS": return d.FilePath_RENAS;
                 case "AntPoliciacos": return d.FilePath_AntPoliciacos;
                 case "AntPenales": return d.FilePath_AntPenales;
+                case "CV": return d.FilePath_CV;
+                case "ContratoFirmado": return d.FilePath_ContratoFirmado;
                 default: return null;
             }
         }
@@ -1066,6 +1068,8 @@ namespace SECRON.Views
                 case "RENAS": return "RENAS.pdf";
                 case "AntPoliciacos": return "ANT_POLICIACOS.pdf";
                 case "AntPenales": return "ANT_PENALES.pdf";
+                case "CV": return "CV.pdf";
+                case "ContratoFirmado": return "CONTRATO_FIRMADO.pdf";
                 default: return doc + ".pdf";
             }
         }

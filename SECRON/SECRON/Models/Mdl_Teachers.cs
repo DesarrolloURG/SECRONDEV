@@ -57,6 +57,8 @@ namespace SECRON.Models
         public string FilePath_RENAS { get; set; }
         public string FilePath_AntPoliciacos { get; set; }
         public string FilePath_AntPenales { get; set; }
+        public string FilePath_CV { get; set; }
+        public string FilePath_ContratoFirmado { get; set; }
 
         public Mdl_Teachers()
         {

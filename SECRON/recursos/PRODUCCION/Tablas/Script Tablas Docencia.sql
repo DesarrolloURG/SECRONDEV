@@ -315,6 +315,11 @@ ALTER TABLE Teachers ADD
     FilePath_AntPenales     NVARCHAR(500) NULL;
 GO
 
+ALTER TABLE Teachers ADD
+    FilePath_CV                NVARCHAR(500) NULL,
+    FilePath_ContratoFirmado   NVARCHAR(500) NULL;
+GO
+
 
 
 -- -----------------------------------------------------

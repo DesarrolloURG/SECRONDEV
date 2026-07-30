@@ -151,6 +151,7 @@
     <Compile Include="Controllers\Ctrl_MovementTypes.cs" />
     <Compile Include="Controllers\Ctrl_Parameters.cs" />
     <Compile Include="Controllers\Ctrl_Permissions.cs" />
+    <Compile Include="Controllers\Ctrl_Portal_Contratos_Vigencia.cs" />
     <Compile Include="Controllers\Ctrl_Positions.cs" />
     <Compile Include="Controllers\Ctrl_PurchaseOrderDetails.cs" />
     <Compile Include="Controllers\Ctrl_PurchaseOrderMaster.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Models\Mdl_MovementTypes.cs" />
     <Compile Include="Models\Mdl_Municipality.cs" />
     <Compile Include="Models\Mdl_Permissions.cs" />
+    <Compile Include="Models\Mdl_Portal_Contratos_Vigencia.cs" />
     <Compile Include="Models\Mdl_Positions.cs" />
     <Compile Include="Models\Mdl_PurchaseOrderDetails.cs" />
     <Compile Include="Models\Mdl_PurchaseOrderMaster.cs" />

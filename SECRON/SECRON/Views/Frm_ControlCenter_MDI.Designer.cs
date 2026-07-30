@@ -137,6 +137,7 @@
             this.PanelRRHH_1 = new System.Windows.Forms.Panel();
             this.BtnRRHH_Trabajadores_Ficha = new System.Windows.Forms.Button();
             this.PanelRRHH_2 = new System.Windows.Forms.Panel();
+            this.BtnRRHH_Docencia_GenerarContrato = new System.Windows.Forms.Button();
             this.BtnRRHH_Docencia_ControlAsistencias = new System.Windows.Forms.Button();
             this.BtnRRHH_Docencia_FichaCoordinador = new System.Windows.Forms.Button();
             this.BtnRRHH_Docencia_FichaDocente = new System.Windows.Forms.Button();
@@ -2090,14 +2091,35 @@
             // PanelRRHH_2
             // 
             this.PanelRRHH_2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelRRHH_2.Controls.Add(this.BtnRRHH_Docencia_GenerarContrato);
             this.PanelRRHH_2.Controls.Add(this.BtnRRHH_Docencia_ControlAsistencias);
             this.PanelRRHH_2.Controls.Add(this.BtnRRHH_Docencia_FichaCoordinador);
             this.PanelRRHH_2.Controls.Add(this.BtnRRHH_Docencia_FichaDocente);
             this.PanelRRHH_2.Location = new System.Drawing.Point(520, 1);
             this.PanelRRHH_2.Name = "PanelRRHH_2";
-            this.PanelRRHH_2.Size = new System.Drawing.Size(300, 120);
+            this.PanelRRHH_2.Size = new System.Drawing.Size(300, 160);
             this.PanelRRHH_2.TabIndex = 31;
             this.PanelRRHH_2.Visible = false;
+            // 
+            // BtnRRHH_Docencia_GenerarContrato
+            // 
+            this.BtnRRHH_Docencia_GenerarContrato.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnRRHH_Docencia_GenerarContrato.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnRRHH_Docencia_GenerarContrato.FlatAppearance.BorderSize = 0;
+            this.BtnRRHH_Docencia_GenerarContrato.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnRRHH_Docencia_GenerarContrato.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRRHH_Docencia_GenerarContrato.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnRRHH_Docencia_GenerarContrato.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnRRHH_Docencia_GenerarContrato.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_GenerarContrato.Location = new System.Drawing.Point(0, 105);
+            this.BtnRRHH_Docencia_GenerarContrato.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnRRHH_Docencia_GenerarContrato.Name = "BtnRRHH_Docencia_GenerarContrato";
+            this.BtnRRHH_Docencia_GenerarContrato.Size = new System.Drawing.Size(300, 35);
+            this.BtnRRHH_Docencia_GenerarContrato.TabIndex = 47;
+            this.BtnRRHH_Docencia_GenerarContrato.Text = "GENERAR CONTRATO";
+            this.BtnRRHH_Docencia_GenerarContrato.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRRHH_Docencia_GenerarContrato.UseVisualStyleBackColor = false;
+            this.BtnRRHH_Docencia_GenerarContrato.Click += new System.EventHandler(this.BtnRRHH_Docencia_GenerarContrato_Click);
             // 
             // BtnRRHH_Docencia_ControlAsistencias
             // 
@@ -2546,5 +2568,6 @@
         private System.Windows.Forms.Button BtnProcesosAcademicos_PensumCursos;
         private System.Windows.Forms.Button BtnProcesosAcademicos_PensumCarreras;
         private System.Windows.Forms.Button BtnLogout;
+        private System.Windows.Forms.Button BtnRRHH_Docencia_GenerarContrato;
     }
 }

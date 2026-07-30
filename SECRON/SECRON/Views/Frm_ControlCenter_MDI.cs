@@ -202,6 +202,7 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnRRHH_Docencia_FichaDocente);
             ConfigurarBotonSubmenuNavegacion(BtnRRHH_Docencia_FichaCoordinador);
             ConfigurarBotonSubmenuNavegacion(BtnRRHH_Docencia_ControlAsistencias);
+            ConfigurarBotonSubmenuNavegacion(BtnRRHH_Docencia_GenerarContrato);
             // Panel de Navegación Submenú Usuarios
             ConfigurarBotonSubmenuNavegacion(BtnUsersManagment);
             ConfigurarBotonSubmenuNavegacion(BtnUsersRolesPermisos);
@@ -1230,7 +1231,7 @@ namespace SECRON.Views
 
                 //RECURSOS HUMANOS
                 { BtnRRHH_Trabajadores, (PanelRRHH_1, new Size(300, 40)) },
-                { BtnRRHH_Docencia, (PanelRRHH_2, new Size(300, 120)) }
+                { BtnRRHH_Docencia, (PanelRRHH_2, new Size(300, 160)) }
             };
 
             if (!configuracionSubPaneles.ContainsKey(button)) return;
@@ -2487,5 +2488,17 @@ namespace SECRON.Views
 
 
         #endregion EventoFormClosing
+
+        private void BtnRRHH_Docencia_GenerarContrato_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_RRHH_Coordinator_File frm = new Frm_RRHH_Coordinator_File();
+            frm.Text = "Ficha del Coordinador";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+            AbrirFormularioConPestana(frm, "Ficha del Coordinador", "CoordinatorManagment");
+        }
     }
 }
