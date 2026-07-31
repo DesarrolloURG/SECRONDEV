@@ -1032,6 +1032,8 @@ namespace SECRON.Views
         {
             try
             {
+                MessageBox.Show(SECRON.Utils.Cls_EmailEncryption.DiagnosticoRutaLlave());
+
                 if (_usuarioSeleccionado == null)
                 {
                     MessageBox.Show("Debe seleccionar un usuario para enviar credenciales", "Validación",
