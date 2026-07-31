@@ -17,9 +17,17 @@ namespace SECRON.Utils
                     return Path.Combine(dataDir, "secron.key");
                 }
             }
-            catch { }
+            catch { /* No corre bajo ClickOnce, usar respaldo */ }
 
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secron.key");
+        }
+
+        public static string DiagnosticoRutaLlave()
+        {
+            string ruta = ObtenerRutaLlave();
+            bool existe = File.Exists(ruta);
+            bool esClickOnce = System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed;
+            return $"IsNetworkDeployed: {esClickOnce}\nRuta calculada: {ruta}\n¿Existe el archivo?: {existe}";
         }
 
         private static byte[] ObtenerLlave()
