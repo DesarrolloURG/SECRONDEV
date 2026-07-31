@@ -5,20 +5,31 @@ using System.Text;
 
 namespace SECRON.Utils
 {
-    // Cifrado/descifrado AES-256 para credenciales sensibles (ej. contraseña SMTP).
-    // La llave se lee de un archivo externo al repositorio (ver ObtenerLlave()).
-    // NO usar para contraseñas de usuarios (eso sigue siendo BCrypt, irreversible).
     internal static class Cls_EmailEncryption
     {
-        // Ruta del archivo de llave, distribuido junto al instalador (no versionado en Git)
-        private static readonly string RutaLlave = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secron.key");
+        private static string ObtenerRutaLlave()
+        {
+            try
+            {
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+                {
+                    string dataDir = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.DataDirectory;
+                    return Path.Combine(dataDir, "secron.key");
+                }
+            }
+            catch { }
+
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secron.key");
+        }
 
         private static byte[] ObtenerLlave()
         {
-            if (!File.Exists(RutaLlave))
-                throw new FileNotFoundException("No se encontró el archivo de llave de cifrado (secron.key). Verifique la instalación.");
+            string rutaLlave = ObtenerRutaLlave();
 
-            string llaveBase64 = File.ReadAllText(RutaLlave).Trim();
+            if (!File.Exists(rutaLlave))
+                throw new FileNotFoundException($"No se encontró el archivo de llave de cifrado en '{rutaLlave}'. Verifique la instalación.");
+
+            string llaveBase64 = File.ReadAllText(rutaLlave).Trim();
             byte[] llave = Convert.FromBase64String(llaveBase64);
 
             if (llave.Length != 32) // 256 bits
@@ -27,7 +38,6 @@ namespace SECRON.Utils
             return llave;
         }
 
-        // Cifra un texto plano y devuelve Base64 (IV + datos cifrados concatenados)
         public static string Encrypt(string plainText)
         {
             byte[] key = ObtenerLlave();
@@ -54,7 +64,6 @@ namespace SECRON.Utils
             }
         }
 
-        // Descifra un valor generado por Encrypt()
         public static string Decrypt(string cipherTextBase64)
         {
             byte[] key = ObtenerLlave();
@@ -78,7 +87,6 @@ namespace SECRON.Utils
             }
         }
 
-        // Genera una llave AES-256 aleatoria en Base64 (ejecutar UNA VEZ para crear secron.key)
         public static string GenerarNuevaLlave()
         {
             using (Aes aes = Aes.Create())
