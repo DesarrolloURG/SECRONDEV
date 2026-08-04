@@ -1789,6 +1789,7 @@ namespace SECRON.Views
 
             try
             {
+                CargarDocentes();       
                 AplicarFiltros(sender, e);
             }
             catch (Exception ex)
@@ -1812,19 +1813,12 @@ namespace SECRON.Views
                 _ultimoTextoBusqueda = "";
 
                 // Restablecer todos los filtros a su estado inicial
-                Filtro1.SelectedIndex = 0;  // TODAS LAS ESPECIALIZACIONES
-                Filtro2.SelectedIndex = 0;  // TODOS
-                Filtro3.SelectedIndex = 0;  // TODOS
+                Filtro1.SelectedIndex = 0;
+                Filtro2.SelectedIndex = 0;
+                Filtro3.SelectedIndex = 0;
 
-                // Recargar la lista completa sin filtros
-                _listaCompletaFiltrada = docentesList;
-                totalRegistros = _listaCompletaFiltrada.Count;
-                totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
-
-                if (totalPaginas == 0) totalPaginas = 1;
-                paginaActual = 1;
-
-                MostrarPagina(paginaActual);
+                // Recargar desde BD (ya no solo reasignar la lista vieja en memoria)
+                CargarDocentes();
             }
             catch (Exception ex)
             {

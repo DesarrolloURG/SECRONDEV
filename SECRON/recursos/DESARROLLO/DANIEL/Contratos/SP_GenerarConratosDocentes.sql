@@ -8,7 +8,7 @@
 -- (para llenar el ComboBox_Sede). No depende del catálogo real de
 -- Locations -- es texto libre tal como se cargó en el Excel.
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_Cursos_SelectSedes
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_Cursos_SelectSedes
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -27,7 +27,7 @@ GO
 -- importar en qué sede -- este SP solo sirve para UBICARLO en
 -- el grid filtrado por sede.
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_SelectPorSede
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_SelectPorSede
     @AcademicLocation VARCHAR(150)
 AS
 BEGIN

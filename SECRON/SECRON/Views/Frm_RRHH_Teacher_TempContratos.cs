@@ -432,6 +432,14 @@ namespace SECRON.Views
                         contractCodesCreados[fila.DPI] = contractCode;
                         fila.ContractCode = contractCode;
                         docentesNuevos++;
+
+                        teacherTempId = nuevoId;
+                        teacherTempIdsCreados[fila.DPI] = nuevoId;
+                        contractCodesCreados[fila.DPI] = contractCode;
+                        fila.ContractCode = contractCode;
+                        docentesNuevos++;
+
+                        SincronizarConTeachers(fila, teacherTempId);
                     }
                     else // DETALLE
                     {
@@ -595,7 +603,62 @@ namespace SECRON.Views
 
         #endregion
         #region Helpers
+        // Upsert hacia Teachers: si el DPI ya existe en Teachers, solo se vincula
+        // (NO se sobreescribe su ficha real); si no existe, se crea un registro básico
+        // con lo que trae el Excel — el resto de campos (título académico, banco, rutas
+        // de archivos, etc.) se completa después manualmente en Ficha Docente.
+        // Se ejecuta solo para filas MAESTRO (una vez por docente nuevo del lote).
+        private void SincronizarConTeachers(FilaImportacion fila, int teacherTempId)
+        {
+            try
+            {
+                var teacherExistente = Ctrl_Teachers.ObtenerDocentePorDPI(fila.DPI);
+                int teacherId;
 
+                if (teacherExistente != null)
+                {
+                    teacherId = teacherExistente.TeacherId;
+                }
+                else
+                {
+                    int? locationId = Ctrl_Locations.ObtenerLocationIdPorNombreExacto(fila.AcademicLocation);
+                    if (locationId == null)
+                    {
+                        // No debería pasar (la sede ya se validó al leer el Excel), pero se
+                        // protege por si la sede fue desactivada entre la lectura y la importación.
+                        return;
+                    }
+
+                    var nuevoDocente = new Mdl_Teachers
+                    {
+                        TeacherCode = Ctrl_Teachers.ObtenerProximoCodigoDocente(),
+                        FullName = $"{fila.FirstName} {fila.LastName}",
+                        DPI = fila.DPI,
+                        NIT = fila.NIT,
+                        Address = fila.Address,
+                        CollegiateNumber = fila.CollegiateNumber,
+                        LocationId = locationId.Value,
+                        CreatedBy = UserData?.UserId
+                    };
+
+                    int filasAfectadas = Ctrl_Teachers.RegistrarDocente(nuevoDocente);
+                    if (filasAfectadas <= 0)
+                        return; // Se deja sin vincular; no se marca la fila como error porque
+                                // el contrato en DocentesTemporal ya se generó correctamente.
+
+                    var creado = Ctrl_Teachers.ObtenerDocentePorDPI(fila.DPI);
+                    if (creado == null) return;
+                    teacherId = creado.TeacherId;
+                }
+
+                Ctrl_DocentesTemporal.UpdateTeacherId(teacherTempId, teacherId, UserData?.UserId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL SINCRONIZAR CON FICHA DOCENTE (TEACHERS): " + ex.Message,
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private decimal? ParseDecimal(string valor)
         {
             if (string.IsNullOrWhiteSpace(valor)) return null;
@@ -615,7 +678,7 @@ namespace SECRON.Views
         }
 
         #endregion
-
+        #region EmisionDeContratos
         private void Btn_Contratos_Click(object sender, EventArgs e)
         {
             try
@@ -632,5 +695,6 @@ namespace SECRON.Views
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        #endregion EmisionDeContratos
     }
 }

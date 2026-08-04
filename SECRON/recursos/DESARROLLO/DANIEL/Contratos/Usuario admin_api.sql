@@ -3,8 +3,8 @@ CREATE LOGIN admin_api WITH PASSWORD = 'Dante2026*', CHECK_POLICY = OFF;
 GO
 
 -- 2. Usuario dentro de la base de datos SECRONDEV
-USE SECRONDEV;
-GO
+
+
 CREATE USER admin_api FOR LOGIN admin_api;
 GO
 

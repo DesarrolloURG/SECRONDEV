@@ -22,6 +22,10 @@ namespace SECRON.Models
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
 
+        // Enlace hacia Teachers (NULL si aún no se ha sincronizado, o si es un
+        // registro anterior a esta funcionalidad)
+        public int? TeacherId { get; set; }
+
         // Propiedad de conveniencia (viene de SP_DocentesTemporal_Select, no es columna de la tabla)
         public int TotalCursos { get; set; }
     }

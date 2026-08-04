@@ -193,5 +193,32 @@ namespace SECRON.Controllers
                 TotalCursos = Convert.ToInt32(reader["TotalCursos"])
             };
         }
+
+        // Actualiza el TeacherId (enlace hacia Teachers) de un registro de DocentesTemporal.
+        // Devuelve @rows (1 = éxito, 0 = error).
+        public static int UpdateTeacherId(int teacherTempId, int teacherId, int? usuarioId)
+        {
+            try
+            {
+                using (SqlConnection conn = DatabaseConfig.GetConnection())
+                using (SqlCommand cmd = new SqlCommand("SP_DocentesTemporal_UpdateTeacherId", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TeacherTempId", teacherTempId);
+                    cmd.Parameters.AddWithValue("@TeacherId", teacherId);
+                    cmd.Parameters.AddWithValue("@UsuarioId", (object)usuarioId ?? DBNull.Value);
+
+                    conn.Open();
+                    object resultado = cmd.ExecuteScalar();
+                    return resultado != null ? Convert.ToInt32(resultado) : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL VINCULAR DOCENTE CON TEACHERS: " + ex.Message,
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

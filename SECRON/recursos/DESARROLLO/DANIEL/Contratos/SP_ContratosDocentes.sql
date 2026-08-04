@@ -7,7 +7,7 @@
 -- Genera el próximo código UR2-CSP-XXX-AAAA. El consecutivo
 -- se reinicia cada año (se filtra por @Anio).
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_ObtenerProximoCodigo
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_ObtenerProximoCodigo
     @Anio INT
 AS
 BEGIN
@@ -22,7 +22,7 @@ BEGIN
 
     SET @UltimoNumero = ISNULL(@UltimoNumero, 0) + 1;
 
-    SELECT 'UR2-CSP-' + RIGHT('000' + CAST(@UltimoNumero AS VARCHAR(10)), 3) + '-' + @Sufijo AS ProximoCodigo;
+    SELECT 'UR2-CSP-' + RIGHT('0000' + CAST(@UltimoNumero AS VARCHAR(10)), 4) + '-' + @Sufijo AS ProximoCodigo;
 END
 GO
 
@@ -31,7 +31,7 @@ GO
 -- Verifica si ya existe un docente (maestro) cargado con ese DPI.
 -- Devuelve TeacherTempId y ContractCode si existe (0 filas si no).
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_ObtenerPorDPI
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_ObtenerPorDPI
     @DPI VARCHAR(13)
 AS
 BEGIN
@@ -49,7 +49,7 @@ GO
 -- combinando lo que ya existe en BD (incluye lo insertado en
 -- el mismo lote de importación, ya que se inserta fila por fila).
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_Cursos_ContarPorDPI
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_Cursos_ContarPorDPI
     @DPI VARCHAR(13)
 AS
 BEGIN
@@ -71,7 +71,7 @@ GO
 -- Se conserva el bloque try/catch/transacción estándar; en error
 -- devuelve 0.
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_Insert
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_Insert
     @ContractCode     VARCHAR(20),
     @DPI              VARCHAR(13),
     @FirstName        VARCHAR(150),
@@ -119,7 +119,7 @@ GO
 -- Inserta un curso (detalle) enlazado a un docente ya existente.
 -- Sigue el patrón estándar: SELECT @rows vía ExecuteScalar.
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_Cursos_Insert
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_Cursos_Insert
     @TeacherTempId    INT,
     @AcademicLocation VARCHAR(150),
     @CourseToTeach    VARCHAR(200),
@@ -156,7 +156,7 @@ GO
 -- de cursos que tiene cada uno. Para pantalla de consulta /
 -- selección previo a generar el contrato.
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_Select
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_Select
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -176,7 +176,7 @@ GO
 -- SP_DocentesTemporal_Cursos_SelectByTeacherTempId
 -- Lista los cursos (detalle) de un docente específico.
 -- ---------------------------------------------------------
-CREATE PROCEDURE SP_DocentesTemporal_Cursos_SelectByTeacherTempId
+CREATE OR ALTER PROCEDURE SP_DocentesTemporal_Cursos_SelectByTeacherTempId
     @TeacherTempId INT
 AS
 BEGIN
