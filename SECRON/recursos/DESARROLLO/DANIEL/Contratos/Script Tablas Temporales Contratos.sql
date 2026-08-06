@@ -25,6 +25,13 @@ CREATE TABLE DocentesTemporal (
     CONSTRAINT UQ_DocentesTemporal_ContractCode UNIQUE (ContractCode)
 );
 GO
+ALTER TABLE DocentesTemporal ADD TeacherId INT NULL;
+GO
+
+ALTER TABLE DocentesTemporal
+    ADD CONSTRAINT FK_DocentesTemporal_Teacher FOREIGN KEY (TeacherId)
+        REFERENCES Teachers (TeacherId);
+GO
 
 CREATE TABLE DocentesTemporal_Cursos (
     TeacherTempCourseId INT IDENTITY(1,1)   NOT NULL,

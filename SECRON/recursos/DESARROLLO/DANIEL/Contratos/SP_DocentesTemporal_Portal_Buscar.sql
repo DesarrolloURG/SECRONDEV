@@ -1,4 +1,3 @@
-	USE SECRONDEV;
 GO
 
 SELECT DB_NAME() AS BaseActual;

@@ -90,10 +90,12 @@
             this.Lbl_Subtitulo1 = new System.Windows.Forms.Label();
             this.Lbl_TituloPanelIzquierdo = new System.Windows.Forms.Label();
             this.Panel_Superior = new System.Windows.Forms.Panel();
+            this.Btn_PeriodosContratos = new System.Windows.Forms.Button();
+            this.Btn_Contratos = new System.Windows.Forms.Button();
             this.Btn_Import = new System.Windows.Forms.Button();
             this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
-            this.Btn_Contratos = new System.Windows.Forms.Button();
+            this.Lbl_Info = new System.Windows.Forms.Label();
             this.Panel_Derecho.SuspendLayout();
             this.PanelTabla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
@@ -173,15 +175,16 @@
             this.Panel_Busqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_Busqueda.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Busqueda.Controls.Add(this.Lbl_Info);
             this.Panel_Busqueda.Controls.Add(this.Btn_CleanSearch);
             this.Panel_Busqueda.Controls.Add(this.Filtro3);
             this.Panel_Busqueda.Controls.Add(this.Filtro2);
             this.Panel_Busqueda.Controls.Add(this.Btn_Search);
             this.Panel_Busqueda.Controls.Add(this.Filtro1);
             this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
-            this.Panel_Busqueda.Location = new System.Drawing.Point(22, 20);
+            this.Panel_Busqueda.Location = new System.Drawing.Point(22, 10);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(725, 120);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(725, 152);
             this.Panel_Busqueda.TabIndex = 53;
             // 
             // Btn_CleanSearch
@@ -190,7 +193,7 @@
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(675, 20);
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(675, 12);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(30, 31);
             this.Btn_CleanSearch.TabIndex = 71;
@@ -201,7 +204,7 @@
             // Filtro3
             // 
             this.Filtro3.FormattingEnabled = true;
-            this.Filtro3.Location = new System.Drawing.Point(486, 67);
+            this.Filtro3.Location = new System.Drawing.Point(486, 49);
             this.Filtro3.Name = "Filtro3";
             this.Filtro3.Size = new System.Drawing.Size(219, 28);
             this.Filtro3.TabIndex = 70;
@@ -209,7 +212,7 @@
             // Filtro2
             // 
             this.Filtro2.FormattingEnabled = true;
-            this.Filtro2.Location = new System.Drawing.Point(252, 67);
+            this.Filtro2.Location = new System.Drawing.Point(252, 49);
             this.Filtro2.Name = "Filtro2";
             this.Filtro2.Size = new System.Drawing.Size(219, 28);
             this.Filtro2.TabIndex = 69;
@@ -220,7 +223,7 @@
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(568, 20);
+            this.Btn_Search.Location = new System.Drawing.Point(568, 12);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(101, 31);
             this.Btn_Search.TabIndex = 54;
@@ -232,7 +235,7 @@
             // Filtro1
             // 
             this.Filtro1.FormattingEnabled = true;
-            this.Filtro1.Location = new System.Drawing.Point(16, 67);
+            this.Filtro1.Location = new System.Drawing.Point(16, 49);
             this.Filtro1.Name = "Filtro1";
             this.Filtro1.Size = new System.Drawing.Size(219, 28);
             this.Filtro1.TabIndex = 68;
@@ -242,7 +245,7 @@
             this.Txt_ValorBuscado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_ValorBuscado.Location = new System.Drawing.Point(16, 23);
+            this.Txt_ValorBuscado.Location = new System.Drawing.Point(16, 12);
             this.Txt_ValorBuscado.MaxLength = 15;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
             this.Txt_ValorBuscado.Size = new System.Drawing.Size(540, 27);
@@ -802,6 +805,7 @@
             // Panel_Superior
             // 
             this.Panel_Superior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
+            this.Panel_Superior.Controls.Add(this.Btn_PeriodosContratos);
             this.Panel_Superior.Controls.Add(this.Btn_Contratos);
             this.Panel_Superior.Controls.Add(this.Btn_Import);
             this.Panel_Superior.Controls.Add(this.Btn_Export);
@@ -811,6 +815,38 @@
             this.Panel_Superior.Name = "Panel_Superior";
             this.Panel_Superior.Size = new System.Drawing.Size(1184, 55);
             this.Panel_Superior.TabIndex = 6;
+            // 
+            // Btn_PeriodosContratos
+            // 
+            this.Btn_PeriodosContratos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_PeriodosContratos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_PeriodosContratos.Image = global::SECRON.Properties.Resources.TemplateBlack25x25;
+            this.Btn_PeriodosContratos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_PeriodosContratos.Location = new System.Drawing.Point(543, 13);
+            this.Btn_PeriodosContratos.Name = "Btn_PeriodosContratos";
+            this.Btn_PeriodosContratos.Size = new System.Drawing.Size(236, 30);
+            this.Btn_PeriodosContratos.TabIndex = 55;
+            this.Btn_PeriodosContratos.Text = "PERIODO DE CONTRATOS";
+            this.Btn_PeriodosContratos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_PeriodosContratos.UseVisualStyleBackColor = true;
+            this.Btn_PeriodosContratos.Click += new System.EventHandler(this.Btn_PeriodosContratos_Click);
+            // 
+            // Btn_Contratos
+            // 
+            this.Btn_Contratos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Contratos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Contratos.Image = global::SECRON.Properties.Resources.CheckNegro25x25;
+            this.Btn_Contratos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Contratos.Location = new System.Drawing.Point(785, 13);
+            this.Btn_Contratos.Name = "Btn_Contratos";
+            this.Btn_Contratos.Size = new System.Drawing.Size(137, 30);
+            this.Btn_Contratos.TabIndex = 54;
+            this.Btn_Contratos.Text = "CONTRATOS";
+            this.Btn_Contratos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Contratos.UseVisualStyleBackColor = true;
+            this.Btn_Contratos.Click += new System.EventHandler(this.Btn_Contratos_Click);
             // 
             // Btn_Import
             // 
@@ -856,21 +892,19 @@
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "FICHA DEL DOCENTE";
             // 
-            // Btn_Contratos
+            // Lbl_Info
             // 
-            this.Btn_Contratos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Contratos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Contratos.Image = global::SECRON.Properties.Resources.CheckNegro25x25;
-            this.Btn_Contratos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Contratos.Location = new System.Drawing.Point(785, 13);
-            this.Btn_Contratos.Name = "Btn_Contratos";
-            this.Btn_Contratos.Size = new System.Drawing.Size(137, 30);
-            this.Btn_Contratos.TabIndex = 54;
-            this.Btn_Contratos.Text = "CONTRATOS";
-            this.Btn_Contratos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Contratos.UseVisualStyleBackColor = true;
-            this.Btn_Contratos.Click += new System.EventHandler(this.Btn_Contratos_Click);
+            this.Lbl_Info.AutoSize = true;
+            this.Lbl_Info.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Info.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Info.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
+            this.Lbl_Info.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Info.Location = new System.Drawing.Point(12, 101);
+            this.Lbl_Info.Name = "Lbl_Info";
+            this.Lbl_Info.Size = new System.Drawing.Size(497, 19);
+            this.Lbl_Info.TabIndex = 72;
+            this.Lbl_Info.Text = "       Para eliminar documentos, clic al estado del archivo para removerlo";
+            this.Lbl_Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Frm_RRHH_Teacher_File
             // 
@@ -975,5 +1009,7 @@
         private System.Windows.Forms.ComboBox ComboBox_Location;
         private System.Windows.Forms.Label Lbl_Location;
         private System.Windows.Forms.Button Btn_Contratos;
+        private System.Windows.Forms.Button Btn_PeriodosContratos;
+        private System.Windows.Forms.Label Lbl_Info;
     }
 }

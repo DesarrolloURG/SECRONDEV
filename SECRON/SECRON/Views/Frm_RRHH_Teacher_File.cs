@@ -38,6 +38,7 @@ namespace SECRON.Views
 
                 // Configuraciones visuales primero
                 ConfigurarTabIndexYFocus();
+                ConfigurarLabelInformativas();
                 ConfigurarPlaceHoldersTextbox();
                 ConfigurarMaxLengthTextBox();
                 ConfigurarComboBoxes();
@@ -89,6 +90,19 @@ namespace SECRON.Views
             };
         }
         #endregion PropiedadesIniciales
+        #region ConfigurarlabelsInformativas
+        public void ConfigurarLabelInformativas()
+        {
+            Lbl_Info.AutoSize = false;
+            Lbl_Info.Size = new Size(700, 40);
+            Lbl_Info.Text = "        Haz clic en el icono de ESTADO (verde o rojo) de un documento para eliminar el archivo vinculado al docente.";
+            Lbl_Info.BackColor = Color.FromArgb(217, 237, 247);
+            Lbl_Info.ForeColor = Color.FromArgb(31, 45, 61);
+            Lbl_Info.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            Lbl_Info.Padding = new Padding(10, 8, 10, 8);
+            Lbl_Info.BorderStyle = BorderStyle.FixedSingle;
+        }
+        #endregion ConfigurarlabelsInformativas
         #region ConfigurarTextBox
         // Configura las longitudes máximas permitidas para cada TextBox
         private void ConfigurarMaxLengthTextBox()
@@ -963,18 +977,68 @@ namespace SECRON.Views
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        // Nombre amigable del documento para mostrar en cuadros de diálogo
+        private string NombreVisiblePorDoc(string doc)
+        {
+            switch (doc)
+            {
+                case "DPI": return "DPI";
+                case "Titulos": return "TÍTULO";
+                case "RTU": return "RTU";
+                case "Colegiado": return "COLEGIADO";
+                case "RENAS": return "RENAS";
+                case "AntPoliciacos": return "ANTECEDENTES POLICIACOS";
+                case "AntPenales": return "ANTECEDENTES PENALES";
+                case "CV": return "CV";
+                case "ContratoFirmado": return "CONTRATO FIRMADO";
+                default: return doc.ToUpper();
+            }
+        }
         private void Tabla_CellClick_Archivos(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
             string colName = Tabla.Columns[e.ColumnIndex].Name;
-            if (!colName.StartsWith("ColAbrir_") && !colName.StartsWith("ColCargar_")) return;
+            if (!colName.StartsWith("ColAbrir_") && !colName.StartsWith("ColCargar_") && !colName.StartsWith("ColEstado_")) return;
 
             var docente = Tabla.Rows[e.RowIndex].DataBoundItem as Mdl_Teachers;
             if (docente == null) return;
 
             int teacherId = docente.TeacherId;
+
+            // ===== ELIMINAR VÍNCULO DE ARCHIVO (clic en icono de ESTADO, verde o rojo) =====
+            if (colName.StartsWith("ColEstado_"))
+            {
+                string doc = colName.Substring("ColEstado_".Length);
+                string campo = "FilePath_" + doc;
+                string rutaActual = ObtenerRutaPorDoc(docente, doc);
+                string nombreDoc = NombreVisiblePorDoc(doc);
+
+                if (string.IsNullOrWhiteSpace(rutaActual))
+                {
+                    MessageBox.Show("ESTE DOCENTE NO TIENE NINGÚN ARCHIVO VINCULADO EN ESTE CAMPO.", "AVISO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (MessageBox.Show($"¿DESEAS ELIMINAR EL {nombreDoc} VINCULADO AL DOCENTE?",
+                    "CONFIRMAR", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+
+                bool ok = Ctrl_Teachers.ActualizarFilePathDocente(teacherId, campo, null, UserData.UserId);
+                if (ok)
+                {
+                    MessageBox.Show("ARCHIVO DESVINCULADO CORRECTAMENTE.", "ÉXITO",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarDocentes();
+                }
+                else
+                {
+                    MessageBox.Show("NO SE PUDO DESVINCULAR EL ARCHIVO.", "ERROR",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return;
+            }
 
             // ===== ABRIR ARCHIVO =====
             if (colName.StartsWith("ColAbrir_"))
@@ -1897,5 +1961,22 @@ namespace SECRON.Views
             }
         }
         #endregion ContratosTemporal
+
+        private void Btn_PeriodosContratos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (Frm_RRHH_Teacher_ContractPeriod frm = new Frm_RRHH_Teacher_ContractPeriod())
+                {
+                    frm.UserData = UserData;
+                    frm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ABRIR EL FORMULARIO DE PERIODO DISPONIBLE DE CONTRATOS: " + ex.Message,
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

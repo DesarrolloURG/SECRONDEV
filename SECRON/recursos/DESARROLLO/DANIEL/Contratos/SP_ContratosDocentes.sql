@@ -189,3 +189,29 @@ BEGIN
     ORDER BY TeacherTempCourseId;
 END
 GO
+
+-- ---------------------------------------------------------
+-- SP para eliminación de periodo de tiempo o periodo de fechas de contrataciones activa
+-- ---------------------------------------------------------
+CREATE OR ALTER PROCEDURE SP_Portal_Contratos_Vigencia_Delete
+    @VigenciaId INT
+AS
+BEGIN
+    SET NOCOUNT ON; SET XACT_ABORT ON;
+
+    BEGIN TRANSACTION
+    BEGIN TRY
+        DELETE FROM Portal_Contratos_Vigencia
+        WHERE VigenciaId = @VigenciaId;
+
+        DECLARE @rows INT = @@ROWCOUNT;
+        COMMIT TRANSACTION; SELECT @rows;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION; SELECT 0;
+    END CATCH
+END
+GO
+
+GRANT EXECUTE ON dbo.SP_Portal_Contratos_Vigencia_Delete TO admin_api;
+GO

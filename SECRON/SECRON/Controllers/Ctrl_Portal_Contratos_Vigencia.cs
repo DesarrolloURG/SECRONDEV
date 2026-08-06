@@ -139,5 +139,29 @@ namespace SECRON.Controllers
                 ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["ModifiedDate"])
             };
         }
+
+        // Elimina físicamente un periodo (solo debe usarse si NO está activo; la validación la hace el formulario)
+        public static int Delete(int vigenciaId)
+        {
+            try
+            {
+                using (SqlConnection conn = DatabaseConfig.GetConnection())
+                using (SqlCommand cmd = new SqlCommand("SP_Portal_Contratos_Vigencia_Delete", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@VigenciaId", vigenciaId);
+
+                    conn.Open();
+                    object resultado = cmd.ExecuteScalar();
+                    return resultado != null ? Convert.ToInt32(resultado) : 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ELIMINAR PERIODO: " + ex.Message,
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

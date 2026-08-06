@@ -573,6 +573,12 @@
     <Compile Include="Views\Frm_RRHH_Teachers_TempGenerarContratos.Designer.cs">
       <DependentUpon>Frm_RRHH_Teachers_TempGenerarContratos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_RRHH_Teacher_ContractPeriod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_RRHH_Teacher_ContractPeriod.Designer.cs">
+      <DependentUpon>Frm_RRHH_Teacher_ContractPeriod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_RRHH_Teacher_TempContratos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -850,6 +856,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_RRHH_Teachers_TempGenerarContratos.resx">
       <DependentUpon>Frm_RRHH_Teachers_TempGenerarContratos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_RRHH_Teacher_ContractPeriod.resx">
+      <DependentUpon>Frm_RRHH_Teacher_ContractPeriod.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_RRHH_Teacher_TempContratos.resx">
       <DependentUpon>Frm_RRHH_Teacher_TempContratos.cs</DependentUpon>
