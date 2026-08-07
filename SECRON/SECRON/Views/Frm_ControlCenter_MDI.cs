@@ -1968,11 +1968,27 @@ namespace SECRON.Views
         }
         private void BtnProcesosAcademicos_PensumCarreras_Click(object sender, EventArgs e)
         {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_AcademicProcesses_CareerProgram frm = new Frm_AcademicProcesses_CareerProgram();
+            frm.Text = "PENSUM de Carreras";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
 
+            AbrirFormularioConPestana(frm, "PENSUM de Carreras", "CareerProgram");
         }
         private void BtnProcesosAcademicos_PensumCursos_Click(object sender, EventArgs e)
         {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_AcademicProcesses_CoursesProgram frm = new Frm_AcademicProcesses_CoursesProgram();
+            frm.Text = "PENSUM de Cursos";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
 
+            AbrirFormularioConPestana(frm, "PENSUM de Carreras", "CareerProgram");
         }
         private void BtnProcesosAcademicos_TarifasCursos_Click(object sender, EventArgs e)
         {

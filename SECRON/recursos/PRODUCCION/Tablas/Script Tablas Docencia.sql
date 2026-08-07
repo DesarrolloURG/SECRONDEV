@@ -156,6 +156,10 @@ CREATE TABLE Courses (
     CONSTRAINT FK_Courses_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
 );
 
+-- CAMPOS NECESARIOS AGREGADOS
+ALTER TABLE Courses ADD Sessions INT NULL;
+ALTER TABLE Courses ADD IsCommon BIT NOT NULL DEFAULT 0;
+
 -- -----------------------------------------------------
 -- 5. TABLA: CareerCourses (Detalle: Cursos de una Carrera)
 -- Qué cursos pertenecen al pensum de cada carrera

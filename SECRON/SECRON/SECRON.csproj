@@ -107,6 +107,10 @@
     <Compile Include="Configuration\DatabaseConfig.cs" />
     <Compile Include="Configuration\NavegadorTabConfig .cs" />
     <Compile Include="Configuration\TabConfig.cs" />
+    <Compile Include="Controllers\Ctrl_Careers.cs" />
+    <Compile Include="Controllers\Ctrl_Courses.cs" />
+    <Compile Include="Models\Mdl_Careers.cs" />
+    <Compile Include="Models\Mdl_Courses.cs" />
     <Compile Include="Utils\Cls_EmailConfigCache.cs" />
     <Compile Include="Controllers\Ctrl_AccountingEntryChecks.cs" />
     <Compile Include="Controllers\Ctrl_AccountingEntryDetails.cs" />
@@ -261,6 +265,30 @@
     <Compile Include="Utils\Cls_ActivityMessageFilter.cs" />
     <Compile Include="Utils\Cls_EmailEncryption.cs" />
     <Compile Include="Utils\Cls_EmailService.cs" />
+    <Compile Include="Views\Frm_AcademicProcesses_CareerProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CareerProgram.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CareerProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CareerProgram_Import.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CareerProgram_Import.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CareerProgram_Import.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CoursesProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CoursesProgram.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CoursesProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CoursesProgram_Import.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CoursesProgram_Import.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CoursesProgram_Import.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_Accounts_Managment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -701,6 +729,18 @@
     <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.Designer.cs">
       <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CareerProgram.resx">
+      <DependentUpon>Frm_AcademicProcesses_CareerProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CareerProgram_Import.resx">
+      <DependentUpon>Frm_AcademicProcesses_CareerProgram_Import.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CoursesProgram.resx">
+      <DependentUpon>Frm_AcademicProcesses_CoursesProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CoursesProgram_Import.resx">
+      <DependentUpon>Frm_AcademicProcesses_CoursesProgram_Import.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Accounts_Managment.resx">
       <DependentUpon>Frm_Accounts_Managment.cs</DependentUpon>
     </EmbeddedResource>
