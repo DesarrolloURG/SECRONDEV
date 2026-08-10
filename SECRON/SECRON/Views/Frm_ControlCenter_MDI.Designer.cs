@@ -37,6 +37,7 @@
             this.BtnRRHH_Trabajadores = new System.Windows.Forms.Button();
             this.PanelUsers = new System.Windows.Forms.Panel();
             this.Btn_ITSM_Technology = new System.Windows.Forms.Button();
+            this.Btn_AuditLogs = new System.Windows.Forms.Button();
             this.BtnUsersRolesPermisos = new System.Windows.Forms.Button();
             this.BtnUsersManagment = new System.Windows.Forms.Button();
             this.PanelSuppliers = new System.Windows.Forms.Panel();
@@ -295,12 +296,13 @@
             // PanelUsers
             // 
             this.PanelUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelUsers.Controls.Add(this.Btn_AuditLogs);
             this.PanelUsers.Controls.Add(this.Btn_ITSM_Technology);
             this.PanelUsers.Controls.Add(this.BtnUsersRolesPermisos);
             this.PanelUsers.Controls.Add(this.BtnUsersManagment);
             this.PanelUsers.Location = new System.Drawing.Point(220, 1);
             this.PanelUsers.Name = "PanelUsers";
-            this.PanelUsers.Size = new System.Drawing.Size(300, 120);
+            this.PanelUsers.Size = new System.Drawing.Size(300, 160);
             this.PanelUsers.TabIndex = 4;
             this.PanelUsers.Visible = false;
             // 
@@ -323,6 +325,26 @@
             this.Btn_ITSM_Technology.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_ITSM_Technology.UseVisualStyleBackColor = false;
             this.Btn_ITSM_Technology.Click += new System.EventHandler(this.Btn_ITSM_Technology_Click);
+            // 
+            // Btn_AuditLogs
+            // 
+            this.Btn_AuditLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.Btn_AuditLogs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Btn_AuditLogs.FlatAppearance.BorderSize = 0;
+            this.Btn_AuditLogs.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.Btn_AuditLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Btn_AuditLogs.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_AuditLogs.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Btn_AuditLogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_AuditLogs.Location = new System.Drawing.Point(0, 105);
+            this.Btn_AuditLogs.Margin = new System.Windows.Forms.Padding(0);
+            this.Btn_AuditLogs.Name = "Btn_AuditLogs";
+            this.Btn_AuditLogs.Size = new System.Drawing.Size(300, 35);
+            this.Btn_AuditLogs.TabIndex = 48;
+            this.Btn_AuditLogs.Text = "LOGS AUDITORIA";
+            this.Btn_AuditLogs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_AuditLogs.UseVisualStyleBackColor = false;
+            this.Btn_AuditLogs.Click += new System.EventHandler(this.Btn_AuditLogs_Click);
             // 
             // BtnUsersRolesPermisos
             // 
@@ -2547,6 +2569,7 @@
         private System.Windows.Forms.Button BtnWarehouse_Reports;
         private System.Windows.Forms.Button BtnWarehouse_Managment;
         private System.Windows.Forms.Button Btn_ITSM_Technology;
+        private System.Windows.Forms.Button Btn_AuditLogs;
         private System.Windows.Forms.Panel PanelRRHH_1;
         private System.Windows.Forms.Button BtnRRHH_Trabajadores_Ficha;
         private System.Windows.Forms.Button BtnRRHH_Docencia;
