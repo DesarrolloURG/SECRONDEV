@@ -107,8 +107,10 @@
     <Compile Include="Configuration\DatabaseConfig.cs" />
     <Compile Include="Configuration\NavegadorTabConfig .cs" />
     <Compile Include="Configuration\TabConfig.cs" />
+    <Compile Include="Controllers\Ctrl_AuditLogs.cs" />
     <Compile Include="Controllers\Ctrl_Careers.cs" />
     <Compile Include="Controllers\Ctrl_Courses.cs" />
+    <Compile Include="Models\Mdl_AuditLog.cs" />
     <Compile Include="Models\Mdl_Careers.cs" />
     <Compile Include="Models\Mdl_Courses.cs" />
     <Compile Include="Utils\Cls_EmailConfigCache.cs" />
@@ -390,6 +392,12 @@
     </Compile>
     <Compile Include="Views\Frm_ControlCenter_MDI.Designer.cs">
       <DependentUpon>Frm_ControlCenter_MDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_ITSM_AuditLogs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_ITSM_AuditLogs.Designer.cs">
+      <DependentUpon>Frm_ITSM_AuditLogs.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_RRHH_Employee_File.cs">
       <SubType>Form</SubType>
@@ -791,6 +799,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_ControlCenter_MDI.resx">
       <DependentUpon>Frm_ControlCenter_MDI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_ITSM_AuditLogs.resx">
+      <DependentUpon>Frm_ITSM_AuditLogs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_RRHH_Employee_File.resx">
       <DependentUpon>Frm_RRHH_Employee_File.cs</DependentUpon>
