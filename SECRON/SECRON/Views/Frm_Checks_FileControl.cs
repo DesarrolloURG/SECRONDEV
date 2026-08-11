@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.IO;
+using Microsoft.VisualBasic;
 
 namespace SECRON.Views
 {
@@ -1049,7 +1051,7 @@ namespace SECRON.Views
                 this.Cursor = Cursors.WaitCursor;
 
                 // 5️ Generar reporte con configuración personalizada
-                GenerarReporteExcel(todosLosCheques, config, saveFileDialog.FileName);
+                GenerarReporteExcel(todosLosCheques, config, saveFileDialog.FileName, UserData?.FullName);
 
                 this.Cursor = Cursors.Default;
 
@@ -1285,119 +1287,147 @@ namespace SECRON.Views
             }
         }
         private void GenerarReporteExcel(
-        List<Mdl_Checks> cheques,
-        Frm_Checks_FileControl_ReportConfig.ReportColumnConfig config,
-        string rutaArchivo)
+    List<Mdl_Checks> cheques,
+    Frm_Checks_FileControl_ReportConfig.ReportColumnConfig config,
+    string rutaArchivo,
+    string generadoPor)
         {
             var excelApp = new Excel.Application();
             var workbook = excelApp.Workbooks.Add();
             var worksheet = (Excel.Worksheet)workbook.Sheets[1];
             worksheet.Name = "Control de Archivo";
 
-            // ============ ENCABEZADO PRINCIPAL ============
-            worksheet.Cells[1, 1] = "CONTROL DE CHEQUES - ARCHIVO";
             int totalColumnas = ContarColumnasSeleccionadas(config);
-            string rangoTitulo = $"A1:{GetColumnName(totalColumnas)}1";
+            string ultimaColumna = GetColumnName(totalColumnas);
 
-            worksheet.Range[rangoTitulo].Merge();
-            worksheet.Range[rangoTitulo].Font.Size = 16;
-            worksheet.Range[rangoTitulo].Font.Bold = true;
-            worksheet.Range[rangoTitulo].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            worksheet.Range[rangoTitulo].Interior.Color =
-                System.Drawing.ColorTranslator.ToOle(Color.FromArgb(51, 140, 255));
-            worksheet.Range[rangoTitulo].Font.Color =
-                System.Drawing.ColorTranslator.ToOle(Color.White);
+            // ============ COLORES INSTITUCIONALES ============
+            int azulInstitucional = System.Drawing.ColorTranslator.ToOle(Color.FromArgb(31, 56, 100));
+            int azulTotal = System.Drawing.ColorTranslator.ToOle(Color.FromArgb(219, 229, 241));
 
-            // ============ INFORMACIÓN DEL REPORTE ============
-            worksheet.Cells[2, 1] = $"GENERADO POR: {UserData?.FullName?.ToUpper() ?? "SISTEMA"}";
-            worksheet.Cells[3, 1] = $"FECHA: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
-            worksheet.Cells[4, 1] = $"TOTAL CHEQUES: {cheques.Count}";
-
-            worksheet.Range["A2:A4"].Font.Size = 10;
-            worksheet.Range["A2:A4"].Font.Bold = true;
-
-            // ============ AGRUPAR CHEQUES POR MES ============
+            // ============ AGRUPAR CHEQUES POR MES/AÑO ============
             var chequesPorMes = cheques
                 .GroupBy(c => new { c.IssueDate.Year, c.IssueDate.Month })
                 .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
                 .ToList();
 
+            // ============ TÍTULO DINÁMICO SEGÚN AÑO/RANGO DE LOS DATOS EXPORTADOS ============
+            string tituloReporte;
+            if (chequesPorMes.Any())
+            {
+                var primerGrupo = chequesPorMes.First().Key;
+                var ultimoGrupo = chequesPorMes.Last().Key;
+
+                string mesInicio = ObtenerNombreMes(primerGrupo.Month);
+                string mesFin = ObtenerNombreMes(ultimoGrupo.Month);
+
+                if (primerGrupo.Year == ultimoGrupo.Year)
+                {
+                    tituloReporte = (mesInicio == mesFin)
+                        ? $"CONTROL DE CHEQUES EMITIDOS Y TRASLADADOS A CONTABILIDAD DE {mesInicio} DEL AÑO {primerGrupo.Year}"
+                        : $"CONTROL DE CHEQUES EMITIDOS Y TRASLADADOS A CONTABILIDAD DE {mesInicio} A {mesFin} DEL AÑO {primerGrupo.Year}";
+                }
+                else
+                {
+                    tituloReporte = $"CONTROL DE CHEQUES EMITIDOS Y TRASLADADOS A CONTABILIDAD DE {mesInicio} {primerGrupo.Year} A {mesFin} {ultimoGrupo.Year}";
+                }
+            }
+            else
+            {
+                tituloReporte = "CONTROL DE CHEQUES EMITIDOS Y TRASLADADOS A CONTABILIDAD";
+            }
+
+            // ============ LOGO ENCABEZADO ============
+            int filaLogoInicio = 1;
+            int filaLogoFin = 4;
+            string rutaLogoTemporal = null;
+
+            try
+            {
+                var logoImg = SECRON.Properties.Resources.LogoMembretadoEncabezado;
+                rutaLogoTemporal = Path.Combine(Path.GetTempPath(), $"SECRON_Logo_{Guid.NewGuid()}.png");
+                logoImg.Save(rutaLogoTemporal, System.Drawing.Imaging.ImageFormat.Png);
+
+                float anchoLogo = 220f;
+
+                var picture = worksheet.Shapes.AddPicture(
+                    rutaLogoTemporal,
+                    Microsoft.Office.Core.MsoTriState.msoFalse,
+                    Microsoft.Office.Core.MsoTriState.msoTrue,
+                    0, 0, -1, -1); // -1,-1 = respeta el tamaño/proporción original de la imagen
+
+                picture.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
+                picture.Width = anchoLogo; // el alto se recalcula proporcionalmente solo, ya no se estira
+
+                // Centrar el logo horizontalmente respecto al ancho de la tabla, con pequeño ajuste a la derecha
+                Excel.Range rangoAncho = worksheet.Range[$"A1:{ultimaColumna}1"];
+                float anchoTotalPuntos = (float)rangoAncho.Width;
+                float desplazamientoDerecha = 50f; // puntos hacia la derecha del centro exacto — ajusta este valor a tu gusto
+                picture.Left = (float)rangoAncho.Left + Math.Max(0, (anchoTotalPuntos - anchoLogo) / 2f) + desplazamientoDerecha;
+                picture.Top = 5f;
+
+                worksheet.Rows[$"{filaLogoInicio}:{filaLogoFin}"].RowHeight = 22;
+            }
+            catch (Exception)
+            {
+                // Si el logo no se pudo cargar, el reporte continúa sin interrumpirse
+            }
+            finally
+            {
+                if (rutaLogoTemporal != null && File.Exists(rutaLogoTemporal))
+                {
+                    try { File.Delete(rutaLogoTemporal); } catch { }
+                }
+            }
+
+            // ============ FILA DE TÍTULO "CONTROL DE CHEQUES - ARCHIVO" ============
+            int filaTitulo = filaLogoFin + 2;
+            string rangoTitulo = $"A{filaTitulo}:{ultimaColumna}{filaTitulo}";
+
+            worksheet.Cells[filaTitulo, 1] = tituloReporte;
+            worksheet.Range[rangoTitulo].Merge();
+            worksheet.Range[rangoTitulo].Font.Size = 20;
+            worksheet.Range[rangoTitulo].Font.Bold = true;
+            worksheet.Range[rangoTitulo].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Range[rangoTitulo].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            worksheet.Range[rangoTitulo].Interior.Color = azulInstitucional;
+            worksheet.Range[rangoTitulo].Font.Color = System.Drawing.ColorTranslator.ToOle(Color.White);
+            worksheet.Rows[filaTitulo].RowHeight = 32;
+
             // ============ ENCABEZADOS DE COLUMNAS ============
-            int headerRow = 6;
+            int headerRow = filaTitulo + 2;
             int col = 1;
 
-            if (config.IncluirMes)
-            {
-                worksheet.Cells[headerRow, col] = "MES";
-                col++;
-            }
+            if (config.IncluirMes) { worksheet.Cells[headerRow, col] = "MES"; col++; }
+            if (config.IncluirEmitidos) { worksheet.Cells[headerRow, col] = "CHEQUES EMITIDOS"; col++; }
+            if (config.IncluirPendientes) { worksheet.Cells[headerRow, col] = "CHEQUES PENDIENTES DE TRASLADAR A CONTABILIDAD"; col++; }
+            if (config.IncluirPendientesPorcentaje) { worksheet.Cells[headerRow, col] = "PORCENTAJE DE CHEQUES PENDIENTES DE TRASLADAR A CONTABILIDAD %"; col++; }
+            if (config.IncluirTrasladados) { worksheet.Cells[headerRow, col] = "CHEQUES TRASLADADOS A CONTABILIDAD"; col++; }
+            if (config.IncluirTrasladadosPorcentaje) { worksheet.Cells[headerRow, col] = "PORCENTAJE DE CHEQUES TRASLADADOS A CONTABILIDAD %"; col++; }
+            if (config.IncluirRecibidos) { worksheet.Cells[headerRow, col] = "CHEQUES RECIBIDOS EN CONTABILIDAD"; col++; }
+            if (config.IncluirRecibidosPorcentaje) { worksheet.Cells[headerRow, col] = "PORCENTAJE DE CHEQUES RECIBIDOS EN CONTABILIDAD %"; col++; }
+            if (config.IncluirArchivados) { worksheet.Cells[headerRow, col] = "CHEQUES REGISTRADOS Y ARCHIVADOS EN CONTABILIDAD"; col++; }
+            if (config.IncluirArchivadosPorcentaje) { worksheet.Cells[headerRow, col] = "PORCENTAJE DE CHEQUES ARCHIVADOS EN CONTABILIDAD %"; col++; }
 
-            if (config.IncluirEmitidos)
-            {
-                worksheet.Cells[headerRow, col] = "CHEQUES EMITIDOS";
-                col++;
-            }
-
-            if (config.IncluirPendientes)
-            {
-                worksheet.Cells[headerRow, col] = "PENDIENTES";
-                col++;
-            }
-
-            if (config.IncluirPendientesPorcentaje)
-            {
-                worksheet.Cells[headerRow, col] = "PENDIENTES %";
-                col++;
-            }
-
-            if (config.IncluirTrasladados)
-            {
-                worksheet.Cells[headerRow, col] = "TRASLADADOS";
-                col++;
-            }
-
-            if (config.IncluirTrasladadosPorcentaje)
-            {
-                worksheet.Cells[headerRow, col] = "TRASLADADOS %";
-                col++;
-            }
-
-            if (config.IncluirRecibidos)
-            {
-                worksheet.Cells[headerRow, col] = "RECIBIDOS";
-                col++;
-            }
-
-            if (config.IncluirRecibidosPorcentaje)
-            {
-                worksheet.Cells[headerRow, col] = "RECIBIDOS %";
-                col++;
-            }
-
-            if (config.IncluirArchivados)
-            {
-                worksheet.Cells[headerRow, col] = "ARCHIVADOS";
-                col++;
-            }
-
-            if (config.IncluirArchivadosPorcentaje)
-            {
-                worksheet.Cells[headerRow, col] = "ARCHIVADOS %";
-                col++;
-            }
-
-            // Estilo de encabezados
-            string rangoHeader = $"A{headerRow}:{GetColumnName(totalColumnas)}{headerRow}";
+            string rangoHeader = $"A{headerRow}:{ultimaColumna}{headerRow}";
             var headerRange = worksheet.Range[rangoHeader];
             headerRange.Font.Bold = true;
-            headerRange.Font.Size = 11;
+            headerRange.Font.Size = 14;
             headerRange.Font.Color = System.Drawing.ColorTranslator.ToOle(Color.White);
-            headerRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(Color.FromArgb(255, 192, 0));
+            headerRange.Interior.Color = azulInstitucional;
             headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.WrapText = true;
+            worksheet.Rows[headerRow].RowHeight = 70;
 
             // ============ DATOS ============
             int row = headerRow + 1;
+            int filaInicioDatos = row;
+
+            int totalEmitidosGeneral = 0;
+            int totalPendientesGeneral = 0;
+            int totalTrasladadosGeneral = 0;
+            int totalRecibidosGeneral = 0;
+            int totalArchivadosGeneral = 0;
 
             foreach (var grupo in chequesPorMes)
             {
@@ -1405,126 +1435,185 @@ namespace SECRON.Views
 
                 int totalEmitidos = grupo.Count();
 
-                // LÓGICA CORREGIDA DE ESTADOS
-                // PENDIENTE: Solo cuenta cuando está exactamente en estado PENDIENTE (no suma los demás)
                 int pendientes = grupo.Count(c =>
                     string.IsNullOrWhiteSpace(c.FileControl) ||
                     c.FileControl == "PENDIENTE");
 
-                // TRASLADADO: Cuenta TRASLADADO, RECIBIDO y ARCHIVADO
                 int trasladados = grupo.Count(c =>
                     c.FileControl == "TRASLADADO" ||
                     c.FileControl == "RECIBIDO" ||
                     c.FileControl == "ARCHIVADO");
 
-                // RECIBIDO: Cuenta RECIBIDO y ARCHIVADO
                 int recibidos = grupo.Count(c =>
                     c.FileControl == "RECIBIDO" ||
                     c.FileControl == "ARCHIVADO");
 
-                // ARCHIVADO: Solo cuenta ARCHIVADO
-                int archivados = grupo.Count(c =>
-                    c.FileControl == "ARCHIVADO");
+                int archivados = grupo.Count(c => c.FileControl == "ARCHIVADO");
 
-                // Calcular porcentajes
                 double porcPendientes = totalEmitidos > 0 ? (pendientes * 100.0 / totalEmitidos) : 0;
                 double porcTrasladados = totalEmitidos > 0 ? (trasladados * 100.0 / totalEmitidos) : 0;
                 double porcRecibidos = totalEmitidos > 0 ? (recibidos * 100.0 / totalEmitidos) : 0;
                 double porcArchivados = totalEmitidos > 0 ? (archivados * 100.0 / totalEmitidos) : 0;
 
-                // Nombre del mes
+                totalEmitidosGeneral += totalEmitidos;
+                totalPendientesGeneral += pendientes;
+                totalTrasladadosGeneral += trasladados;
+                totalRecibidosGeneral += recibidos;
+                totalArchivadosGeneral += archivados;
+
                 string nombreMes = ObtenerNombreMes(grupo.Key.Month);
 
-                // LLENAR FILA SEGÚN CONFIGURACIÓN EN EL ORDEN CORRECTO
-                if (config.IncluirMes)
-                {
-                    worksheet.Cells[row, col] = nombreMes;
-                    col++;
-                }
+                if (config.IncluirMes) { worksheet.Cells[row, col] = nombreMes; col++; }
+                if (config.IncluirEmitidos) { worksheet.Cells[row, col] = totalEmitidos; col++; }
+                if (config.IncluirPendientes) { worksheet.Cells[row, col] = pendientes; col++; }
+                if (config.IncluirPendientesPorcentaje) { worksheet.Cells[row, col] = $"{porcPendientes:F2}%"; col++; }
+                if (config.IncluirTrasladados) { worksheet.Cells[row, col] = trasladados; col++; }
+                if (config.IncluirTrasladadosPorcentaje) { worksheet.Cells[row, col] = $"{porcTrasladados:F2}%"; col++; }
+                if (config.IncluirRecibidos) { worksheet.Cells[row, col] = recibidos; col++; }
+                if (config.IncluirRecibidosPorcentaje) { worksheet.Cells[row, col] = $"{porcRecibidos:F2}%"; col++; }
+                if (config.IncluirArchivados) { worksheet.Cells[row, col] = archivados; col++; }
+                if (config.IncluirArchivadosPorcentaje) { worksheet.Cells[row, col] = $"{porcArchivados:F2}%"; col++; }
 
-                if (config.IncluirEmitidos)
-                {
-                    worksheet.Cells[row, col] = totalEmitidos;
-                    col++;
-                }
-
-                if (config.IncluirPendientes)
-                {
-                    worksheet.Cells[row, col] = pendientes;
-                    col++;
-                }
-
-                if (config.IncluirPendientesPorcentaje)
-                {
-                    worksheet.Cells[row, col] = $"{porcPendientes:F2}%";
-                    col++;
-                }
-
-                if (config.IncluirTrasladados)
-                {
-                    worksheet.Cells[row, col] = trasladados;
-                    col++;
-                }
-
-                if (config.IncluirTrasladadosPorcentaje)
-                {
-                    worksheet.Cells[row, col] = $"{porcTrasladados:F2}%";
-                    col++;
-                }
-
-                if (config.IncluirRecibidos)
-                {
-                    worksheet.Cells[row, col] = recibidos;
-                    col++;
-                }
-
-                if (config.IncluirRecibidosPorcentaje)
-                {
-                    worksheet.Cells[row, col] = $"{porcRecibidos:F2}%";
-                    col++;
-                }
-
-                if (config.IncluirArchivados)
-                {
-                    worksheet.Cells[row, col] = archivados;
-                    col++;
-                }
-
-                if (config.IncluirArchivadosPorcentaje)
-                {
-                    worksheet.Cells[row, col] = $"{porcArchivados:F2}%";
-                    col++;
-                }
-
-                // Alternar color de filas
                 if (row % 2 == 0)
                 {
-                    worksheet.Range[$"A{row}:{GetColumnName(totalColumnas)}{row}"].Interior.Color =
+                    worksheet.Range[$"A{row}:{ultimaColumna}{row}"].Interior.Color =
                         System.Drawing.ColorTranslator.ToOle(Color.FromArgb(240, 240, 240));
                 }
 
                 row++;
             }
 
-            // ============ FORMATO FINAL ============
-            var dataRange = worksheet.Range[$"A{headerRow}:{GetColumnName(totalColumnas)}{row - 1}"];
+            // ============ FILA TOTAL (negrita) ============
+            int filaTotal = row;
+            col = 1;
+
+            double porcPendientesTotal = totalEmitidosGeneral > 0 ? (totalPendientesGeneral * 100.0 / totalEmitidosGeneral) : 0;
+            double porcTrasladadosTotal = totalEmitidosGeneral > 0 ? (totalTrasladadosGeneral * 100.0 / totalEmitidosGeneral) : 0;
+            double porcRecibidosTotal = totalEmitidosGeneral > 0 ? (totalRecibidosGeneral * 100.0 / totalEmitidosGeneral) : 0;
+            double porcArchivadosTotal = totalEmitidosGeneral > 0 ? (totalArchivadosGeneral * 100.0 / totalEmitidosGeneral) : 0;
+
+            if (config.IncluirMes) { worksheet.Cells[filaTotal, col] = "TOTAL"; col++; }
+            if (config.IncluirEmitidos) { worksheet.Cells[filaTotal, col] = totalEmitidosGeneral; col++; }
+            if (config.IncluirPendientes) { worksheet.Cells[filaTotal, col] = totalPendientesGeneral; col++; }
+            if (config.IncluirPendientesPorcentaje) { worksheet.Cells[filaTotal, col] = $"{porcPendientesTotal:F2}%"; col++; }
+            if (config.IncluirTrasladados) { worksheet.Cells[filaTotal, col] = totalTrasladadosGeneral; col++; }
+            if (config.IncluirTrasladadosPorcentaje) { worksheet.Cells[filaTotal, col] = $"{porcTrasladadosTotal:F2}%"; col++; }
+            if (config.IncluirRecibidos) { worksheet.Cells[filaTotal, col] = totalRecibidosGeneral; col++; }
+            if (config.IncluirRecibidosPorcentaje) { worksheet.Cells[filaTotal, col] = $"{porcRecibidosTotal:F2}%"; col++; }
+            if (config.IncluirArchivados) { worksheet.Cells[filaTotal, col] = totalArchivadosGeneral; col++; }
+            if (config.IncluirArchivadosPorcentaje) { worksheet.Cells[filaTotal, col] = $"{porcArchivadosTotal:F2}%"; col++; }
+
+            string rangoTotal = $"A{filaTotal}:{ultimaColumna}{filaTotal}";
+            worksheet.Range[rangoTotal].Font.Bold = true;
+            worksheet.Range[rangoTotal].Interior.Color = azulTotal;
+            worksheet.Range[rangoTotal].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+            // ============ TAMAÑO DE FUENTE PARA TODO EL CONTENIDO DE LA TABLA (datos + total) ============
+            worksheet.Range[$"A{filaInicioDatos}:{ultimaColumna}{filaTotal}"].Font.Size = 18;
+
+            row = filaTotal + 1;
+
+            // ============ FORMATO DE TABLA ============
+            var dataRange = worksheet.Range[$"A{headerRow}:{ultimaColumna}{filaTotal}"];
             dataRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
             dataRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
 
+            worksheet.Range[$"A{filaInicioDatos}:{ultimaColumna}{filaTotal}"].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
             worksheet.Columns.AutoFit();
 
-            // Congelar paneles
             worksheet.Activate();
             excelApp.ActiveWindow.SplitRow = headerRow;
             excelApp.ActiveWindow.FreezePanes = true;
 
-            // PIE DE PÁGINA
-            worksheet.Cells[row + 1, 1] = "SECRON - Sistema de Control Regional";
-            worksheet.Range[$"A{row + 1}:{GetColumnName(totalColumnas)}{row + 1}"].Merge();
-            worksheet.Range[$"A{row + 1}:{GetColumnName(totalColumnas)}{row + 1}"].Font.Italic = true;
-            worksheet.Range[$"A{row + 1}:{GetColumnName(totalColumnas)}{row + 1}"].Font.Size = 9;
-            worksheet.Range[$"A{row + 1}:{GetColumnName(totalColumnas)}{row + 1}"].HorizontalAlignment =
-                Excel.XlHAlign.xlHAlignCenter;
+            // ============ TEXTO INFORMATIVO Y FECHA ============
+            int filaCaption = row + 1;
+            worksheet.Cells[filaCaption, 1] = "Según información reportada en SECRON por el Departamento Administrativo Financiero";
+            string rangoCaption = $"A{filaCaption}:{ultimaColumna}{filaCaption}";
+            worksheet.Range[rangoCaption].Merge();
+            worksheet.Range[rangoCaption].Font.Italic = true;
+            worksheet.Range[rangoCaption].Font.Color = System.Drawing.ColorTranslator.ToOle(Color.Black);
+            worksheet.Range[rangoCaption].Font.Size = 18;
+            worksheet.Range[rangoCaption].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+            int filaFecha = filaCaption + 2;
+            worksheet.Cells[filaFecha, 1] = $"FECHA: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+            worksheet.Cells[filaFecha, 1].Font.Bold = true;
+            worksheet.Cells[filaFecha, 1].Font.Size = 9;
+
+            // ============ BLOQUE DE FIRMAS (etiqueta a la IZQUIERDA de la línea, no arriba) ============
+            // Reserva 4 columnas para la zona de firma: 1 para la etiqueta + 3 para línea/nombre
+            int columnasZonaFirma = Math.Min(4, totalColumnas);
+            int columnaZonaInicioNum = Math.Max(1, totalColumnas - columnasZonaFirma + 1);
+            int columnaLabelNum = columnaZonaInicioNum;
+            int columnaLineaInicioNum = Math.Min(columnaLabelNum + 1, totalColumnas);
+            string colLabel = GetColumnName(columnaLabelNum);
+            string colLineaInicio = GetColumnName(columnaLineaInicioNum);
+            string colLineaFin = ultimaColumna;
+
+            // GENERADO POR
+            int filaFirma1Linea = filaFecha + 3;
+            int filaFirma1Nombre = filaFirma1Linea + 1;
+
+            string rangoLabel1 = $"{colLabel}{filaFirma1Linea}";
+            worksheet.Cells[filaFirma1Linea, columnaLabelNum] = "Generado por:";
+            worksheet.Range[rangoLabel1].Font.Bold = true;
+            worksheet.Range[rangoLabel1].Font.Size = 18;
+            worksheet.Range[rangoLabel1].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+            worksheet.Range[rangoLabel1].VerticalAlignment = Excel.XlVAlign.xlVAlignBottom;
+
+            string rangoLinea1 = $"{colLineaInicio}{filaFirma1Linea}:{colLineaFin}{filaFirma1Linea}";
+            worksheet.Range[rangoLinea1].Merge();
+            worksheet.Range[rangoLinea1].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            worksheet.Range[rangoLinea1].Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+
+            string rangoNombre1 = $"{colLineaInicio}{filaFirma1Nombre}:{colLineaFin}{filaFirma1Nombre}";
+            worksheet.Range[rangoNombre1].Merge();
+            worksheet.Cells[filaFirma1Nombre, columnaLineaInicioNum] = generadoPor?.ToUpper() ?? "";
+            worksheet.Range[rangoNombre1].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Range[rangoNombre1].Font.Size = 11;
+
+            // CONFRONTADO POR (línea de firma en blanco, el nombre se escribe a mano)
+            int filaFirma2Linea = filaFirma1Nombre + 2;
+            int filaFirma2Nombre = filaFirma2Linea + 1;
+
+            string rangoLabel2 = $"{colLabel}{filaFirma2Linea}";
+            worksheet.Cells[filaFirma2Linea, columnaLabelNum] = "Confrontado por:";
+            worksheet.Range[rangoLabel2].Font.Bold = true;
+            worksheet.Range[rangoLabel2].Font.Size = 18;
+            worksheet.Range[rangoLabel2].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+            worksheet.Range[rangoLabel2].VerticalAlignment = Excel.XlVAlign.xlVAlignBottom;
+
+            string rangoLinea2 = $"{colLineaInicio}{filaFirma2Linea}:{colLineaFin}{filaFirma2Linea}";
+            worksheet.Range[rangoLinea2].Merge();
+            worksheet.Range[rangoLinea2].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            worksheet.Range[rangoLinea2].Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+
+            string rangoNombre2 = $"{colLineaInicio}{filaFirma2Nombre}:{colLineaFin}{filaFirma2Nombre}";
+            worksheet.Range[rangoNombre2].Merge(); // se deja en blanco intencionalmente
+            worksheet.Range[rangoNombre2].Font.Size = 11;
+
+            // VISADO POR (nombre fijo)
+            int filaFirma3Linea = filaFirma2Nombre + 2;
+            int filaFirma3Nombre = filaFirma3Linea + 1;
+
+            string rangoLabel3 = $"{colLabel}{filaFirma3Linea}";
+            worksheet.Cells[filaFirma3Linea, columnaLabelNum] = "Visado por:";
+            worksheet.Range[rangoLabel3].Font.Bold = true;
+            worksheet.Range[rangoLabel3].Font.Size = 18;
+            worksheet.Range[rangoLabel3].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+            worksheet.Range[rangoLabel3].VerticalAlignment = Excel.XlVAlign.xlVAlignBottom;
+
+            string rangoLinea3 = $"{colLineaInicio}{filaFirma3Linea}:{colLineaFin}{filaFirma3Linea}";
+            worksheet.Range[rangoLinea3].Merge();
+            worksheet.Range[rangoLinea3].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle = Excel.XlLineStyle.xlContinuous;
+            worksheet.Range[rangoLinea3].Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThin;
+
+            string rangoNombre3 = $"{colLineaInicio}{filaFirma3Nombre}:{colLineaFin}{filaFirma3Nombre}";
+            worksheet.Range[rangoNombre3].Merge();
+            worksheet.Cells[filaFirma3Nombre, columnaLineaInicioNum] = "Lic. José Luis Meléndez Rodríguez";
+            worksheet.Range[rangoNombre3].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            worksheet.Range[rangoNombre3].Font.Size = 11;
 
             // Guardar y cerrar
             workbook.SaveAs(rutaArchivo);

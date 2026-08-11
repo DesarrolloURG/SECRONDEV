@@ -2529,6 +2529,8 @@ namespace SECRON.Views
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
             AbrirFormularioConPestana(frm, "Ficha del Coordinador", "CoordinatorManagment");
+
+            //https://contratos.uregionalregion2.edu.gt/
         }
     }
 }

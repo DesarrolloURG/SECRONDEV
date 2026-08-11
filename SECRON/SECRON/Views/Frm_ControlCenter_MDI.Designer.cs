@@ -36,8 +36,8 @@
             this.BtnRRHH_Docencia = new System.Windows.Forms.Button();
             this.BtnRRHH_Trabajadores = new System.Windows.Forms.Button();
             this.PanelUsers = new System.Windows.Forms.Panel();
-            this.Btn_ITSM_Technology = new System.Windows.Forms.Button();
             this.Btn_AuditLogs = new System.Windows.Forms.Button();
+            this.Btn_ITSM_Technology = new System.Windows.Forms.Button();
             this.BtnUsersRolesPermisos = new System.Windows.Forms.Button();
             this.BtnUsersManagment = new System.Windows.Forms.Button();
             this.PanelSuppliers = new System.Windows.Forms.Panel();
@@ -306,26 +306,6 @@
             this.PanelUsers.TabIndex = 4;
             this.PanelUsers.Visible = false;
             // 
-            // Btn_ITSM_Technology
-            // 
-            this.Btn_ITSM_Technology.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
-            this.Btn_ITSM_Technology.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Btn_ITSM_Technology.FlatAppearance.BorderSize = 0;
-            this.Btn_ITSM_Technology.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
-            this.Btn_ITSM_Technology.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Btn_ITSM_Technology.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Btn_ITSM_Technology.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.Btn_ITSM_Technology.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_ITSM_Technology.Location = new System.Drawing.Point(0, 70);
-            this.Btn_ITSM_Technology.Margin = new System.Windows.Forms.Padding(0);
-            this.Btn_ITSM_Technology.Name = "Btn_ITSM_Technology";
-            this.Btn_ITSM_Technology.Size = new System.Drawing.Size(300, 35);
-            this.Btn_ITSM_Technology.TabIndex = 47;
-            this.Btn_ITSM_Technology.Text = "EQUIPOS DE TECNOLOGÍA";
-            this.Btn_ITSM_Technology.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_ITSM_Technology.UseVisualStyleBackColor = false;
-            this.Btn_ITSM_Technology.Click += new System.EventHandler(this.Btn_ITSM_Technology_Click);
-            // 
             // Btn_AuditLogs
             // 
             this.Btn_AuditLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
@@ -345,6 +325,26 @@
             this.Btn_AuditLogs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_AuditLogs.UseVisualStyleBackColor = false;
             this.Btn_AuditLogs.Click += new System.EventHandler(this.Btn_AuditLogs_Click);
+            // 
+            // Btn_ITSM_Technology
+            // 
+            this.Btn_ITSM_Technology.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.Btn_ITSM_Technology.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Btn_ITSM_Technology.FlatAppearance.BorderSize = 0;
+            this.Btn_ITSM_Technology.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.Btn_ITSM_Technology.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Btn_ITSM_Technology.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Btn_ITSM_Technology.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.Btn_ITSM_Technology.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ITSM_Technology.Location = new System.Drawing.Point(0, 70);
+            this.Btn_ITSM_Technology.Margin = new System.Windows.Forms.Padding(0);
+            this.Btn_ITSM_Technology.Name = "Btn_ITSM_Technology";
+            this.Btn_ITSM_Technology.Size = new System.Drawing.Size(300, 35);
+            this.Btn_ITSM_Technology.TabIndex = 47;
+            this.Btn_ITSM_Technology.Text = "EQUIPOS DE TECNOLOGÍA";
+            this.Btn_ITSM_Technology.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ITSM_Technology.UseVisualStyleBackColor = false;
+            this.Btn_ITSM_Technology.Click += new System.EventHandler(this.Btn_ITSM_Technology_Click);
             // 
             // BtnUsersRolesPermisos
             // 
