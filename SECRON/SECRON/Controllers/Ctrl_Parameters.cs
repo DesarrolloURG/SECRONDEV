@@ -33,5 +33,31 @@ namespace SECRON.Controllers
             }
             return valorPorDefecto;
         }
+
+        // Obtiene un parámetro string desde ParametersConfiguration (async)
+        public static async Task<string> ObtenerValorStringAsync(string parameterName, string valorPorDefecto = null)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(DatabaseConfig.GetConnectionString()))
+                {
+                    await connection.OpenAsync();
+                    using (var command = new SqlCommand("SP_Parameters_GetValue", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@ParameterName", parameterName);
+
+                        var result = await command.ExecuteScalarAsync();
+                        if (result != null && result != DBNull.Value)
+                            return result.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error al obtener parámetro {parameterName}: {ex.Message}");
+            }
+            return valorPorDefecto;
+        }
     }
 }

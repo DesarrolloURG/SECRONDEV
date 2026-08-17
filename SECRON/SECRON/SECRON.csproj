@@ -110,9 +110,12 @@
     <Compile Include="Controllers\Ctrl_AuditLogs.cs" />
     <Compile Include="Controllers\Ctrl_Careers.cs" />
     <Compile Include="Controllers\Ctrl_Courses.cs" />
+    <Compile Include="Controllers\Ctrl_ResponsibilityLetters.cs" />
     <Compile Include="Models\Mdl_AuditLog.cs" />
     <Compile Include="Models\Mdl_Careers.cs" />
     <Compile Include="Models\Mdl_Courses.cs" />
+    <Compile Include="Models\Mdl_ResponsibilityLetterDetail.cs" />
+    <Compile Include="Models\Mdl_ResponsibilityLetterMaster.cs" />
     <Compile Include="Utils\Cls_EmailConfigCache.cs" />
     <Compile Include="Controllers\Ctrl_AccountingEntryChecks.cs" />
     <Compile Include="Controllers\Ctrl_AccountingEntryDetails.cs" />
@@ -356,6 +359,12 @@
     </Compile>
     <Compile Include="Views\Frm_Checks_ReverseCancellation.Designer.cs">
       <DependentUpon>Frm_Checks_ReverseCancellation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_ResponsabilityLetter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_FixedAsset_ResponsabilityLetter.Designer.cs">
+      <DependentUpon>Frm_FixedAsset_ResponsabilityLetter.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_LocationStaffAssignments_SearchUsers.cs">
       <SubType>Form</SubType>
@@ -781,6 +790,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_Checks_ReverseCancellation.resx">
       <DependentUpon>Frm_Checks_ReverseCancellation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_FixedAsset_ResponsabilityLetter.resx">
+      <DependentUpon>Frm_FixedAsset_ResponsabilityLetter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_LocationStaffAssignments_SearchUsers.resx">
       <DependentUpon>Frm_LocationStaffAssignments_SearchUsers.cs</DependentUpon>
