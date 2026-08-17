@@ -44,12 +44,15 @@ namespace SECRON.Controllers
                                fac.CategoryName,
                                s.SupplierName,
                                w.WarehouseName,
-                               ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName
+                               ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName,
+                               m.FilePath AS ResponsibilityLetterPath
                         FROM   FixedAssets fa
                         LEFT JOIN FixedAssetCategories      fac ON fa.AssetCategoryId     = fac.AssetCategoryId
                         LEFT JOIN Suppliers                 s   ON fa.SupplierId           = s.SupplierId
                         LEFT JOIN Warehouses                w   ON fa.CurrentWarehouseId   = w.WarehouseId
                         LEFT JOIN Employees                 e   ON fa.AssignedToEmployeeId = e.EmployeeId
+                        LEFT JOIN ResponsibilityLetterDetail d   ON d.AssetId = fa.AssetId AND d.IsCurrent = 1 AND d.IsActive = 1
+                        LEFT JOIN ResponsibilityLetterMaster m   ON m.ResponsibilityLetterId = d.ResponsibilityLetterId
                         WHERE  fa.IsActive = 1
                         ORDER  BY fa.AssetCode
                         OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
@@ -117,12 +120,15 @@ namespace SECRON.Controllers
                        fac.CategoryName,
                        s.SupplierName,
                        w.WarehouseName,
-                       ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName
+                       ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName,
+                       m.FilePath AS ResponsibilityLetterPath
                 FROM   FixedAssets fa
                 LEFT JOIN FixedAssetCategories fac ON fa.AssetCategoryId     = fac.AssetCategoryId
                 LEFT JOIN Suppliers            s   ON fa.SupplierId           = s.SupplierId
                 LEFT JOIN Warehouses           w   ON fa.CurrentWarehouseId   = w.WarehouseId
                 LEFT JOIN Employees            e   ON fa.AssignedToEmployeeId = e.EmployeeId
+                LEFT JOIN ResponsibilityLetterDetail d ON d.AssetId = fa.AssetId AND d.IsCurrent = 1 AND d.IsActive = 1
+                LEFT JOIN ResponsibilityLetterMaster m ON m.ResponsibilityLetterId = d.ResponsibilityLetterId
                 WHERE  1=1";
 
                     List<SqlParameter> parametros = new List<SqlParameter>();
@@ -450,7 +456,8 @@ namespace SECRON.Controllers
                 CategoryName = reader["CategoryName"] == DBNull.Value ? null : reader["CategoryName"].ToString(),
                 SupplierName = reader["SupplierName"] == DBNull.Value ? null : reader["SupplierName"].ToString(),
                 WarehouseName = reader["WarehouseName"] == DBNull.Value ? null : reader["WarehouseName"].ToString(),
-                EmployeeName = reader["EmployeeName"] == DBNull.Value ? null : reader["EmployeeName"].ToString()
+                EmployeeName = reader["EmployeeName"] == DBNull.Value ? null : reader["EmployeeName"].ToString(),
+                ResponsibilityLetterPath = reader["ResponsibilityLetterPath"] == DBNull.Value ? null : reader["ResponsibilityLetterPath"].ToString()
             };
         }
 
