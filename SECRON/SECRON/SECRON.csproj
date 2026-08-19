@@ -1091,6 +1091,8 @@
     <None Include="Img\CopyBlack25x25.png" />
     <None Include="Img\TemplateBlack25x25.png" />
     <None Include="Img\AjustesNegro25x25.png" />
+    <None Include="Img\Alerta20x20.png" />
+    <None Include="Img\Alerta25x25.png" />
     <Content Include="Img\CategoriesBlack25x25.png" />
     <None Include="Img\CategoriesBlack50x50.png" />
     <None Include="Img\MatchBlack25x25.png" />

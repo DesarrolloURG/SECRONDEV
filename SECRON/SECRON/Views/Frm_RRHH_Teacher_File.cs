@@ -21,6 +21,7 @@ namespace SECRON.Views
         private List<Mdl_Teachers> _listaCompletaFiltrada = null;
         public Mdl_Security_UserInfo UserData { get; set; }
         private Mdl_Teachers _docenteSeleccionado = null;
+        private bool _cargandoDocente = false;
         private List<Mdl_Teachers> docentesList;
         private int paginaActual = 1;
         private int registrosPorPagina = 100;
@@ -397,12 +398,46 @@ namespace SECRON.Views
             }
         }
 
+        // Agrega la columna ESTADO al inicio del grid (texto ACTIVO/INACTIVO con color, en vez del checkbox nativo de IsActive)
+        private void AgregarColumnaEstado()
+        {
+            if (Tabla.Columns.Contains("ColEstadoRegistro")) return;
+
+            var colEstado = new DataGridViewTextBoxColumn();
+            colEstado.Name = "ColEstadoRegistro";
+            colEstado.HeaderText = "ESTADO";
+            colEstado.DataPropertyName = "IsActive";
+            colEstado.Width = 90;
+            colEstado.ReadOnly = true;
+            colEstado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Tabla.Columns.Insert(0, colEstado);
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        // Traduce el valor booleano de IsActive a texto ACTIVO/INACTIVO con color, solo para la columna ESTADO
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "ColEstadoRegistro") return;
+            if (e.Value == null || e.Value == DBNull.Value) return;
+
+            bool activo = Convert.ToBoolean(e.Value);
+            e.Value = activo ? "ACTIVO" : "INACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.Font, FontStyle.Bold);
+            e.FormattingApplied = true;
+        }
+
         // Configura las columnas visibles y sus propiedades en el DataGridView
         private void ConfigurarDataGridView()
         {
             try
             {
                 if (Tabla.Columns.Count == 0) return;
+
+                AgregarColumnaEstado();
 
                 Tabla.Columns["TeacherId"].Visible = false;
                 Tabla.Columns["UserId"].Visible = false;
@@ -458,8 +493,7 @@ namespace SECRON.Views
                 Tabla.Columns["ContractType"].HeaderText = "TIPO CONTRATO";
                 Tabla.Columns["ContractType"].Width = 150;
 
-                Tabla.Columns["IsActive"].HeaderText = "ACTIVO";
-                Tabla.Columns["IsActive"].Width = 80;
+                Tabla.Columns["IsActive"].Visible = false;
 
                 Tabla.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
                 Tabla.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
@@ -847,8 +881,8 @@ namespace SECRON.Views
 
             Filtro3.Items.Clear();
             Filtro3.Items.Add("TODOS");
-            Filtro3.Items.Add("COLEGIADOS ACTIVOS");
-            Filtro3.Items.Add("NO COLEGIADOS");
+            Filtro3.Items.Add("ACTIVOS");
+            Filtro3.Items.Add("INACTIVOS");
             Filtro3.SelectedIndex = 0;
 
             Filtro1.SelectedIndexChanged += AplicarFiltros;
@@ -867,7 +901,7 @@ namespace SECRON.Views
 
                 _ultimaEspecializacion = Filtro1.SelectedItem?.ToString() ?? "TODAS LAS ESPECIALIZACIONES";
                 _ultimoFiltroBancario = Filtro2.SelectedItem?.ToString() ?? "TODOS";
-                string filtroColegiadoActual = Filtro3.SelectedItem?.ToString() ?? "TODOS";
+                string filtroEstadoActual = Filtro3.SelectedItem?.ToString() ?? "TODOS";
 
                 var listaFiltrada = docentesList.AsEnumerable();
 
@@ -897,13 +931,13 @@ namespace SECRON.Views
                     listaFiltrada = listaFiltrada.Where(d => !d.BankId.HasValue || d.BankId.Value == 0);
                 }
 
-                if (filtroColegiadoActual == "COLEGIADOS ACTIVOS")
+                if (filtroEstadoActual == "ACTIVOS")
                 {
-                    listaFiltrada = listaFiltrada.Where(d => d.IsCollegiateActive);
+                    listaFiltrada = listaFiltrada.Where(d => d.IsActive);
                 }
-                else if (filtroColegiadoActual == "NO COLEGIADOS")
+                else if (filtroEstadoActual == "INACTIVOS")
                 {
-                    listaFiltrada = listaFiltrada.Where(d => !d.IsCollegiateActive);
+                    listaFiltrada = listaFiltrada.Where(d => !d.IsActive);
                 }
 
                 _listaCompletaFiltrada = listaFiltrada.ToList();
@@ -1143,6 +1177,8 @@ namespace SECRON.Views
         {
             try
             {
+                _cargandoDocente = true;
+
                 Txt_Code.Text = docente.TeacherCode ?? "";
                 Txt_TeacherName.Text = docente.FullName ?? "";
                 Txt_TeacherName.ForeColor = Color.Black;
@@ -1294,15 +1330,168 @@ namespace SECRON.Views
                         ComboBox_ContractType.SelectedIndex = 0;
                     }
                 }
+                // ===== INFORMACIÓN LABORAL / SALARIAL =====
+                Txt_NominalSalary.Text = docente.NominalSalary?.ToString("0.00") ?? "0.00";
+                Txt_BaseSalary.Text = docente.BaseSalary?.ToString("0.00") ?? "0.00";
+                Txt_AdditionalBonus.Text = docente.AdditionalBonus?.ToString("0.00") ?? "0.00";
+                Txt_LegalBonus.Text = docente.LegalBonus?.ToString("0.00") ?? "250.00";
+                Txt_IGSS.Text = docente.IGSS?.ToString("0.00") ?? "0.00";
+                Txt_ISR.Text = docente.ISR?.ToString("0.00") ?? "0.00";
+                Txt_NetSalary.Text = docente.NetSalary?.ToString("0.00") ?? "0.00";
+
+                Chk_IGSSManual.Checked = docente.IGSSManual == true;
+                Txt_IGSS.ReadOnly = !Chk_IGSSManual.Checked;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar datos en formulario: {ex.Message}",
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                _cargandoDocente = false;
+            }
         }
         #endregion EventosDataGridView
+        #region InformacionLaboral
+
+        // Convierte un string a decimal, manejando el caso de que esté vacío o no sea un número válido
+        private decimal ConvertirDecimal(string valor)
+        {
+            if (string.IsNullOrWhiteSpace(valor))
+                return 0m;
+
+            valor = valor.Replace(",", ".");
+
+            if (decimal.TryParse(valor, System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture, out decimal resultado))
+                return resultado;
+
+            return 0m;
+        }
+
+        // Formatea a 2 decimales al perder el foco
+        private void FormatearDecimal_Leave(object sender, EventArgs e)
+        {
+            TextBox txt = sender as TextBox;
+            decimal valor = ConvertirDecimal(txt.Text);
+            txt.Text = valor.ToString("0.00");
+        }
+
+        // Recalcula Salario Base, IGSS y Salario Neto cada vez que cambia algún campo relacionado
+        private void CamposSalario_TextChanged(object sender, EventArgs e)
+        {
+            if (_cargandoDocente)
+                return;
+
+            CalcularSalarioBase();
+
+            if (!Chk_IGSSManual.Checked)
+                CalcularIGSS();
+
+            CalcularSalarioNeto();
+        }
+
+        private void CalcularSalarioBase()
+        {
+            decimal salario = ConvertirDecimal(Txt_NominalSalary.Text);
+            decimal bonoAdicional = ConvertirDecimal(Txt_AdditionalBonus.Text);
+            decimal bonoLey = ConvertirDecimal(Txt_LegalBonus.Text);
+
+            decimal salarioBase = salario - bonoAdicional - bonoLey;
+
+            Txt_BaseSalary.Text = salarioBase.ToString("0.00");
+        }
+
+        private void CalcularIGSS()
+        {
+            decimal salarioBase = ConvertirDecimal(Txt_BaseSalary.Text);
+            decimal igss = salarioBase * 0.0483m;
+
+            Txt_IGSS.Text = igss.ToString("0.00");
+        }
+
+        private void CalcularSalarioNeto()
+        {
+            decimal salarioBase = ConvertirDecimal(Txt_BaseSalary.Text);
+            decimal bonoLey = ConvertirDecimal(Txt_LegalBonus.Text);
+            decimal bonoAdicional = ConvertirDecimal(Txt_AdditionalBonus.Text);
+            decimal igss = ConvertirDecimal(Txt_IGSS.Text);
+            decimal isr = ConvertirDecimal(Txt_ISR.Text);
+
+            decimal salarioNeto = (salarioBase + bonoLey + bonoAdicional) - (igss + isr);
+
+            Txt_NetSalary.Text = salarioNeto.ToString("0.00");
+        }
+
+        // Habilita/deshabilita el campo IGSS según el checkbox y recalcula si vuelve a ser automático
+        private void Chk_IGSSManual_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_cargandoDocente)
+                return;
+
+            Txt_IGSS.ReadOnly = !Chk_IGSSManual.Checked;
+
+            if (!Chk_IGSSManual.Checked)
+            {
+                CalcularIGSS();
+                CalcularSalarioNeto();
+            }
+        }
+
+        #endregion InformacionLaboral
         #region EventosBotones
+        private void Btn_ActiveYesNo_Click(object sender, EventArgs e)
+        {
+            if (!Btn_ActiveYesNo.Enabled) return;
+
+            try
+            {
+                if (_docenteSeleccionado == null)
+                {
+                    MessageBox.Show("Debe seleccionar un docente.",
+                                  "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                bool estaActivo = _docenteSeleccionado.IsActive;
+                string accion = estaActivo ? "inactivar" : "activar";
+                string tituloConfirmacion = estaActivo ? "Confirmar inactivación" : "Confirmar activación";
+
+                var confirmacion = MessageBox.Show(
+                    $"¿Está seguro que desea {accion} al docente {_docenteSeleccionado.FullName}?\n\n" +
+                    $"Esta acción marcará el registro como {(estaActivo ? "inactivo" : "activo")}.",
+                    tituloConfirmacion,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirmacion == DialogResult.Yes)
+                {
+                    int resultado = estaActivo
+                        ? Ctrl_Teachers.InactivarDocente(_docenteSeleccionado.TeacherId, UserData?.UserId ?? 0)
+                        : Ctrl_Teachers.ReactivarDocente(_docenteSeleccionado.TeacherId, UserData?.UserId ?? 0);
+
+                    if (resultado > 0)
+                    {
+                        MessageBox.Show($"Docente {(estaActivo ? "inactivado" : "activado")} correctamente.",
+                                      "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LimpiarFormulario();
+                        CargarDocentes();
+                        HabilitarBotonesEdicionEliminacion(false);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"No se pudo {accion} el docente.",
+                                      "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cambiar estado: {ex.Message}",
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         // Evento del botón Guardar - SOLO registra docentes NUEVOS
         private void Btn_Save_Click(object sender, EventArgs e)
         {
@@ -1426,7 +1615,7 @@ namespace SECRON.Views
         // Evento del botón Inactive (Eliminar) - Inactiva el registro seleccionado
         private void Btn_Inactive_Click(object sender, EventArgs e)
         {
-            if (!Btn_Inactive.Enabled) return;
+            if (!Btn_ActiveYesNo.Enabled) return;
 
             try
             {
@@ -1489,6 +1678,8 @@ namespace SECRON.Views
         // Limpia todos los controles del formulario
         private void LimpiarFormulario()
         {
+            _cargandoDocente = true;
+
             Txt_Code.Clear();
 
             ConfigurarPlaceHolder(Txt_TeacherName, "NOMBRE COMPLETO DEL DOCENTE");
@@ -1509,7 +1700,19 @@ namespace SECRON.Views
                 ComboBox_Location.SelectedIndex = 0;
             DTP_HireDate.Value = DateTime.Now;
 
+            // ===== INFORMACIÓN LABORAL / SALARIAL =====
+            Txt_NominalSalary.Text = "0.00";
+            Txt_BaseSalary.Text = "0.00";
+            Txt_AdditionalBonus.Text = "0.00";
+            Txt_LegalBonus.Text = "250.00";
+            Txt_IGSS.Text = "0.00";
+            Txt_ISR.Text = "0.00";
+            Txt_NetSalary.Text = "0.00";
+            Chk_IGSSManual.Checked = false;
+            Txt_IGSS.ReadOnly = true;
+
             _docenteSeleccionado = null;
+            _cargandoDocente = false;
         }
 
         // Valida que los campos obligatorios estén completos
@@ -1555,6 +1758,14 @@ namespace SECRON.Views
                 BankAccountNumber = ObtenerTextoLimpio(Txt_BankAccountNumber, "NÚMERO DE CUENTA BANCARIA"),
                 ContractType = ComboBox_ContractType.SelectedItem?.ToString(),
                 HireDate = DTP_HireDate.Value,
+                NominalSalary = ConvertirDecimal(Txt_NominalSalary.Text),
+                BaseSalary = ConvertirDecimal(Txt_BaseSalary.Text),
+                AdditionalBonus = ConvertirDecimal(Txt_AdditionalBonus.Text),
+                LegalBonus = ConvertirDecimal(Txt_LegalBonus.Text),
+                IGSS = ConvertirDecimal(Txt_IGSS.Text),
+                ISR = ConvertirDecimal(Txt_ISR.Text),
+                NetSalary = ConvertirDecimal(Txt_NetSalary.Text),
+                IGSSManual = Chk_IGSSManual.Checked,
                 IsActive = true
             };
 
@@ -1608,13 +1819,22 @@ namespace SECRON.Views
             ComboBox_Location.Enabled = habilitar;
             DTP_HireDate.Enabled = habilitar;
             ComboBox_ContractType.Enabled = habilitar;
+
+            // Información Laboral / Salarial
+            Txt_NominalSalary.Enabled = habilitar;
+            Txt_AdditionalBonus.Enabled = habilitar;
+            Txt_LegalBonus.Enabled = habilitar;
+            Txt_ISR.Enabled = habilitar;
+            Chk_IGSSManual.Enabled = habilitar;
+            // Txt_BaseSalary, Txt_IGSS y Txt_NetSalary quedan controlados aparte:
+            // son de solo lectura (calculados) salvo IGSS si Chk_IGSSManual está marcado.
         }
 
         // Habilita o deshabilita los botones de edición y eliminación
         private void HabilitarBotonesEdicionEliminacion(bool habilitar)
         {
             Btn_Update.Enabled = habilitar && TienePermiso("EMPLOYEES_TEACHERS_UPDATE");
-            Btn_Inactive.Enabled = habilitar && TienePermiso("EMPLOYEES_TEACHERS_INACTIVE");
+            Btn_ActiveYesNo.Enabled = habilitar && TienePermiso("EMPLOYEES_TEACHERS_INACTIVE");
 
         }
         #endregion MetodosAuxiliares
@@ -1853,7 +2073,7 @@ namespace SECRON.Views
 
             try
             {
-                CargarDocentes();       
+                CargarDocentes();
                 AplicarFiltros(sender, e);
             }
             catch (Exception ex)
@@ -1937,7 +2157,7 @@ namespace SECRON.Views
             AplicarEstadoBotonPorPermiso(Btn_Search, "EMPLOYEES_TEACHERS_READ");
             AplicarEstadoBotonPorPermiso(Btn_Save, "EMPLOYEES_TEACHERS_CREATE");
             AplicarEstadoBotonPorPermiso(Btn_Update, "EMPLOYEES_TEACHERS_UPDATE");
-            AplicarEstadoBotonPorPermiso(Btn_Inactive, "EMPLOYEES_TEACHERS_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_ActiveYesNo, "EMPLOYEES_TEACHERS_INACTIVE");
             AplicarEstadoBotonPorPermiso(Btn_Export, "EMPLOYEES_TEACHERS_EXPORT");
             AplicarEstadoBotonPorPermiso(Btn_Import, "EMPLOYEES_TEACHERS_IMPORT");
         }
@@ -1960,8 +2180,6 @@ namespace SECRON.Views
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        #endregion ContratosTemporal
-
         private void Btn_PeriodosContratos_Click(object sender, EventArgs e)
         {
             try
@@ -1978,5 +2196,6 @@ namespace SECRON.Views
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        #endregion ContratosTemporal
     }
 }

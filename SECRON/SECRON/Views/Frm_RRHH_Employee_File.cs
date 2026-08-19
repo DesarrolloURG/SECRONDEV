@@ -1452,7 +1452,7 @@ namespace SECRON.Views
             // ===== BOTONES =====
             Btn_Save.TabIndex = 22;
             Btn_Update.TabIndex = 23;
-            Btn_Inactive.TabIndex = 24;
+            Btn_ActiveYesNo.TabIndex = 24;
 
             // ===== DATAGRINDVIEW =====
             // DGV_Empleados.TabIndex = 27; (si quieres que sea accesible con Tab)
@@ -1730,10 +1730,10 @@ namespace SECRON.Views
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        // Evento para botón Inactivar
-        private void Btn_Inactive_Click(object sender, EventArgs e)
+        // Evento para botón Activar/Inactivar
+        private void Btn_ActiveYesNo_Click(object sender, EventArgs e)
         {
-            if (!Btn_Inactive.Enabled) return;
+            if (!Btn_ActiveYesNo.Enabled) return;
             try
             {
                 if (_empleadoSeleccionado == null || _empleadoSeleccionado.EmployeeId == 0)
@@ -1770,8 +1770,8 @@ namespace SECRON.Views
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
                     RefrescarListado();
-                    ConfigurarTabla();           
-                    ReferenciasLlavesForaneas(); 
+                    ConfigurarTabla();
+                    ReferenciasLlavesForaneas();
                     ActualizarInfoPaginacion();
                 }
                 else
@@ -2197,7 +2197,7 @@ namespace SECRON.Views
         {
             AplicarEstadoBotonPorPermiso(Btn_Save, "EMPLOYEES_MANAGMENT_CREATE");
             AplicarEstadoBotonPorPermiso(Btn_Update, "EMPLOYEES_MANAGMENT_UPDATE");
-            AplicarEstadoBotonPorPermiso(Btn_Inactive, "EMPLOYEES_MANAGMENT_INACTIVE");
+            AplicarEstadoBotonPorPermiso(Btn_ActiveYesNo, "EMPLOYEES_MANAGMENT_INACTIVE");
             AplicarEstadoBotonPorPermiso(Btn_Export, "EMPLOYEES_MANAGMENT_EXPORT");
             AplicarEstadoBotonPorPermiso(Btn_Search, "EMPLOYEES_MANAGMENT_READ");
         }
@@ -2312,5 +2312,7 @@ namespace SECRON.Views
             }
         }
         #endregion GestionArchivosEmpleado
+
+        
     }
 }

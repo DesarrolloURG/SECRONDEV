@@ -136,7 +136,7 @@ namespace SECRON.Views
             this.vScrollBar = new System.Windows.Forms.VScrollBar();
             this.Panel_CRUD = new System.Windows.Forms.Panel();
             this.Btn_Clear = new System.Windows.Forms.Button();
-            this.Btn_Inactive = new System.Windows.Forms.Button();
+            this.Btn_ActiveYesNo = new System.Windows.Forms.Button();
             this.Btn_Update = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Panel_Emergencia = new System.Windows.Forms.Panel();
@@ -298,14 +298,14 @@ namespace SECRON.Views
             this.Panel_Izquierdo.ForeColor = System.Drawing.Color.Black;
             this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 55);
             this.Panel_Izquierdo.Name = "Panel_Izquierdo";
-            this.Panel_Izquierdo.Size = new System.Drawing.Size(415, 806);
+            this.Panel_Izquierdo.Size = new System.Drawing.Size(515, 806);
             this.Panel_Izquierdo.TabIndex = 1;
             this.Panel_Izquierdo.MouseEnter += new System.EventHandler(this.Panel_Izquierdo_MouseEnter);
             // 
             // vScrollBar
             // 
             this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar.Location = new System.Drawing.Point(405, 0);
+            this.vScrollBar.Location = new System.Drawing.Point(505, 0);
             this.vScrollBar.Name = "vScrollBar";
             this.vScrollBar.Size = new System.Drawing.Size(10, 806);
             this.vScrollBar.TabIndex = 76;
@@ -315,12 +315,12 @@ namespace SECRON.Views
             // 
             this.Panel_CRUD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.Panel_CRUD.Controls.Add(this.Btn_Clear);
-            this.Panel_CRUD.Controls.Add(this.Btn_Inactive);
+            this.Panel_CRUD.Controls.Add(this.Btn_ActiveYesNo);
             this.Panel_CRUD.Controls.Add(this.Btn_Update);
             this.Panel_CRUD.Controls.Add(this.Btn_Save);
             this.Panel_CRUD.Location = new System.Drawing.Point(16, 40);
             this.Panel_CRUD.Name = "Panel_CRUD";
-            this.Panel_CRUD.Size = new System.Drawing.Size(384, 47);
+            this.Panel_CRUD.Size = new System.Drawing.Size(478, 47);
             this.Panel_CRUD.TabIndex = 75;
             // 
             // Btn_Clear
@@ -330,7 +330,7 @@ namespace SECRON.Views
             this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_Clear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Clear.Location = new System.Drawing.Point(350, 3);
+            this.Btn_Clear.Location = new System.Drawing.Point(444, 3);
             this.Btn_Clear.Name = "Btn_Clear";
             this.Btn_Clear.Size = new System.Drawing.Size(33, 37);
             this.Btn_Clear.TabIndex = 57;
@@ -338,21 +338,21 @@ namespace SECRON.Views
             this.Btn_Clear.UseVisualStyleBackColor = true;
             this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
             // 
-            // Btn_Inactive
+            // Btn_ActiveYesNo
             // 
-            this.Btn_Inactive.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.Btn_ActiveYesNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Inactive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Inactive.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
-            this.Btn_Inactive.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Inactive.Location = new System.Drawing.Point(224, 3);
-            this.Btn_Inactive.Name = "Btn_Inactive";
-            this.Btn_Inactive.Size = new System.Drawing.Size(124, 37);
-            this.Btn_Inactive.TabIndex = 56;
-            this.Btn_Inactive.Text = "INACTIVAR";
-            this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Inactive.UseVisualStyleBackColor = true;
-            this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
+            this.Btn_ActiveYesNo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_ActiveYesNo.Image = global::SECRON.Properties.Resources.Alerta25x25;
+            this.Btn_ActiveYesNo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ActiveYesNo.Location = new System.Drawing.Point(234, 3);
+            this.Btn_ActiveYesNo.Name = "Btn_ActiveYesNo";
+            this.Btn_ActiveYesNo.Size = new System.Drawing.Size(208, 37);
+            this.Btn_ActiveYesNo.TabIndex = 56;
+            this.Btn_ActiveYesNo.Text = "ACTIVAR/INACTIVAR";
+            this.Btn_ActiveYesNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_ActiveYesNo.UseVisualStyleBackColor = true;
+            this.Btn_ActiveYesNo.Click += new System.EventHandler(this.Btn_ActiveYesNo_Click);
             // 
             // Btn_Update
             // 
@@ -361,7 +361,7 @@ namespace SECRON.Views
             this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Update.Location = new System.Drawing.Point(122, 3);
+            this.Btn_Update.Location = new System.Drawing.Point(130, 3);
             this.Btn_Update.Name = "Btn_Update";
             this.Btn_Update.Size = new System.Drawing.Size(98, 37);
             this.Btn_Update.TabIndex = 55;
@@ -377,7 +377,7 @@ namespace SECRON.Views
             this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Save.Location = new System.Drawing.Point(0, 3);
+            this.Btn_Save.Location = new System.Drawing.Point(8, 3);
             this.Btn_Save.Name = "Btn_Save";
             this.Btn_Save.Size = new System.Drawing.Size(117, 37);
             this.Btn_Save.TabIndex = 54;
@@ -398,7 +398,7 @@ namespace SECRON.Views
             this.Panel_Emergencia.Controls.Add(this.Lbl_Subtitulo4);
             this.Panel_Emergencia.Location = new System.Drawing.Point(16, 1286);
             this.Panel_Emergencia.Name = "Panel_Emergencia";
-            this.Panel_Emergencia.Size = new System.Drawing.Size(380, 175);
+            this.Panel_Emergencia.Size = new System.Drawing.Size(478, 175);
             this.Panel_Emergencia.TabIndex = 74;
             // 
             // Txt_TelefonoEmergencia
@@ -508,7 +508,7 @@ namespace SECRON.Views
             this.Panel_Laboral.Controls.Add(this.Lbl_Subtitulo3);
             this.Panel_Laboral.Location = new System.Drawing.Point(16, 685);
             this.Panel_Laboral.Name = "Panel_Laboral";
-            this.Panel_Laboral.Size = new System.Drawing.Size(380, 595);
+            this.Panel_Laboral.Size = new System.Drawing.Size(478, 595);
             this.Panel_Laboral.TabIndex = 65;
             // 
             // chkb_IGSS
@@ -827,7 +827,7 @@ namespace SECRON.Views
             this.Panel_Contacto.Controls.Add(this.Lbl_Subtitulo2);
             this.Panel_Contacto.Location = new System.Drawing.Point(16, 351);
             this.Panel_Contacto.Name = "Panel_Contacto";
-            this.Panel_Contacto.Size = new System.Drawing.Size(380, 324);
+            this.Panel_Contacto.Size = new System.Drawing.Size(478, 324);
             this.Panel_Contacto.TabIndex = 64;
             // 
             // Txt_Direccion
@@ -962,7 +962,7 @@ namespace SECRON.Views
             this.Panel_Informacion.Controls.Add(this.Lbl_Subtitulo1);
             this.Panel_Informacion.Location = new System.Drawing.Point(16, 100);
             this.Panel_Informacion.Name = "Panel_Informacion";
-            this.Panel_Informacion.Size = new System.Drawing.Size(380, 241);
+            this.Panel_Informacion.Size = new System.Drawing.Size(478, 241);
             this.Panel_Informacion.TabIndex = 52;
             // 
             // DTP_Nacimiento
@@ -1096,9 +1096,9 @@ namespace SECRON.Views
             this.Panel_Derecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Panel_Derecho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Panel_Derecho.ForeColor = System.Drawing.Color.Black;
-            this.Panel_Derecho.Location = new System.Drawing.Point(415, 55);
+            this.Panel_Derecho.Location = new System.Drawing.Point(515, 55);
             this.Panel_Derecho.Name = "Panel_Derecho";
-            this.Panel_Derecho.Size = new System.Drawing.Size(769, 806);
+            this.Panel_Derecho.Size = new System.Drawing.Size(669, 806);
             this.Panel_Derecho.TabIndex = 2;
             // 
             // PanelTabla
@@ -1110,7 +1110,7 @@ namespace SECRON.Views
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(22, 211);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(725, 575);
+            this.PanelTabla.Size = new System.Drawing.Size(625, 575);
             this.PanelTabla.TabIndex = 72;
             // 
             // Tabla
@@ -1119,7 +1119,7 @@ namespace SECRON.Views
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(725, 575);
+            this.Tabla.Size = new System.Drawing.Size(625, 575);
             this.Tabla.TabIndex = 1;
             this.Tabla.SelectionChanged += new System.EventHandler(this.Tabla_SelectionChanged);
             // 
@@ -1131,7 +1131,7 @@ namespace SECRON.Views
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(22, 168);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(725, 39);
+            this.PanelToolStrip.Size = new System.Drawing.Size(625, 39);
             this.PanelToolStrip.TabIndex = 71;
             // 
             // Lbl_Paginas
@@ -1160,7 +1160,7 @@ namespace SECRON.Views
             this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
             this.Panel_Busqueda.Location = new System.Drawing.Point(22, 20);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(725, 120);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(625, 120);
             this.Panel_Busqueda.TabIndex = 53;
             // 
             // Btn_CleanSearch
@@ -1169,7 +1169,7 @@ namespace SECRON.Views
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(675, 20);
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(575, 20);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(30, 28);
             this.Btn_CleanSearch.TabIndex = 71;
@@ -1199,7 +1199,7 @@ namespace SECRON.Views
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(568, 20);
+            this.Btn_Search.Location = new System.Drawing.Point(468, 20);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(101, 28);
             this.Btn_Search.TabIndex = 54;
@@ -1224,7 +1224,7 @@ namespace SECRON.Views
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(16, 23);
             this.Txt_ValorBuscado.MaxLength = 15;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(540, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(440, 27);
             this.Txt_ValorBuscado.TabIndex = 59;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
@@ -1321,7 +1321,7 @@ namespace SECRON.Views
         private System.Windows.Forms.Panel Panel_CRUD;
         private System.Windows.Forms.Button Btn_Update;
         private System.Windows.Forms.Button Btn_Save;
-        private System.Windows.Forms.Button Btn_Inactive;
+        private System.Windows.Forms.Button Btn_ActiveYesNo;
         private System.Windows.Forms.VScrollBar vScrollBar;
         private System.Windows.Forms.Panel Panel_Busqueda;
         private System.Windows.Forms.TextBox Txt_ValorBuscado;

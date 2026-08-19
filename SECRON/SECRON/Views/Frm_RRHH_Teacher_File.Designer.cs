@@ -35,25 +35,36 @@
             this.PanelToolStrip = new System.Windows.Forms.Panel();
             this.Lbl_Paginas = new System.Windows.Forms.Label();
             this.Panel_Busqueda = new System.Windows.Forms.Panel();
-            this.Btn_CleanSearch = new System.Windows.Forms.Button();
             this.Filtro3 = new System.Windows.Forms.ComboBox();
             this.Filtro2 = new System.Windows.Forms.ComboBox();
-            this.Btn_Search = new System.Windows.Forms.Button();
             this.Filtro1 = new System.Windows.Forms.ComboBox();
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Panel_Izquierdo = new System.Windows.Forms.Panel();
+            this.Panel_5 = new System.Windows.Forms.Panel();
+            this.Chk_IGSSManual = new System.Windows.Forms.CheckBox();
+            this.Txt_BaseSalary = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.Txt_NetSalary = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.Txt_ISR = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Txt_LegalBonus = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.Txt_AdditionalBonus = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.Txt_IGSS = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.DTP_Ingreso = new System.Windows.Forms.DateTimePicker();
+            this.Txt_NominalSalary = new System.Windows.Forms.TextBox();
+            this.Lbl_Salario = new System.Windows.Forms.Label();
+            this.Lbl_FechaIngreso = new System.Windows.Forms.Label();
             this.Panel_4 = new System.Windows.Forms.Panel();
             this.ComboBox_Bank = new System.Windows.Forms.ComboBox();
             this.Lbl_Bank = new System.Windows.Forms.Label();
             this.Txt_BankAccountNumber = new System.Windows.Forms.TextBox();
             this.Lbl_BankAccountNumber = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.vScrollBar = new System.Windows.Forms.VScrollBar();
             this.Panel_CRUD = new System.Windows.Forms.Panel();
-            this.Btn_Clear = new System.Windows.Forms.Button();
-            this.Btn_Inactive = new System.Windows.Forms.Button();
-            this.Btn_Update = new System.Windows.Forms.Button();
-            this.Btn_Save = new System.Windows.Forms.Button();
             this.Panel_3 = new System.Windows.Forms.Panel();
             this.ComboBox_Specialization = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -63,13 +74,11 @@
             this.Lbl_CollegiateNumber = new System.Windows.Forms.Label();
             this.Lbl_IsCollegiateActive = new System.Windows.Forms.Label();
             this.Lbl_AcademicTitle = new System.Windows.Forms.Label();
-            this.Lbl_Subtitulo3 = new System.Windows.Forms.Label();
             this.Panel_2 = new System.Windows.Forms.Panel();
             this.ComboBox_ContractType = new System.Windows.Forms.ComboBox();
             this.Lbl_ContractType = new System.Windows.Forms.Label();
             this.Lbl_DTPHireDate = new System.Windows.Forms.Label();
             this.DTP_HireDate = new System.Windows.Forms.DateTimePicker();
-            this.Lbl_Subtitulo2 = new System.Windows.Forms.Label();
             this.Panel_1 = new System.Windows.Forms.Panel();
             this.ComboBox_Location = new System.Windows.Forms.ComboBox();
             this.Lbl_Location = new System.Windows.Forms.Label();
@@ -87,21 +96,32 @@
             this.Lbl_TeacherName = new System.Windows.Forms.Label();
             this.Lbl_NIT = new System.Windows.Forms.Label();
             this.Lbl_Codigo = new System.Windows.Forms.Label();
-            this.Lbl_Subtitulo1 = new System.Windows.Forms.Label();
             this.Lbl_TituloPanelIzquierdo = new System.Windows.Forms.Label();
             this.Panel_Superior = new System.Windows.Forms.Panel();
+            this.Lbl_Formulario = new System.Windows.Forms.Label();
+            this.Lbl_Info = new System.Windows.Forms.Label();
+            this.Btn_CleanSearch = new System.Windows.Forms.Button();
+            this.Btn_Search = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Btn_Clear = new System.Windows.Forms.Button();
+            this.Btn_ActiveYesNo = new System.Windows.Forms.Button();
+            this.Btn_Update = new System.Windows.Forms.Button();
+            this.Btn_Save = new System.Windows.Forms.Button();
+            this.Lbl_Subtitulo3 = new System.Windows.Forms.Label();
+            this.Lbl_Subtitulo2 = new System.Windows.Forms.Label();
+            this.Lbl_Subtitulo1 = new System.Windows.Forms.Label();
             this.Btn_PeriodosContratos = new System.Windows.Forms.Button();
             this.Btn_Contratos = new System.Windows.Forms.Button();
             this.Btn_Import = new System.Windows.Forms.Button();
             this.Btn_Export = new System.Windows.Forms.Button();
-            this.Lbl_Formulario = new System.Windows.Forms.Label();
-            this.Lbl_Info = new System.Windows.Forms.Label();
             this.Panel_Derecho.SuspendLayout();
             this.PanelTabla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Tabla)).BeginInit();
             this.PanelToolStrip.SuspendLayout();
             this.Panel_Busqueda.SuspendLayout();
             this.Panel_Izquierdo.SuspendLayout();
+            this.Panel_5.SuspendLayout();
             this.Panel_4.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
             this.Panel_3.SuspendLayout();
@@ -118,9 +138,9 @@
             this.Panel_Derecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Panel_Derecho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Panel_Derecho.ForeColor = System.Drawing.Color.Black;
-            this.Panel_Derecho.Location = new System.Drawing.Point(415, 55);
+            this.Panel_Derecho.Location = new System.Drawing.Point(515, 55);
             this.Panel_Derecho.Name = "Panel_Derecho";
-            this.Panel_Derecho.Size = new System.Drawing.Size(769, 806);
+            this.Panel_Derecho.Size = new System.Drawing.Size(669, 806);
             this.Panel_Derecho.TabIndex = 8;
             // 
             // PanelTabla
@@ -132,7 +152,7 @@
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(22, 211);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(725, 575);
+            this.PanelTabla.Size = new System.Drawing.Size(625, 575);
             this.PanelTabla.TabIndex = 72;
             // 
             // Tabla
@@ -141,7 +161,7 @@
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
             this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(725, 575);
+            this.Tabla.Size = new System.Drawing.Size(625, 575);
             this.Tabla.TabIndex = 1;
             this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
             this.Tabla.SelectionChanged += new System.EventHandler(this.Tabla_SelectionChanged);
@@ -154,7 +174,7 @@
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(22, 168);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(725, 39);
+            this.PanelToolStrip.Size = new System.Drawing.Size(625, 39);
             this.PanelToolStrip.TabIndex = 71;
             // 
             // Lbl_Paginas
@@ -184,22 +204,8 @@
             this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
             this.Panel_Busqueda.Location = new System.Drawing.Point(22, 10);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(725, 152);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(625, 152);
             this.Panel_Busqueda.TabIndex = 53;
-            // 
-            // Btn_CleanSearch
-            // 
-            this.Btn_CleanSearch.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(675, 12);
-            this.Btn_CleanSearch.Name = "Btn_CleanSearch";
-            this.Btn_CleanSearch.Size = new System.Drawing.Size(30, 31);
-            this.Btn_CleanSearch.TabIndex = 71;
-            this.Btn_CleanSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_CleanSearch.UseVisualStyleBackColor = true;
-            this.Btn_CleanSearch.Click += new System.EventHandler(this.Btn_Limpiar_Click);
             // 
             // Filtro3
             // 
@@ -217,21 +223,6 @@
             this.Filtro2.Size = new System.Drawing.Size(219, 28);
             this.Filtro2.TabIndex = 69;
             // 
-            // Btn_Search
-            // 
-            this.Btn_Search.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
-            this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(568, 12);
-            this.Btn_Search.Name = "Btn_Search";
-            this.Btn_Search.Size = new System.Drawing.Size(101, 31);
-            this.Btn_Search.TabIndex = 54;
-            this.Btn_Search.Text = "BUSCAR";
-            this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Search.UseVisualStyleBackColor = true;
-            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
-            // 
             // Filtro1
             // 
             this.Filtro1.FormattingEnabled = true;
@@ -248,13 +239,14 @@
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(16, 12);
             this.Txt_ValorBuscado.MaxLength = 15;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(540, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(440, 27);
             this.Txt_ValorBuscado.TabIndex = 59;
             this.Txt_ValorBuscado.TextChanged += new System.EventHandler(this.Txt_ValorBuscado_TextChanged);
             // 
             // Panel_Izquierdo
             // 
             this.Panel_Izquierdo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_Izquierdo.Controls.Add(this.Panel_5);
             this.Panel_Izquierdo.Controls.Add(this.Panel_4);
             this.Panel_Izquierdo.Controls.Add(this.vScrollBar);
             this.Panel_Izquierdo.Controls.Add(this.Panel_CRUD);
@@ -267,8 +259,211 @@
             this.Panel_Izquierdo.ForeColor = System.Drawing.Color.Black;
             this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 55);
             this.Panel_Izquierdo.Name = "Panel_Izquierdo";
-            this.Panel_Izquierdo.Size = new System.Drawing.Size(415, 806);
+            this.Panel_Izquierdo.Size = new System.Drawing.Size(515, 806);
             this.Panel_Izquierdo.TabIndex = 7;
+            // 
+            // Panel_5
+            // 
+            this.Panel_5.BackColor = System.Drawing.Color.White;
+            this.Panel_5.Controls.Add(this.Chk_IGSSManual);
+            this.Panel_5.Controls.Add(this.Txt_BaseSalary);
+            this.Panel_5.Controls.Add(this.label6);
+            this.Panel_5.Controls.Add(this.Txt_NetSalary);
+            this.Panel_5.Controls.Add(this.label2);
+            this.Panel_5.Controls.Add(this.Txt_ISR);
+            this.Panel_5.Controls.Add(this.label4);
+            this.Panel_5.Controls.Add(this.Txt_LegalBonus);
+            this.Panel_5.Controls.Add(this.label3);
+            this.Panel_5.Controls.Add(this.Txt_AdditionalBonus);
+            this.Panel_5.Controls.Add(this.label7);
+            this.Panel_5.Controls.Add(this.Txt_IGSS);
+            this.Panel_5.Controls.Add(this.label8);
+            this.Panel_5.Controls.Add(this.DTP_Ingreso);
+            this.Panel_5.Controls.Add(this.Txt_NominalSalary);
+            this.Panel_5.Controls.Add(this.Lbl_Salario);
+            this.Panel_5.Controls.Add(this.Lbl_FechaIngreso);
+            this.Panel_5.Controls.Add(this.label9);
+            this.Panel_5.Location = new System.Drawing.Point(17, 1170);
+            this.Panel_5.Name = "Panel_5";
+            this.Panel_5.Size = new System.Drawing.Size(477, 345);
+            this.Panel_5.TabIndex = 78;
+            // 
+            // Chk_IGSSManual
+            // 
+            this.Chk_IGSSManual.AutoSize = true;
+            this.Chk_IGSSManual.Location = new System.Drawing.Point(199, 271);
+            this.Chk_IGSSManual.Name = "Chk_IGSSManual";
+            this.Chk_IGSSManual.Size = new System.Drawing.Size(178, 24);
+            this.Chk_IGSSManual.TabIndex = 85;
+            this.Chk_IGSSManual.Text = "Ingresar IGSS manual";
+            this.Chk_IGSSManual.UseVisualStyleBackColor = true;
+            // 
+            // Txt_BaseSalary
+            // 
+            this.Txt_BaseSalary.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_BaseSalary.Location = new System.Drawing.Point(14, 238);
+            this.Txt_BaseSalary.MaxLength = 15;
+            this.Txt_BaseSalary.Name = "Txt_BaseSalary";
+            this.Txt_BaseSalary.Size = new System.Drawing.Size(225, 27);
+            this.Txt_BaseSalary.TabIndex = 84;
+            this.Txt_BaseSalary.Text = "0.00";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label6.ForeColor = System.Drawing.Color.Black;
+            this.label6.Location = new System.Drawing.Point(11, 215);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(114, 20);
+            this.label6.TabIndex = 83;
+            this.label6.Text = "SALARIO BASE";
+            // 
+            // Txt_NetSalary
+            // 
+            this.Txt_NetSalary.Enabled = false;
+            this.Txt_NetSalary.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_NetSalary.Location = new System.Drawing.Point(15, 301);
+            this.Txt_NetSalary.MaxLength = 15;
+            this.Txt_NetSalary.Name = "Txt_NetSalary";
+            this.Txt_NetSalary.Size = new System.Drawing.Size(454, 27);
+            this.Txt_NetSalary.TabIndex = 18;
+            this.Txt_NetSalary.Text = "0.00";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.Location = new System.Drawing.Point(11, 279);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(116, 20);
+            this.label2.TabIndex = 81;
+            this.label2.Text = "SALARIO NETO";
+            // 
+            // Txt_ISR
+            // 
+            this.Txt_ISR.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_ISR.Location = new System.Drawing.Point(244, 184);
+            this.Txt_ISR.MaxLength = 15;
+            this.Txt_ISR.Name = "Txt_ISR";
+            this.Txt_ISR.Size = new System.Drawing.Size(225, 27);
+            this.Txt_ISR.TabIndex = 17;
+            this.Txt_ISR.Text = "0.00";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(243, 161);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(32, 20);
+            this.label4.TabIndex = 79;
+            this.label4.Text = "ISR";
+            // 
+            // Txt_LegalBonus
+            // 
+            this.Txt_LegalBonus.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_LegalBonus.Location = new System.Drawing.Point(244, 130);
+            this.Txt_LegalBonus.MaxLength = 15;
+            this.Txt_LegalBonus.Name = "Txt_LegalBonus";
+            this.Txt_LegalBonus.Size = new System.Drawing.Size(225, 27);
+            this.Txt_LegalBonus.TabIndex = 15;
+            this.Txt_LegalBonus.Text = "250.00";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(240, 107);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(105, 20);
+            this.label3.TabIndex = 77;
+            this.label3.Text = "BONO DE LEY";
+            // 
+            // Txt_AdditionalBonus
+            // 
+            this.Txt_AdditionalBonus.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_AdditionalBonus.Location = new System.Drawing.Point(15, 184);
+            this.Txt_AdditionalBonus.MaxLength = 15;
+            this.Txt_AdditionalBonus.Name = "Txt_AdditionalBonus";
+            this.Txt_AdditionalBonus.Size = new System.Drawing.Size(225, 27);
+            this.Txt_AdditionalBonus.TabIndex = 14;
+            this.Txt_AdditionalBonus.Text = "0.00";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label7.ForeColor = System.Drawing.Color.Black;
+            this.label7.Location = new System.Drawing.Point(11, 161);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(140, 20);
+            this.label7.TabIndex = 75;
+            this.label7.Text = "BONO ADICIONAL";
+            // 
+            // Txt_IGSS
+            // 
+            this.Txt_IGSS.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_IGSS.Location = new System.Drawing.Point(244, 238);
+            this.Txt_IGSS.MaxLength = 15;
+            this.Txt_IGSS.Name = "Txt_IGSS";
+            this.Txt_IGSS.ReadOnly = true;
+            this.Txt_IGSS.Size = new System.Drawing.Size(225, 27);
+            this.Txt_IGSS.TabIndex = 16;
+            this.Txt_IGSS.Text = "0.00";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label8.ForeColor = System.Drawing.Color.Black;
+            this.label8.Location = new System.Drawing.Point(240, 215);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 20);
+            this.label8.TabIndex = 73;
+            this.label8.Text = "IGSS";
+            // 
+            // DTP_Ingreso
+            // 
+            this.DTP_Ingreso.Location = new System.Drawing.Point(14, 68);
+            this.DTP_Ingreso.Name = "DTP_Ingreso";
+            this.DTP_Ingreso.Size = new System.Drawing.Size(352, 27);
+            this.DTP_Ingreso.TabIndex = 11;
+            // 
+            // Txt_NominalSalary
+            // 
+            this.Txt_NominalSalary.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Txt_NominalSalary.Location = new System.Drawing.Point(14, 130);
+            this.Txt_NominalSalary.MaxLength = 15;
+            this.Txt_NominalSalary.Name = "Txt_NominalSalary";
+            this.Txt_NominalSalary.Size = new System.Drawing.Size(225, 27);
+            this.Txt_NominalSalary.TabIndex = 12;
+            this.Txt_NominalSalary.Text = "0.00";
+            // 
+            // Lbl_Salario
+            // 
+            this.Lbl_Salario.AutoSize = true;
+            this.Lbl_Salario.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Salario.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Salario.Location = new System.Drawing.Point(10, 107);
+            this.Lbl_Salario.Name = "Lbl_Salario";
+            this.Lbl_Salario.Size = new System.Drawing.Size(150, 20);
+            this.Lbl_Salario.TabIndex = 12;
+            this.Lbl_Salario.Text = "SALARIO NOMINAL";
+            // 
+            // Lbl_FechaIngreso
+            // 
+            this.Lbl_FechaIngreso.AutoSize = true;
+            this.Lbl_FechaIngreso.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_FechaIngreso.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_FechaIngreso.Location = new System.Drawing.Point(10, 45);
+            this.Lbl_FechaIngreso.Name = "Lbl_FechaIngreso";
+            this.Lbl_FechaIngreso.Size = new System.Drawing.Size(159, 20);
+            this.Lbl_FechaIngreso.TabIndex = 11;
+            this.Lbl_FechaIngreso.Text = "FECHA DE INGRESO *";
             // 
             // Panel_4
             // 
@@ -280,7 +475,7 @@
             this.Panel_4.Controls.Add(this.label5);
             this.Panel_4.Location = new System.Drawing.Point(16, 980);
             this.Panel_4.Name = "Panel_4";
-            this.Panel_4.Size = new System.Drawing.Size(380, 173);
+            this.Panel_4.Size = new System.Drawing.Size(478, 173);
             this.Panel_4.TabIndex = 77;
             // 
             // ComboBox_Bank
@@ -288,7 +483,7 @@
             this.ComboBox_Bank.FormattingEnabled = true;
             this.ComboBox_Bank.Location = new System.Drawing.Point(14, 133);
             this.ComboBox_Bank.Name = "ComboBox_Bank";
-            this.ComboBox_Bank.Size = new System.Drawing.Size(352, 28);
+            this.ComboBox_Bank.Size = new System.Drawing.Size(455, 28);
             this.ComboBox_Bank.TabIndex = 74;
             // 
             // Lbl_Bank
@@ -308,7 +503,7 @@
             this.Txt_BankAccountNumber.Location = new System.Drawing.Point(14, 68);
             this.Txt_BankAccountNumber.MaxLength = 15;
             this.Txt_BankAccountNumber.Name = "Txt_BankAccountNumber";
-            this.Txt_BankAccountNumber.Size = new System.Drawing.Size(352, 27);
+            this.Txt_BankAccountNumber.Size = new System.Drawing.Size(455, 27);
             this.Txt_BankAccountNumber.TabIndex = 71;
             // 
             // Lbl_BankAccountNumber
@@ -322,24 +517,10 @@
             this.Lbl_BankAccountNumber.TabIndex = 72;
             this.Lbl_BankAccountNumber.Text = "CUENTA BANCARIA";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Image = global::SECRON.Properties.Resources.CuentasNegro25x25;
-            this.label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label5.Location = new System.Drawing.Point(10, 10);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(172, 20);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "      DATOS BANCARIOS";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // vScrollBar
             // 
             this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar.Location = new System.Drawing.Point(405, 0);
+            this.vScrollBar.Location = new System.Drawing.Point(505, 0);
             this.vScrollBar.Name = "vScrollBar";
             this.vScrollBar.Size = new System.Drawing.Size(10, 806);
             this.vScrollBar.TabIndex = 76;
@@ -348,76 +529,13 @@
             // 
             this.Panel_CRUD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.Panel_CRUD.Controls.Add(this.Btn_Clear);
-            this.Panel_CRUD.Controls.Add(this.Btn_Inactive);
+            this.Panel_CRUD.Controls.Add(this.Btn_ActiveYesNo);
             this.Panel_CRUD.Controls.Add(this.Btn_Update);
             this.Panel_CRUD.Controls.Add(this.Btn_Save);
             this.Panel_CRUD.Location = new System.Drawing.Point(16, 40);
             this.Panel_CRUD.Name = "Panel_CRUD";
-            this.Panel_CRUD.Size = new System.Drawing.Size(384, 47);
+            this.Panel_CRUD.Size = new System.Drawing.Size(478, 47);
             this.Panel_CRUD.TabIndex = 75;
-            // 
-            // Btn_Clear
-            // 
-            this.Btn_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_Clear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Clear.Location = new System.Drawing.Point(350, 3);
-            this.Btn_Clear.Name = "Btn_Clear";
-            this.Btn_Clear.Size = new System.Drawing.Size(33, 37);
-            this.Btn_Clear.TabIndex = 57;
-            this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Clear.UseVisualStyleBackColor = true;
-            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
-            // 
-            // Btn_Inactive
-            // 
-            this.Btn_Inactive.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Inactive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Inactive.Image = global::SECRON.Properties.Resources.InactivarRojo25x25;
-            this.Btn_Inactive.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Inactive.Location = new System.Drawing.Point(224, 3);
-            this.Btn_Inactive.Name = "Btn_Inactive";
-            this.Btn_Inactive.Size = new System.Drawing.Size(124, 37);
-            this.Btn_Inactive.TabIndex = 56;
-            this.Btn_Inactive.Text = "INACTIVAR";
-            this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Inactive.UseVisualStyleBackColor = true;
-            this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
-            // 
-            // Btn_Update
-            // 
-            this.Btn_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
-            this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Update.Location = new System.Drawing.Point(122, 3);
-            this.Btn_Update.Name = "Btn_Update";
-            this.Btn_Update.Size = new System.Drawing.Size(98, 37);
-            this.Btn_Update.TabIndex = 55;
-            this.Btn_Update.Text = "EDITAR";
-            this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Update.UseVisualStyleBackColor = true;
-            this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
-            // 
-            // Btn_Save
-            // 
-            this.Btn_Save.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
-            this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Save.Location = new System.Drawing.Point(0, 3);
-            this.Btn_Save.Name = "Btn_Save";
-            this.Btn_Save.Size = new System.Drawing.Size(117, 37);
-            this.Btn_Save.TabIndex = 54;
-            this.Btn_Save.Text = "GUARDAR";
-            this.Btn_Save.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Btn_Save.UseVisualStyleBackColor = true;
-            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
             // 
             // Panel_3
             // 
@@ -433,7 +551,7 @@
             this.Panel_3.Controls.Add(this.Lbl_Subtitulo3);
             this.Panel_3.Location = new System.Drawing.Point(16, 750);
             this.Panel_3.Name = "Panel_3";
-            this.Panel_3.Size = new System.Drawing.Size(380, 225);
+            this.Panel_3.Size = new System.Drawing.Size(478, 225);
             this.Panel_3.TabIndex = 65;
             // 
             // ComboBox_Specialization
@@ -514,20 +632,6 @@
             this.Lbl_AcademicTitle.TabIndex = 12;
             this.Lbl_AcademicTitle.Text = "TÍTULO ACADÉMICO";
             // 
-            // Lbl_Subtitulo3
-            // 
-            this.Lbl_Subtitulo3.AutoSize = true;
-            this.Lbl_Subtitulo3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Subtitulo3.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Subtitulo3.Image = global::SECRON.Properties.Resources.InformacionLaboralNegro25x25;
-            this.Lbl_Subtitulo3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Lbl_Subtitulo3.Location = new System.Drawing.Point(10, 10);
-            this.Lbl_Subtitulo3.Name = "Lbl_Subtitulo3";
-            this.Lbl_Subtitulo3.Size = new System.Drawing.Size(234, 20);
-            this.Lbl_Subtitulo3.TabIndex = 11;
-            this.Lbl_Subtitulo3.Text = "      INFORMACIÓN ACADÉMICA";
-            this.Lbl_Subtitulo3.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // Panel_2
             // 
             this.Panel_2.BackColor = System.Drawing.Color.White;
@@ -538,7 +642,7 @@
             this.Panel_2.Controls.Add(this.Lbl_Subtitulo2);
             this.Panel_2.Location = new System.Drawing.Point(16, 550);
             this.Panel_2.Name = "Panel_2";
-            this.Panel_2.Size = new System.Drawing.Size(380, 185);
+            this.Panel_2.Size = new System.Drawing.Size(478, 185);
             this.Panel_2.TabIndex = 64;
             // 
             // ComboBox_ContractType
@@ -546,7 +650,7 @@
             this.ComboBox_ContractType.FormattingEnabled = true;
             this.ComboBox_ContractType.Location = new System.Drawing.Point(14, 138);
             this.ComboBox_ContractType.Name = "ComboBox_ContractType";
-            this.ComboBox_ContractType.Size = new System.Drawing.Size(355, 28);
+            this.ComboBox_ContractType.Size = new System.Drawing.Size(456, 28);
             this.ComboBox_ContractType.TabIndex = 73;
             // 
             // Lbl_ContractType
@@ -575,22 +679,8 @@
             // 
             this.DTP_HireDate.Location = new System.Drawing.Point(14, 71);
             this.DTP_HireDate.Name = "DTP_HireDate";
-            this.DTP_HireDate.Size = new System.Drawing.Size(352, 27);
+            this.DTP_HireDate.Size = new System.Drawing.Size(456, 27);
             this.DTP_HireDate.TabIndex = 16;
-            // 
-            // Lbl_Subtitulo2
-            // 
-            this.Lbl_Subtitulo2.AutoSize = true;
-            this.Lbl_Subtitulo2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Subtitulo2.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Subtitulo2.Image = global::SECRON.Properties.Resources.ContactoNegro25x25;
-            this.Lbl_Subtitulo2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Lbl_Subtitulo2.Location = new System.Drawing.Point(10, 10);
-            this.Lbl_Subtitulo2.Name = "Lbl_Subtitulo2";
-            this.Lbl_Subtitulo2.Size = new System.Drawing.Size(285, 20);
-            this.Lbl_Subtitulo2.TabIndex = 6;
-            this.Lbl_Subtitulo2.Text = "      INFORMACIÓN DE CONTRATACIÓN";
-            this.Lbl_Subtitulo2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // Panel_1
             // 
@@ -614,7 +704,7 @@
             this.Panel_1.Controls.Add(this.Lbl_Subtitulo1);
             this.Panel_1.Location = new System.Drawing.Point(16, 100);
             this.Panel_1.Name = "Panel_1";
-            this.Panel_1.Size = new System.Drawing.Size(380, 440);
+            this.Panel_1.Size = new System.Drawing.Size(478, 440);
             this.Panel_1.TabIndex = 52;
             // 
             // ComboBox_Location
@@ -622,7 +712,7 @@
             this.ComboBox_Location.FormattingEnabled = true;
             this.ComboBox_Location.Location = new System.Drawing.Point(14, 315);
             this.ComboBox_Location.Name = "ComboBox_Location";
-            this.ComboBox_Location.Size = new System.Drawing.Size(352, 28);
+            this.ComboBox_Location.Size = new System.Drawing.Size(455, 28);
             this.ComboBox_Location.TabIndex = 75;
             // 
             // Lbl_Location
@@ -639,10 +729,10 @@
             // Txt_Phone
             // 
             this.Txt_Phone.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Phone.Location = new System.Drawing.Point(196, 68);
+            this.Txt_Phone.Location = new System.Drawing.Point(245, 68);
             this.Txt_Phone.MaxLength = 15;
             this.Txt_Phone.Name = "Txt_Phone";
-            this.Txt_Phone.Size = new System.Drawing.Size(173, 27);
+            this.Txt_Phone.Size = new System.Drawing.Size(225, 27);
             this.Txt_Phone.TabIndex = 8;
             // 
             // Txt_Dpi
@@ -651,7 +741,7 @@
             this.Txt_Dpi.Location = new System.Drawing.Point(14, 199);
             this.Txt_Dpi.MaxLength = 15;
             this.Txt_Dpi.Name = "Txt_Dpi";
-            this.Txt_Dpi.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Dpi.Size = new System.Drawing.Size(225, 27);
             this.Txt_Dpi.TabIndex = 4;
             // 
             // Txt_Email
@@ -660,7 +750,7 @@
             this.Txt_Email.Location = new System.Drawing.Point(14, 263);
             this.Txt_Email.MaxLength = 15;
             this.Txt_Email.Name = "Txt_Email";
-            this.Txt_Email.Size = new System.Drawing.Size(352, 27);
+            this.Txt_Email.Size = new System.Drawing.Size(456, 27);
             this.Txt_Email.TabIndex = 7;
             // 
             // Txt_TeacherName
@@ -669,7 +759,7 @@
             this.Txt_TeacherName.Location = new System.Drawing.Point(14, 134);
             this.Txt_TeacherName.MaxLength = 15;
             this.Txt_TeacherName.Name = "Txt_TeacherName";
-            this.Txt_TeacherName.Size = new System.Drawing.Size(352, 27);
+            this.Txt_TeacherName.Size = new System.Drawing.Size(456, 27);
             this.Txt_TeacherName.TabIndex = 3;
             // 
             // Txt_Address
@@ -679,16 +769,16 @@
             this.Txt_Address.MaxLength = 15;
             this.Txt_Address.Multiline = true;
             this.Txt_Address.Name = "Txt_Address";
-            this.Txt_Address.Size = new System.Drawing.Size(352, 55);
+            this.Txt_Address.Size = new System.Drawing.Size(455, 55);
             this.Txt_Address.TabIndex = 6;
             // 
             // Txt_Nit
             // 
             this.Txt_Nit.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Nit.Location = new System.Drawing.Point(196, 199);
+            this.Txt_Nit.Location = new System.Drawing.Point(244, 199);
             this.Txt_Nit.MaxLength = 15;
             this.Txt_Nit.Name = "Txt_Nit";
-            this.Txt_Nit.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Nit.Size = new System.Drawing.Size(225, 27);
             this.Txt_Nit.TabIndex = 2;
             // 
             // Lbl_Phone1
@@ -696,7 +786,7 @@
             this.Lbl_Phone1.AutoSize = true;
             this.Lbl_Phone1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Phone1.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Phone1.Location = new System.Drawing.Point(192, 45);
+            this.Lbl_Phone1.Location = new System.Drawing.Point(241, 45);
             this.Lbl_Phone1.Name = "Lbl_Phone1";
             this.Lbl_Phone1.Size = new System.Drawing.Size(84, 20);
             this.Lbl_Phone1.TabIndex = 8;
@@ -708,7 +798,7 @@
             this.Txt_Code.Location = new System.Drawing.Point(14, 68);
             this.Txt_Code.MaxLength = 15;
             this.Txt_Code.Name = "Txt_Code";
-            this.Txt_Code.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Code.Size = new System.Drawing.Size(225, 27);
             this.Txt_Code.TabIndex = 1;
             // 
             // Lbl_Correo
@@ -738,7 +828,7 @@
             this.Lbl_Dpi.AutoSize = true;
             this.Lbl_Dpi.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Dpi.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Dpi.Location = new System.Drawing.Point(14, 176);
+            this.Lbl_Dpi.Location = new System.Drawing.Point(10, 176);
             this.Lbl_Dpi.Name = "Lbl_Dpi";
             this.Lbl_Dpi.Size = new System.Drawing.Size(45, 20);
             this.Lbl_Dpi.TabIndex = 4;
@@ -760,7 +850,7 @@
             this.Lbl_NIT.AutoSize = true;
             this.Lbl_NIT.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_NIT.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_NIT.Location = new System.Drawing.Point(196, 176);
+            this.Lbl_NIT.Location = new System.Drawing.Point(240, 176);
             this.Lbl_NIT.Name = "Lbl_NIT";
             this.Lbl_NIT.Size = new System.Drawing.Size(35, 20);
             this.Lbl_NIT.TabIndex = 2;
@@ -776,20 +866,6 @@
             this.Lbl_Codigo.Size = new System.Drawing.Size(150, 20);
             this.Lbl_Codigo.TabIndex = 1;
             this.Lbl_Codigo.Text = "CÓDIGO DOCENTE *";
-            // 
-            // Lbl_Subtitulo1
-            // 
-            this.Lbl_Subtitulo1.AutoSize = true;
-            this.Lbl_Subtitulo1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Subtitulo1.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Subtitulo1.Image = global::SECRON.Properties.Resources.DescripcionItemBlanco25x25;
-            this.Lbl_Subtitulo1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Lbl_Subtitulo1.Location = new System.Drawing.Point(10, 10);
-            this.Lbl_Subtitulo1.Name = "Lbl_Subtitulo1";
-            this.Lbl_Subtitulo1.Size = new System.Drawing.Size(244, 20);
-            this.Lbl_Subtitulo1.TabIndex = 1;
-            this.Lbl_Subtitulo1.Text = "      INFORMACIÓN DEL DOCENTE";
-            this.Lbl_Subtitulo1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // Lbl_TituloPanelIzquierdo
             // 
@@ -815,6 +891,195 @@
             this.Panel_Superior.Name = "Panel_Superior";
             this.Panel_Superior.Size = new System.Drawing.Size(1184, 55);
             this.Panel_Superior.TabIndex = 6;
+            // 
+            // Lbl_Formulario
+            // 
+            this.Lbl_Formulario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Lbl_Formulario.AutoSize = true;
+            this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Formulario.Location = new System.Drawing.Point(8, 13);
+            this.Lbl_Formulario.Name = "Lbl_Formulario";
+            this.Lbl_Formulario.Size = new System.Drawing.Size(198, 25);
+            this.Lbl_Formulario.TabIndex = 50;
+            this.Lbl_Formulario.Text = "FICHA DEL DOCENTE";
+            // 
+            // Lbl_Info
+            // 
+            this.Lbl_Info.AutoSize = true;
+            this.Lbl_Info.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Info.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Info.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
+            this.Lbl_Info.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Info.Location = new System.Drawing.Point(12, 101);
+            this.Lbl_Info.Name = "Lbl_Info";
+            this.Lbl_Info.Size = new System.Drawing.Size(497, 19);
+            this.Lbl_Info.TabIndex = 72;
+            this.Lbl_Info.Text = "       Para eliminar documentos, clic al estado del archivo para removerlo";
+            this.Lbl_Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // Btn_CleanSearch
+            // 
+            this.Btn_CleanSearch.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(575, 12);
+            this.Btn_CleanSearch.Name = "Btn_CleanSearch";
+            this.Btn_CleanSearch.Size = new System.Drawing.Size(30, 31);
+            this.Btn_CleanSearch.TabIndex = 71;
+            this.Btn_CleanSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_CleanSearch.UseVisualStyleBackColor = true;
+            this.Btn_CleanSearch.Click += new System.EventHandler(this.Btn_Limpiar_Click);
+            // 
+            // Btn_Search
+            // 
+            this.Btn_Search.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Search.Location = new System.Drawing.Point(468, 12);
+            this.Btn_Search.Name = "Btn_Search";
+            this.Btn_Search.Size = new System.Drawing.Size(101, 31);
+            this.Btn_Search.TabIndex = 54;
+            this.Btn_Search.Text = "BUSCAR";
+            this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Search.UseVisualStyleBackColor = true;
+            this.Btn_Search.Click += new System.EventHandler(this.Btn_Search_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label9.ForeColor = System.Drawing.Color.Black;
+            this.label9.Image = global::SECRON.Properties.Resources.InformacionLaboralNegro25x25;
+            this.label9.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label9.Location = new System.Drawing.Point(10, 10);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(214, 20);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "      INFORMACIÓN LABORAL";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Image = global::SECRON.Properties.Resources.CuentasNegro25x25;
+            this.label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Location = new System.Drawing.Point(10, 10);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(172, 20);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "      DATOS BANCARIOS";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // Btn_Clear
+            // 
+            this.Btn_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
+            this.Btn_Clear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Clear.Location = new System.Drawing.Point(439, 3);
+            this.Btn_Clear.Name = "Btn_Clear";
+            this.Btn_Clear.Size = new System.Drawing.Size(33, 37);
+            this.Btn_Clear.TabIndex = 57;
+            this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Clear.UseVisualStyleBackColor = true;
+            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
+            // 
+            // Btn_ActiveYesNo
+            // 
+            this.Btn_ActiveYesNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_ActiveYesNo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_ActiveYesNo.Image = global::SECRON.Properties.Resources.Alerta25x25;
+            this.Btn_ActiveYesNo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_ActiveYesNo.Location = new System.Drawing.Point(233, 3);
+            this.Btn_ActiveYesNo.Name = "Btn_ActiveYesNo";
+            this.Btn_ActiveYesNo.Size = new System.Drawing.Size(200, 37);
+            this.Btn_ActiveYesNo.TabIndex = 56;
+            this.Btn_ActiveYesNo.Text = "ACTIVAR/INACTIVAR";
+            this.Btn_ActiveYesNo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_ActiveYesNo.UseVisualStyleBackColor = true;
+            this.Btn_ActiveYesNo.Click += new System.EventHandler(this.Btn_ActiveYesNo_Click);
+            // 
+            // Btn_Update
+            // 
+            this.Btn_Update.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
+            this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Update.Location = new System.Drawing.Point(129, 3);
+            this.Btn_Update.Name = "Btn_Update";
+            this.Btn_Update.Size = new System.Drawing.Size(98, 37);
+            this.Btn_Update.TabIndex = 55;
+            this.Btn_Update.Text = "EDITAR";
+            this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Update.UseVisualStyleBackColor = true;
+            this.Btn_Update.Click += new System.EventHandler(this.Btn_Update_Click);
+            // 
+            // Btn_Save
+            // 
+            this.Btn_Save.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
+            this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Save.Location = new System.Drawing.Point(6, 3);
+            this.Btn_Save.Name = "Btn_Save";
+            this.Btn_Save.Size = new System.Drawing.Size(117, 37);
+            this.Btn_Save.TabIndex = 54;
+            this.Btn_Save.Text = "GUARDAR";
+            this.Btn_Save.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Save.UseVisualStyleBackColor = true;
+            this.Btn_Save.Click += new System.EventHandler(this.Btn_Save_Click);
+            // 
+            // Lbl_Subtitulo3
+            // 
+            this.Lbl_Subtitulo3.AutoSize = true;
+            this.Lbl_Subtitulo3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Subtitulo3.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Subtitulo3.Image = global::SECRON.Properties.Resources.InformacionLaboralNegro25x25;
+            this.Lbl_Subtitulo3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Subtitulo3.Location = new System.Drawing.Point(10, 10);
+            this.Lbl_Subtitulo3.Name = "Lbl_Subtitulo3";
+            this.Lbl_Subtitulo3.Size = new System.Drawing.Size(234, 20);
+            this.Lbl_Subtitulo3.TabIndex = 11;
+            this.Lbl_Subtitulo3.Text = "      INFORMACIÓN ACADÉMICA";
+            this.Lbl_Subtitulo3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // Lbl_Subtitulo2
+            // 
+            this.Lbl_Subtitulo2.AutoSize = true;
+            this.Lbl_Subtitulo2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Subtitulo2.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Subtitulo2.Image = global::SECRON.Properties.Resources.ContactoNegro25x25;
+            this.Lbl_Subtitulo2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Subtitulo2.Location = new System.Drawing.Point(10, 10);
+            this.Lbl_Subtitulo2.Name = "Lbl_Subtitulo2";
+            this.Lbl_Subtitulo2.Size = new System.Drawing.Size(285, 20);
+            this.Lbl_Subtitulo2.TabIndex = 6;
+            this.Lbl_Subtitulo2.Text = "      INFORMACIÓN DE CONTRATACIÓN";
+            this.Lbl_Subtitulo2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // Lbl_Subtitulo1
+            // 
+            this.Lbl_Subtitulo1.AutoSize = true;
+            this.Lbl_Subtitulo1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_Subtitulo1.ForeColor = System.Drawing.Color.Black;
+            this.Lbl_Subtitulo1.Image = global::SECRON.Properties.Resources.DescripcionItemBlanco25x25;
+            this.Lbl_Subtitulo1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Lbl_Subtitulo1.Location = new System.Drawing.Point(10, 10);
+            this.Lbl_Subtitulo1.Name = "Lbl_Subtitulo1";
+            this.Lbl_Subtitulo1.Size = new System.Drawing.Size(244, 20);
+            this.Lbl_Subtitulo1.TabIndex = 1;
+            this.Lbl_Subtitulo1.Text = "      INFORMACIÓN DEL DOCENTE";
+            this.Lbl_Subtitulo1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // Btn_PeriodosContratos
             // 
@@ -879,33 +1144,6 @@
             this.Btn_Export.UseVisualStyleBackColor = true;
             this.Btn_Export.Click += new System.EventHandler(this.Btn_Export_Click);
             // 
-            // Lbl_Formulario
-            // 
-            this.Lbl_Formulario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.Lbl_Formulario.AutoSize = true;
-            this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Formulario.Location = new System.Drawing.Point(8, 13);
-            this.Lbl_Formulario.Name = "Lbl_Formulario";
-            this.Lbl_Formulario.Size = new System.Drawing.Size(198, 25);
-            this.Lbl_Formulario.TabIndex = 50;
-            this.Lbl_Formulario.Text = "FICHA DEL DOCENTE";
-            // 
-            // Lbl_Info
-            // 
-            this.Lbl_Info.AutoSize = true;
-            this.Lbl_Info.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.Lbl_Info.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Info.Image = global::SECRON.Properties.Resources.InfoNegro20x20;
-            this.Lbl_Info.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Lbl_Info.Location = new System.Drawing.Point(12, 101);
-            this.Lbl_Info.Name = "Lbl_Info";
-            this.Lbl_Info.Size = new System.Drawing.Size(497, 19);
-            this.Lbl_Info.TabIndex = 72;
-            this.Lbl_Info.Text = "       Para eliminar documentos, clic al estado del archivo para removerlo";
-            this.Lbl_Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // Frm_RRHH_Teacher_File
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -927,6 +1165,8 @@
             this.Panel_Busqueda.PerformLayout();
             this.Panel_Izquierdo.ResumeLayout(false);
             this.Panel_Izquierdo.PerformLayout();
+            this.Panel_5.ResumeLayout(false);
+            this.Panel_5.PerformLayout();
             this.Panel_4.ResumeLayout(false);
             this.Panel_4.PerformLayout();
             this.Panel_CRUD.ResumeLayout(false);
@@ -960,7 +1200,7 @@
         private System.Windows.Forms.VScrollBar vScrollBar;
         private System.Windows.Forms.Panel Panel_CRUD;
         private System.Windows.Forms.Button Btn_Clear;
-        private System.Windows.Forms.Button Btn_Inactive;
+        private System.Windows.Forms.Button Btn_ActiveYesNo;
         private System.Windows.Forms.Button Btn_Update;
         private System.Windows.Forms.Button Btn_Save;
         private System.Windows.Forms.Panel Panel_3;
@@ -1011,5 +1251,24 @@
         private System.Windows.Forms.Button Btn_Contratos;
         private System.Windows.Forms.Button Btn_PeriodosContratos;
         private System.Windows.Forms.Label Lbl_Info;
+        private System.Windows.Forms.Panel Panel_5;
+        private System.Windows.Forms.CheckBox Chk_IGSSManual;
+        private System.Windows.Forms.TextBox Txt_BaseSalary;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox Txt_NetSalary;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox Txt_ISR;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox Txt_LegalBonus;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox Txt_AdditionalBonus;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox Txt_IGSS;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.DateTimePicker DTP_Ingreso;
+        private System.Windows.Forms.TextBox Txt_NominalSalary;
+        private System.Windows.Forms.Label Lbl_Salario;
+        private System.Windows.Forms.Label Lbl_FechaIngreso;
+        private System.Windows.Forms.Label label9;
     }
 }

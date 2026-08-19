@@ -60,6 +60,16 @@ namespace SECRON.Models
         public string FilePath_CV { get; set; }
         public string FilePath_ContratoFirmado { get; set; }
 
+        // Información Laboral / Salarial
+        public decimal? NominalSalary { get; set; }
+        public decimal? BaseSalary { get; set; }
+        public decimal? AdditionalBonus { get; set; }
+        public decimal? LegalBonus { get; set; }
+        public decimal? IGSS { get; set; }
+        public decimal? ISR { get; set; }
+        public decimal? NetSalary { get; set; }
+        public bool? IGSSManual { get; set; }
+
         public Mdl_Teachers()
         {
             IsActive = true;

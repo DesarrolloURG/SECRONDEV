@@ -104,6 +104,14 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@LocationId", docente.LocationId);
                     cmd.Parameters.AddWithValue("@HireDate", (object)docente.HireDate ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ContractType", (object)docente.ContractType ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NominalSalary", (object)docente.NominalSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BaseSalary", (object)docente.BaseSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AdditionalBonus", (object)docente.AdditionalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LegalBonus", (object)docente.LegalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSS", (object)docente.IGSS ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ISR", (object)docente.ISR ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NetSalary", (object)docente.NetSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSSManual", (object)docente.IGSSManual ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@UserId", (object)docente.UserId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@RegisteredByCoordinatorId", (object)docente.RegisteredByCoordinatorId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@IsActive", docente.IsActive);
@@ -353,6 +361,14 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@LocationId", docente.LocationId);
                     cmd.Parameters.AddWithValue("@HireDate", (object)docente.HireDate ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ContractType", (object)docente.ContractType ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NominalSalary", (object)docente.NominalSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@BaseSalary", (object)docente.BaseSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AdditionalBonus", (object)docente.AdditionalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LegalBonus", (object)docente.LegalBonus ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSS", (object)docente.IGSS ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ISR", (object)docente.ISR ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@NetSalary", (object)docente.NetSalary ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IGSSManual", (object)docente.IGSSManual ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@UserId", (object)docente.UserId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@RegisteredByCoordinatorId", (object)docente.RegisteredByCoordinatorId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ModifiedBy", (object)docente.ModifiedBy ?? DBNull.Value);
@@ -472,6 +488,16 @@ namespace SECRON.Controllers
                 LocationId = reader.GetInt32(14),
                 HireDate = reader[15] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(15),
                 ContractType = reader[16] == DBNull.Value ? null : reader[16].ToString(),
+
+                NominalSalary = reader["NominalSalary"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["NominalSalary"]),
+                BaseSalary = reader["BaseSalary"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["BaseSalary"]),
+                AdditionalBonus = reader["AdditionalBonus"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["AdditionalBonus"]),
+                LegalBonus = reader["LegalBonus"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["LegalBonus"]),
+                IGSS = reader["IGSS"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["IGSS"]),
+                ISR = reader["ISR"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["ISR"]),
+                NetSalary = reader["NetSalary"] == DBNull.Value ? null : (decimal?)Convert.ToDecimal(reader["NetSalary"]),
+                IGSSManual = reader["IGSSManual"] == DBNull.Value ? null : (bool?)Convert.ToBoolean(reader["IGSSManual"]),
+
                 UserId = reader[17] == DBNull.Value ? null : (int?)reader.GetInt32(17),
                 RegisteredByCoordinatorId = reader[18] == DBNull.Value ? null : (int?)reader.GetInt32(18),
                 IsActive = reader.GetBoolean(19),
