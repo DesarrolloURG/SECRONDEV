@@ -114,6 +114,12 @@ ADD FilePath_DPI           NVARCHAR(500) NULL,
     FilePath_AntPoliciacos NVARCHAR(500) NULL,
     FilePath_AntPenales    NVARCHAR(500) NULL;
 
+	-- 1) ALTER TABLE: nuevas columnas de archivo
+ALTER TABLE Employees ADD
+    FilePath_CV               VARCHAR(500) NULL,
+    FilePath_ContratoFirmado  VARCHAR(500) NULL;
+GO
+
 SELECT * FROM Employees
 
 

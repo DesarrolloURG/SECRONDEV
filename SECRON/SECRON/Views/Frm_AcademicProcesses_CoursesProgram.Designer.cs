@@ -48,6 +48,7 @@
             this.Btn_Update = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Panel_1 = new System.Windows.Forms.Panel();
+            this.checkBoxCursoComun = new System.Windows.Forms.CheckBox();
             this.numericUpDownSessions = new System.Windows.Forms.NumericUpDown();
             this.Lbl_Sessions = new System.Windows.Forms.Label();
             this.numericUpDownLabHours = new System.Windows.Forms.NumericUpDown();
@@ -73,7 +74,7 @@
             this.Btn_Import = new System.Windows.Forms.Button();
             this.Btn_Export = new System.Windows.Forms.Button();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
-            this.checkBoxCursoComun = new System.Windows.Forms.CheckBox();
+            this.Btn_Catalogo = new System.Windows.Forms.Button();
             this.Panel_Derecho.SuspendLayout();
             this.PanelToolStrip.SuspendLayout();
             this.Panel_Busqueda.SuspendLayout();
@@ -328,6 +329,16 @@
             this.Panel_1.Size = new System.Drawing.Size(453, 511);
             this.Panel_1.TabIndex = 52;
             // 
+            // checkBoxCursoComun
+            // 
+            this.checkBoxCursoComun.AutoSize = true;
+            this.checkBoxCursoComun.Location = new System.Drawing.Point(238, 256);
+            this.checkBoxCursoComun.Name = "checkBoxCursoComun";
+            this.checkBoxCursoComun.Size = new System.Drawing.Size(138, 24);
+            this.checkBoxCursoComun.TabIndex = 86;
+            this.checkBoxCursoComun.Text = "CURSO COMÚN";
+            this.checkBoxCursoComun.UseVisualStyleBackColor = true;
+            // 
             // numericUpDownSessions
             // 
             this.numericUpDownSessions.Location = new System.Drawing.Point(14, 265);
@@ -540,6 +551,7 @@
             // Panel_Superior
             // 
             this.Panel_Superior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(140)))), ((int)(((byte)(255)))));
+            this.Panel_Superior.Controls.Add(this.Btn_Catalogo);
             this.Panel_Superior.Controls.Add(this.Btn_Import);
             this.Panel_Superior.Controls.Add(this.Btn_Export);
             this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
@@ -592,15 +604,21 @@
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "PENSUM DE CURSOS";
             // 
-            // checkBoxCursoComun
+            // Btn_Catalogo
             // 
-            this.checkBoxCursoComun.AutoSize = true;
-            this.checkBoxCursoComun.Location = new System.Drawing.Point(238, 256);
-            this.checkBoxCursoComun.Name = "checkBoxCursoComun";
-            this.checkBoxCursoComun.Size = new System.Drawing.Size(138, 24);
-            this.checkBoxCursoComun.TabIndex = 86;
-            this.checkBoxCursoComun.Text = "CURSO COMÚN";
-            this.checkBoxCursoComun.UseVisualStyleBackColor = true;
+            this.Btn_Catalogo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_Catalogo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_Catalogo.Image = global::SECRON.Properties.Resources.AccountsNegro25x25;
+            this.Btn_Catalogo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Btn_Catalogo.Location = new System.Drawing.Point(719, 13);
+            this.Btn_Catalogo.Name = "Btn_Catalogo";
+            this.Btn_Catalogo.Size = new System.Drawing.Size(203, 30);
+            this.Btn_Catalogo.TabIndex = 60;
+            this.Btn_Catalogo.Text = "CATALOGO POR SEDE";
+            this.Btn_Catalogo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_Catalogo.UseVisualStyleBackColor = true;
+            this.Btn_Catalogo.Click += new System.EventHandler(this.Btn_Catalogo_Click);
             // 
             // Frm_AcademicProcesses_CoursesProgram
             // 
@@ -683,5 +701,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownSessions;
         private System.Windows.Forms.Label Lbl_Sessions;
         private System.Windows.Forms.CheckBox checkBoxCursoComun;
+        private System.Windows.Forms.Button Btn_Catalogo;
     }
 }

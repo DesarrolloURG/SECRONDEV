@@ -110,10 +110,12 @@
     <Compile Include="Controllers\Ctrl_AuditLogs.cs" />
     <Compile Include="Controllers\Ctrl_Careers.cs" />
     <Compile Include="Controllers\Ctrl_Courses.cs" />
+    <Compile Include="Controllers\Ctrl_LocationCareers.cs" />
     <Compile Include="Controllers\Ctrl_ResponsibilityLetters.cs" />
     <Compile Include="Models\Mdl_AuditLog.cs" />
     <Compile Include="Models\Mdl_Careers.cs" />
     <Compile Include="Models\Mdl_Courses.cs" />
+    <Compile Include="Models\Mdl_LocationCareers.cs" />
     <Compile Include="Models\Mdl_ResponsibilityLetterDetail.cs" />
     <Compile Include="Models\Mdl_ResponsibilityLetterMaster.cs" />
     <Compile Include="Utils\Cls_EmailConfigCache.cs" />
@@ -281,6 +283,18 @@
     </Compile>
     <Compile Include="Views\Frm_AcademicProcesses_CareerProgram_Import.Designer.cs">
       <DependentUpon>Frm_AcademicProcesses_CareerProgram_Import.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CatalogCarrersByLocations.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CatalogCarrersByLocations.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CatalogCarrersByLocations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CatalogCoursesByCareer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CatalogCoursesByCareer.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CatalogCoursesByCareer.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_AcademicProcesses_CoursesProgram.cs">
       <SubType>Form</SubType>
@@ -751,6 +765,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_AcademicProcesses_CareerProgram_Import.resx">
       <DependentUpon>Frm_AcademicProcesses_CareerProgram_Import.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CatalogCarrersByLocations.resx">
+      <DependentUpon>Frm_AcademicProcesses_CatalogCarrersByLocations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CatalogCoursesByCareer.resx">
+      <DependentUpon>Frm_AcademicProcesses_CatalogCoursesByCareer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_AcademicProcesses_CoursesProgram.resx">
       <DependentUpon>Frm_AcademicProcesses_CoursesProgram.cs</DependentUpon>

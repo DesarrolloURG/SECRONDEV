@@ -2002,7 +2002,7 @@ namespace SECRON.Views
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
 
-            AbrirFormularioConPestana(frm, "PENSUM de Carreras", "CareerProgram");
+            AbrirFormularioConPestana(frm, "PENSUM de Cursos", "CoursesProgram");
         }
         private void BtnProcesosAcademicos_TarifasCursos_Click(object sender, EventArgs e)
         {
@@ -2519,18 +2519,20 @@ namespace SECRON.Views
 
         #endregion EventoFormClosing
 
+        // ULTIMOS CAMBIOS
+
         private void BtnRRHH_Docencia_GenerarContrato_Click(object sender, EventArgs e)
         {
+            try
+            {
+                System.Diagnostics.Process.Start("https://contratos.uregionalregion2.edu.gt/");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ABRIR EL PORTAL DE CONTRATOS: " + ex.Message,
+                    "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             CerrarTodosLosPaneles();
-            // Crear tu formulario específico (reemplaza con el formulario real)
-            Frm_RRHH_Coordinator_File frm = new Frm_RRHH_Coordinator_File();
-            frm.Text = "Ficha del Coordinador";
-            frm.BackColor = Color.White;
-            //Pasamos los datos del usuario
-            frm.UserData = this.UserData;
-            AbrirFormularioConPestana(frm, "Ficha del Coordinador", "CoordinatorManagment");
-
-            //https://contratos.uregionalregion2.edu.gt/
         }
     }
 }

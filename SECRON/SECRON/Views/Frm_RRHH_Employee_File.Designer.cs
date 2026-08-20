@@ -404,10 +404,10 @@ namespace SECRON.Views
             // Txt_TelefonoEmergencia
             // 
             this.Txt_TelefonoEmergencia.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_TelefonoEmergencia.Location = new System.Drawing.Point(200, 134);
+            this.Txt_TelefonoEmergencia.Location = new System.Drawing.Point(245, 133);
             this.Txt_TelefonoEmergencia.MaxLength = 15;
             this.Txt_TelefonoEmergencia.Name = "Txt_TelefonoEmergencia";
-            this.Txt_TelefonoEmergencia.Size = new System.Drawing.Size(166, 27);
+            this.Txt_TelefonoEmergencia.Size = new System.Drawing.Size(225, 27);
             this.Txt_TelefonoEmergencia.TabIndex = 69;
             // 
             // Txt_Parentesco
@@ -416,7 +416,7 @@ namespace SECRON.Views
             this.Txt_Parentesco.Location = new System.Drawing.Point(14, 134);
             this.Txt_Parentesco.MaxLength = 15;
             this.Txt_Parentesco.Name = "Txt_Parentesco";
-            this.Txt_Parentesco.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Parentesco.Size = new System.Drawing.Size(225, 27);
             this.Txt_Parentesco.TabIndex = 68;
             // 
             // Txt_PersonaEmergencia
@@ -425,7 +425,7 @@ namespace SECRON.Views
             this.Txt_PersonaEmergencia.Location = new System.Drawing.Point(14, 68);
             this.Txt_PersonaEmergencia.MaxLength = 15;
             this.Txt_PersonaEmergencia.Name = "Txt_PersonaEmergencia";
-            this.Txt_PersonaEmergencia.Size = new System.Drawing.Size(352, 27);
+            this.Txt_PersonaEmergencia.Size = new System.Drawing.Size(456, 27);
             this.Txt_PersonaEmergencia.TabIndex = 67;
             // 
             // Lbl_TelefonoEmergencia
@@ -433,7 +433,7 @@ namespace SECRON.Views
             this.Lbl_TelefonoEmergencia.AutoSize = true;
             this.Lbl_TelefonoEmergencia.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_TelefonoEmergencia.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_TelefonoEmergencia.Location = new System.Drawing.Point(196, 111);
+            this.Lbl_TelefonoEmergencia.Location = new System.Drawing.Point(241, 110);
             this.Lbl_TelefonoEmergencia.Name = "Lbl_TelefonoEmergencia";
             this.Lbl_TelefonoEmergencia.Size = new System.Drawing.Size(84, 20);
             this.Lbl_TelefonoEmergencia.TabIndex = 58;
@@ -528,7 +528,7 @@ namespace SECRON.Views
             this.Txt_salario_base.Location = new System.Drawing.Point(14, 238);
             this.Txt_salario_base.MaxLength = 15;
             this.Txt_salario_base.Name = "Txt_salario_base";
-            this.Txt_salario_base.Size = new System.Drawing.Size(166, 27);
+            this.Txt_salario_base.Size = new System.Drawing.Size(225, 27);
             this.Txt_salario_base.TabIndex = 84;
             this.Txt_salario_base.Text = "0.00";
             this.Txt_salario_base.TextChanged += new System.EventHandler(this.CamposSalario_TextChanged);
@@ -552,7 +552,7 @@ namespace SECRON.Views
             this.Txt_salario_neto.Location = new System.Drawing.Point(15, 302);
             this.Txt_salario_neto.MaxLength = 15;
             this.Txt_salario_neto.Name = "Txt_salario_neto";
-            this.Txt_salario_neto.Size = new System.Drawing.Size(351, 27);
+            this.Txt_salario_neto.Size = new System.Drawing.Size(453, 27);
             this.Txt_salario_neto.TabIndex = 18;
             this.Txt_salario_neto.Text = "0.00";
             this.Txt_salario_neto.Leave += new System.EventHandler(this.FormatearDecimal_Leave);
@@ -571,10 +571,10 @@ namespace SECRON.Views
             // Txt_ISR
             // 
             this.Txt_ISR.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_ISR.Location = new System.Drawing.Point(200, 184);
+            this.Txt_ISR.Location = new System.Drawing.Point(243, 184);
             this.Txt_ISR.MaxLength = 15;
             this.Txt_ISR.Name = "Txt_ISR";
-            this.Txt_ISR.Size = new System.Drawing.Size(166, 27);
+            this.Txt_ISR.Size = new System.Drawing.Size(225, 27);
             this.Txt_ISR.TabIndex = 17;
             this.Txt_ISR.Text = "0.00";
             this.Txt_ISR.TextChanged += new System.EventHandler(this.CamposSalario_TextChanged);
@@ -585,7 +585,7 @@ namespace SECRON.Views
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(196, 161);
+            this.label4.Location = new System.Drawing.Point(239, 161);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(32, 20);
             this.label4.TabIndex = 79;
@@ -594,10 +594,10 @@ namespace SECRON.Views
             // Txt_bono_ley
             // 
             this.Txt_bono_ley.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_bono_ley.Location = new System.Drawing.Point(200, 130);
+            this.Txt_bono_ley.Location = new System.Drawing.Point(243, 130);
             this.Txt_bono_ley.MaxLength = 15;
             this.Txt_bono_ley.Name = "Txt_bono_ley";
-            this.Txt_bono_ley.Size = new System.Drawing.Size(166, 27);
+            this.Txt_bono_ley.Size = new System.Drawing.Size(225, 27);
             this.Txt_bono_ley.TabIndex = 15;
             this.Txt_bono_ley.Text = "250.00";
             this.Txt_bono_ley.TextChanged += new System.EventHandler(this.CamposSalario_TextChanged);
@@ -608,7 +608,7 @@ namespace SECRON.Views
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(196, 107);
+            this.label3.Location = new System.Drawing.Point(239, 107);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(105, 20);
             this.label3.TabIndex = 77;
@@ -620,7 +620,7 @@ namespace SECRON.Views
             this.Txt_bono_adicional.Location = new System.Drawing.Point(15, 184);
             this.Txt_bono_adicional.MaxLength = 15;
             this.Txt_bono_adicional.Name = "Txt_bono_adicional";
-            this.Txt_bono_adicional.Size = new System.Drawing.Size(166, 27);
+            this.Txt_bono_adicional.Size = new System.Drawing.Size(225, 27);
             this.Txt_bono_adicional.TabIndex = 14;
             this.Txt_bono_adicional.Text = "0.00";
             this.Txt_bono_adicional.TextChanged += new System.EventHandler(this.CamposSalario_TextChanged);
@@ -640,11 +640,11 @@ namespace SECRON.Views
             // Txt_igss
             // 
             this.Txt_igss.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_igss.Location = new System.Drawing.Point(200, 238);
+            this.Txt_igss.Location = new System.Drawing.Point(243, 238);
             this.Txt_igss.MaxLength = 15;
             this.Txt_igss.Name = "Txt_igss";
             this.Txt_igss.ReadOnly = true;
-            this.Txt_igss.Size = new System.Drawing.Size(166, 27);
+            this.Txt_igss.Size = new System.Drawing.Size(225, 27);
             this.Txt_igss.TabIndex = 16;
             this.Txt_igss.Text = "0.00";
             this.Txt_igss.TextChanged += new System.EventHandler(this.CamposSalario_TextChanged);
@@ -655,7 +655,7 @@ namespace SECRON.Views
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(196, 215);
+            this.label1.Location = new System.Drawing.Point(239, 215);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 20);
             this.label1.TabIndex = 73;
@@ -666,7 +666,7 @@ namespace SECRON.Views
             this.ComboBox_Sede.FormattingEnabled = true;
             this.ComboBox_Sede.Location = new System.Drawing.Point(14, 555);
             this.ComboBox_Sede.Name = "ComboBox_Sede";
-            this.ComboBox_Sede.Size = new System.Drawing.Size(352, 28);
+            this.ComboBox_Sede.Size = new System.Drawing.Size(454, 28);
             this.ComboBox_Sede.TabIndex = 71;
             // 
             // Lbl_Sede
@@ -685,7 +685,7 @@ namespace SECRON.Views
             this.ComboBox_TipoContratacion.FormattingEnabled = true;
             this.ComboBox_TipoContratacion.Location = new System.Drawing.Point(14, 491);
             this.ComboBox_TipoContratacion.Name = "ComboBox_TipoContratacion";
-            this.ComboBox_TipoContratacion.Size = new System.Drawing.Size(352, 28);
+            this.ComboBox_TipoContratacion.Size = new System.Drawing.Size(454, 28);
             this.ComboBox_TipoContratacion.TabIndex = 69;
             // 
             // Lbl_Contratacion
@@ -702,9 +702,9 @@ namespace SECRON.Views
             // ComboBox_Puesto
             // 
             this.ComboBox_Puesto.FormattingEnabled = true;
-            this.ComboBox_Puesto.Location = new System.Drawing.Point(200, 377);
+            this.ComboBox_Puesto.Location = new System.Drawing.Point(243, 377);
             this.ComboBox_Puesto.Name = "ComboBox_Puesto";
-            this.ComboBox_Puesto.Size = new System.Drawing.Size(166, 28);
+            this.ComboBox_Puesto.Size = new System.Drawing.Size(225, 28);
             this.ComboBox_Puesto.TabIndex = 67;
             // 
             // ComboBox_Departamento
@@ -712,7 +712,7 @@ namespace SECRON.Views
             this.ComboBox_Departamento.FormattingEnabled = true;
             this.ComboBox_Departamento.Location = new System.Drawing.Point(14, 377);
             this.ComboBox_Departamento.Name = "ComboBox_Departamento";
-            this.ComboBox_Departamento.Size = new System.Drawing.Size(170, 28);
+            this.ComboBox_Departamento.Size = new System.Drawing.Size(223, 28);
             this.ComboBox_Departamento.TabIndex = 66;
             // 
             // ComboBox_Supervisor
@@ -720,14 +720,14 @@ namespace SECRON.Views
             this.ComboBox_Supervisor.FormattingEnabled = true;
             this.ComboBox_Supervisor.Location = new System.Drawing.Point(14, 433);
             this.ComboBox_Supervisor.Name = "ComboBox_Supervisor";
-            this.ComboBox_Supervisor.Size = new System.Drawing.Size(352, 28);
+            this.ComboBox_Supervisor.Size = new System.Drawing.Size(454, 28);
             this.ComboBox_Supervisor.TabIndex = 65;
             // 
             // DTP_Ingreso
             // 
             this.DTP_Ingreso.Location = new System.Drawing.Point(14, 68);
             this.DTP_Ingreso.Name = "DTP_Ingreso";
-            this.DTP_Ingreso.Size = new System.Drawing.Size(352, 27);
+            this.DTP_Ingreso.Size = new System.Drawing.Size(456, 27);
             this.DTP_Ingreso.TabIndex = 11;
             // 
             // Txt_Salario
@@ -736,7 +736,7 @@ namespace SECRON.Views
             this.Txt_Salario.Location = new System.Drawing.Point(14, 130);
             this.Txt_Salario.MaxLength = 15;
             this.Txt_Salario.Name = "Txt_Salario";
-            this.Txt_Salario.Size = new System.Drawing.Size(166, 27);
+            this.Txt_Salario.Size = new System.Drawing.Size(225, 27);
             this.Txt_Salario.TabIndex = 12;
             this.Txt_Salario.Text = "0.00";
             this.Txt_Salario.TextChanged += new System.EventHandler(this.CamposSalario_TextChanged);
@@ -758,7 +758,7 @@ namespace SECRON.Views
             this.Lbl_Puesto.AutoSize = true;
             this.Lbl_Puesto.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Puesto.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Puesto.Location = new System.Drawing.Point(196, 350);
+            this.Lbl_Puesto.Location = new System.Drawing.Point(239, 350);
             this.Lbl_Puesto.Name = "Lbl_Puesto";
             this.Lbl_Puesto.Size = new System.Drawing.Size(75, 20);
             this.Lbl_Puesto.TabIndex = 57;
@@ -837,7 +837,7 @@ namespace SECRON.Views
             this.Txt_Direccion.MaxLength = 15;
             this.Txt_Direccion.Multiline = true;
             this.Txt_Direccion.Name = "Txt_Direccion";
-            this.Txt_Direccion.Size = new System.Drawing.Size(352, 42);
+            this.Txt_Direccion.Size = new System.Drawing.Size(456, 42);
             this.Txt_Direccion.TabIndex = 10;
             this.Txt_Direccion.Text = "DIRECCIÓN COMPLETA";
             // 
@@ -855,10 +855,10 @@ namespace SECRON.Views
             // Txt_Telefono2
             // 
             this.Txt_Telefono2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Telefono2.Location = new System.Drawing.Point(196, 200);
+            this.Txt_Telefono2.Location = new System.Drawing.Point(245, 200);
             this.Txt_Telefono2.MaxLength = 15;
             this.Txt_Telefono2.Name = "Txt_Telefono2";
-            this.Txt_Telefono2.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Telefono2.Size = new System.Drawing.Size(225, 27);
             this.Txt_Telefono2.TabIndex = 9;
             // 
             // Lbl_Telefono2
@@ -866,7 +866,7 @@ namespace SECRON.Views
             this.Lbl_Telefono2.AutoSize = true;
             this.Lbl_Telefono2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Telefono2.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Telefono2.Location = new System.Drawing.Point(192, 177);
+            this.Lbl_Telefono2.Location = new System.Drawing.Point(241, 177);
             this.Lbl_Telefono2.Name = "Lbl_Telefono2";
             this.Lbl_Telefono2.Size = new System.Drawing.Size(97, 20);
             this.Lbl_Telefono2.TabIndex = 9;
@@ -878,7 +878,7 @@ namespace SECRON.Views
             this.Txt_Telefono1.Location = new System.Drawing.Point(14, 200);
             this.Txt_Telefono1.MaxLength = 15;
             this.Txt_Telefono1.Name = "Txt_Telefono1";
-            this.Txt_Telefono1.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Telefono1.Size = new System.Drawing.Size(225, 27);
             this.Txt_Telefono1.TabIndex = 8;
             // 
             // Txt_CorreoInstitucional
@@ -887,7 +887,7 @@ namespace SECRON.Views
             this.Txt_CorreoInstitucional.Location = new System.Drawing.Point(14, 134);
             this.Txt_CorreoInstitucional.MaxLength = 15;
             this.Txt_CorreoInstitucional.Name = "Txt_CorreoInstitucional";
-            this.Txt_CorreoInstitucional.Size = new System.Drawing.Size(352, 27);
+            this.Txt_CorreoInstitucional.Size = new System.Drawing.Size(456, 27);
             this.Txt_CorreoInstitucional.TabIndex = 7;
             // 
             // Txt_CorreoPersonal
@@ -896,7 +896,7 @@ namespace SECRON.Views
             this.Txt_CorreoPersonal.Location = new System.Drawing.Point(14, 68);
             this.Txt_CorreoPersonal.MaxLength = 15;
             this.Txt_CorreoPersonal.Name = "Txt_CorreoPersonal";
-            this.Txt_CorreoPersonal.Size = new System.Drawing.Size(352, 27);
+            this.Txt_CorreoPersonal.Size = new System.Drawing.Size(456, 27);
             this.Txt_CorreoPersonal.TabIndex = 6;
             // 
             // Lbl_Telefono1
@@ -969,16 +969,16 @@ namespace SECRON.Views
             // 
             this.DTP_Nacimiento.Location = new System.Drawing.Point(14, 200);
             this.DTP_Nacimiento.Name = "DTP_Nacimiento";
-            this.DTP_Nacimiento.Size = new System.Drawing.Size(352, 27);
+            this.DTP_Nacimiento.Size = new System.Drawing.Size(456, 27);
             this.DTP_Nacimiento.TabIndex = 5;
             // 
             // Txt_Apellidos
             // 
             this.Txt_Apellidos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Apellidos.Location = new System.Drawing.Point(196, 134);
+            this.Txt_Apellidos.Location = new System.Drawing.Point(245, 134);
             this.Txt_Apellidos.MaxLength = 15;
             this.Txt_Apellidos.Name = "Txt_Apellidos";
-            this.Txt_Apellidos.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Apellidos.Size = new System.Drawing.Size(225, 27);
             this.Txt_Apellidos.TabIndex = 4;
             // 
             // Txt_Nombres
@@ -987,16 +987,16 @@ namespace SECRON.Views
             this.Txt_Nombres.Location = new System.Drawing.Point(14, 134);
             this.Txt_Nombres.MaxLength = 15;
             this.Txt_Nombres.Name = "Txt_Nombres";
-            this.Txt_Nombres.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Nombres.Size = new System.Drawing.Size(225, 27);
             this.Txt_Nombres.TabIndex = 3;
             // 
             // Txt_Dpi
             // 
             this.Txt_Dpi.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Dpi.Location = new System.Drawing.Point(196, 68);
+            this.Txt_Dpi.Location = new System.Drawing.Point(245, 68);
             this.Txt_Dpi.MaxLength = 15;
             this.Txt_Dpi.Name = "Txt_Dpi";
-            this.Txt_Dpi.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Dpi.Size = new System.Drawing.Size(225, 27);
             this.Txt_Dpi.TabIndex = 2;
             // 
             // Txt_Codigo
@@ -1005,7 +1005,7 @@ namespace SECRON.Views
             this.Txt_Codigo.Location = new System.Drawing.Point(14, 68);
             this.Txt_Codigo.MaxLength = 15;
             this.Txt_Codigo.Name = "Txt_Codigo";
-            this.Txt_Codigo.Size = new System.Drawing.Size(170, 27);
+            this.Txt_Codigo.Size = new System.Drawing.Size(225, 27);
             this.Txt_Codigo.TabIndex = 1;
             // 
             // Lbl_FechaNacimiento
@@ -1024,7 +1024,7 @@ namespace SECRON.Views
             this.Lbl_Apellidos.AutoSize = true;
             this.Lbl_Apellidos.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Apellidos.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Apellidos.Location = new System.Drawing.Point(196, 111);
+            this.Lbl_Apellidos.Location = new System.Drawing.Point(245, 111);
             this.Lbl_Apellidos.Name = "Lbl_Apellidos";
             this.Lbl_Apellidos.Size = new System.Drawing.Size(99, 20);
             this.Lbl_Apellidos.TabIndex = 4;
@@ -1046,7 +1046,7 @@ namespace SECRON.Views
             this.Lbl_Dpi.AutoSize = true;
             this.Lbl_Dpi.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Dpi.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Dpi.Location = new System.Drawing.Point(196, 45);
+            this.Lbl_Dpi.Location = new System.Drawing.Point(245, 45);
             this.Lbl_Dpi.Name = "Lbl_Dpi";
             this.Lbl_Dpi.Size = new System.Drawing.Size(110, 20);
             this.Lbl_Dpi.TabIndex = 2;

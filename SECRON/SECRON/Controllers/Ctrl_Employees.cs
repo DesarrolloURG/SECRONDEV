@@ -145,10 +145,11 @@ namespace SECRON.Controllers
                         IGSS, ISR, net_salary, IGSS_MANUAL,
                         IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
                         FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
-                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales
+                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
+                        FilePath_CV, FilePath_ContratoFirmado
                         
-                        FROM Employees WHERE IsActive = 1 
-                        ORDER BY LastName, FirstName 
+                        FROM Employees 
+                        ORDER BY IsActive DESC, LastName, FirstName 
                         OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -178,6 +179,7 @@ namespace SECRON.Controllers
     int? departmentId = null,
     int? positionId = null,
     int? employeeStatusId = null,
+    bool? isActive = null,
     DateTime? fechaIngresoDesde = null,
     DateTime? fechaIngresoHasta = null,
     int pageNumber = 1,
@@ -197,11 +199,18 @@ namespace SECRON.Controllers
                         IGSS, ISR, net_salary, IGSS_MANUAL,
                         IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
                         FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
-                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales
+                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
+                        FilePath_CV, FilePath_ContratoFirmado
                         FROM Employees 
-                        WHERE IsActive = 1";
+                        WHERE 1 = 1";
 
                     List<SqlParameter> parametros = new List<SqlParameter>();
+
+                    if (isActive.HasValue)
+                    {
+                        query += " AND IsActive = @isActive";
+                        parametros.Add(new SqlParameter("@isActive", isActive.Value));
+                    }
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
@@ -277,7 +286,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@EmployeeId", empleado.EmployeeId);
-                    cmd.Parameters.AddWithValue("@IsInactivation", false);
+                    cmd.Parameters.AddWithValue("@Mode", (byte)0);
                     cmd.Parameters.AddWithValue("@EmployeeCode", empleado.EmployeeCode ?? "");
                     cmd.Parameters.AddWithValue("@FirstName", empleado.FirstName ?? "");
                     cmd.Parameters.AddWithValue("@LastName", empleado.LastName ?? "");
@@ -329,7 +338,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
-                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@Mode", (byte)1);
                     cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
@@ -339,6 +348,30 @@ namespace SECRON.Controllers
             catch (Exception ex)
             {
                 MessageBox.Show("Error al inactivar empleado: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
+        // MÉTODO PRINCIPAL: Reactivar empleado
+        public static int ReactivarEmpleado(int employeeId, int modifiedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Employees_Update", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EmployeeId", employeeId);
+                    cmd.Parameters.AddWithValue("@Mode", (byte)2);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al reactivar empleado: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
         }
@@ -359,7 +392,8 @@ namespace SECRON.Controllers
                     IGSS, ISR, net_salary, IGSS_MANUAL,
                     IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
                     FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
-                    FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales
+                    FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
+                        FilePath_CV, FilePath_ContratoFirmado
                     FROM Employees WHERE EmployeeId = @EmployeeId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -429,7 +463,10 @@ namespace SECRON.Controllers
                 FilePath_Colegiado = reader[39] == DBNull.Value ? null : reader[39].ToString(),
                 FilePath_RENAS = reader[40] == DBNull.Value ? null : reader[40].ToString(),
                 FilePath_AntPoliciacos = reader[41] == DBNull.Value ? null : reader[41].ToString(),
-                FilePath_AntPenales = reader[42] == DBNull.Value ? null : reader[42].ToString()
+                FilePath_AntPenales = reader[42] == DBNull.Value ? null : reader[42].ToString(),
+
+                FilePath_CV = reader["FilePath_CV"] == DBNull.Value ? null : reader["FilePath_CV"].ToString(),
+                FilePath_ContratoFirmado = reader["FilePath_ContratoFirmado"] == DBNull.Value ? null : reader["FilePath_ContratoFirmado"].ToString()
             };
         }
 
@@ -630,6 +667,7 @@ namespace SECRON.Controllers
             int? departmentId = null,
             int? positionId = null,
             int? employeeStatusId = null,
+            bool? isActive = null,
             DateTime? fechaIngresoDesde = null,
             DateTime? fechaIngresoHasta = null)
         {
@@ -637,8 +675,14 @@ namespace SECRON.Controllers
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT COUNT(*) FROM Employees WHERE IsActive = 1";
+                    string query = "SELECT COUNT(*) FROM Employees WHERE 1 = 1";
                     List<SqlParameter> parametros = new List<SqlParameter>();
+
+                    if (isActive.HasValue)
+                    {
+                        query += " AND IsActive = @isActive";
+                        parametros.Add(new SqlParameter("@isActive", isActive.Value));
+                    }
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
@@ -752,7 +796,8 @@ namespace SECRON.Controllers
                 string[] camposPermitidos = {
             "FilePath_DPI", "FilePath_Titulos", "FilePath_RTU",
             "FilePath_Colegiado", "FilePath_RENAS",
-            "FilePath_AntPoliciacos", "FilePath_AntPenales"
+            "FilePath_AntPoliciacos", "FilePath_AntPenales",
+            "FilePath_CV", "FilePath_ContratoFirmado"
                 };
 
                 if (!Array.Exists(camposPermitidos, c => c == campo))

@@ -10,8 +10,8 @@ namespace SECRON.Models
     {
         // Campos principales
         public int EmployeeId { get; set; }
-        public int? LocationId { get; set; }           
-        public string TipoContratacion { get; set; }   
+        public int? LocationId { get; set; }
+        public string TipoContratacion { get; set; }
         public string EmployeeCode { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -68,6 +68,8 @@ namespace SECRON.Models
         public string FilePath_RENAS { get; set; }
         public string FilePath_AntPoliciacos { get; set; }
         public string FilePath_AntPenales { get; set; }
+        public string FilePath_CV { get; set; }
+        public string FilePath_ContratoFirmado { get; set; }
 
         // Constructor vacío
         public Mdl_Employees()

@@ -161,10 +161,31 @@ namespace SECRON.Views
 
         #region ConfigurarTabla
 
+        // Colorea la columna ESTADO: ACTIVA en verde, INACTIVA en rojo, ambos en negrita
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "ColEstadoRegistro") return;
+            if (e.Value == null) return;
+
+            bool activa = e.Value.ToString() == "ACTIVA";
+            e.CellStyle.ForeColor = activa ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.Font, FontStyle.Bold);
+        }
+
         private void ConfigurarTabla()
         {
             Tabla.Columns.Clear();
             Tabla.AutoGenerateColumns = false;
+
+            // ===== COLUMNA ESTADO PRIMERO =====
+            var colEstadoRegistro = new DataGridViewTextBoxColumn();
+            colEstadoRegistro.Name = "ColEstadoRegistro";
+            colEstadoRegistro.HeaderText = "ESTADO";
+            colEstadoRegistro.Width = 90;
+            colEstadoRegistro.ReadOnly = true;
+            colEstadoRegistro.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Tabla.Columns.Add(colEstadoRegistro);
 
             Tabla.Columns.Add("CareerId", "ID");
             Tabla.Columns.Add("CareerCode", "CÓDIGO");
@@ -172,7 +193,6 @@ namespace SECRON.Views
             Tabla.Columns.Add("DurationYears", "DURACIÓN (AÑOS)");
             Tabla.Columns.Add("TotalSemesters", "SEMESTRES");
             Tabla.Columns.Add("TotalCredits", "CRÉDITOS");
-            Tabla.Columns.Add("IsActive", "ESTADO");
             Tabla.Columns.Add("CreatedDate", "FECHA CREACIÓN");
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -207,13 +227,14 @@ namespace SECRON.Views
             Tabla.Columns["TotalSemesters"].FillWeight = 15;
             Tabla.Columns["TotalCredits"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             Tabla.Columns["TotalCredits"].FillWeight = 15;
-            Tabla.Columns["IsActive"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            Tabla.Columns["IsActive"].FillWeight = 15;
             Tabla.Columns["CreatedDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             Tabla.Columns["CreatedDate"].FillWeight = 20;
 
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
         }
 
         private void MostrarCarrerasEnTabla()
@@ -223,13 +244,13 @@ namespace SECRON.Views
             foreach (var carrera in carrerasList)
             {
                 Tabla.Rows.Add(
+                    carrera.IsActive ? "ACTIVA" : "INACTIVA",
                     carrera.CareerId,
                     carrera.CareerCode,
                     carrera.CareerName,
                     carrera.DurationYears.HasValue ? carrera.DurationYears.ToString() : "N/A",
                     carrera.TotalSemesters.HasValue ? carrera.TotalSemesters.ToString() : "N/A",
                     carrera.TotalCredits.HasValue ? carrera.TotalCredits.ToString() : "N/A",
-                    carrera.IsActive ? "ACTIVA" : "INACTIVA",
                     carrera.CreatedDate.ToString("dd/MM/yyyy")
                 );
             }
@@ -398,8 +419,6 @@ namespace SECRON.Views
             numericUpDownTotalSemesters.Value = _carreraSeleccionada.TotalSemesters ?? 0;
             numericUpDownTotalCredits.Value = _carreraSeleccionada.TotalCredits ?? 0;
             Txt_IsActive.Text = _carreraSeleccionada.IsActive ? "ACTIVO" : "INACTIVO";
-
-            Btn_Inactive.Text = _carreraSeleccionada.IsActive ? "INACTIVAR" : "ACTIVAR";
         }
 
         private void LimpiarCampos()
@@ -411,7 +430,6 @@ namespace SECRON.Views
             numericUpDownTotalSemesters.Value = 0;
             numericUpDownTotalCredits.Value = 0;
             Txt_IsActive.Text = "";
-            Btn_Inactive.Text = "INACTIVAR";
             _carreraSeleccionada = null;
             Tabla.ClearSelection();
         }
@@ -694,5 +712,22 @@ namespace SECRON.Views
         }
 
         #endregion
+
+        private void Btn_Catalogo_Click(object sender, EventArgs e)
+        {
+            if (!Btn_Catalogo.Enabled) return;
+
+            try
+            {
+                var frm = new Frm_AcademicProcesses_CatalogCarrersByLocations { UserData = this.UserData };
+                frm.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ABRIR CATÁLOGO POR SEDE: " + ex.Message, "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }

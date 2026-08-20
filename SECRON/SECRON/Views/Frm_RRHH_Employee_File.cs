@@ -24,7 +24,7 @@ namespace SECRON.Views
         private int? _ultimoPositionId = null;
         private int? _ultimoEmployeeStatusId = null;
         private int? _ultimoLocationId = null;
-        private string _ultimoFiltroSupervisor = "TODOS";
+        private bool? _ultimoIsActive = null;
         private List<Mdl_Employees> _listaCompletaFiltrada = null;
         // Modelo de empleados
         public Mdl_Security_UserInfo UserData { get; set; }
@@ -247,8 +247,8 @@ namespace SECRON.Views
             ComboBox_Departamento.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_Puesto.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_Supervisor.DropDownStyle = ComboBoxStyle.DropDownList;
-            ComboBox_Sede.DropDownStyle = ComboBoxStyle.DropDownList;             
-            ComboBox_TipoContratacion.DropDownStyle = ComboBoxStyle.DropDownList;  
+            ComboBox_Sede.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_TipoContratacion.DropDownStyle = ComboBoxStyle.DropDownList;
             Filtro1.DropDownStyle = ComboBoxStyle.DropDownList;
             Filtro2.DropDownStyle = ComboBoxStyle.DropDownList;
             Filtro3.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -257,8 +257,8 @@ namespace SECRON.Views
             CargarDepartamentos();
             CargarPuestos();
             CargarSupervisores();
-            CargarSedes();               
-            CargarTiposContratacion();  
+            CargarSedes();
+            CargarTiposContratacion();
         }
         // Cargar Sedes desde Ctrl_Locations
         private void CargarSedes()
@@ -400,12 +400,12 @@ namespace SECRON.Views
             Filtro2.ValueMember = "Key";
             Filtro2.SelectedIndex = 0;
 
-            // Filtro 3 - Supervisor
+            // Filtro 3 - Estado del registro (Activo/Inactivo)
             Filtro3.Items.AddRange(new object[]
             {
                 "TODOS",
-                "CON SUPERVISOR",
-                "SIN SUPERVISOR"
+                "ACTIVOS",
+                "INACTIVOS"
             });
             Filtro3.SelectedIndex = 0;
         }
@@ -442,7 +442,10 @@ namespace SECRON.Views
                     }
                 }
 
-                string filtroSupervisor = Filtro3.SelectedItem?.ToString() ?? "TODOS";
+                string filtroEstado = Filtro3.SelectedItem?.ToString() ?? "TODOS";
+                bool? isActive = null;
+                if (filtroEstado == "ACTIVOS") isActive = true;
+                else if (filtroEstado == "INACTIVOS") isActive = false;
 
                 int? departmentId = null;
                 int? positionId = null;
@@ -496,34 +499,23 @@ namespace SECRON.Views
                 _ultimoDepartmentId = departmentId;
                 _ultimoPositionId = positionId;
                 _ultimoEmployeeStatusId = estadoId;
-                _ultimoFiltroSupervisor = filtroSupervisor;
+                _ultimoIsActive = isActive;
 
                 paginaActual = 1;
 
-                if (filtroSupervisor != "TODOS" || _ultimoLocationId.HasValue)
+                if (_ultimoLocationId.HasValue)
                 {
                     List<Mdl_Employees> todosLosResultados = Ctrl_Employees.BuscarEmpleados(
                         textoBusqueda: textoBusqueda,
                         departmentId: departmentId,
                         positionId: positionId,
                         employeeStatusId: estadoId,
+                        isActive: isActive,
                         pageNumber: 1,
                         pageSize: int.MaxValue
                     );
 
-                    if (filtroSupervisor == "CON SUPERVISOR")
-                    {
-                        todosLosResultados = todosLosResultados.Where(emp => emp.DirectSupervisorId.HasValue).ToList();
-                    }
-                    else if (filtroSupervisor == "SIN SUPERVISOR")
-                    {
-                        todosLosResultados = todosLosResultados.Where(emp => !emp.DirectSupervisorId.HasValue).ToList();
-                    }
-
-                    if (_ultimoLocationId.HasValue)
-                    {
-                        todosLosResultados = todosLosResultados.Where(emp => emp.LocationId == _ultimoLocationId).ToList();
-                    }
+                    todosLosResultados = todosLosResultados.Where(emp => emp.LocationId == _ultimoLocationId).ToList();
 
                     _listaCompletaFiltrada = todosLosResultados;
 
@@ -541,6 +533,7 @@ namespace SECRON.Views
                         departmentId: departmentId,
                         positionId: positionId,
                         employeeStatusId: estadoId,
+                        isActive: isActive,
                         pageNumber: paginaActual,
                         pageSize: registrosPorPagina
                     );
@@ -551,7 +544,8 @@ namespace SECRON.Views
                         textoBusqueda: textoBusqueda,
                         departmentId: departmentId,
                         positionId: positionId,
-                        employeeStatusId: estadoId
+                        employeeStatusId: estadoId,
+                        isActive: isActive
                     );
                 }
 
@@ -599,9 +593,9 @@ namespace SECRON.Views
             _ultimoDepartmentId = null;
             _ultimoPositionId = null;
             _ultimoEmployeeStatusId = null;
-            _ultimoLocationId = null; 
-            _ultimoFiltroSupervisor = "TODOS";
-            _listaCompletaFiltrada = null;   
+            _ultimoLocationId = null;
+            _ultimoIsActive = null;
+            _listaCompletaFiltrada = null;
 
             // Recargar todos los empleados
             paginaActual = 1;
@@ -698,7 +692,7 @@ namespace SECRON.Views
                 maxBottom = Math.Max(maxBottom, ctrl.Bottom);
             }
 
-            int totalContentHeight = maxBottom + (Panel_Izquierdo.Height/3); // Dinamico
+            int totalContentHeight = maxBottom + (Panel_Izquierdo.Height / 3); // Dinamico
 
             // Si no necesita scroll, ocultar scrollbar
             if (totalContentHeight <= Panel_Izquierdo.Height)
@@ -741,16 +735,36 @@ namespace SECRON.Views
             empleadosList = Ctrl_Employees.MostrarEmpleados(paginaActual, registrosPorPagina);
         }
         // Método para configurar la tabla
+        // Colorea la columna ESTADO: ACTIVO en verde, INACTIVO en rojo, ambos en negrita
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "ColEstadoRegistro") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.Font, FontStyle.Bold);
+        }
+
         public void ConfigurarTabla()
         {
             Tabla.Columns.Clear();
 
-            string[] docs = { "DPI", "TITULOS", "RTU", "COLEGIADO", "RENAS", "ANT_POLICIACOS", "ANT_PENALES" };
-            string[] headersAbrir = { "DPI (ABRIR)", "TÍTULOS (ABRIR)", "RTU (ABRIR)", "COLEGIADO (ABRIR)", "RENAS (ABRIR)", "ANT.POL. (ABRIR)", "ANT.PEN. (ABRIR)" };
-            string[] headersCargar = { "DPI (CARGAR)", "TÍTULOS (CARGAR)", "RTU (CARGAR)", "COLEGIADO (CARGAR)", "RENAS (CARGAR)", "ANT.POL. (CARGAR)", "ANT.PEN. (CARGAR)" };
-            string[] headersEstado = { "DPI (ESTADO)", "TÍTULOS (ESTADO)", "RTU (ESTADO)", "COLEGIADO (ESTADO)", "RENAS (ESTADO)", "ANT.POL. (ESTADO)", "ANT.PEN. (ESTADO)" };
+            string[] docs = { "DPI", "TITULOS", "RTU", "COLEGIADO", "RENAS", "ANT_POLICIACOS", "ANT_PENALES", "CV", "CONTRATO" };
+            string[] headersAbrir = { "DPI (ABRIR)", "TÍTULOS (ABRIR)", "RTU (ABRIR)", "COLEGIADO (ABRIR)", "RENAS (ABRIR)", "ANT.POL. (ABRIR)", "ANT.PEN. (ABRIR)", "CV (ABRIR)", "CONTRATO (ABRIR)" };
+            string[] headersCargar = { "DPI (CARGAR)", "TÍTULOS (CARGAR)", "RTU (CARGAR)", "COLEGIADO (CARGAR)", "RENAS (CARGAR)", "ANT.POL. (CARGAR)", "ANT.PEN. (CARGAR)", "CV (CARGAR)", "CONTRATO (CARGAR)" };
+            string[] headersEstado = { "DPI (ESTADO)", "TÍTULOS (ESTADO)", "RTU (ESTADO)", "COLEGIADO (ESTADO)", "RENAS (ESTADO)", "ANT.POL. (ESTADO)", "ANT.PEN. (ESTADO)", "CV (ESTADO)", "CONTRATO (ESTADO)" };
 
             // ===== COLUMNAS DE DATOS PRIMERO =====
+            var colEstadoRegistro = new DataGridViewTextBoxColumn();
+            colEstadoRegistro.Name = "ColEstadoRegistro";
+            colEstadoRegistro.HeaderText = "ESTADO";
+            colEstadoRegistro.Width = 90;
+            colEstadoRegistro.ReadOnly = true;
+            colEstadoRegistro.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Tabla.Columns.Add(colEstadoRegistro);
+
             Tabla.Columns.Add("EmployeeId", "ID");
             Tabla.Columns.Add("EmployeeCode", "CÓDIGO");
             Tabla.Columns.Add("FullName", "NOMBRE COMPLETO");
@@ -763,10 +777,13 @@ namespace SECRON.Views
             Tabla.Columns.Add("Supervisor", "SUPERVISOR");
             Tabla.Columns.Add("Location", "SEDE");
             Tabla.Columns.Add("TipoContratacion", "TIPO CONTRATACIÓN");
-            Tabla.Columns.Add("Status", "ESTADO");
+            Tabla.Columns.Add("Status", "ESTADO RH");
             Tabla.Columns.Add("CreatedBy", "CREADO POR");
 
             Tabla.Columns["EmployeeId"].Visible = false;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
 
             // ===== COLUMNAS DE ARCHIVOS AL FINAL (agrupadas por documento) =====
             for (int i = 0; i < docs.Length; i++)
@@ -883,6 +900,8 @@ namespace SECRON.Views
                 }
 
                 Tabla.Rows.Add(
+                    // ===== ESTADO =====
+                    emp.IsActive ? "ACTIVO" : "INACTIVO",
                     // ===== DATOS =====
                     emp.EmployeeId,
                     emp.EmployeeCode ?? "N/A",
@@ -925,7 +944,15 @@ namespace SECRON.Views
                     // ===== ANT. PENALES =====
                     DBNull.Value,
                     DBNull.Value,
-                    string.IsNullOrWhiteSpace(emp.FilePath_AntPenales) ? (object)DBNull.Value : Properties.Resources.SaveVerde25x25
+                    string.IsNullOrWhiteSpace(emp.FilePath_AntPenales) ? (object)DBNull.Value : Properties.Resources.SaveVerde25x25,
+                    // ===== CV =====
+                    DBNull.Value,
+                    DBNull.Value,
+                    string.IsNullOrWhiteSpace(emp.FilePath_CV) ? (object)DBNull.Value : Properties.Resources.SaveVerde25x25,
+                    // ===== CONTRATO =====
+                    DBNull.Value,
+                    DBNull.Value,
+                    string.IsNullOrWhiteSpace(emp.FilePath_ContratoFirmado) ? (object)DBNull.Value : Properties.Resources.SaveVerde25x25
                 );
             }
         }
@@ -1128,7 +1155,7 @@ namespace SECRON.Views
             Tabla.Columns["CreatedBy"].Width = 150;
 
             // ===== COLUMNAS DE ARCHIVOS =====
-            string[] docs = { "DPI", "TITULOS", "RTU", "COLEGIADO", "RENAS", "ANT_POLICIACOS", "ANT_PENALES" };
+            string[] docs = { "DPI", "TITULOS", "RTU", "COLEGIADO", "RENAS", "ANT_POLICIACOS", "ANT_PENALES", "CV", "CONTRATO" };
             foreach (string doc in docs)
             {
                 Tabla.Columns[$"ColAbrir_{doc}"].Width = 110;
@@ -1264,13 +1291,15 @@ namespace SECRON.Views
                 else if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) ||
                          _ultimoDepartmentId.HasValue ||
                          _ultimoPositionId.HasValue ||
-                         _ultimoEmployeeStatusId.HasValue)
+                         _ultimoEmployeeStatusId.HasValue ||
+                         _ultimoIsActive.HasValue)
                 {
                     empleadosList = Ctrl_Employees.BuscarEmpleados(
                         textoBusqueda: _ultimoTextoBusqueda,
                         departmentId: _ultimoDepartmentId,
                         positionId: _ultimoPositionId,
                         employeeStatusId: _ultimoEmployeeStatusId,
+                        isActive: _ultimoIsActive,
                         pageNumber: paginaActual,
                         pageSize: registrosPorPagina
                     );
@@ -1300,8 +1329,8 @@ namespace SECRON.Views
             !_ultimoDepartmentId.HasValue &&
             !_ultimoPositionId.HasValue &&
             !_ultimoEmployeeStatusId.HasValue &&
-            !_ultimoLocationId.HasValue &&    
-            _ultimoFiltroSupervisor == "TODOS" &&
+            !_ultimoLocationId.HasValue &&
+            !_ultimoIsActive.HasValue &&
             totalRegistros == 0)
             {
                 totalRegistros = Ctrl_Employees.ContarTotalEmpleados();
@@ -1738,22 +1767,21 @@ namespace SECRON.Views
             {
                 if (_empleadoSeleccionado == null || _empleadoSeleccionado.EmployeeId == 0)
                 {
-                    MessageBox.Show("Debe seleccionar un empleado para inactivar", "Validación",
+                    MessageBox.Show("Debe seleccionar un empleado", "Validación",
                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!_empleadoSeleccionado.IsActive)
-                {
-                    MessageBox.Show("Este empleado ya se encuentra inactivo", "Información",
-                                   MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
+                bool estaActivo = _empleadoSeleccionado.IsActive;
+                string accion = estaActivo ? "INACTIVAR" : "ACTIVAR";
+                string nombreCompleto = $"{_empleadoSeleccionado.FirstName} {_empleadoSeleccionado.LastName}";
 
                 var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea INACTIVAR a {_empleadoSeleccionado.FirstName} {_empleadoSeleccionado.LastName}?\n\n" +
-                    "El empleado no aparecerá en las listas activas pero sus datos se conservarán.",
-                    "Confirmar Inactivación",
+                    $"¿Está seguro que desea {accion} a {nombreCompleto}?\n\n" +
+                    (estaActivo
+                        ? "El empleado no aparecerá en las listas activas pero sus datos se conservarán."
+                        : "El empleado volverá a aparecer en las listas activas."),
+                    $"Confirmar {(estaActivo ? "Inactivación" : "Activación")}",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning
                 );
@@ -1762,11 +1790,13 @@ namespace SECRON.Views
                     return;
 
                 int modifiedBy = UserData?.UserId ?? 1; // ⭐ USAR ID DEL USUARIO LOGUEADO
-                int resultado = Ctrl_Employees.InactivarEmpleado(_empleadoSeleccionado.EmployeeId, modifiedBy);
+                int resultado = estaActivo
+                    ? Ctrl_Employees.InactivarEmpleado(_empleadoSeleccionado.EmployeeId, modifiedBy)
+                    : Ctrl_Employees.ReactivarEmpleado(_empleadoSeleccionado.EmployeeId, modifiedBy);
 
                 if (resultado > 0)
                 {
-                    MessageBox.Show("Empleado inactivado exitosamente", "Éxito",
+                    MessageBox.Show($"Empleado {(estaActivo ? "inactivado" : "activado")} exitosamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
                     RefrescarListado();
@@ -1776,13 +1806,13 @@ namespace SECRON.Views
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo inactivar el empleado", "Error",
+                    MessageBox.Show($"No se pudo {accion.ToLower()} el empleado", "Error",
                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al inactivar: {ex.Message}", "Error",
+                MessageBox.Show($"Error al cambiar estado: {ex.Message}", "Error",
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1876,7 +1906,8 @@ namespace SECRON.Views
                 else if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) ||
                          _ultimoDepartmentId.HasValue ||
                          _ultimoPositionId.HasValue ||
-                         _ultimoEmployeeStatusId.HasValue)
+                         _ultimoEmployeeStatusId.HasValue ||
+                         _ultimoIsActive.HasValue)
                 {
                     // Hay filtros de BD activos (búsqueda, departamento, puesto o estado)
                     todosLosEmpleados = Ctrl_Employees.BuscarEmpleados(
@@ -1884,6 +1915,7 @@ namespace SECRON.Views
                         departmentId: _ultimoDepartmentId,
                         positionId: _ultimoPositionId,
                         employeeStatusId: _ultimoEmployeeStatusId,
+                        isActive: _ultimoIsActive,
                         pageNumber: 1,
                         pageSize: int.MaxValue
                     );
@@ -2222,6 +2254,8 @@ namespace SECRON.Views
         { "ColAbrir_RENAS",         ("FilePath_RENAS",         emp.FilePath_RENAS) },
         { "ColAbrir_ANT_POLICIACOS",("FilePath_AntPoliciacos", emp.FilePath_AntPoliciacos) },
         { "ColAbrir_ANT_PENALES",   ("FilePath_AntPenales",    emp.FilePath_AntPenales) },
+        { "ColAbrir_CV",            ("FilePath_CV",            emp.FilePath_CV) },
+        { "ColAbrir_CONTRATO",      ("FilePath_ContratoFirmado", emp.FilePath_ContratoFirmado) },
     };
 
             var mapaCargar = new Dictionary<string, (string campo, string rutaActual, string nombreArchivo)>
@@ -2233,6 +2267,8 @@ namespace SECRON.Views
         { "ColCargar_RENAS",         ("FilePath_RENAS",         emp.FilePath_RENAS,         "RENAS.pdf") },
         { "ColCargar_ANT_POLICIACOS",("FilePath_AntPoliciacos", emp.FilePath_AntPoliciacos, "ANT_POLICIACOS.pdf") },
         { "ColCargar_ANT_PENALES",   ("FilePath_AntPenales",    emp.FilePath_AntPenales,    "ANT_PENALES.pdf") },
+        { "ColCargar_CV",            ("FilePath_CV",            emp.FilePath_CV,            "CV.pdf") },
+        { "ColCargar_CONTRATO",      ("FilePath_ContratoFirmado", emp.FilePath_ContratoFirmado, "CONTRATO.pdf") },
     };
 
             string colName = Tabla.Columns[e.ColumnIndex].Name;
@@ -2313,6 +2349,6 @@ namespace SECRON.Views
         }
         #endregion GestionArchivosEmpleado
 
-        
+
     }
 }

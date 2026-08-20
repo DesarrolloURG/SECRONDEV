@@ -1,7 +1,12 @@
--- @IsInactivation = 1 => IsActive=0 + TerminationDate (InactivarEmpleado)
--- @IsInactivation = 0 => update normal (ActualizarEmpleado)
+/* =====================================================================
+   SECRON - RRHH / Ficha de Empleado
+   Estandarizar SP_Employees_Update a @Mode (0=update, 1=inactivar, 2=reactivar)
+   Antes usaba @IsInactivation BIT, que no soportaba reactivación.
+   Aplicar en DEV, validar, y luego replicar en QA y Producción.
+   ===================================================================== */
+
 CREATE OR ALTER PROCEDURE SP_Employees_Update
-    @EmployeeId INT, @IsInactivation BIT,
+    @EmployeeId INT, @Mode TINYINT,
     @EmployeeCode VARCHAR(20) = NULL, @FirstName VARCHAR(100) = NULL, @LastName VARCHAR(100) = NULL,
     @IdentificationNumber VARCHAR(20) = NULL, @Email VARCHAR(150) = NULL, @InstitutionalEmail VARCHAR(150) = NULL,
     @Phone VARCHAR(20) = NULL, @MobilePhone VARCHAR(20) = NULL, @Address VARCHAR(255) = NULL,
@@ -21,11 +26,18 @@ BEGIN
 
     BEGIN TRANSACTION
     BEGIN TRY
-        IF @IsInactivation = 1
+        IF @Mode = 1
+            -- Inactivar (antes @IsInactivation = 1)
             UPDATE Employees SET IsActive = 0, TerminationDate = GETDATE(),
                 ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy
             WHERE EmployeeId = @EmployeeId;
+        ELSE IF @Mode = 2
+            -- Reactivar (nuevo: no existía)
+            UPDATE Employees SET IsActive = 1, TerminationDate = NULL,
+                ModifiedDate = GETDATE(), ModifiedBy = @ModifiedBy
+            WHERE EmployeeId = @EmployeeId;
         ELSE
+            -- Update normal (antes @IsInactivation = 0)
             UPDATE Employees SET
                 EmployeeCode = @EmployeeCode, FirstName = @FirstName, LastName = @LastName,
                 IdentificationNumber = @IdentificationNumber, Email = @Email,
