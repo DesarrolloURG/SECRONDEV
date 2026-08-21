@@ -264,7 +264,7 @@
             this.ComboBox_TemplateBase.FormattingEnabled = true;
             this.ComboBox_TemplateBase.Location = new System.Drawing.Point(14, 33);
             this.ComboBox_TemplateBase.Name = "ComboBox_TemplateBase";
-            this.ComboBox_TemplateBase.Size = new System.Drawing.Size(363, 26);
+            this.ComboBox_TemplateBase.Size = new System.Drawing.Size(540, 26);
             this.ComboBox_TemplateBase.TabIndex = 74;
             // 
             // Lbl_TemplateBase
@@ -274,9 +274,9 @@
             this.Lbl_TemplateBase.ForeColor = System.Drawing.Color.Black;
             this.Lbl_TemplateBase.Location = new System.Drawing.Point(10, 10);
             this.Lbl_TemplateBase.Name = "Lbl_TemplateBase";
-            this.Lbl_TemplateBase.Size = new System.Drawing.Size(155, 20);
+            this.Lbl_TemplateBase.Size = new System.Drawing.Size(151, 20);
             this.Lbl_TemplateBase.TabIndex = 73;
-            this.Lbl_TemplateBase.Text = "CATEGORÍA ACTIVA:";
+            this.Lbl_TemplateBase.Text = "CATÁLOGO ACTIVO:";
             // 
             // Filtro4
             // 
@@ -449,7 +449,7 @@
             this.ComboBox_Template.FormattingEnabled = true;
             this.ComboBox_Template.Location = new System.Drawing.Point(14, 33);
             this.ComboBox_Template.Name = "ComboBox_Template";
-            this.ComboBox_Template.Size = new System.Drawing.Size(363, 26);
+            this.ComboBox_Template.Size = new System.Drawing.Size(540, 26);
             this.ComboBox_Template.TabIndex = 74;
             // 
             // Lbl_Template
@@ -459,9 +459,9 @@
             this.Lbl_Template.ForeColor = System.Drawing.Color.Black;
             this.Lbl_Template.Location = new System.Drawing.Point(10, 10);
             this.Lbl_Template.Name = "Lbl_Template";
-            this.Lbl_Template.Size = new System.Drawing.Size(155, 20);
+            this.Lbl_Template.Size = new System.Drawing.Size(151, 20);
             this.Lbl_Template.TabIndex = 73;
-            this.Lbl_Template.Text = "CATEGORÍA ACTIVA:";
+            this.Lbl_Template.Text = "CATÁLOGO ACTIVO:";
             // 
             // Filtro1
             // 

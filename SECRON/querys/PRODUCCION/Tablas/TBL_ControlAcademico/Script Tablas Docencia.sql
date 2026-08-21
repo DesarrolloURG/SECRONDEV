@@ -2,11 +2,6 @@
 -- SECRON - DROP ordenado de tablas del modulo DOCENCIA
 -- Ejecutar en QA y PRODUCCION antes de recrear
 -- Orden: de tablas hijas (mas dependientes) a padres (menos dependientes)
-
-
-
---- IMPORTANTE!!!
--- EL RESTO ESTA EN CONTROL ACADEMICO SE DEJO COMPLETO AQUÍ SOLO SE DEJO DE REFERENCIA
 -- =====================================================================
 
 DROP TABLE IF EXISTS ScheduleDetails;
@@ -79,6 +74,186 @@ CREATE TABLE Coordinators (
     FilePath_AntPenales       NVARCHAR(500) NULL               -- 30
 );
 GO
+
+-- -----------------------------------------------------
+-- 2. TABLA: ScheduleTypes (Tipos de Horario)
+-- Configurable: Lun-Mié, Lun-Vie, Sábados, Domingos, etc.
+-- -----------------------------------------------------
+CREATE TABLE ScheduleTypes (
+    ScheduleTypeId INT IDENTITY(1,1) PRIMARY KEY,
+    ScheduleTypeCode NVARCHAR(20) NOT NULL UNIQUE,
+    ScheduleTypeName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(255),
+    
+    -- Días de la semana que abarca este tipo de horario
+    IncludesMonday BIT DEFAULT 0,
+    IncludesTuesday BIT DEFAULT 0,
+    IncludesWednesday BIT DEFAULT 0,
+    IncludesThursday BIT DEFAULT 0,
+    IncludesFriday BIT DEFAULT 0,
+    IncludesSaturday BIT DEFAULT 0,
+    IncludesSunday BIT DEFAULT 0,
+    
+    -- Jornada
+    TimeShift NVARCHAR(50),  -- Mañana, Tarde, Noche, Mixto
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_ScheduleTypes_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_ScheduleTypes_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
+);
+
+-- -----------------------------------------------------
+-- 3. TABLA: Careers (Carreras Universitarias)
+-- -----------------------------------------------------
+CREATE TABLE Careers (
+    CareerId INT IDENTITY(1,1) PRIMARY KEY,
+    CareerCode NVARCHAR(20) NOT NULL UNIQUE,
+    CareerName NVARCHAR(150) NOT NULL,
+    Description NVARCHAR(500),
+    DurationYears INT,  -- Duración en años
+    TotalSemesters INT, -- Total de semestres/ciclos
+    TotalCredits INT,   -- Créditos totales requeridos
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_Careers_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_Careers_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
+);
+
+-- -----------------------------------------------------
+-- 4. TABLA: Courses (Catálogo Maestro de Cursos)
+-- -----------------------------------------------------
+CREATE TABLE Courses (
+    CourseId INT IDENTITY(1,1) PRIMARY KEY,
+    CourseCode NVARCHAR(20) NOT NULL UNIQUE,
+    CourseName NVARCHAR(150) NOT NULL,
+    Description NVARCHAR(500),
+    Credits INT DEFAULT 0,
+    TheoryHours INT DEFAULT 0,      -- Horas teóricas semanales
+    PracticeHours INT DEFAULT 0,    -- Horas prácticas semanales
+    LabHours INT DEFAULT 0,         -- Horas de laboratorio semanales
+    TotalHours AS (TheoryHours + PracticeHours + LabHours) PERSISTED,  -- Calculado automáticamente
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_Courses_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_Courses_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
+);
+
+-- CAMPOS NECESARIOS AGREGADOS
+ALTER TABLE Courses ADD Sessions INT NULL;
+ALTER TABLE Courses ADD IsCommon BIT NOT NULL DEFAULT 0;
+
+-- -----------------------------------------------------
+-- 5. TABLA: CareerCourses (Detalle: Cursos de una Carrera)
+-- Qué cursos pertenecen al pensum de cada carrera
+-- -----------------------------------------------------
+CREATE TABLE CareerCourses (
+    CareerCourseId INT IDENTITY(1,1) PRIMARY KEY,
+    CareerId INT NOT NULL,
+    CourseId INT NOT NULL,
+    Semester INT NOT NULL,          -- Semestre/Ciclo en que se imparte (1, 2, 3...)
+    IsRequired BIT DEFAULT 1,       -- Obligatorio (1) u Optativo (0)
+    Prerequisites NVARCHAR(500),    -- IDs de cursos prerequisitos (ej: "12,15,18")
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_CareerCourses_Career FOREIGN KEY (CareerId) REFERENCES Careers(CareerId),
+    CONSTRAINT FK_CareerCourses_Course FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
+    CONSTRAINT FK_CareerCourses_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_CareerCourses_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId),
+    CONSTRAINT UQ_CareerCourses UNIQUE (CareerId, CourseId)
+);
+
+-- -----------------------------------------------------
+-- 6. TABLA: Sections (Secciones por Carrera)
+-- Una sección es un grupo específico de estudiantes
+-- -----------------------------------------------------
+CREATE TABLE Sections (
+    SectionId INT IDENTITY(1,1) PRIMARY KEY,
+    SectionCode NVARCHAR(20) NOT NULL UNIQUE,
+    SectionName NVARCHAR(100) NOT NULL,
+    
+    -- Relaciones principales
+    CareerId INT NOT NULL,
+    LocationId INT NOT NULL,
+    ScheduleTypeId INT NOT NULL,
+    CoordinatorId INT NOT NULL,  -- Coordinador responsable de la sección
+    
+    -- Información académica
+    CurrentSemester INT DEFAULT 1,  -- Semestre actual en que se encuentra la sección
+    AcademicYear INT,               -- Año académico
+    
+    -- Información de estudiantes
+    StudentCount INT DEFAULT 0,     -- Cantidad actual de estudiantes
+    MaxCapacity INT DEFAULT 30,     -- Capacidad máxima
+    
+    -- Fechas
+    StartDate DATE,
+    EndDate DATE,
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_Sections_Career FOREIGN KEY (CareerId) REFERENCES Careers(CareerId),
+    CONSTRAINT FK_Sections_Location FOREIGN KEY (LocationId) REFERENCES Locations(LocationId),
+    CONSTRAINT FK_Sections_ScheduleType FOREIGN KEY (ScheduleTypeId) REFERENCES ScheduleTypes(ScheduleTypeId),
+    CONSTRAINT FK_Sections_Coordinator FOREIGN KEY (CoordinatorId) REFERENCES Coordinators(CoordinatorId),
+    CONSTRAINT FK_Sections_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_Sections_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId)
+);
+
+-- -----------------------------------------------------
+-- 7. TABLA: SectionCourses (Detalle: Cursos de una Sección)
+-- Qué cursos específicamente se imparten en esta sección
+-- Pueden heredarse de la carrera o personalizarse
+-- -----------------------------------------------------
+CREATE TABLE SectionCourses (
+    SectionCourseId INT IDENTITY(1,1) PRIMARY KEY,
+    SectionId INT NOT NULL,
+    CourseId INT NOT NULL,
+    
+    -- Información específica para esta asignación
+    Semester INT,  -- En qué semestre de la sección se impartirá
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_SectionCourses_Section FOREIGN KEY (SectionId) REFERENCES Sections(SectionId),
+    CONSTRAINT FK_SectionCourses_Course FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
+    CONSTRAINT FK_SectionCourses_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_SectionCourses_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId),
+    CONSTRAINT UQ_SectionCourses UNIQUE (SectionId, CourseId)
+);
 
 -- -----------------------------------------------------
 -- 8. TABLA: Teachers (OPTIMIZADA)
@@ -161,6 +336,103 @@ ALTER TABLE Teachers ADD
 GO
 
 
+
+-- -----------------------------------------------------
+-- 9. TABLA: TeacherCourses (Detalle: Cursos que imparte el Docente)
+-- Qué cursos está capacitado para impartir un docente
+-- -----------------------------------------------------
+CREATE TABLE TeacherCourses (
+    TeacherCourseId INT IDENTITY(1,1) PRIMARY KEY,
+    TeacherId INT NOT NULL,
+    CourseId INT NOT NULL,
+    
+    YearsOfExperience INT DEFAULT 0,  -- Años de experiencia impartiendo este curso
+    Certification NVARCHAR(255),      -- Certificaciones relacionadas al curso
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_TeacherCourses_Teacher FOREIGN KEY (TeacherId) REFERENCES Teachers(TeacherId),
+    CONSTRAINT FK_TeacherCourses_Course FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
+    CONSTRAINT FK_TeacherCourses_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_TeacherCourses_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId),
+    CONSTRAINT UQ_TeacherCourses UNIQUE (TeacherId, CourseId)
+);
+
+-- -----------------------------------------------------
+-- 10. TABLA: Schedules (Horarios)
+-- Un horario es la programación de cursos para una sección
+-- -----------------------------------------------------
+CREATE TABLE Schedules (
+    ScheduleId INT IDENTITY(1,1) PRIMARY KEY,
+    ScheduleCode NVARCHAR(20) NOT NULL UNIQUE,
+    ScheduleName NVARCHAR(150) NOT NULL,
+    
+    -- Relaciones
+    SectionId INT NOT NULL,
+    LocationId INT NOT NULL,        -- Debe coincidir con Location de la Sección
+    ScheduleTypeId INT NOT NULL,    -- Debe coincidir con ScheduleType de la Sección
+    
+    -- Información académica
+    AcademicYear INT NOT NULL,
+    Semester INT NOT NULL,
+    
+    -- Fechas de vigencia
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_Schedules_Section FOREIGN KEY (SectionId) REFERENCES Sections(SectionId),
+    CONSTRAINT FK_Schedules_Location FOREIGN KEY (LocationId) REFERENCES Locations(LocationId),
+    CONSTRAINT FK_Schedules_ScheduleType FOREIGN KEY (ScheduleTypeId) REFERENCES ScheduleTypes(ScheduleTypeId),
+    CONSTRAINT FK_Schedules_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_Schedules_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId),
+    CONSTRAINT CHK_Schedules_Dates CHECK (EndDate >= StartDate)
+);
+
+-- -----------------------------------------------------
+-- 11. TABLA: ScheduleDetails (Detalle del Horario)
+-- Las clases específicas dentro de un horario
+-- -----------------------------------------------------
+CREATE TABLE ScheduleDetails (
+    ScheduleDetailId INT IDENTITY(1,1) PRIMARY KEY,
+    ScheduleId INT NOT NULL,
+    CourseId INT NOT NULL,
+    TeacherId INT NOT NULL,
+    
+    -- Información de la clase
+    DayOfWeek INT NOT NULL,         -- 1=Lunes, 2=Martes, 3=Miércoles, 4=Jueves, 5=Viernes, 6=Sábado, 7=Domingo
+    StartTime TIME NOT NULL,
+    EndTime TIME NOT NULL,
+    
+    Classroom NVARCHAR(50),         -- Número de aula/salón
+    Building NVARCHAR(50),          -- Edificio
+    
+    -- Control
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedBy INT,
+    ModifiedDate DATETIME,
+    ModifiedBy INT,
+    
+    CONSTRAINT FK_ScheduleDetails_Schedule FOREIGN KEY (ScheduleId) REFERENCES Schedules(ScheduleId),
+    CONSTRAINT FK_ScheduleDetails_Course FOREIGN KEY (CourseId) REFERENCES Courses(CourseId),
+    CONSTRAINT FK_ScheduleDetails_Teacher FOREIGN KEY (TeacherId) REFERENCES Teachers(TeacherId),
+    CONSTRAINT FK_ScheduleDetails_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_ScheduleDetails_ModifiedBy FOREIGN KEY (ModifiedBy) REFERENCES Users(UserId),
+    CONSTRAINT CHK_ScheduleDetails_DayOfWeek CHECK (DayOfWeek BETWEEN 1 AND 7),
+    CONSTRAINT CHK_ScheduleDetails_Time CHECK (EndTime > StartTime)
+);
 
 -- =====================================================
 -- ÍNDICES PARA OPTIMIZACIÓN DE BÚSQUEDAS

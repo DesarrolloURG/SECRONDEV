@@ -712,7 +712,7 @@ namespace SECRON.Views
 
             try
             {
-                var frm = new Frm_AcademicProcesses_CatalogCarrersByLocations { UserData = this.UserData };
+                var frm = new Frm_AcademicProcesses_CatalogCoursesByCareer { UserData = this.UserData };
                 frm.ShowDialog(this);
             }
             catch (Exception ex)
