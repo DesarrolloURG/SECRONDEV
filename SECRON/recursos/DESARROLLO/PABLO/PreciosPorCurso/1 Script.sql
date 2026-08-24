@@ -209,3 +209,18 @@ EXEC dbo.usp_GenerateAllAuditTriggers;
 INSERT INTO ParametersConfiguration (ParameterName, ParameterValue, Description, CreateDate)
 SELECT 'PrecioSugeridoCursosPensum', '1000', 'Precio estándar sugerido al agregar un curso nuevo al pensum (editable por el usuario)', GETDATE()
 WHERE NOT EXISTS (SELECT 1 FROM ParametersConfiguration WHERE ParameterName = 'PrecioSugeridoCursosPensum');
+
+-- 1. Quitar la FK que depende de CareerId
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_CareerCourses_Career')
+    ALTER TABLE CareerCourses DROP CONSTRAINT FK_CareerCourses_Career;
+GO
+ 
+-- 2. Quitar la restricción única que depende de CareerId
+IF EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'UQ_CareerCourses')
+    ALTER TABLE CareerCourses DROP CONSTRAINT UQ_CareerCourses;
+GO
+ 
+-- 3. Eliminar CareerId
+IF EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('CareerCourses') AND name = 'CareerId')
+    ALTER TABLE CareerCourses DROP COLUMN CareerId;
+GO
