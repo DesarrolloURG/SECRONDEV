@@ -727,25 +727,5 @@ namespace SECRON.Views
 
         #endregion
         
-        private void Btn_Catalogo_Click(object sender, EventArgs e)
-        {
-            // TEMPORALMENTE DESHABILITADO: Frm_AcademicProcesses_CatalogCoursesByCareer
-            // usa el diseño obsoleto de CareerCourses (CareerId/Prerequisites).
-            // Pendiente migrar a CareerPensumId/StandardPrice antes de reactivar.
-            /*
-            if (!Btn_Catalogo.Enabled) return;
-
-            try
-            {
-                var frm = new Frm_AcademicProcesses_CatalogCoursesByCareer { UserData = this.UserData };
-                frm.ShowDialog(this);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("ERROR AL ABRIR CATÁLOGO POR SEDE: " + ex.Message, "ERROR SECRON",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            */
-        }
     }
 }
