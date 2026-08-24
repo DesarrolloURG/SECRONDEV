@@ -1,6 +1,8 @@
 -- =====================================================================
 -- MÓDULO: PENSUM DE CARRERAS Y PRECIOS POR CURSO/SEDE/MODALIDAD
 -- Script consolidado e idempotente (seguro de re-ejecutar)
+-- Funciona tanto en ambiente NUEVO (crea todo desde cero) como en
+-- ambiente con estructura VIEJA parcial (migra columnas faltantes).
 -- =====================================================================
 
 -- =====================================================================
@@ -62,6 +64,30 @@ BEGIN
 END
 GO
 
+-- --- Migración: si LocationCareers ya existía en versión vieja (sin ModalityId) ---
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('LocationCareers') AND name = 'ModalityId')
+BEGIN
+    ALTER TABLE LocationCareers ADD ModalityId INT NULL;
+END
+GO
+
+-- Solo forzar NOT NULL si la tabla está vacía (evita romper si ya tiene datos sin modalidad asignada)
+IF EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('LocationCareers') AND name = 'ModalityId' AND is_nullable = 1)
+   AND NOT EXISTS (SELECT 1 FROM LocationCareers)
+BEGIN
+    ALTER TABLE LocationCareers ALTER COLUMN ModalityId INT NOT NULL;
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_LocationCareers_Modality')
+    ALTER TABLE LocationCareers ADD CONSTRAINT FK_LocationCareers_Modality
+        FOREIGN KEY (ModalityId) REFERENCES CourseModalities(ModalityId);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'UQ_LocationCareers')
+    ALTER TABLE LocationCareers ADD CONSTRAINT UQ_LocationCareers UNIQUE (LocationId, CareerId, ModalityId);
+GO
+
 -- =====================================================================
 -- 3. CareerPensums (versiones de pensum por carrera)
 -- =====================================================================
@@ -70,7 +96,7 @@ BEGIN
     CREATE TABLE CareerPensums (
         CareerPensumId INT IDENTITY(1,1) PRIMARY KEY,
         CareerId INT NOT NULL,
-        PensumCode VARCHAR(20) NOT NULL,
+        PensumCode VARCHAR(50) NOT NULL,
         PensumName VARCHAR(150) NOT NULL,
         IsCurrent BIT NOT NULL DEFAULT 0,
         IsActive BIT NOT NULL DEFAULT 1,
@@ -81,6 +107,17 @@ BEGIN
         CONSTRAINT FK_CareerPensums_Careers FOREIGN KEY (CareerId) REFERENCES Careers(CareerId),
         CONSTRAINT UQ_CareerPensums UNIQUE (CareerId, PensumCode)
     );
+END
+GO
+
+-- Migración: por si la tabla ya existía con PensumCode más corto que VARCHAR(50)
+IF EXISTS (
+    SELECT 1 FROM sys.columns c
+    INNER JOIN sys.types t ON c.user_type_id = t.user_type_id
+    WHERE c.object_id = OBJECT_ID('CareerPensums') AND c.name = 'PensumCode' AND c.max_length < 50
+)
+BEGIN
+    ALTER TABLE CareerPensums ALTER COLUMN PensumCode VARCHAR(50) NOT NULL;
 END
 GO
 
@@ -95,7 +132,6 @@ BEGIN
         CourseId INT NOT NULL,
         Semester INT NOT NULL,
         IsRequired BIT NULL DEFAULT 1,
-        Prerequisites NVARCHAR(500) NULL,
         StandardPrice DECIMAL(10,2) NOT NULL,
         IsActive BIT NULL DEFAULT 1,
         CreatedDate DATETIME NULL DEFAULT GETDATE(),
@@ -107,6 +143,50 @@ BEGIN
         CONSTRAINT UQ_CareerCourses UNIQUE (CareerPensumId, CourseId)
     );
 END
+GO
+
+-- --- Migración: si CareerCourses ya existía en versión vieja (con CareerId, sin pensum) ---
+IF EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('CareerCourses') AND name = 'CareerId')
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_CareerCourses_Career')
+        ALTER TABLE CareerCourses DROP CONSTRAINT FK_CareerCourses_Career;
+
+    IF EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'UQ_CareerCourses')
+        ALTER TABLE CareerCourses DROP CONSTRAINT UQ_CareerCourses;
+
+    ALTER TABLE CareerCourses DROP COLUMN CareerId;
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('CareerCourses') AND name = 'CareerPensumId')
+    ALTER TABLE CareerCourses ADD CareerPensumId INT NULL;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('CareerCourses') AND name = 'StandardPrice')
+    ALTER TABLE CareerCourses ADD StandardPrice DECIMAL(10,2) NULL;
+GO
+
+-- Solo forzar NOT NULL si la tabla está vacía (evita romper si ya tiene datos sin migrar)
+IF EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('CareerCourses') AND name = 'CareerPensumId' AND is_nullable = 1)
+   AND NOT EXISTS (SELECT 1 FROM CareerCourses)
+BEGIN
+    ALTER TABLE CareerCourses ALTER COLUMN CareerPensumId INT NOT NULL;
+    ALTER TABLE CareerCourses ALTER COLUMN StandardPrice DECIMAL(10,2) NOT NULL;
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_CareerCourses_CareerPensum')
+    ALTER TABLE CareerCourses ADD CONSTRAINT FK_CareerCourses_CareerPensum
+        FOREIGN KEY (CareerPensumId) REFERENCES CareerPensums(CareerPensumId);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'UQ_CareerCourses')
+    ALTER TABLE CareerCourses ADD CONSTRAINT UQ_CareerCourses UNIQUE (CareerPensumId, CourseId);
+GO
+
+-- --- Migración: eliminar Prerequisites (columna vieja de texto libre, reemplazada por CareerCoursePrerequisites) ---
+IF EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID('CareerCourses') AND name = 'Prerequisites')
+    ALTER TABLE CareerCourses DROP COLUMN Prerequisites;
 GO
 
 -- =====================================================================
@@ -174,9 +254,6 @@ BEGIN
 END
 GO
 
-ALTER TABLE CareerPensums ALTER COLUMN PensumCode VARCHAR(50) NOT NULL;
-GO
-
 -- =====================================================================
 -- 8. Permisos del módulo de precios
 -- =====================================================================
@@ -201,11 +278,16 @@ SELECT * FROM (VALUES
 WHERE NOT EXISTS (SELECT 1 FROM Permissions p WHERE p.PermissionCode = nuevos.PermissionCode)
 GO
 
-ALTER TABLE CareerCourses DROP COLUMN Prerequisites;
+-- =====================================================================
+-- 9. Regenerar triggers de auditoría 
+-- =====================================================================
+EXEC dbo.usp_GenerateAllAuditTriggers;
 GO
 
-EXEC dbo.usp_GenerateAllAuditTriggers;
-
+-- =====================================================================
+-- 10. Parámetro de precio sugerido
+-- =====================================================================
 INSERT INTO ParametersConfiguration (ParameterName, ParameterValue, Description, CreateDate)
 SELECT 'PrecioSugeridoCursosPensum', '1000', 'Precio estándar sugerido al agregar un curso nuevo al pensum (editable por el usuario)', GETDATE()
 WHERE NOT EXISTS (SELECT 1 FROM ParametersConfiguration WHERE ParameterName = 'PrecioSugeridoCursosPensum');
+GO
