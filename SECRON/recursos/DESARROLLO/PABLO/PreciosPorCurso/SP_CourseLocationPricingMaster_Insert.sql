@@ -21,8 +21,8 @@ BEGIN
         INSERT INTO CourseLocationPricingMaster (CareerCourseId, LocationId, ModalityId, CreatedBy)
         VALUES (@CareerCourseId, @LocationId, @ModalityId, @CreatedBy);
 
-        DECLARE @rows INT = @@ROWCOUNT;
-        COMMIT TRANSACTION; SELECT @rows;
+        DECLARE @NewId INT = SCOPE_IDENTITY();
+        COMMIT TRANSACTION; SELECT @NewId;
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION; SELECT 0;

@@ -55,8 +55,8 @@ BEGIN
             END
         END
 
-        DECLARE @rows INT = @@ROWCOUNT;
-        COMMIT TRANSACTION; SELECT @rows;
+        COMMIT TRANSACTION;
+        SELECT 1;
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION; SELECT 0;

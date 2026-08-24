@@ -152,6 +152,7 @@
             this.BtnProcesosAcademicos_TarifasCursos = new System.Windows.Forms.Button();
             this.BtnProcesosAcademicos_PensumCursos = new System.Windows.Forms.Button();
             this.BtnProcesosAcademicos_PensumCarreras = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_PensumDeCarreras = new System.Windows.Forms.Button();
             this.PanelRRHH.SuspendLayout();
             this.PanelUsers.SuspendLayout();
             this.PanelSuppliers.SuspendLayout();
@@ -2212,6 +2213,7 @@
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_AprobacionDocentes);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_RevisoresAprobados);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_TarifasCursos);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumDeCarreras);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumCursos);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumCarreras);
             this.PanelTeachers.Location = new System.Drawing.Point(220, 1);
@@ -2375,7 +2377,7 @@
             this.BtnProcesosAcademicos_PensumCursos.Name = "BtnProcesosAcademicos_PensumCursos";
             this.BtnProcesosAcademicos_PensumCursos.Size = new System.Drawing.Size(300, 35);
             this.BtnProcesosAcademicos_PensumCursos.TabIndex = 54;
-            this.BtnProcesosAcademicos_PensumCursos.Text = "PENSUM DE CURSOS";
+            this.BtnProcesosAcademicos_PensumCursos.Text = "CATALOGO DE CURSOS";
             this.BtnProcesosAcademicos_PensumCursos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnProcesosAcademicos_PensumCursos.UseVisualStyleBackColor = false;
             this.BtnProcesosAcademicos_PensumCursos.Click += new System.EventHandler(this.BtnProcesosAcademicos_PensumCursos_Click);
@@ -2395,10 +2397,30 @@
             this.BtnProcesosAcademicos_PensumCarreras.Name = "BtnProcesosAcademicos_PensumCarreras";
             this.BtnProcesosAcademicos_PensumCarreras.Size = new System.Drawing.Size(300, 35);
             this.BtnProcesosAcademicos_PensumCarreras.TabIndex = 53;
-            this.BtnProcesosAcademicos_PensumCarreras.Text = "PENSUM CARRERAS";
+            this.BtnProcesosAcademicos_PensumCarreras.Text = "CATALOGO DE CARRERAS";
             this.BtnProcesosAcademicos_PensumCarreras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnProcesosAcademicos_PensumCarreras.UseVisualStyleBackColor = false;
             this.BtnProcesosAcademicos_PensumCarreras.Click += new System.EventHandler(this.BtnProcesosAcademicos_PensumCarreras_Click);
+            // 
+            // BtnProcesosAcademicos_PensumDeCarreras
+            // 
+            this.BtnProcesosAcademicos_PensumDeCarreras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_PensumDeCarreras.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_PensumDeCarreras.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_PensumDeCarreras.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_PensumDeCarreras.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_PensumDeCarreras.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_PensumDeCarreras.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_PensumDeCarreras.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PensumDeCarreras.Location = new System.Drawing.Point(0, 70);
+            this.BtnProcesosAcademicos_PensumDeCarreras.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_PensumDeCarreras.Name = "BtnProcesosAcademicos_PensumDeCarreras";
+            this.BtnProcesosAcademicos_PensumDeCarreras.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_PensumDeCarreras.TabIndex = 55;
+            this.BtnProcesosAcademicos_PensumDeCarreras.Text = "PENSUM DE CARRERAS";
+            this.BtnProcesosAcademicos_PensumDeCarreras.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_PensumDeCarreras.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_PensumDeCarreras.Click += new System.EventHandler(this.BtnProcesosAcademicos_PensumDeCarreras_Click);
             // 
             // Frm_ControlCenter_MDI
             // 
@@ -2590,6 +2612,7 @@
         private System.Windows.Forms.Button BtnProcesosAcademicos_TarifasCursos;
         private System.Windows.Forms.Button BtnProcesosAcademicos_PensumCursos;
         private System.Windows.Forms.Button BtnProcesosAcademicos_PensumCarreras;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_PensumDeCarreras;
         private System.Windows.Forms.Button BtnLogout;
         private System.Windows.Forms.Button BtnRRHH_Docencia_GenerarContrato;
     }

@@ -59,6 +59,38 @@ namespace SECRON.Controllers
             return lista;
         }
 
+        public static bool ExisteAsignacionActiva(int locationId, int careerId, int modalityId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                        SELECT COUNT(1)
+                          FROM LocationCareers
+                         WHERE LocationId = @LocationId
+                           AND CareerId = @CareerId
+                           AND ModalityId = @ModalityId
+                           AND IsActive = 1";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@LocationId", locationId);
+                        cmd.Parameters.AddWithValue("@CareerId", careerId);
+                        cmd.Parameters.AddWithValue("@ModalityId", modalityId);
+
+                        return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL VALIDAR ASIGNACIÓN DE CARRERA EN LA SEDE: " + ex.Message, "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
         #endregion
 
         #region CRUD

@@ -108,16 +108,26 @@
     <Compile Include="Configuration\NavegadorTabConfig .cs" />
     <Compile Include="Configuration\TabConfig.cs" />
     <Compile Include="Controllers\Ctrl_AuditLogs.cs" />
+    <Compile Include="Controllers\Ctrl_CareerCoursePrerequisites.cs" />
     <Compile Include="Controllers\Ctrl_CareerCourses.cs" />
+    <Compile Include="Controllers\Ctrl_CareerPensums.cs" />
     <Compile Include="Controllers\Ctrl_Careers.cs" />
+    <Compile Include="Controllers\Ctrl_CourseLocationPricingDetail.cs" />
+    <Compile Include="Controllers\Ctrl_CourseLocationPricingMaster.cs" />
+    <Compile Include="Controllers\Ctrl_CourseModalities.cs" />
     <Compile Include="Controllers\Ctrl_Courses.cs" />
     <Compile Include="Controllers\Ctrl_LocationCareers.cs" />
     <Compile Include="Controllers\Ctrl_ResponsibilityLetters.cs" />
     <Compile Include="Models\Mdl_AuditLog.cs" />
     <Compile Include="Models\Mdl_CareerCourses.cs" />
+    <Compile Include="Models\Mdl_CareerPensums.cs" />
     <Compile Include="Models\Mdl_Careers.cs" />
+    <Compile Include="Models\Mdl_CourseLocationPricingDetail.cs" />
+    <Compile Include="Models\Mdl_CourseLocationPricingMaster.cs" />
+    <Compile Include="Models\Mdl_CourseModalities.cs" />
     <Compile Include="Models\Mdl_Courses.cs" />
     <Compile Include="Models\Mdl_LocationCareers.cs" />
+    <Compile Include="Models\Mdl_PensumCoursePricing.cs" />
     <Compile Include="Models\Mdl_ResponsibilityLetterDetail.cs" />
     <Compile Include="Models\Mdl_ResponsibilityLetterMaster.cs" />
     <Compile Include="Utils\Cls_EmailConfigCache.cs" />
@@ -274,6 +284,30 @@
     <Compile Include="Utils\Cls_ActivityMessageFilter.cs" />
     <Compile Include="Utils\Cls_EmailEncryption.cs" />
     <Compile Include="Utils\Cls_EmailService.cs" />
+    <Compile Include="Views\Frm_AcademicProcesses_SearchCourses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_SearchCourses.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_SearchCourses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CoursesPricing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CoursesPricing.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CoursesPricing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CareerPensumCourses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CareerPensumCourses.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CareerPensumCourses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CareerPensum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_CareerPensum.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_CareerPensum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_AcademicProcesses_CareerProgram.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -762,6 +796,18 @@
     <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.Designer.cs">
       <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_SearchCourses.resx">
+      <DependentUpon>Frm_AcademicProcesses_SearchCourses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CoursesPricing.resx">
+      <DependentUpon>Frm_AcademicProcesses_CoursesPricing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CareerPensumCourses.resx">
+      <DependentUpon>Frm_AcademicProcesses_CareerPensumCourses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CareerPensum.resx">
+      <DependentUpon>Frm_AcademicProcesses_CareerPensum.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_AcademicProcesses_CareerProgram.resx">
       <DependentUpon>Frm_AcademicProcesses_CareerProgram.cs</DependentUpon>
     </EmbeddedResource>
