@@ -521,7 +521,7 @@ namespace SECRON.Views
                 p.CourseName,
                 p.Semester,
                 p.IsRequired,
-                p.Prerequisites
+                //p.Prerequisites
             }).ToList();
 
             Tabla.DataSource = data;
@@ -742,13 +742,13 @@ namespace SECRON.Views
                 _asignacionesPendientesAgregar.Add(new Mdl_CareerCourses
                 {
                     CareerCourseId = 0,
-                    CareerId = _careerIdActiva,
+                    //CareerId = _careerIdActiva,
                     CourseId = courseId,
                     CourseCode = courseCode,
                     CourseName = courseName,
-                    Semester = null,
-                    IsRequired = null,
-                    Prerequisites = null,
+                    //Semester = null,
+                    //IsRequired = null,
+                    //Prerequisites = null,
                     IsActive = true,
                     CreatedBy = UserData?.UserId
                 });
@@ -875,15 +875,15 @@ namespace SECRON.Views
                 // Quitar (inactivar) los marcados para eliminar
                 foreach (int careerCourseId in _careerCourseIdsParaEliminar)
                 {
-                    int res = Ctrl_CareerCourses.CambiarEstadoCurso(careerCourseId, 1, usuarioId);
-                    if (res <= 0) errores++;
+                    //int res = Ctrl_CareerCourses.CambiarEstadoCurso(careerCourseId, 1, usuarioId);
+                    //if (res <= 0) errores++;
                 }
 
                 // Insertar las nuevas asignaciones
                 foreach (var asignacion in _asignacionesPendientesAgregar)
                 {
-                    int res = Ctrl_CareerCourses.RegistrarCurso(asignacion, usuarioId);
-                    if (res <= 0) errores++;
+                    //int res = Ctrl_CareerCourses.RegistrarCurso(asignacion, usuarioId);
+                    //if (res <= 0) errores++;
                 }
 
                 this.Cursor = Cursors.Default;
@@ -938,15 +938,15 @@ namespace SECRON.Views
 
                 string prerequisites = fila.Cells["Prerequisites"].Value?.ToString();
 
-                Ctrl_CareerCourses.ActualizarCurso(new Mdl_CareerCourses
-                {
-                    CareerCourseId = careerCourseId,
-                    CareerId = _careerIdActiva,
-                    CourseId = courseId,
-                    Semester = semester,
-                    IsRequired = isRequired,
-                    Prerequisites = string.IsNullOrWhiteSpace(prerequisites) ? null : prerequisites
-                }, usuarioId);
+                //Ctrl_CareerCourses.ActualizarCurso(new Mdl_CareerCourses
+                //{
+                //    CareerCourseId = careerCourseId,
+                //CareerId = _careerIdActiva,
+                //CourseId = courseId,
+                ////Semester = semester,
+                //IsRequired = isRequired,
+                //Prerequisites = string.IsNullOrWhiteSpace(prerequisites) ? null : prerequisites
+                //}, usuarioId);
             }
         }
 

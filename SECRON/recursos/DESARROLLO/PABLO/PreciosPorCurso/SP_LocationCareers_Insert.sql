@@ -1,6 +1,7 @@
 CREATE OR ALTER PROCEDURE SP_LocationCareers_Insert
     @LocationId INT,
     @CareerId INT,
+    @ModalityId INT,
     @CreatedBy INT = NULL
 AS
 BEGIN
@@ -9,16 +10,19 @@ BEGIN
     SET CONTEXT_INFO @ctx;
     BEGIN TRANSACTION
     BEGIN TRY
-        IF EXISTS (SELECT 1 FROM LocationCareers WHERE LocationId = @LocationId AND CareerId = @CareerId AND IsActive = 1)
+        IF EXISTS (
+            SELECT 1 FROM LocationCareers
+            WHERE LocationId = @LocationId AND CareerId = @CareerId AND ModalityId = @ModalityId AND IsActive = 1
+        )
         BEGIN
             ROLLBACK TRANSACTION; SELECT -1; RETURN;
         END
 
-        INSERT INTO LocationCareers (LocationId, CareerId, CreatedBy)
-        VALUES (@LocationId, @CareerId, @CreatedBy);
+        INSERT INTO LocationCareers (LocationId, CareerId, ModalityId, CreatedBy)
+        VALUES (@LocationId, @CareerId, @ModalityId, @CreatedBy);
 
-        DECLARE @rows INT = @@ROWCOUNT;
-        COMMIT TRANSACTION; SELECT @rows;
+        DECLARE @NewId INT = SCOPE_IDENTITY();
+        COMMIT TRANSACTION; SELECT @NewId;
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION; SELECT 0;

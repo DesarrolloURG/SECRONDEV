@@ -188,5 +188,41 @@ namespace SECRON.Controllers
         }
 
         #endregion
+
+        public static List<KeyValuePair<int, string>> ObtenerCarrerasActivas()
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+
+            try
+            {
+                using (SqlConnection conn = DatabaseConfig.GetConnection())
+                {
+                    conn.Open();
+                    string query = @"
+                SELECT CareerId, CareerName
+                  FROM Careers
+                 WHERE IsActive = 1
+                 ORDER BY CareerName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new KeyValuePair<int, string>(
+                                reader.GetInt32(0),
+                                reader.GetString(1)
+                            ));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL OBTENER CARRERAS: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return lista;
+        }
     }
 }

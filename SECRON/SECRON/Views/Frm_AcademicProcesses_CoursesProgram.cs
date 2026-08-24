@@ -168,10 +168,31 @@ namespace SECRON.Views
 
         #region ConfigurarTabla
 
+        // Colorea la columna ESTADO: ACTIVA en verde, INACTIVA en rojo, ambos en negrita
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "ColEstadoRegistro") return;
+            if (e.Value == null) return;
+
+            bool activa = e.Value.ToString() == "ACTIVA";
+            e.CellStyle.ForeColor = activa ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.Font, FontStyle.Bold);
+        }
+
         private void ConfigurarTabla()
         {
             Tabla.Columns.Clear();
             Tabla.AutoGenerateColumns = false;
+
+            // ===== COLUMNA ESTADO PRIMERO =====
+            var colEstadoRegistro = new DataGridViewTextBoxColumn();
+            colEstadoRegistro.Name = "ColEstadoRegistro";
+            colEstadoRegistro.HeaderText = "ESTADO";
+            colEstadoRegistro.Width = 90;
+            colEstadoRegistro.ReadOnly = true;
+            colEstadoRegistro.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            Tabla.Columns.Add(colEstadoRegistro);
 
             Tabla.Columns.Add("CourseId", "ID");
             Tabla.Columns.Add("CourseCode", "CÓDIGO");
@@ -180,7 +201,6 @@ namespace SECRON.Views
             Tabla.Columns.Add("Sessions", "SESIONES");
             Tabla.Columns.Add("TotalHours", "HORAS TOTALES");
             Tabla.Columns.Add("IsCommon", "EN COMÚN");
-            Tabla.Columns.Add("IsActive", "ESTADO");
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Tabla.MultiSelect = false;
@@ -216,11 +236,12 @@ namespace SECRON.Views
             Tabla.Columns["TotalHours"].FillWeight = 13;
             Tabla.Columns["IsCommon"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             Tabla.Columns["IsCommon"].FillWeight = 10;
-            Tabla.Columns["IsActive"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            Tabla.Columns["IsActive"].FillWeight = 12;
 
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
         }
 
         private void MostrarCursosEnTabla()
@@ -230,14 +251,14 @@ namespace SECRON.Views
             foreach (var curso in cursosList)
             {
                 Tabla.Rows.Add(
+                    curso.IsActive ? "ACTIVA" : "INACTIVA",
                     curso.CourseId,
                     curso.CourseCode,
                     curso.CourseName,
                     curso.Credits,
                     curso.Sessions.HasValue ? curso.Sessions.ToString() : "N/A",
                     curso.TotalHours.HasValue ? curso.TotalHours.ToString() : "N/A",
-                    curso.IsCommon ? "SI" : "NO",
-                    curso.IsActive ? "ACTIVA" : "INACTIVA"
+                    curso.IsCommon ? "SI" : "NO"
                 );
             }
         }
@@ -705,9 +726,13 @@ namespace SECRON.Views
         }
 
         #endregion
-
+        
         private void Btn_Catalogo_Click(object sender, EventArgs e)
         {
+            // TEMPORALMENTE DESHABILITADO: Frm_AcademicProcesses_CatalogCoursesByCareer
+            // usa el diseño obsoleto de CareerCourses (CareerId/Prerequisites).
+            // Pendiente migrar a CareerPensumId/StandardPrice antes de reactivar.
+            /*
             if (!Btn_Catalogo.Enabled) return;
 
             try
@@ -720,6 +745,7 @@ namespace SECRON.Views
                 MessageBox.Show("ERROR AL ABRIR CATÁLOGO POR SEDE: " + ex.Message, "ERROR SECRON",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            */
         }
     }
 }

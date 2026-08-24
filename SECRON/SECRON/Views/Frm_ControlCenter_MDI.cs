@@ -271,6 +271,7 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumCarreras);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumCursos);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_TarifasCursos);
+            ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumDeCarreras);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_RevisoresAprobados);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_AprobacionDocentes);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PreasignacionCursos);
@@ -281,6 +282,7 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumCarreras);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumCursos);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_TarifasCursos);
+            ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumDeCarreras);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_RevisoresAprobados);
             // Panel de Navegación Submenú Transferencias
             ConfigurarBotonSubmenuNavegacion(BtnTransfersManagment);
@@ -310,6 +312,7 @@ namespace SECRON.Views
             ConfigurarBotonSubSubmenuNavegacion(BtnProcesosAcademicos_PensumCarreras);
             ConfigurarBotonSubSubmenuNavegacion(BtnProcesosAcademicos_PensumCursos);
             ConfigurarBotonSubSubmenuNavegacion(BtnProcesosAcademicos_TarifasCursos);
+            ConfigurarBotonSubSubmenuNavegacion(BtnProcesosAcademicos_PensumDeCarreras);
             ConfigurarBotonSubSubmenuNavegacion(BtnProcesosAcademicos_RevisoresAprobados);
 
             // Panel de Navegación SubSubmenú Orders - Suppliers
@@ -1058,6 +1061,7 @@ namespace SECRON.Views
             // ========== DOCENTES ==========
             BtnProcesosAcademicos_PensumCarreras.Visible = TienePermiso("TEACHERS_CONFIGURATION");
             BtnProcesosAcademicos_PensumCursos.Visible = TienePermiso("TEACHERS_PERSONAL");
+            BtnProcesosAcademicos_PensumDeCarreras.Visible = TienePermiso("ACADEMICPROCESSES_PENSUM");
             BtnProcesosAcademicos_TarifasCursos.Visible = TienePermiso("TEACHERS_SECTIONS");
             BtnProcesosAcademicos_RevisoresAprobados.Visible = TienePermiso("TEACHERS_SCHEDULES");
             BtnProcesosAcademicos_AprobacionDocentes.Visible = TienePermiso("TEACHERS_REPORTS");
@@ -1280,6 +1284,7 @@ namespace SECRON.Views
                 // TEACHERS
                 { BtnProcesosAcademicos_PensumCarreras, PanelTeachers },
                 { BtnProcesosAcademicos_PensumCursos, PanelTeachers },
+                { BtnProcesosAcademicos_PensumDeCarreras, PanelTeachers },
                 { BtnProcesosAcademicos_TarifasCursos, PanelTeachers },
                 { BtnProcesosAcademicos_RevisoresAprobados, PanelTeachers },
                 { BtnProcesosAcademicos_AprobacionDocentes, PanelTeachers },
@@ -1941,8 +1946,8 @@ namespace SECRON.Views
         private void Btn_AuditLogs_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
-        //TODO: Frm_ITSM_AuditLogs aún no existe, descomentar cuando se cree
-            
+            //TODO: Frm_ITSM_AuditLogs aún no existe, descomentar cuando se cree
+
             Frm_ITSM_AuditLogs frm = new Frm_ITSM_AuditLogs();
             frm.Text = "Logs Auditoría";
             frm.BackColor = Color.White;
@@ -1985,27 +1990,47 @@ namespace SECRON.Views
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Frm_AcademicProcesses_CareerProgram frm = new Frm_AcademicProcesses_CareerProgram();
-            frm.Text = "PENSUM de Carreras";
+            frm.Text = "CATALOGO de Carreras";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
 
-            AbrirFormularioConPestana(frm, "PENSUM de Carreras", "CareerProgram");
+            AbrirFormularioConPestana(frm, "CATALOGO de Carreras", "CareerProgram");
         }
         private void BtnProcesosAcademicos_PensumCursos_Click(object sender, EventArgs e)
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
             Frm_AcademicProcesses_CoursesProgram frm = new Frm_AcademicProcesses_CoursesProgram();
-            frm.Text = "PENSUM de Cursos";
+            frm.Text = "CATALOGO de Cursos";
             frm.BackColor = Color.White;
             //Pasamos los datos del usuario
             frm.UserData = this.UserData;
 
-            AbrirFormularioConPestana(frm, "PENSUM de Cursos", "CoursesProgram");
+            AbrirFormularioConPestana(frm, "CATALOGO de Cursos", "CoursesProgram");
+        }
+        private void BtnProcesosAcademicos_PensumDeCarreras_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            Frm_AcademicProcesses_CareerPensum frm = new Frm_AcademicProcesses_CareerPensum();
+            frm.Text = "Pensum de Carreras";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Pensum de Carreras", "CareerPensum");
         }
         private void BtnProcesosAcademicos_TarifasCursos_Click(object sender, EventArgs e)
         {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_AcademicProcesses_CoursesPricing frm = new Frm_AcademicProcesses_CoursesPricing();
+            frm.Text = "PRECIO DE CURSOS";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "PRECIO DE CURSOS", "CoursesPricing");
 
         }
         private void BtnProcesosAcademicos_RevisoresAprobados_Click(object sender, EventArgs e)
