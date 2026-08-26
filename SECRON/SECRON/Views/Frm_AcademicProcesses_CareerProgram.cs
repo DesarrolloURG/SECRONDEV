@@ -712,22 +712,5 @@ namespace SECRON.Views
         }
 
         #endregion
-
-        private void Btn_Catalogo_Click(object sender, EventArgs e)
-        {
-            if (!Btn_Catalogo.Enabled) return;
-
-            try
-            {
-                var frm = new Frm_AcademicProcesses_CatalogCarrersByLocations { UserData = this.UserData };
-                frm.ShowDialog(this);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("ERROR AL ABRIR CATÁLOGO POR SEDE: " + ex.Message, "ERROR SECRON",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
     }
 }

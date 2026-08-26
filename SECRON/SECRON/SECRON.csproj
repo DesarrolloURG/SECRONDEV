@@ -320,12 +320,6 @@
     <Compile Include="Views\Frm_AcademicProcesses_CareerProgram_Import.Designer.cs">
       <DependentUpon>Frm_AcademicProcesses_CareerProgram_Import.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Frm_AcademicProcesses_CatalogCarrersByLocations.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Frm_AcademicProcesses_CatalogCarrersByLocations.Designer.cs">
-      <DependentUpon>Frm_AcademicProcesses_CatalogCarrersByLocations.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Frm_AcademicProcesses_CoursesProgram.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -807,9 +801,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_AcademicProcesses_CareerProgram_Import.resx">
       <DependentUpon>Frm_AcademicProcesses_CareerProgram_Import.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_AcademicProcesses_CatalogCarrersByLocations.resx">
-      <DependentUpon>Frm_AcademicProcesses_CatalogCarrersByLocations.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_AcademicProcesses_CoursesProgram.resx">
       <DependentUpon>Frm_AcademicProcesses_CoursesProgram.cs</DependentUpon>

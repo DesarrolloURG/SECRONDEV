@@ -28,6 +28,6 @@ CREATE INDEX IX_ResponsibilityLetterDetail_Asset ON ResponsibilityLetterDetail (
 INSERT INTO ParametersConfiguration (ParameterName, ParameterValue, Description)
 VALUES (
     'ResponsibilityLettersFolderPath',
-    'C:\Users\Pablo Hernandez\Documents\pruebasSECRON\ActivosFijos',
+    '\\Uregional\Shared$\SECRONDEV\INVENTARIO\ACTIVOS FIJOS\Cartas De Responsabilidad',
     'Ruta de red donde se almacenan los PDF de cartas de responsabilidad firmadas'
 );
