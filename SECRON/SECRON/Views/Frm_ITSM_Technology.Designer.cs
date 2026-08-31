@@ -66,9 +66,6 @@
             this.Btn_PrintLetter = new System.Windows.Forms.Button();
             this.ComboBox_Categories = new System.Windows.Forms.ComboBox();
             this.Lbl_Subtitulo2 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.Txt_RLPath = new System.Windows.Forms.TextBox();
-            this.Btn_SearchLetter = new System.Windows.Forms.Button();
             this.Panel_Superior.SuspendLayout();
             this.Panel_Derecho.SuspendLayout();
             this.PanelTabla.SuspendLayout();
@@ -89,20 +86,20 @@
             this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
             this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Superior.Location = new System.Drawing.Point(0, 0);
-            this.Panel_Superior.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Panel_Superior.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_Superior.Name = "Panel_Superior";
             this.Panel_Superior.Size = new System.Drawing.Size(1579, 68);
             this.Panel_Superior.TabIndex = 4;
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.button1.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button1.Location = new System.Drawing.Point(1224, 16);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(159, 37);
             this.button1.TabIndex = 53;
@@ -112,13 +109,13 @@
             // 
             // Btn_Export
             // 
-            this.Btn_Export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.Btn_Export.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Btn_Export.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Export.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
             this.Btn_Export.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Export.Location = new System.Drawing.Point(1391, 16);
-            this.Btn_Export.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Btn_Export.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_Export.Name = "Btn_Export";
             this.Btn_Export.Size = new System.Drawing.Size(159, 37);
             this.Btn_Export.TabIndex = 52;
@@ -129,7 +126,7 @@
             // 
             // Lbl_Formulario
             // 
-            this.Lbl_Formulario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.Lbl_Formulario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.Lbl_Formulario.AutoSize = true;
             this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
@@ -150,22 +147,22 @@
             this.Panel_Derecho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Panel_Derecho.ForeColor = System.Drawing.Color.Black;
             this.Panel_Derecho.Location = new System.Drawing.Point(636, 68);
-            this.Panel_Derecho.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Panel_Derecho.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_Derecho.Name = "Panel_Derecho";
-            this.Panel_Derecho.Size = new System.Drawing.Size(943, 992);
+            this.Panel_Derecho.Size = new System.Drawing.Size(943, 987);
             this.Panel_Derecho.TabIndex = 9;
             // 
             // PanelTabla
             // 
-            this.PanelTabla.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.PanelTabla.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.PanelTabla.Controls.Add(this.Tabla);
             this.PanelTabla.Location = new System.Drawing.Point(29, 187);
-            this.PanelTabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PanelTabla.Margin = new System.Windows.Forms.Padding(4);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(884, 782);
+            this.PanelTabla.Size = new System.Drawing.Size(884, 777);
             this.PanelTabla.TabIndex = 75;
             // 
             // Tabla
@@ -173,28 +170,28 @@
             this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
-            this.Tabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Tabla.Margin = new System.Windows.Forms.Padding(4);
             this.Tabla.Name = "Tabla";
             this.Tabla.RowHeadersWidth = 51;
-            this.Tabla.Size = new System.Drawing.Size(884, 782);
+            this.Tabla.Size = new System.Drawing.Size(884, 777);
             this.Tabla.TabIndex = 1;
             this.Tabla.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Tabla_CellClick);
             // 
             // PanelToolStrip
             // 
-            this.PanelToolStrip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.PanelToolStrip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
             this.PanelToolStrip.Location = new System.Drawing.Point(29, 132);
-            this.PanelToolStrip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PanelToolStrip.Margin = new System.Windows.Forms.Padding(4);
             this.PanelToolStrip.Name = "PanelToolStrip";
             this.PanelToolStrip.Size = new System.Drawing.Size(884, 48);
             this.PanelToolStrip.TabIndex = 74;
             // 
             // Lbl_Paginas
             // 
-            this.Lbl_Paginas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.Lbl_Paginas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.Lbl_Paginas.AutoSize = true;
             this.Lbl_Paginas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
@@ -208,7 +205,7 @@
             // 
             // Panel_Busqueda
             // 
-            this.Panel_Busqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.Panel_Busqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_Busqueda.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.Panel_Busqueda.Controls.Add(this.Btn_CleanSearch);
@@ -218,7 +215,7 @@
             this.Panel_Busqueda.Controls.Add(this.Filtro1);
             this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
             this.Panel_Busqueda.Location = new System.Drawing.Point(29, 16);
-            this.Panel_Busqueda.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Panel_Busqueda.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
             this.Panel_Busqueda.Size = new System.Drawing.Size(884, 108);
             this.Panel_Busqueda.TabIndex = 73;
@@ -230,7 +227,7 @@
             this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_CleanSearch.Location = new System.Drawing.Point(827, 9);
-            this.Btn_CleanSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Btn_CleanSearch.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(40, 38);
             this.Btn_CleanSearch.TabIndex = 71;
@@ -242,7 +239,7 @@
             // 
             this.Filtro3.FormattingEnabled = true;
             this.Filtro3.Location = new System.Drawing.Point(591, 53);
-            this.Filtro3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Filtro3.Margin = new System.Windows.Forms.Padding(4);
             this.Filtro3.Name = "Filtro3";
             this.Filtro3.Size = new System.Drawing.Size(275, 33);
             this.Filtro3.TabIndex = 70;
@@ -251,7 +248,7 @@
             // 
             this.Filtro2.FormattingEnabled = true;
             this.Filtro2.Location = new System.Drawing.Point(305, 53);
-            this.Filtro2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Filtro2.Margin = new System.Windows.Forms.Padding(4);
             this.Filtro2.Name = "Filtro2";
             this.Filtro2.Size = new System.Drawing.Size(275, 33);
             this.Filtro2.TabIndex = 69;
@@ -263,7 +260,7 @@
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Search.Location = new System.Drawing.Point(684, 9);
-            this.Btn_Search.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Btn_Search.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(135, 38);
             this.Btn_Search.TabIndex = 54;
@@ -276,18 +273,18 @@
             // 
             this.Filtro1.FormattingEnabled = true;
             this.Filtro1.Location = new System.Drawing.Point(21, 55);
-            this.Filtro1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Filtro1.Margin = new System.Windows.Forms.Padding(4);
             this.Filtro1.Name = "Filtro1";
             this.Filtro1.Size = new System.Drawing.Size(275, 33);
             this.Filtro1.TabIndex = 68;
             // 
             // Txt_ValorBuscado
             // 
-            this.Txt_ValorBuscado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.Txt_ValorBuscado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(21, 12);
-            this.Txt_ValorBuscado.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Txt_ValorBuscado.Margin = new System.Windows.Forms.Padding(4);
             this.Txt_ValorBuscado.MaxLength = 15;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
             this.Txt_ValorBuscado.Size = new System.Drawing.Size(653, 32);
@@ -305,19 +302,16 @@
             this.Panel_Izquierdo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Panel_Izquierdo.ForeColor = System.Drawing.Color.Black;
             this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 68);
-            this.Panel_Izquierdo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Panel_Izquierdo.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_Izquierdo.MaximumSize = new System.Drawing.Size(636, 992);
             this.Panel_Izquierdo.Name = "Panel_Izquierdo";
-            this.Panel_Izquierdo.Size = new System.Drawing.Size(636, 992);
+            this.Panel_Izquierdo.Size = new System.Drawing.Size(636, 987);
             this.Panel_Izquierdo.TabIndex = 8;
             // 
             // Panel_2
             // 
             this.Panel_2.BackColor = System.Drawing.Color.White;
-            this.Panel_2.Controls.Add(this.label2);
-            this.Panel_2.Controls.Add(this.Txt_RLPath);
             this.Panel_2.Controls.Add(this.Btn_Assign);
-            this.Panel_2.Controls.Add(this.Btn_SearchLetter);
             this.Panel_2.Controls.Add(this.Lbl_TipoDestino);
             this.Panel_2.Controls.Add(this.ComboBox_TipoDestino);
             this.Panel_2.Controls.Add(this.Lbl_Location);
@@ -328,9 +322,9 @@
             this.Panel_2.Controls.Add(this.ComboBox_ToEmployee);
             this.Panel_2.Controls.Add(this.label1);
             this.Panel_2.Location = new System.Drawing.Point(17, 206);
-            this.Panel_2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Panel_2.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_2.Name = "Panel_2";
-            this.Panel_2.Size = new System.Drawing.Size(580, 421);
+            this.Panel_2.Size = new System.Drawing.Size(580, 333);
             this.Panel_2.TabIndex = 82;
             // 
             // Btn_Assign
@@ -340,7 +334,7 @@
             this.Btn_Assign.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_Assign.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Assign.Location = new System.Drawing.Point(417, 9);
-            this.Btn_Assign.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Btn_Assign.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_Assign.Name = "Btn_Assign";
             this.Btn_Assign.Size = new System.Drawing.Size(144, 42);
             this.Btn_Assign.TabIndex = 77;
@@ -363,7 +357,7 @@
             // 
             this.ComboBox_TipoDestino.FormattingEnabled = true;
             this.ComboBox_TipoDestino.Location = new System.Drawing.Point(19, 144);
-            this.ComboBox_TipoDestino.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ComboBox_TipoDestino.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_TipoDestino.Name = "ComboBox_TipoDestino";
             this.ComboBox_TipoDestino.Size = new System.Drawing.Size(541, 33);
             this.ComboBox_TipoDestino.TabIndex = 75;
@@ -382,7 +376,7 @@
             // 
             this.ComboBox_Location.FormattingEnabled = true;
             this.ComboBox_Location.Location = new System.Drawing.Point(19, 78);
-            this.ComboBox_Location.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ComboBox_Location.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_Location.Name = "ComboBox_Location";
             this.ComboBox_Location.Size = new System.Drawing.Size(541, 33);
             this.ComboBox_Location.TabIndex = 73;
@@ -401,7 +395,7 @@
             // 
             this.ComboBox_ToLocation.FormattingEnabled = true;
             this.ComboBox_ToLocation.Location = new System.Drawing.Point(19, 287);
-            this.ComboBox_ToLocation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ComboBox_ToLocation.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_ToLocation.Name = "ComboBox_ToLocation";
             this.ComboBox_ToLocation.Size = new System.Drawing.Size(541, 33);
             this.ComboBox_ToLocation.TabIndex = 71;
@@ -420,7 +414,7 @@
             // 
             this.ComboBox_ToEmployee.FormattingEnabled = true;
             this.ComboBox_ToEmployee.Location = new System.Drawing.Point(19, 213);
-            this.ComboBox_ToEmployee.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ComboBox_ToEmployee.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_ToEmployee.Name = "ComboBox_ToEmployee";
             this.ComboBox_ToEmployee.Size = new System.Drawing.Size(541, 33);
             this.ComboBox_ToEmployee.TabIndex = 69;
@@ -439,13 +433,13 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.Btn_Update);
             this.panel1.Controls.Add(this.Lbl_Subtitulo3);
-            this.panel1.Location = new System.Drawing.Point(17, 635);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Location = new System.Drawing.Point(17, 546);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(580, 58);
             this.panel1.TabIndex = 81;
@@ -457,7 +451,7 @@
             this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_Update.Location = new System.Drawing.Point(375, 6);
-            this.Btn_Update.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Btn_Update.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_Update.Name = "Btn_Update";
             this.Btn_Update.Size = new System.Drawing.Size(187, 42);
             this.Btn_Update.TabIndex = 55;
@@ -486,14 +480,14 @@
             this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
             this.vScrollBar.Location = new System.Drawing.Point(626, 0);
             this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(10, 992);
+            this.vScrollBar.Size = new System.Drawing.Size(10, 987);
             this.vScrollBar.TabIndex = 80;
             // 
             // Panel_Atributos
             // 
             this.Panel_Atributos.BackColor = System.Drawing.Color.White;
-            this.Panel_Atributos.Location = new System.Drawing.Point(17, 700);
-            this.Panel_Atributos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Panel_Atributos.Location = new System.Drawing.Point(17, 611);
+            this.Panel_Atributos.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_Atributos.Name = "Panel_Atributos";
             this.Panel_Atributos.Size = new System.Drawing.Size(580, 348);
             this.Panel_Atributos.TabIndex = 65;
@@ -505,19 +499,19 @@
             this.Panel_1.Controls.Add(this.ComboBox_Categories);
             this.Panel_1.Controls.Add(this.Lbl_Subtitulo2);
             this.Panel_1.Location = new System.Drawing.Point(17, 16);
-            this.Panel_1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Panel_1.Margin = new System.Windows.Forms.Padding(4);
             this.Panel_1.Name = "Panel_1";
             this.Panel_1.Size = new System.Drawing.Size(580, 182);
             this.Panel_1.TabIndex = 64;
             // 
             // Btn_PrintLetter
             // 
-            this.Btn_PrintLetter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.Btn_PrintLetter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Btn_PrintLetter.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_PrintLetter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Btn_PrintLetter.Location = new System.Drawing.Point(19, 116);
-            this.Btn_PrintLetter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Btn_PrintLetter.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_PrintLetter.Name = "Btn_PrintLetter";
             this.Btn_PrintLetter.Size = new System.Drawing.Size(543, 37);
             this.Btn_PrintLetter.TabIndex = 79;
@@ -529,7 +523,7 @@
             // 
             this.ComboBox_Categories.FormattingEnabled = true;
             this.ComboBox_Categories.Location = new System.Drawing.Point(19, 37);
-            this.ComboBox_Categories.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ComboBox_Categories.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_Categories.Name = "ComboBox_Categories";
             this.ComboBox_Categories.Size = new System.Drawing.Size(541, 33);
             this.ComboBox_Categories.TabIndex = 69;
@@ -546,48 +540,16 @@
             this.Lbl_Subtitulo2.TabIndex = 14;
             this.Lbl_Subtitulo2.Text = "      CATEGORÍA DEL EQUIPO";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(14, 337);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(293, 25);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "CARTA DE RESPONSABILIDAD *";
-            // 
-            // Txt_RLPath
-            // 
-            this.Txt_RLPath.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_RLPath.Location = new System.Drawing.Point(20, 361);
-            this.Txt_RLPath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Txt_RLPath.Name = "Txt_RLPath";
-            this.Txt_RLPath.ReadOnly = true;
-            this.Txt_RLPath.Size = new System.Drawing.Size(471, 32);
-            this.Txt_RLPath.TabIndex = 11;
-            // 
-            // Btn_SearchLetter
-            // 
-            this.Btn_SearchLetter.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.Btn_SearchLetter.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchLetter.Image")));
-            this.Btn_SearchLetter.Location = new System.Drawing.Point(500, 350);
-            this.Btn_SearchLetter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Btn_SearchLetter.Name = "Btn_SearchLetter";
-            this.Btn_SearchLetter.Size = new System.Drawing.Size(47, 46);
-            this.Btn_SearchLetter.TabIndex = 12;
-            this.Btn_SearchLetter.UseVisualStyleBackColor = true;
-            this.Btn_SearchLetter.Click += new System.EventHandler(this.Btn_SearchLetter_Click);
-            // 
             // Frm_ITSM_Technology
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1579, 1060);
+            this.ClientSize = new System.Drawing.Size(1579, 1055);
             this.Controls.Add(this.Panel_Derecho);
             this.Controls.Add(this.Panel_Izquierdo);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Frm_ITSM_Technology";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON - ITSM GESTIÓN EQUIPOS DE TECNOLOGÍA";
@@ -650,8 +612,5 @@
         private System.Windows.Forms.ComboBox ComboBox_TipoDestino;
         private System.Windows.Forms.Button Btn_Assign;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox Txt_RLPath;
-        private System.Windows.Forms.Button Btn_SearchLetter;
     }
 }

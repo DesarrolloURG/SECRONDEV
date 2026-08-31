@@ -11,33 +11,39 @@ namespace SECRON.Controllers
     {
         #region Consultas
 
-        public static List<Mdl_CareerPensums> MostrarPensums(string texto, int? careerId, bool? isActive)
+        public static List<Mdl_CareerPensums> MostrarPensums(string texto, int? careerId, bool? isActive,
+    int pageNumber = 1, int pageSize = 100)
         {
             List<Mdl_CareerPensums> lista = new List<Mdl_CareerPensums>();
 
             try
             {
+                int offset = (pageNumber - 1) * pageSize;
+
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT
-                            p.CareerPensumId, p.CareerId, p.PensumCode, p.PensumName,
-                            c.CareerCode, c.CareerName,
-                            p.IsCurrent, p.IsActive, p.CreatedDate, p.CreatedBy, p.ModifiedDate, p.ModifiedBy
-                        FROM CareerPensums p
-                        INNER JOIN Careers c ON p.CareerId = c.CareerId
-                        WHERE (@CareerId IS NULL OR p.CareerId = @CareerId)
-                          AND (@IsActive IS NULL OR p.IsActive = @IsActive)
-                          AND (@Texto = '' OR p.PensumCode LIKE '%' + @Texto + '%'
-                                            OR p.PensumName LIKE '%' + @Texto + '%'
-                                            OR c.CareerName LIKE '%' + @Texto + '%')
-                        ORDER BY c.CareerName, p.PensumCode";
+                SELECT
+                    p.CareerPensumId, p.CareerId, p.PensumCode, p.PensumName,
+                    c.CareerCode, c.CareerName,
+                    p.IsCurrent, p.IsActive, p.CreatedDate, p.CreatedBy, p.ModifiedDate, p.ModifiedBy
+                FROM CareerPensums p
+                INNER JOIN Careers c ON p.CareerId = c.CareerId
+                WHERE (@CareerId IS NULL OR p.CareerId = @CareerId)
+                  AND (@IsActive IS NULL OR p.IsActive = @IsActive)
+                  AND (@Texto = '' OR p.PensumCode LIKE '%' + @Texto + '%'
+                                    OR p.PensumName LIKE '%' + @Texto + '%'
+                                    OR c.CareerName LIKE '%' + @Texto + '%')
+                ORDER BY c.CareerName, p.PensumCode
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@CareerId", (object)careerId ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@IsActive", (object)isActive ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@Texto", (texto ?? "").Trim().ToUpper());
+                        cmd.Parameters.AddWithValue("@offset", offset);
+                        cmd.Parameters.AddWithValue("@pageSize", pageSize);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -54,6 +60,40 @@ namespace SECRON.Controllers
             }
 
             return lista;
+        }
+
+        public static int ContarTotalPensums(string texto = "", int? careerId = null, bool? isActive = null)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                SELECT COUNT(*)
+                FROM CareerPensums p
+                INNER JOIN Careers c ON p.CareerId = c.CareerId
+                WHERE (@CareerId IS NULL OR p.CareerId = @CareerId)
+                  AND (@IsActive IS NULL OR p.IsActive = @IsActive)
+                  AND (@Texto = '' OR p.PensumCode LIKE '%' + @Texto + '%'
+                                    OR p.PensumName LIKE '%' + @Texto + '%'
+                                    OR c.CareerName LIKE '%' + @Texto + '%')";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@CareerId", (object)careerId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@IsActive", (object)isActive ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Texto", (texto ?? "").Trim().ToUpper());
+
+                        return Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL CONTAR PENSUMS: " + ex.Message, "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
         }
 
         public static Mdl_CareerPensums ObtenerPensumPorId(int careerPensumId)

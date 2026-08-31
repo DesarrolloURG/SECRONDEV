@@ -104,5 +104,64 @@ namespace SECRON.Controllers
             }
             return null;
         }
+
+        // Histórico completo de cartas de un activo (todas las que ha tenido, vigentes o no),
+        // usando el mismo JOIN Detail->Master que ObtenerCartaVigente, más nombres para mostrar en grilla.
+        public static System.Collections.Generic.List<Mdl_ResponsibilityLetterMaster> ObtenerHistorialPorActivo(int assetId)
+        {
+            var lista = new System.Collections.Generic.List<Mdl_ResponsibilityLetterMaster>();
+
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                        SELECT m.ResponsibilityLetterId, m.EmployeeId, m.FilePath, m.FileName,
+                               m.UploadDate, m.UploadedByUserId, m.IsActive,
+                               d.IsCurrent,
+                               ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName,
+                               ISNULL(u.FullName, '') AS UploadedByName
+                        FROM ResponsibilityLetterDetail d
+                        INNER JOIN ResponsibilityLetterMaster m ON d.ResponsibilityLetterId = m.ResponsibilityLetterId
+                        LEFT JOIN Employees e ON m.EmployeeId = e.EmployeeId
+                        LEFT JOIN Users u ON m.UploadedByUserId = u.UserId
+                        WHERE d.AssetId = @AssetId
+                        ORDER BY m.UploadDate DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@AssetId", assetId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                lista.Add(new Mdl_ResponsibilityLetterMaster
+                                {
+                                    ResponsibilityLetterId = reader.GetInt32(reader.GetOrdinal("ResponsibilityLetterId")),
+                                    EmployeeId = reader.GetInt32(reader.GetOrdinal("EmployeeId")),
+                                    FilePath = reader["FilePath"].ToString(),
+                                    FileName = reader["FileName"].ToString(),
+                                    UploadDate = reader.GetDateTime(reader.GetOrdinal("UploadDate")),
+                                    UploadedByUserId = reader.GetInt32(reader.GetOrdinal("UploadedByUserId")),
+                                    IsActive = reader.GetBoolean(reader.GetOrdinal("IsActive")),
+                                    IsCurrent = reader["IsCurrent"] != DBNull.Value && Convert.ToBoolean(reader["IsCurrent"]),
+                                    EmployeeName = reader["EmployeeName"]?.ToString(),
+                                    UploadedByName = reader["UploadedByName"]?.ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al consultar el histórico de cartas: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return lista;
+        }
     }
 }

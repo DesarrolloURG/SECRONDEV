@@ -508,73 +508,556 @@ namespace SECRON.Views
             using (var frmResumen = new Form())
             {
                 frmResumen.Text = $"RESUMEN DEL PENSUM — {_pensumCode} — {_pensumName}";
-                frmResumen.Size = new Size(680, 700);
+                frmResumen.Size = new Size(1050, 760);
+                frmResumen.MinimumSize = new Size(900, 650);
                 frmResumen.StartPosition = FormStartPosition.CenterParent;
-                frmResumen.FormBorderStyle = FormBorderStyle.FixedDialog;
-                frmResumen.MaximizeBox = false;
+                frmResumen.FormBorderStyle = FormBorderStyle.Sizable;
+                frmResumen.MaximizeBox = true;
                 frmResumen.MinimizeBox = false;
+                frmResumen.BackColor = Color.FromArgb(245, 247, 250);
 
-                var rtb = new RichTextBox
+                // ============================================================
+                // ICONO DE LA VENTANA
+                // ============================================================
+
+                try
                 {
-                    Dock = DockStyle.Fill,
-                    ReadOnly = true,
-                    BorderStyle = BorderStyle.None,
-                    Font = new Font("Segoe UI", 10.5F),
-                    BackColor = Color.White
+                    string rutaIcono = System.IO.Path.Combine(
+                        Application.StartupPath,
+                        "SECRON-Logotipo.ico");
+
+                    if (System.IO.File.Exists(rutaIcono))
+                        frmResumen.Icon = new Icon(rutaIcono);
+                }
+                catch
+                {
+                    // Mantener el icono predeterminado si no se encuentra.
+                }
+
+                // ============================================================
+                // ENCABEZADO
+                // ============================================================
+
+                var panelHeader = new Panel
+                {
+                    Dock = DockStyle.Top,
+                    Height = 82,
+
+                    // IMPORTANTE:
+                    // Se conserva el fondo naranja original del formulario.
+                    BackColor = Color.FromArgb(238, 143, 109),
+
+                    Padding = new Padding(24, 12, 24, 10)
                 };
 
-                var semestresOrdenados = _treeItems.Select(t => t.Semester).Distinct().OrderBy(s => s);
-
-                foreach (var semestre in semestresOrdenados)
+                var lblTitulo = new Label
                 {
-                    AgregarTexto(rtb, $"SEMESTRE {semestre}\n", Color.White, Color.FromArgb(51, 140, 255), true, 12F);
-                    AgregarTexto(rtb, "\n", Color.Black, Color.White, false, 4F);
+                    Text = "PENSUM ACADÉMICO",
+                    Dock = DockStyle.Top,
+                    Height = 32,
+                    Font = new Font("Segoe UI", 16F, FontStyle.Bold),
 
-                    var cursosDelSemestre = _treeItems.Where(t => t.Semester == semestre).OrderBy(t => t.CourseName);
+                    // El texto ahora es negro, como solicitaste.
+                    ForeColor = Color.Black,
 
-                    foreach (var item in cursosDelSemestre)
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+
+                var lblSubtitulo = new Label
+                {
+                    Text = $"{_pensumCode}  •  {_pensumName}",
+                    Dock = DockStyle.Fill,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Regular),
+                    ForeColor = Color.Black,
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+
+                panelHeader.Controls.Add(lblSubtitulo);
+                panelHeader.Controls.Add(lblTitulo);
+
+                // ============================================================
+                // RESUMEN GENERAL
+                // ============================================================
+
+                int totalCursos = _treeItems.Count;
+
+                int totalSemestres = _treeItems.Count > 0
+                    ? _treeItems.Max(x => x.Semester)
+                    : 0;
+
+                decimal valorTotal = _treeItems.Sum(x => x.StandardPrice);
+
+                var panelResumen = new Panel
+                {
+                    Dock = DockStyle.Top,
+                    Height = 48,
+                    BackColor = Color.White,
+                    Padding = new Padding(24, 0, 24, 0)
+                };
+
+                var lblResumen = new Label
+                {
+                    Text =
+                        $"{totalSemestres} {(totalSemestres == 1 ? "semestre" : "semestres")}" +
+                        $"   •   " +
+                        $"{totalCursos} {(totalCursos == 1 ? "curso" : "cursos")}" +
+                        $"   •   " +
+                        $"Valor total: Q {valorTotal:0.00}",
+
+                    Dock = DockStyle.Fill,
+                    Font = new Font("Segoe UI", 9.5F, FontStyle.Regular),
+                    ForeColor = Color.FromArgb(70, 78, 90),
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+
+                panelResumen.Controls.Add(lblResumen);
+
+                // ============================================================
+                // CONTENIDO PRINCIPAL
+                // ============================================================
+
+                var panelContenido = new Panel
+                {
+                    Dock = DockStyle.Fill,
+                    BackColor = Color.FromArgb(245, 247, 250),
+                    AutoScroll = true,
+                    Padding = new Padding(18, 8, 18, 18)
+                };
+
+                var panelSemestres = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Top,
+                    FlowDirection = FlowDirection.TopDown,
+                    WrapContents = false,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    Padding = new Padding(0),
+                    Margin = new Padding(0),
+                    BackColor = Color.Transparent
+                };
+
+                if (_treeItems.Count == 0)
+                {
+                    var panelVacio = new Panel
                     {
-                        AgregarTexto(rtb, $"    {item.CourseName}", Color.Black, Color.White, true, 11F);
-                        AgregarTexto(rtb, $"    Q {item.StandardPrice:0.00}\n", Color.FromArgb(0, 128, 0), Color.White, true, 11F);
+                        Width = 960,
+                        Height = 120,
+                        BackColor = Color.White,
+                        Margin = new Padding(0, 5, 0, 15)
+                    };
 
-                        string prereqTexto;
-                        if (item.PrerequisiteCourseIds.Count == 0)
-                        {
-                            prereqTexto = "Sin prerequisitos";
-                        }
-                        else
-                        {
-                            var nombresPrereq = item.PrerequisiteCourseIds
-                                .Select(id => _treeItems.FirstOrDefault(t => t.CourseId == id)?.CourseName)
-                                .Where(n => n != null);
-                            prereqTexto = "Prerequisitos: " + string.Join(", ", nombresPrereq);
-                        }
+                    var lblVacio = new Label
+                    {
+                        Text = "Este pensum todavía no tiene cursos asignados.",
+                        Dock = DockStyle.Fill,
+                        Font = new Font("Segoe UI", 11F),
+                        ForeColor = Color.Gray,
+                        TextAlign = ContentAlignment.MiddleCenter
+                    };
 
-                        AgregarTexto(rtb, $"        {prereqTexto}\n\n", Color.Gray, Color.White, false, 9.5F);
-                    }
-
-                    AgregarTexto(rtb, "\n", Color.Black, Color.White, false, 6F);
+                    panelVacio.Controls.Add(lblVacio);
+                    panelSemestres.Controls.Add(panelVacio);
                 }
+                else
+                {
+                    var semestres = _treeItems
+                        .Select(x => x.Semester)
+                        .Distinct()
+                        .OrderBy(x => x)
+                        .ToList();
+
+                    foreach (var semestre in semestres)
+                    {
+                        var cursos = _treeItems
+                            .Where(x => x.Semester == semestre)
+                            .OrderBy(x => x.CourseName)
+                            .ToList();
+
+                        panelSemestres.Controls.Add(
+                            CrearPanelSemestreResumen(
+                                semestre,
+                                cursos));
+                    }
+                }
+
+                panelContenido.Controls.Add(panelSemestres);
+
+                // ============================================================
+                // PIE DE VENTANA
+                // ============================================================
+
+                var panelFooter = new Panel
+                {
+                    Dock = DockStyle.Bottom,
+                    Height = 60,
+                    BackColor = Color.White,
+                    Padding = new Padding(18, 8, 18, 8)
+                };
 
                 var btnCerrarResumen = new Button
                 {
                     Text = "CERRAR",
-                    Dock = DockStyle.Bottom,
+                    Dock = DockStyle.Right,
+                    Width = 130,
                     Height = 40,
-                    Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                    TextAlign = ContentAlignment.MiddleRight,
-                    UseVisualStyleBackColor = true
+                    FlatStyle = FlatStyle.Flat,
+                    BackColor = Color.FromArgb(70, 78, 90),
+                    ForeColor = Color.White,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    Cursor = Cursors.Hand,
+                    UseVisualStyleBackColor = false
                 };
-                btnCerrarResumen.Click += (s, e) => frmResumen.Close();
 
-                frmResumen.Controls.Add(rtb);
-                frmResumen.Controls.Add(btnCerrarResumen);
+                btnCerrarResumen.FlatAppearance.BorderSize = 0;
 
-                rtb.SelectionStart = 0;
-                rtb.ScrollToCaret();
+                btnCerrarResumen.Click += (s, e) =>
+                {
+                    frmResumen.Close();
+                };
+
+                panelFooter.Controls.Add(btnCerrarResumen);
+
+                // ============================================================
+                // ARMAR VENTANA
+                // ============================================================
+
+                frmResumen.Controls.Add(panelContenido);
+                frmResumen.Controls.Add(panelFooter);
+                frmResumen.Controls.Add(panelResumen);
+                frmResumen.Controls.Add(panelHeader);
 
                 frmResumen.ShowDialog(this);
             }
+        }
+
+        private Panel CrearTarjetaEstadistica(
+    string titulo,
+    string valor,
+    string descripcion)
+        {
+            var tarjeta = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Margin = new Padding(5, 0, 5, 0),
+                BackColor = Color.White,
+                Padding = new Padding(14, 7, 14, 7)
+            };
+
+            var lblTitulo = new Label
+            {
+                Text = titulo,
+                Dock = DockStyle.Top,
+                Height = 17,
+                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(100, 108, 120),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var lblValor = new Label
+            {
+                Text = valor,
+                Dock = DockStyle.Top,
+                Height = 29,
+                Font = new Font("Segoe UI", 15F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(45, 52, 62),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var lblDescripcion = new Label
+            {
+                Text = descripcion,
+                Dock = DockStyle.Fill,
+                Font = new Font("Segoe UI", 8F),
+                ForeColor = Color.Gray,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            tarjeta.Controls.Add(lblDescripcion);
+            tarjeta.Controls.Add(lblValor);
+            tarjeta.Controls.Add(lblTitulo);
+
+            return tarjeta;
+        }
+
+        private Panel CrearPanelSemestreResumen(
+    int semestre,
+    List<TreeCourseItem> cursos)
+        {
+            const int anchoPanel = 960;
+            const int altoHeader = 54;
+            const int altoColumnas = 32;
+            const int altoCurso = 58;
+            const int altoFooter = 38;
+
+            int altoPanel =
+                altoHeader +
+                altoColumnas +
+                (cursos.Count * altoCurso) +
+                altoFooter;
+
+            var panelSemestre = new Panel
+            {
+                Width = anchoPanel,
+                Height = altoPanel,
+                Margin = new Padding(0, 0, 0, 16),
+                BackColor = Color.White
+            };
+
+            // ============================================================
+            // 1. HEADER DEL SEMESTRE
+            // ============================================================
+
+            var panelHeader = new Panel
+            {
+                Location = new Point(0, 0),
+                Size = new Size(anchoPanel, altoHeader),
+                BackColor = Color.FromArgb(51, 140, 255)
+            };
+
+            var lblSemestre = new Label
+            {
+                Text = $"SEMESTRE {semestre}",
+                Location = new Point(16, 0),
+                Size = new Size(400, altoHeader),
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var lblCantidad = new Label
+            {
+                Text = $"{cursos.Count} {(cursos.Count == 1 ? "curso" : "cursos")}",
+                Location = new Point(anchoPanel - 180, 0),
+                Size = new Size(155, altoHeader),
+                Font = new Font("Segoe UI", 9F),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            panelHeader.Controls.Add(lblSemestre);
+            panelHeader.Controls.Add(lblCantidad);
+
+            // PRIMERO: encabezado del semestre
+            panelSemestre.Controls.Add(panelHeader);
+
+            // ============================================================
+            // 2. ENCABEZADOS DE COLUMNAS
+            // ============================================================
+
+            var panelColumnas = new Panel
+            {
+                Location = new Point(0, altoHeader),
+                Size = new Size(anchoPanel, altoColumnas),
+                BackColor = Color.FromArgb(248, 249, 251)
+            };
+
+            var lblCodigoHeader = new Label
+            {
+                Text = "CÓDIGO",
+                Location = new Point(16, 0),
+                Size = new Size(110, altoColumnas),
+                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(100, 108, 120),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var lblCursoHeader = new Label
+            {
+                Text = "CURSO",
+                Location = new Point(126, 0),
+                Size = new Size(600, altoColumnas),
+                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(100, 108, 120),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var lblPrecioHeader = new Label
+            {
+                Text = "PRECIO",
+                Location = new Point(anchoPanel - 150, 0),
+                Size = new Size(125, altoColumnas),
+                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(100, 108, 120),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            panelColumnas.Controls.Add(lblCodigoHeader);
+            panelColumnas.Controls.Add(lblCursoHeader);
+            panelColumnas.Controls.Add(lblPrecioHeader);
+
+            // SEGUNDO: encabezados
+            panelSemestre.Controls.Add(panelColumnas);
+
+            // ============================================================
+            // 3. CURSOS
+            // ============================================================
+
+            int posicionY = altoHeader + altoColumnas;
+
+            foreach (var curso in cursos)
+            {
+                var fila = CrearFilaCursoResumen(
+                    curso,
+                    anchoPanel,
+                    altoCurso);
+
+                fila.Location = new Point(0, posicionY);
+
+                panelSemestre.Controls.Add(fila);
+
+                posicionY += altoCurso;
+            }
+
+            // ============================================================
+            // 4. TOTAL DEL SEMESTRE
+            // ============================================================
+
+            decimal totalSemestre =
+                cursos.Sum(x => x.StandardPrice);
+
+            var panelFooter = new Panel
+            {
+                Location = new Point(0, altoPanel - altoFooter),
+                Size = new Size(anchoPanel, altoFooter),
+                BackColor = Color.FromArgb(250, 251, 252)
+            };
+
+            var lblTotal = new Label
+            {
+                Text = $"Total semestre:  Q {totalSemestre:0.00}",
+                Dock = DockStyle.Fill,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(70, 78, 90),
+                TextAlign = ContentAlignment.MiddleRight,
+                Padding = new Padding(0, 0, 16, 0)
+            };
+
+            panelFooter.Controls.Add(lblTotal);
+
+            // CUARTO: total
+            panelSemestre.Controls.Add(panelFooter);
+
+            return panelSemestre;
+        }
+
+        private Panel CrearFilaCursoResumen(
+    TreeCourseItem item,
+    int anchoPanel,
+    int altoFila)
+        {
+            var panelFila = new Panel
+            {
+                Size = new Size(anchoPanel, altoFila),
+                BackColor = Color.White
+            };
+
+            // ============================================================
+            // CÓDIGO
+            // ============================================================
+
+            var lblCodigo = new Label
+            {
+                Text = item.CourseCode ?? "",
+                Location = new Point(16, 0),
+                Size = new Size(110, altoFila),
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(90, 98, 110),
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            // ============================================================
+            // PRECIO
+            // ============================================================
+
+            var lblPrecio = new Label
+            {
+                Text = $"Q {item.StandardPrice:0.00}",
+                Location = new Point(anchoPanel - 150, 0),
+                Size = new Size(125, altoFila),
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 128, 0),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            // ============================================================
+            // NOMBRE DEL CURSO
+            // ============================================================
+
+            var lblCurso = new Label
+            {
+                Text = item.CourseName ?? "",
+                Location = new Point(126, 4),
+                Size = new Size(
+                    anchoPanel - 310,
+                    item.PrerequisiteCourseIds.Count > 0 ? 25 : 50),
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(45, 52, 62),
+                TextAlign = ContentAlignment.MiddleLeft,
+                AutoEllipsis = true
+            };
+
+            panelFila.Controls.Add(lblCodigo);
+            panelFila.Controls.Add(lblPrecio);
+            panelFila.Controls.Add(lblCurso);
+
+            // ============================================================
+            // PREREQUISITOS
+            // ============================================================
+
+            if (item.PrerequisiteCourseIds.Count > 0)
+            {
+                var nombresPrereq = item.PrerequisiteCourseIds
+                    .Select(id =>
+                        _treeItems.FirstOrDefault(
+                            t => t.CourseId == id)?.CourseName)
+                    .Where(n => !string.IsNullOrWhiteSpace(n))
+                    .ToList();
+
+                string textoPrereq;
+
+                if (nombresPrereq.Count > 0)
+                {
+                    textoPrereq =
+                        "Prerequisito" +
+                        (nombresPrereq.Count > 1 ? "s: " : ": ") +
+                        string.Join(", ", nombresPrereq);
+                }
+                else
+                {
+                    textoPrereq = "Prerequisito no disponible";
+                }
+
+                var lblPrereq = new Label
+                {
+                    Text = "↳ " + textoPrereq,
+                    Location = new Point(126, 29),
+                    Size = new Size(anchoPanel - 310, 22),
+                    Font = new Font("Segoe UI", 8F),
+                    ForeColor = Color.FromArgb(120, 128, 140),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    AutoEllipsis = true
+                };
+
+                panelFila.Controls.Add(lblPrereq);
+            }
+
+            return panelFila;
+        }
+
+        private Label CrearLabelColumna(
+    string texto,
+    int width,
+    ContentAlignment alineacion)
+        {
+            return new Label
+            {
+                Text = texto,
+                Width = width,
+                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(100, 108, 120),
+                TextAlign = alineacion,
+                Padding = new Padding(4, 0, 4, 0)
+            };
         }
 
         // Agrega texto formateado al RichTextBox (color de fuente, color de fondo, negrita, tamaño)

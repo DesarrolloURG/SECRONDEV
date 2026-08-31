@@ -38,12 +38,15 @@ namespace SECRON.Controllers
         }
 
         // Grilla principal: combinaciones Curso-Carrera-Sede-Modalidad con su precio vigente
-        public static List<Mdl_CourseLocationPricingMaster> MostrarPrecios(int? locationId, int? careerId, bool soloActivas)
+        public static List<Mdl_CourseLocationPricingMaster> MostrarPrecios(int? locationId, int? careerId, int? modalityId, bool soloActivas,
+            int pageNumber = 1, int pageSize = 100)
         {
             List<Mdl_CourseLocationPricingMaster> lista = new List<Mdl_CourseLocationPricingMaster>();
 
             try
             {
+                int offset = (pageNumber - 1) * pageSize;
+
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
@@ -79,14 +82,19 @@ namespace SECRON.Controllers
                     AND d.IsActive = 1
                 WHERE (@LocationId IS NULL OR m.LocationId = @LocationId)
                   AND (@CareerId IS NULL OR cp.CareerId = @CareerId)
+                  AND (@ModalityId IS NULL OR m.ModalityId = @ModalityId)
                   AND (@SoloActivas = 0 OR m.IsActive = 1)
-                ORDER BY ca.CareerName, co.CourseName, l.LocationName, mod.ModalityName";
+                ORDER BY ca.CareerName, co.CourseName, l.LocationName, mod.ModalityName
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@LocationId", (object)locationId ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@CareerId", (object)careerId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ModalityId", (object)modalityId ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@SoloActivas", soloActivas);
+                        cmd.Parameters.AddWithValue("@offset", offset);
+                        cmd.Parameters.AddWithValue("@pageSize", pageSize);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -103,6 +111,41 @@ namespace SECRON.Controllers
             }
 
             return lista;
+        }
+
+        public static int ContarTotalPrecios(int? locationId, int? careerId, int? modalityId, bool soloActivas)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                SELECT COUNT(*)
+                FROM CourseLocationPricingMaster m
+                INNER JOIN CareerCourses cc ON m.CareerCourseId = cc.CareerCourseId
+                INNER JOIN CareerPensums cp ON cc.CareerPensumId = cp.CareerPensumId
+                WHERE (@LocationId IS NULL OR m.LocationId = @LocationId)
+                  AND (@CareerId IS NULL OR cp.CareerId = @CareerId)
+                  AND (@ModalityId IS NULL OR m.ModalityId = @ModalityId)
+                  AND (@SoloActivas = 0 OR m.IsActive = 1)";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@LocationId", (object)locationId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@CareerId", (object)careerId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ModalityId", (object)modalityId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@SoloActivas", soloActivas);
+
+                        return Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL CONTAR PRECIOS: " + ex.Message, "ERROR SECRON",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
         }
 
         #endregion

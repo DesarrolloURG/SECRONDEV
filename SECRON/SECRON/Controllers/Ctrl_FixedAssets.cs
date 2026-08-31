@@ -258,36 +258,39 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"
-                        SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
-                               fa.AssetCategoryId, 
-                                (SELECT av.Value FROM FixedAssetAttributeValues av
-                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
-                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
-                               (SELECT av.Value FROM FixedAssetAttributeValues av
-                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
-                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'MODEL' AND ad.IsSystem = 1) AS Model,
-                                (SELECT av.Value FROM FixedAssetAttributeValues av
-                                 INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
-                                 WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1) AS Serial,
-                               fa.PurchaseDate, fa.PurchaseValue, fa.ResidualValue,
-                               fa.InvoiceNumber, fa.SupplierId,
-                               fa.WarrantyDocumentPath, fa.WarrantyExpirationDate,
-                               fa.DepreciationStartDate, fa.ResidualValueAct,
-                               fa.CurrentWarehouseId, fa.AssignedToEmployeeId,
-                               fa.AssetStatus, fa.DisposalDate, fa.DisposalReason,
-                               fa.DisposalValue, fa.Notes,
-                               fa.IsActive, fa.CreatedDate, fa.CreatedBy,
-                               fa.ModifiedDate, fa.ModifiedBy,
-                               fac.CategoryName,
-                               s.SupplierName,
-                               w.WarehouseName,
-                               ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName
-                        FROM   FixedAssets fa
-                        LEFT JOIN FixedAssetCategories      fac ON fa.AssetCategoryId     = fac.AssetCategoryId
-                        LEFT JOIN Suppliers                 s   ON fa.SupplierId           = s.SupplierId
-                        LEFT JOIN Warehouses                w   ON fa.CurrentWarehouseId   = w.WarehouseId
-                        LEFT JOIN Employees                 e   ON fa.AssignedToEmployeeId = e.EmployeeId
-                        WHERE fa.AssetId = @AssetId";
+                SELECT fa.AssetId, fa.AssetCode, fa.AssetName, fa.Description,
+                       fa.AssetCategoryId, 
+                        (SELECT av.Value FROM FixedAssetAttributeValues av
+                         INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                         WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'BRAND' AND ad.IsSystem = 1) AS Brand, 
+                       (SELECT av.Value FROM FixedAssetAttributeValues av
+                         INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                         WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'MODEL' AND ad.IsSystem = 1) AS Model,
+                        (SELECT av.Value FROM FixedAssetAttributeValues av
+                         INNER JOIN FixedAssetAttributeDefinitions ad ON av.AttributeDefId = ad.AttributeDefId
+                         WHERE av.AssetId = fa.AssetId AND ad.AttributeKey = 'SERIAL' AND ad.IsSystem = 1) AS Serial,
+                       fa.PurchaseDate, fa.PurchaseValue, fa.ResidualValue,
+                       fa.InvoiceNumber, fa.SupplierId,
+                       fa.WarrantyDocumentPath, fa.WarrantyExpirationDate,
+                       fa.DepreciationStartDate, fa.ResidualValueAct,
+                       fa.CurrentWarehouseId, fa.AssignedToEmployeeId,
+                       fa.AssetStatus, fa.DisposalDate, fa.DisposalReason,
+                       fa.DisposalValue, fa.Notes,
+                       fa.IsActive, fa.CreatedDate, fa.CreatedBy,
+                       fa.ModifiedDate, fa.ModifiedBy,
+                       fac.CategoryName,
+                       s.SupplierName,
+                       w.WarehouseName,
+                       ISNULL(e.FullName, ISNULL(e.FirstName + ' ' + e.LastName, '')) AS EmployeeName,
+                       m.FilePath AS ResponsibilityLetterPath
+                FROM   FixedAssets fa
+                LEFT JOIN FixedAssetCategories      fac ON fa.AssetCategoryId     = fac.AssetCategoryId
+                LEFT JOIN Suppliers                 s   ON fa.SupplierId           = s.SupplierId
+                LEFT JOIN Warehouses                w   ON fa.CurrentWarehouseId   = w.WarehouseId
+                LEFT JOIN Employees                 e   ON fa.AssignedToEmployeeId = e.EmployeeId
+                LEFT JOIN ResponsibilityLetterDetail d   ON d.AssetId = fa.AssetId AND d.IsCurrent = 1 AND d.IsActive = 1
+                LEFT JOIN ResponsibilityLetterMaster m   ON m.ResponsibilityLetterId = d.ResponsibilityLetterId
+                WHERE fa.AssetId = @AssetId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -504,6 +507,31 @@ namespace SECRON.Controllers
             catch (Exception ex)
             {
                 MessageBox.Show("Error al actualizar asignación: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
+        // MÉTODO PRINCIPAL: Activar/Inactivar activo fijo (SP dedicado, sin efectos secundarios de un update completo)
+        public static int CambiarEstadoActivo(int assetId, bool isActive, int? modifiedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_FixedAssets_Delete", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@AssetId", assetId);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cambiar el estado del activo: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
