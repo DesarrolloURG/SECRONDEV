@@ -2139,9 +2139,10 @@ namespace SECRON.Views
         {
             CerrarTodosLosPaneles();
             // Crear tu formulario específico (reemplaza con el formulario real)
-            Form frm = new Form();
+            Frm_FixedAsset_ResponsabilityLetterHistory frm = new Frm_FixedAsset_ResponsabilityLetterHistory();
             frm.Text = "Cartas de Responsabilidad";
             frm.BackColor = Color.White;
+            frm.UserData = this.UserData;
 
             AbrirFormularioConPestana(frm, "Cartas de Responsabilidad", "StaticItemsResponsabilityLetter");
         }

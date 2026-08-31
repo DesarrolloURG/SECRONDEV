@@ -24,7 +24,6 @@ namespace SECRON.Views
         private Mdl_FixedAsset _activoSeleccionado = null;
         private int? _classificationFilterId = null;
         private int _categoryFilterId = 0;
-        private string _pendingLetterLocalPath = null;
 
         // Controles dinámicos del panel de atributos
         private Dictionary<int, (Mdl_FixedAssetAttributeValue Atributo, Control Entrada)> _controlesAtributos;
@@ -247,13 +246,40 @@ namespace SECRON.Views
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colResponsibilityLetterPath", HeaderText = "", DataPropertyName = "ResponsibilityLetterPath", Visible = false });
 
             var colAbrir = new DataGridViewImageColumn();
-            colAbrir.Name = "ColAbrirPDF";
-            colAbrir.HeaderText = "CARTA";
-            colAbrir.Width = 60;
+            colAbrir.Name = "ColAbrir_RL";
+            colAbrir.HeaderText = "CARTA (ABRIR)";
+            colAbrir.Width = 100;
             colAbrir.ImageLayout = DataGridViewImageCellLayout.Zoom;
             colAbrir.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             colAbrir.Resizable = DataGridViewTriState.False;
+            colAbrir.DefaultCellStyle.NullValue = Properties.Resources.SearchNegro25x25;
+            colAbrir.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colAbrir.ToolTipText = "ABRIR CARTA DE RESPONSABILIDAD";
             Tabla.Columns.Add(colAbrir);
+
+            var colCargar = new DataGridViewImageColumn();
+            colCargar.Name = "ColCargar_RL";
+            colCargar.HeaderText = "CARTA (CARGAR)";
+            colCargar.Width = 100;
+            colCargar.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            colCargar.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colCargar.Resizable = DataGridViewTriState.False;
+            colCargar.DefaultCellStyle.NullValue = Properties.Resources.UploadFileBlack25x25;
+            colCargar.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colCargar.ToolTipText = "CARGAR CARTA DE RESPONSABILIDAD";
+            Tabla.Columns.Add(colCargar);
+
+            var colEstado = new DataGridViewImageColumn();
+            colEstado.Name = "ColEstado_RL";
+            colEstado.HeaderText = "CARTA (ESTADO)";
+            colEstado.Width = 100;
+            colEstado.ImageLayout = DataGridViewImageCellLayout.Zoom;
+            colEstado.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colEstado.Resizable = DataGridViewTriState.False;
+            colEstado.DefaultCellStyle.NullValue = Properties.Resources.InactivarRojo25x25;
+            colEstado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colEstado.ToolTipText = "ESTADO DE LA CARTA DE RESPONSABILIDAD";
+            Tabla.Columns.Add(colEstado);
 
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colCodigo", HeaderText = "CÓDIGO", DataPropertyName = "AssetCode", Width = 110 });
             Tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = "colNombre", HeaderText = "NOMBRE", DataPropertyName = "AssetName", Width = 200 });
@@ -269,14 +295,14 @@ namespace SECRON.Views
             });
 
             Tabla.CellFormatting += Tabla_CellFormatting;
-            Tabla.CellClick += Tabla_CellClick_PDF;
+            Tabla.CellClick += Tabla_CellClick_Archivos_RL;
         }
 
         private void Tabla_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            if (e.ColumnIndex == Tabla.Columns["ColAbrirPDF"].Index)
+            if (e.ColumnIndex == Tabla.Columns["ColEstado_RL"].Index)
             {
                 object valorRuta = Tabla.Rows[e.RowIndex].Cells["colResponsibilityLetterPath"].Value;
                 e.Value = (valorRuta == null || valorRuta == DBNull.Value || string.IsNullOrWhiteSpace(valorRuta.ToString()))
@@ -409,9 +435,6 @@ namespace SECRON.Views
             _controlesAtributos = null;
             _activoSeleccionado = null;
             Btn_PrintLetter.Enabled = false;
-            Btn_SearchLetter.Enabled = false;
-            _pendingLetterLocalPath = null;
-            Txt_RLPath.Text = "";
             Btn_Update.Enabled = false;
 
             Panel_Atributos.Controls.Add(new Label
@@ -665,15 +688,9 @@ namespace SECRON.Views
         {
             if (e.RowIndex < 0) return;
 
-            if (Tabla.Columns[e.ColumnIndex].Name == "ColAbrirPDF") return; // manejado en Tabla_CellClick_PDF
-
-            if (_pendingLetterLocalPath != null)
-            {
-                MessageBox.Show(
-                    "TIENE UNA CARTA DE RESPONSABILIDAD PENDIENTE DE GUARDAR QUE SE PERDERÁ AL CAMBIAR DE EQUIPO.\nGUARDE LOS CAMBIOS ANTES DE CONTINUAR.",
-                    "ADVERTENCIA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                _pendingLetterLocalPath = null;
-            }
+            string colName = Tabla.Columns[e.ColumnIndex].Name;
+            if (colName == "ColAbrir_RL" || colName == "ColCargar_RL" || colName == "ColEstado_RL")
+                return; // manejado en Tabla_CellClick_Archivos_RL
 
             DataGridViewRow row = Tabla.Rows[e.RowIndex];
             int assetId = Convert.ToInt32(row.Cells["colId"].Value);
@@ -686,84 +703,84 @@ namespace SECRON.Views
                 _activoSeleccionado.AssetCategoryId);
 
             Btn_PrintLetter.Enabled = _activoSeleccionado.AssignedToEmployeeId.HasValue;
-            Btn_SearchLetter.Enabled = _activoSeleccionado.AssignedToEmployeeId.HasValue;
             Btn_Update.Enabled = TienePermiso("FA_ITMS_TECH_UPDATE");
             Btn_Assign.Enabled = TienePermiso("FA_ITMS_TECH_UPDATE");
-            ActualizarTextoRLPath();
         }
 
-        private void Tabla_CellClick_PDF(object sender, DataGridViewCellEventArgs e)
+        private void Tabla_CellClick_Archivos_RL(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-            if (Tabla.Columns[e.ColumnIndex].Name != "ColAbrirPDF") return;
 
-            object valor = Tabla.Rows[e.RowIndex].Cells["colResponsibilityLetterPath"].Value;
-            string filePath = (valor == null || valor == DBNull.Value) ? null : valor.ToString();
+            object valorAssetId = Tabla.Rows[e.RowIndex].Cells["colId"].Value;
+            if (valorAssetId == null || valorAssetId == DBNull.Value) return;
+            int assetId = Convert.ToInt32(valorAssetId);
 
-            if (string.IsNullOrWhiteSpace(filePath))
+            var activo = _activosList?.Find(a => a.AssetId == assetId);
+
+            object valorRuta = Tabla.Rows[e.RowIndex].Cells["colResponsibilityLetterPath"].Value;
+            string filePath = (valorRuta == null || valorRuta == DBNull.Value) ? null : valorRuta.ToString();
+
+            // ===== ABRIR ARCHIVO =====
+            if (Tabla.Columns.Contains("ColAbrir_RL") && e.ColumnIndex == Tabla.Columns["ColAbrir_RL"].Index)
             {
-                MessageBox.Show("ESTE EQUIPO NO TIENE UNA CARTA DE RESPONSABILIDAD VINCULADA.", "AVISO",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                object valorAssetId = Tabla.Rows[e.RowIndex].Cells["colId"].Value;
-                if (valorAssetId != null && valorAssetId != DBNull.Value)
+                if (string.IsNullOrWhiteSpace(filePath))
                 {
-                    int assetIdDesvinculado = Convert.ToInt32(valorAssetId);
-                    Ctrl_ResponsibilityLetters.DesvincularCarta(assetIdDesvinculado);
+                    MessageBox.Show("ESTE EQUIPO NO TIENE UNA CARTA DE RESPONSABILIDAD VINCULADA.", "AVISO",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!System.IO.File.Exists(filePath))
+                {
+                    Ctrl_ResponsibilityLetters.DesvincularCarta(assetId);
                     CargarActivos();
 
-                    if (_activoSeleccionado != null && _activoSeleccionado.AssetId == assetIdDesvinculado)
-                        ActualizarTextoRLPath();
+                    MessageBox.Show("EL ARCHIVO NO SE ENCUENTRA EN LA RUTA INDICADA.\nSE HA DESVINCULADO LA CARTA; DEBE CARGAR UN NUEVO DOCUMENTO.", "AVISO",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
 
-                MessageBox.Show("EL ARCHIVO NO SE ENCUENTRA EN LA RUTA INDICADA.\nSE HA DESVINCULADO LA CARTA; DEBE CARGAR UN NUEVO DOCUMENTO.", "AVISO",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Diagnostics.Process.Start(filePath);
                 return;
             }
 
-            System.Diagnostics.Process.Start(filePath);
-        }
-
-        private void ActualizarTextoRLPath()
-        {
-            if (_activoSeleccionado == null || _activoSeleccionado.AssetId == 0)
+            // ===== CARGAR ARCHIVO =====
+            if (Tabla.Columns.Contains("ColCargar_RL") && e.ColumnIndex == Tabla.Columns["ColCargar_RL"].Index)
             {
-                Txt_RLPath.Text = "";
-                return;
-            }
-
-            var cartaVigente = Ctrl_ResponsibilityLetters.ObtenerCartaVigente(_activoSeleccionado.AssetId);
-            Txt_RLPath.Text = cartaVigente != null ? cartaVigente.FileName : "";
-        }
-
-        private void Btn_SearchLetter_Click(object sender, EventArgs e)
-        {
-            if (!Btn_SearchLetter.Enabled) return;
-            if (_activoSeleccionado == null || !_activoSeleccionado.AssignedToEmployeeId.HasValue) return;
-
-            using (OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Title = "SELECCIONAR CARTA DE RESPONSABILIDAD FIRMADA";
-                dlg.Filter = "Archivos PDF (*.pdf)|*.pdf";
-
-                if (dlg.ShowDialog() == DialogResult.OK)
+                if (activo == null || !activo.AssignedToEmployeeId.HasValue)
                 {
-                    _pendingLetterLocalPath = dlg.FileName;
-                    Txt_RLPath.Text = $"(PENDIENTE DE GUARDAR) {System.IO.Path.GetFileName(dlg.FileName)}";
+                    MessageBox.Show("ESTE EQUIPO NO ESTÁ ASIGNADO A NINGÚN EMPLEADO.\nDEBE ASIGNARLO ANTES DE CARGAR LA CARTA DE RESPONSABILIDAD.", "AVISO",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                if (!string.IsNullOrWhiteSpace(filePath))
+                {
+                    if (MessageBox.Show("ESTE EQUIPO YA TIENE UNA CARTA DE RESPONSABILIDAD VINCULADA.\n¿DESEA REEMPLAZARLA?",
+                        "CONFIRMAR", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        return;
+                }
+
+                using (OpenFileDialog dlg = new OpenFileDialog())
+                {
+                    dlg.Title = "SELECCIONAR CARTA DE RESPONSABILIDAD FIRMADA";
+                    dlg.Filter = "Archivos PDF (*.pdf)|*.pdf";
+
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        CargarCartaDesdeGrid(assetId, activo.AssetCode, activo.AssignedToEmployeeId.Value, dlg.FileName);
+                    }
+                }
+                return;
             }
         }
 
-        private async Task GuardarCartaPendienteAsync(int assetId, string assetCode, int employeeId)
+        private async void CargarCartaDesdeGrid(int assetId, string assetCode, int employeeId, string archivoLocal)
         {
-            if (_pendingLetterLocalPath == null) return;
-
             try
             {
+                this.Cursor = Cursors.WaitCursor;
+
                 string carpetaDestino = await Ctrl_Parameters.ObtenerValorStringAsync("ResponsibilityLettersFolderPath");
 
                 if (string.IsNullOrWhiteSpace(carpetaDestino))
@@ -776,10 +793,16 @@ namespace SECRON.Views
                 if (!System.IO.Directory.Exists(carpetaDestino))
                     System.IO.Directory.CreateDirectory(carpetaDestino);
 
-                string nombreArchivo = $"{employeeId}_{assetCode}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
-                string rutaDestino = System.IO.Path.Combine(carpetaDestino, nombreArchivo);
+                // La ruta parametrizada es la raíz; dentro de ella se crea/usa la subcarpeta del AssetId.
+                string carpetaActivo = System.IO.Path.Combine(carpetaDestino, assetId.ToString());
 
-                System.IO.File.Copy(_pendingLetterLocalPath, rutaDestino, overwrite: true);
+                if (!System.IO.Directory.Exists(carpetaActivo))
+                    System.IO.Directory.CreateDirectory(carpetaActivo);
+
+                string nombreArchivo = $"{employeeId}_{assetCode}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+                string rutaDestino = System.IO.Path.Combine(carpetaActivo, nombreArchivo);
+
+                System.IO.File.Copy(archivoLocal, rutaDestino, overwrite: true);
 
                 int resultado = Ctrl_ResponsibilityLetters.SubirCarta(
                     assetId, employeeId, rutaDestino, nombreArchivo, UserData?.UserId ?? 1);
@@ -788,14 +811,22 @@ namespace SECRON.Views
                 {
                     MessageBox.Show("NO SE PUDO REGISTRAR LA CARTA DE RESPONSABILIDAD EN EL SISTEMA.",
                         "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
-                _pendingLetterLocalPath = null;
+                MessageBox.Show("CARTA DE RESPONSABILIDAD VINCULADA CORRECTAMENTE.", "ÉXITO",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarActivos();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("ERROR AL GUARDAR LA CARTA DE RESPONSABILIDAD: " + ex.Message,
                     "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
             }
         }
 
@@ -1515,9 +1546,6 @@ namespace SECRON.Views
             switch (resultado)
             {
                 case 1:
-                    if (empleadoId.HasValue)
-                        await GuardarCartaPendienteAsync(_activoSeleccionado.AssetId, _activoSeleccionado.AssetCode, empleadoId.Value);
-
                     MessageBox.Show("Equipo asignado correctamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarActivos();

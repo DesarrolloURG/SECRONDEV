@@ -18,6 +18,17 @@ namespace SECRON.Views
         private List<Mdl_CourseLocationPricingMaster> _preciosList;
         private Mdl_CourseLocationPricingMaster _precioSeleccionado = null;
 
+        // Variables de paginación
+        private int paginaActual = 1;
+        private int registrosPorPagina = 100;
+        private int totalRegistros = 0;
+        private int totalPaginas = 0;
+
+        // ToolStrip de paginación
+        private ToolStrip toolStripPaginacion;
+        private ToolStripButton btnAnterior;
+        private ToolStripButton btnSiguiente;
+
         #endregion
 
         public Frm_AcademicProcesses_CoursesPricing()
@@ -34,6 +45,8 @@ namespace SECRON.Views
                 ConfigurarCombos();
                 ConfigurarFiltros();
                 ConfigurarTabla();
+                CrearToolStripPaginacion();
+                paginaActual = 1;
                 CargarPrecios();
 
                 if (UserData != null)
@@ -125,6 +138,8 @@ namespace SECRON.Views
             Cbx_Modalidad.DataSource = modalidades;
             Cbx_Modalidad.SelectedIndex = -1;
 
+            Cbx_Pensum.Enabled = false;
+
             Cbx_Carrera.SelectedIndexChanged += Cbx_Carrera_SelectedIndexChanged;
         }
 
@@ -133,7 +148,10 @@ namespace SECRON.Views
             Cbx_Pensum.DataSource = null;
 
             if (!(Cbx_Carrera.SelectedValue is int careerId))
+            {
+                Cbx_Pensum.Enabled = false;
                 return;
+            }
 
             var pensums = Ctrl_CareerPensums.MostrarPensums("", careerId, true); // solo IsActive = 1
 
@@ -147,6 +165,7 @@ namespace SECRON.Views
             Cbx_Pensum.ValueMember = "Key";
             Cbx_Pensum.DataSource = itemsPensum;
             Cbx_Pensum.SelectedIndex = -1;
+            Cbx_Pensum.Enabled = true;
         }
 
         private void ConfigurarFiltros()
@@ -164,6 +183,14 @@ namespace SECRON.Views
             FiltroCarrera.ValueMember = "Key";
             FiltroCarrera.DataSource = carreras;
             FiltroCarrera.SelectedIndex = 0;
+
+            var modalidades = new List<KeyValuePair<int, string>> { new KeyValuePair<int, string>(0, "TODAS LAS MODALIDADES") };
+            modalidades.AddRange(Ctrl_CourseModalities.ObtenerModalidades(true)
+                .Select(m => new KeyValuePair<int, string>(m.ModalityId, m.ModalityName)));
+            FiltroModalidad.DisplayMember = "Value";
+            FiltroModalidad.ValueMember = "Key";
+            FiltroModalidad.DataSource = modalidades;
+            FiltroModalidad.SelectedIndex = 0;
         }
 
         #endregion
@@ -343,19 +370,42 @@ namespace SECRON.Views
         {
             int? locationId = (FiltroSede.SelectedValue is int lid && lid > 0) ? lid : (int?)null;
             int? careerId = (FiltroCarrera.SelectedValue is int cid && cid > 0) ? cid : (int?)null;
-
-            _preciosList = Ctrl_CourseLocationPricingMaster.MostrarPrecios(locationId, careerId, false);
+            int? modalityId = (FiltroModalidad.SelectedValue is int mid && mid > 0) ? mid : (int?)null;
 
             string texto = Txt_ValorBuscado.Text.Trim().ToUpper();
-            var filtrados = string.IsNullOrEmpty(texto)
-                ? _preciosList
-                : _preciosList.Where(p =>
+            List<Mdl_CourseLocationPricingMaster> filtrados;
+
+            if (!string.IsNullOrEmpty(texto))
+            {
+                // Con texto de búsqueda: se trae el conjunto completo (filtrado por sede/carrera/modalidad)
+                // y se filtra en memoria, igual que hacía el formulario antes de la paginación.
+                _preciosList = Ctrl_CourseLocationPricingMaster.MostrarPrecios(
+                    locationId, careerId, modalityId, false, pageNumber: 1, pageSize: int.MaxValue);
+
+                filtrados = _preciosList.Where(p =>
                     (p.CourseName ?? "").ToUpper().Contains(texto) ||
                     (p.CareerName ?? "").ToUpper().Contains(texto) ||
                     (p.LocationName ?? "").ToUpper().Contains(texto)
                   ).ToList();
 
+                totalRegistros = filtrados.Count;
+                paginaActual = 1;
+                totalPaginas = 1;
+            }
+            else
+            {
+                // Sin texto de búsqueda: paginación real contra la base de datos.
+                _preciosList = Ctrl_CourseLocationPricingMaster.MostrarPrecios(
+                    locationId, careerId, modalityId, false, pageNumber: paginaActual, pageSize: registrosPorPagina);
+
+                filtrados = _preciosList;
+
+                totalRegistros = Ctrl_CourseLocationPricingMaster.ContarTotalPrecios(locationId, careerId, modalityId, false);
+                totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+            }
+
             MostrarPreciosEnTabla(filtrados);
+            ActualizarInfoPaginacion();
 
             if (Tabla.Rows.Count > 0)
             {
@@ -366,11 +416,13 @@ namespace SECRON.Views
             {
                 TablaAtributos.Rows.Clear();
                 _precioSeleccionado = null;
+                Lbl_AtributosHeader.Text = "HISTORIAL DE PRECIOS - SELECCIONE UN CURSO";
             }
         }
 
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            paginaActual = 1;
             CargarPrecios();
         }
 
@@ -379,6 +431,8 @@ namespace SECRON.Views
             Txt_ValorBuscado.Text = "";
             FiltroSede.SelectedIndex = 0;
             FiltroCarrera.SelectedIndex = 0;
+            FiltroModalidad.SelectedIndex = 0;
+            paginaActual = 1;
             CargarPrecios();
         }
 
@@ -412,6 +466,11 @@ namespace SECRON.Views
             // que ya recargó Cbx_Pensum con los pensums de esa carrera. Ahora seleccionamos
             // el pensum específico al que pertenece el curso de la fila elegida.
             SeleccionarPorValueMember(Cbx_Pensum, _precioSeleccionado.CareerPensumId);
+            Btn_IsActive.Text = _precioSeleccionado.IsActive ? "INACTIVAR" : "ACTIVAR";
+
+
+            Lbl_AtributosHeader.Text =
+                $"HISTORIAL DE PRECIOS - {_precioSeleccionado.CourseName} ({_precioSeleccionado.LocationName} - {_precioSeleccionado.ModalityName})";
 
             var historial = Ctrl_CourseLocationPricingDetail.MostrarHistorial(_precioSeleccionado.CourseLocationPricingId);
             MostrarHistorialEnTabla(historial.OrderByDescending(h => h.EffectiveFrom).ToList());
@@ -538,6 +597,8 @@ namespace SECRON.Views
             Cbx_Carrera.SelectedIndex = -1;
             Cbx_Modalidad.SelectedIndex = -1;
             Cbx_Pensum.DataSource = null;
+            Cbx_Pensum.Enabled = false;
+            Btn_IsActive.Text = "ACTIVAR/INACTIVAR";
         }
 
         #endregion
@@ -625,6 +686,142 @@ namespace SECRON.Views
                 frm.UserData = this.UserData;
                 frm.ShowDialog(this);
             }
+        }
+
+        #endregion
+
+        #region Paginacion
+
+        private void CrearToolStripPaginacion()
+        {
+            if (toolStripPaginacion != null)
+                return;
+
+            toolStripPaginacion = new ToolStrip
+            {
+                Dock = DockStyle.None,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                GripStyle = ToolStripGripStyle.Hidden,
+                BackColor = Color.FromArgb(248, 249, 250),
+                Height = 35,
+                AutoSize = true,
+                Location = new Point(PanelToolStrip.Width - 260, 5)
+            };
+
+            btnAnterior = new ToolStripButton
+            {
+                Text = "❮ Anterior",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(51, 140, 255),
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                Margin = new Padding(2),
+                Padding = new Padding(8, 4, 8, 4)
+            };
+            btnAnterior.Click += (s, e) => CambiarPagina(paginaActual - 1);
+
+            btnSiguiente = new ToolStripButton
+            {
+                Text = "Siguiente ❯",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(238, 143, 109),
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                Margin = new Padding(2),
+                Padding = new Padding(8, 4, 8, 4)
+            };
+            btnSiguiente.Click += (s, e) => CambiarPagina(paginaActual + 1);
+
+            toolStripPaginacion.Items.Add(btnAnterior);
+            toolStripPaginacion.Items.Add(btnSiguiente);
+
+            PanelToolStrip.Controls.Add(toolStripPaginacion);
+            toolStripPaginacion.BringToFront();
+
+            PanelToolStrip.Resize += (s, e) =>
+            {
+                if (toolStripPaginacion != null)
+                    toolStripPaginacion.Location = new Point(PanelToolStrip.Width - 260, 5);
+            };
+        }
+
+        private void ActualizarBotonesNumerados()
+        {
+            if (toolStripPaginacion == null)
+                return;
+
+            var itemsToRemove = toolStripPaginacion.Items
+                .Cast<ToolStripItem>()
+                .Where(item => item.Tag?.ToString() == "PageButton")
+                .ToList();
+
+            foreach (var item in itemsToRemove)
+                toolStripPaginacion.Items.Remove(item);
+
+            if (totalPaginas <= 1)
+                return;
+
+            int inicioRango = Math.Max(1, paginaActual - 1);
+            int finRango = Math.Min(totalPaginas, paginaActual + 1);
+            int posicionInsertar = toolStripPaginacion.Items.IndexOf(btnSiguiente);
+
+            for (int i = inicioRango; i <= finRango; i++)
+            {
+                ToolStripButton btnPagina = new ToolStripButton
+                {
+                    Text = i.ToString(),
+                    Tag = "PageButton",
+                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                    Margin = new Padding(1),
+                    Padding = new Padding(6, 4, 6, 4)
+                };
+
+                if (i == paginaActual)
+                {
+                    btnPagina.BackColor = Color.FromArgb(238, 143, 109);
+                    btnPagina.ForeColor = Color.White;
+                }
+                else
+                {
+                    btnPagina.BackColor = Color.FromArgb(240, 240, 240);
+                    btnPagina.ForeColor = Color.FromArgb(51, 140, 255);
+                }
+
+                int numeroPagina = i;
+                btnPagina.Click += (s, e) => CambiarPagina(numeroPagina);
+
+                toolStripPaginacion.Items.Insert(posicionInsertar++, btnPagina);
+            }
+        }
+
+        private void CambiarPagina(int nuevaPagina)
+        {
+            if (nuevaPagina < 1 || nuevaPagina > totalPaginas)
+                return;
+
+            paginaActual = nuevaPagina;
+            CargarPrecios();
+        }
+
+        private void ActualizarInfoPaginacion()
+        {
+            if (btnAnterior != null)
+                btnAnterior.Enabled = paginaActual > 1;
+
+            if (btnSiguiente != null)
+                btnSiguiente.Enabled = paginaActual < totalPaginas;
+
+            ActualizarBotonesNumerados();
+
+            int inicioRango = totalRegistros == 0 ? 0 : ((paginaActual - 1) * registrosPorPagina) + 1;
+            int finRango = Math.Min(paginaActual * registrosPorPagina, totalRegistros);
+
+            if (totalRegistros == 0)
+                Lbl_Paginas.Text = "NO HAY PRECIOS PARA MOSTRAR";
+            else if (totalPaginas == 1)
+                Lbl_Paginas.Text = $"MOSTRANDO {totalRegistros} DE {totalRegistros} PRECIOS";
+            else
+                Lbl_Paginas.Text = $"MOSTRANDO {inicioRango}-{finRango} DE {totalRegistros} PRECIOS";
         }
 
         #endregion

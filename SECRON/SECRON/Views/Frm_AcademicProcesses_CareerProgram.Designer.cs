@@ -91,9 +91,10 @@
             this.Panel_Derecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Panel_Derecho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Panel_Derecho.ForeColor = System.Drawing.Color.Black;
-            this.Panel_Derecho.Location = new System.Drawing.Point(482, 55);
+            this.Panel_Derecho.Location = new System.Drawing.Point(643, 68);
+            this.Panel_Derecho.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_Derecho.Name = "Panel_Derecho";
-            this.Panel_Derecho.Size = new System.Drawing.Size(702, 806);
+            this.Panel_Derecho.Size = new System.Drawing.Size(936, 992);
             this.Panel_Derecho.TabIndex = 11;
             // 
             // PanelToolStrip
@@ -102,9 +103,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.PanelToolStrip.Controls.Add(this.Lbl_Paginas);
-            this.PanelToolStrip.Location = new System.Drawing.Point(22, 145);
+            this.PanelToolStrip.Location = new System.Drawing.Point(29, 178);
+            this.PanelToolStrip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(658, 39);
+            this.PanelToolStrip.Size = new System.Drawing.Size(877, 48);
             this.PanelToolStrip.TabIndex = 74;
             // 
             // Lbl_Paginas
@@ -114,7 +116,8 @@
             this.Lbl_Paginas.AutoSize = true;
             this.Lbl_Paginas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Paginas.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Paginas.Location = new System.Drawing.Point(12, 11);
+            this.Lbl_Paginas.Location = new System.Drawing.Point(16, 14);
+            this.Lbl_Paginas.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Paginas.Name = "Lbl_Paginas";
             this.Lbl_Paginas.Size = new System.Drawing.Size(278, 20);
             this.Lbl_Paginas.TabIndex = 51;
@@ -131,9 +134,10 @@
             this.Panel_Busqueda.Controls.Add(this.Btn_Search);
             this.Panel_Busqueda.Controls.Add(this.Filtro1);
             this.Panel_Busqueda.Controls.Add(this.Txt_ValorBuscado);
-            this.Panel_Busqueda.Location = new System.Drawing.Point(22, 10);
+            this.Panel_Busqueda.Location = new System.Drawing.Point(29, 12);
+            this.Panel_Busqueda.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_Busqueda.Name = "Panel_Busqueda";
-            this.Panel_Busqueda.Size = new System.Drawing.Size(658, 120);
+            this.Panel_Busqueda.Size = new System.Drawing.Size(877, 148);
             this.Panel_Busqueda.TabIndex = 73;
             // 
             // Btn_CleanSearch
@@ -142,9 +146,10 @@
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(608, 20);
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(811, 25);
+            this.Btn_CleanSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
-            this.Btn_CleanSearch.Size = new System.Drawing.Size(30, 28);
+            this.Btn_CleanSearch.Size = new System.Drawing.Size(40, 34);
             this.Btn_CleanSearch.TabIndex = 71;
             this.Btn_CleanSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_CleanSearch.UseVisualStyleBackColor = true;
@@ -153,17 +158,19 @@
             // Filtro3
             // 
             this.Filtro3.FormattingEnabled = true;
-            this.Filtro3.Location = new System.Drawing.Point(438, 67);
+            this.Filtro3.Location = new System.Drawing.Point(584, 82);
+            this.Filtro3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Filtro3.Name = "Filtro3";
-            this.Filtro3.Size = new System.Drawing.Size(200, 28);
+            this.Filtro3.Size = new System.Drawing.Size(265, 28);
             this.Filtro3.TabIndex = 70;
             // 
             // Filtro2
             // 
             this.Filtro2.FormattingEnabled = true;
-            this.Filtro2.Location = new System.Drawing.Point(229, 67);
+            this.Filtro2.Location = new System.Drawing.Point(305, 82);
+            this.Filtro2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Filtro2.Name = "Filtro2";
-            this.Filtro2.Size = new System.Drawing.Size(200, 28);
+            this.Filtro2.Size = new System.Drawing.Size(265, 28);
             this.Filtro2.TabIndex = 69;
             // 
             // Btn_Search
@@ -172,9 +179,10 @@
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(501, 20);
+            this.Btn_Search.Location = new System.Drawing.Point(668, 25);
+            this.Btn_Search.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Search.Name = "Btn_Search";
-            this.Btn_Search.Size = new System.Drawing.Size(101, 28);
+            this.Btn_Search.Size = new System.Drawing.Size(135, 34);
             this.Btn_Search.TabIndex = 54;
             this.Btn_Search.Text = "BUSCAR";
             this.Btn_Search.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -184,9 +192,10 @@
             // Filtro1
             // 
             this.Filtro1.FormattingEnabled = true;
-            this.Filtro1.Location = new System.Drawing.Point(16, 67);
+            this.Filtro1.Location = new System.Drawing.Point(21, 82);
+            this.Filtro1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Filtro1.Name = "Filtro1";
-            this.Filtro1.Size = new System.Drawing.Size(200, 28);
+            this.Filtro1.Size = new System.Drawing.Size(265, 28);
             this.Filtro1.TabIndex = 68;
             // 
             // Txt_ValorBuscado
@@ -194,10 +203,11 @@
             this.Txt_ValorBuscado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Txt_ValorBuscado.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_ValorBuscado.Location = new System.Drawing.Point(16, 23);
+            this.Txt_ValorBuscado.Location = new System.Drawing.Point(21, 28);
+            this.Txt_ValorBuscado.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Txt_ValorBuscado.MaxLength = 150;
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(473, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(629, 27);
             this.Txt_ValorBuscado.TabIndex = 59;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
@@ -208,9 +218,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.PanelTabla.Controls.Add(this.Tabla);
-            this.PanelTabla.Location = new System.Drawing.Point(22, 204);
+            this.PanelTabla.Location = new System.Drawing.Point(29, 251);
+            this.PanelTabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(658, 582);
+            this.PanelTabla.Size = new System.Drawing.Size(877, 716);
             this.PanelTabla.TabIndex = 72;
             // 
             // Tabla
@@ -218,8 +229,9 @@
             this.Tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Tabla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabla.Location = new System.Drawing.Point(0, 0);
+            this.Tabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Tabla.Name = "Tabla";
-            this.Tabla.Size = new System.Drawing.Size(658, 582);
+            this.Tabla.Size = new System.Drawing.Size(877, 716);
             this.Tabla.TabIndex = 1;
             // 
             // Panel_Izquierdo
@@ -232,17 +244,18 @@
             this.Panel_Izquierdo.Dock = System.Windows.Forms.DockStyle.Left;
             this.Panel_Izquierdo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Panel_Izquierdo.ForeColor = System.Drawing.Color.Black;
-            this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 55);
+            this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 68);
+            this.Panel_Izquierdo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_Izquierdo.Name = "Panel_Izquierdo";
-            this.Panel_Izquierdo.Size = new System.Drawing.Size(482, 806);
+            this.Panel_Izquierdo.Size = new System.Drawing.Size(643, 992);
             this.Panel_Izquierdo.TabIndex = 10;
             // 
             // vScrollBar
             // 
             this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar.Location = new System.Drawing.Point(472, 0);
+            this.vScrollBar.Location = new System.Drawing.Point(633, 0);
             this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(10, 806);
+            this.vScrollBar.Size = new System.Drawing.Size(10, 992);
             this.vScrollBar.TabIndex = 76;
             // 
             // Panel_CRUD
@@ -251,9 +264,10 @@
             this.Panel_CRUD.Controls.Add(this.Btn_Inactive);
             this.Panel_CRUD.Controls.Add(this.Btn_Update);
             this.Panel_CRUD.Controls.Add(this.Btn_Save);
-            this.Panel_CRUD.Location = new System.Drawing.Point(16, 40);
+            this.Panel_CRUD.Location = new System.Drawing.Point(21, 49);
+            this.Panel_CRUD.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_CRUD.Name = "Panel_CRUD";
-            this.Panel_CRUD.Size = new System.Drawing.Size(453, 47);
+            this.Panel_CRUD.Size = new System.Drawing.Size(604, 58);
             this.Panel_CRUD.TabIndex = 75;
             // 
             // Btn_Inactive
@@ -261,9 +275,10 @@
             this.Btn_Inactive.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Inactive.Image = global::SECRON.Properties.Resources.Alerta25x25;
             this.Btn_Inactive.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Inactive.Location = new System.Drawing.Point(238, 3);
+            this.Btn_Inactive.Location = new System.Drawing.Point(317, 4);
+            this.Btn_Inactive.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Inactive.Name = "Btn_Inactive";
-            this.Btn_Inactive.Size = new System.Drawing.Size(212, 37);
+            this.Btn_Inactive.Size = new System.Drawing.Size(283, 46);
             this.Btn_Inactive.TabIndex = 56;
             this.Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
             this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -275,9 +290,10 @@
             this.Btn_Update.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Update.Image = global::SECRON.Properties.Resources.UpdateAzul25x25;
             this.Btn_Update.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Update.Location = new System.Drawing.Point(126, 3);
+            this.Btn_Update.Location = new System.Drawing.Point(168, 4);
+            this.Btn_Update.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Update.Name = "Btn_Update";
-            this.Btn_Update.Size = new System.Drawing.Size(106, 37);
+            this.Btn_Update.Size = new System.Drawing.Size(141, 46);
             this.Btn_Update.TabIndex = 55;
             this.Btn_Update.Text = "EDITAR";
             this.Btn_Update.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -289,9 +305,10 @@
             this.Btn_Save.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Save.Image = global::SECRON.Properties.Resources.SaveVerde25x25;
             this.Btn_Save.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Save.Location = new System.Drawing.Point(3, 3);
+            this.Btn_Save.Location = new System.Drawing.Point(4, 4);
+            this.Btn_Save.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Save.Name = "Btn_Save";
-            this.Btn_Save.Size = new System.Drawing.Size(117, 37);
+            this.Btn_Save.Size = new System.Drawing.Size(156, 46);
             this.Btn_Save.TabIndex = 54;
             this.Btn_Save.Text = "GUARDAR";
             this.Btn_Save.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -317,18 +334,20 @@
             this.Panel_1.Controls.Add(this.Lbl_DurationYears);
             this.Panel_1.Controls.Add(this.Lbl_Codigo);
             this.Panel_1.Controls.Add(this.Lbl_Subtitulo1);
-            this.Panel_1.Location = new System.Drawing.Point(16, 93);
+            this.Panel_1.Location = new System.Drawing.Point(21, 114);
+            this.Panel_1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_1.Name = "Panel_1";
-            this.Panel_1.Size = new System.Drawing.Size(453, 440);
+            this.Panel_1.Size = new System.Drawing.Size(604, 542);
             this.Panel_1.TabIndex = 52;
             // 
             // Txt_IsActive
             // 
             this.Txt_IsActive.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_IsActive.Location = new System.Drawing.Point(14, 263);
+            this.Txt_IsActive.Location = new System.Drawing.Point(19, 324);
+            this.Txt_IsActive.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Txt_IsActive.MaxLength = 15;
             this.Txt_IsActive.Name = "Txt_IsActive";
-            this.Txt_IsActive.Size = new System.Drawing.Size(424, 27);
+            this.Txt_IsActive.Size = new System.Drawing.Size(564, 27);
             this.Txt_IsActive.TabIndex = 80;
             // 
             // Btn_Clear
@@ -337,9 +356,10 @@
             this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_Clear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Clear.Location = new System.Drawing.Point(405, 10);
+            this.Btn_Clear.Location = new System.Drawing.Point(540, 12);
+            this.Btn_Clear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Clear.Name = "Btn_Clear";
-            this.Btn_Clear.Size = new System.Drawing.Size(33, 37);
+            this.Btn_Clear.Size = new System.Drawing.Size(44, 46);
             this.Btn_Clear.TabIndex = 57;
             this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Clear.UseVisualStyleBackColor = true;
@@ -347,16 +367,18 @@
             // 
             // numericUpDownTotalCredits
             // 
-            this.numericUpDownTotalCredits.Location = new System.Drawing.Point(14, 199);
+            this.numericUpDownTotalCredits.Location = new System.Drawing.Point(19, 245);
+            this.numericUpDownTotalCredits.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDownTotalCredits.Name = "numericUpDownTotalCredits";
-            this.numericUpDownTotalCredits.Size = new System.Drawing.Size(205, 27);
+            this.numericUpDownTotalCredits.Size = new System.Drawing.Size(273, 27);
             this.numericUpDownTotalCredits.TabIndex = 79;
             // 
             // numericUpDownTotalSemesters
             // 
-            this.numericUpDownTotalSemesters.Location = new System.Drawing.Point(238, 134);
+            this.numericUpDownTotalSemesters.Location = new System.Drawing.Point(317, 165);
+            this.numericUpDownTotalSemesters.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDownTotalSemesters.Name = "numericUpDownTotalSemesters";
-            this.numericUpDownTotalSemesters.Size = new System.Drawing.Size(200, 27);
+            this.numericUpDownTotalSemesters.Size = new System.Drawing.Size(267, 27);
             this.numericUpDownTotalSemesters.TabIndex = 78;
             // 
             // Lbl_TotalSemesters
@@ -364,7 +386,8 @@
             this.Lbl_TotalSemesters.AutoSize = true;
             this.Lbl_TotalSemesters.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_TotalSemesters.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_TotalSemesters.Location = new System.Drawing.Point(234, 111);
+            this.Lbl_TotalSemesters.Location = new System.Drawing.Point(312, 137);
+            this.Lbl_TotalSemesters.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_TotalSemesters.Name = "Lbl_TotalSemesters";
             this.Lbl_TotalSemesters.Size = new System.Drawing.Size(90, 20);
             this.Lbl_TotalSemesters.TabIndex = 77;
@@ -372,9 +395,10 @@
             // 
             // numericUpDownDurationYears
             // 
-            this.numericUpDownDurationYears.Location = new System.Drawing.Point(14, 134);
+            this.numericUpDownDurationYears.Location = new System.Drawing.Point(19, 165);
+            this.numericUpDownDurationYears.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numericUpDownDurationYears.Name = "numericUpDownDurationYears";
-            this.numericUpDownDurationYears.Size = new System.Drawing.Size(205, 27);
+            this.numericUpDownDurationYears.Size = new System.Drawing.Size(273, 27);
             this.numericUpDownDurationYears.TabIndex = 76;
             // 
             // Lbl_IsActive
@@ -382,7 +406,8 @@
             this.Lbl_IsActive.AutoSize = true;
             this.Lbl_IsActive.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_IsActive.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_IsActive.Location = new System.Drawing.Point(10, 240);
+            this.Lbl_IsActive.Location = new System.Drawing.Point(13, 295);
+            this.Lbl_IsActive.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_IsActive.Name = "Lbl_IsActive";
             this.Lbl_IsActive.Size = new System.Drawing.Size(141, 20);
             this.Lbl_IsActive.TabIndex = 74;
@@ -391,20 +416,22 @@
             // Txt_Name
             // 
             this.Txt_Name.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Name.Location = new System.Drawing.Point(238, 68);
+            this.Txt_Name.Location = new System.Drawing.Point(317, 84);
+            this.Txt_Name.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Txt_Name.MaxLength = 150;
             this.Txt_Name.Name = "Txt_Name";
-            this.Txt_Name.Size = new System.Drawing.Size(200, 27);
+            this.Txt_Name.Size = new System.Drawing.Size(265, 27);
             this.Txt_Name.TabIndex = 8;
             // 
             // Txt_Description
             // 
             this.Txt_Description.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Description.Location = new System.Drawing.Point(14, 325);
+            this.Txt_Description.Location = new System.Drawing.Point(19, 400);
+            this.Txt_Description.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Txt_Description.MaxLength = 475;
             this.Txt_Description.Multiline = true;
             this.Txt_Description.Name = "Txt_Description";
-            this.Txt_Description.Size = new System.Drawing.Size(424, 99);
+            this.Txt_Description.Size = new System.Drawing.Size(564, 121);
             this.Txt_Description.TabIndex = 6;
             // 
             // Lbl_Name
@@ -412,7 +439,8 @@
             this.Lbl_Name.AutoSize = true;
             this.Lbl_Name.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Name.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Name.Location = new System.Drawing.Point(234, 45);
+            this.Lbl_Name.Location = new System.Drawing.Point(312, 55);
+            this.Lbl_Name.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Name.Name = "Lbl_Name";
             this.Lbl_Name.Size = new System.Drawing.Size(85, 20);
             this.Lbl_Name.TabIndex = 8;
@@ -421,10 +449,11 @@
             // Txt_Code
             // 
             this.Txt_Code.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Txt_Code.Location = new System.Drawing.Point(14, 68);
+            this.Txt_Code.Location = new System.Drawing.Point(19, 84);
+            this.Txt_Code.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Txt_Code.MaxLength = 20;
             this.Txt_Code.Name = "Txt_Code";
-            this.Txt_Code.Size = new System.Drawing.Size(205, 27);
+            this.Txt_Code.Size = new System.Drawing.Size(272, 27);
             this.Txt_Code.TabIndex = 1;
             // 
             // Lbl_Description
@@ -432,7 +461,8 @@
             this.Lbl_Description.AutoSize = true;
             this.Lbl_Description.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Description.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Description.Location = new System.Drawing.Point(11, 302);
+            this.Lbl_Description.Location = new System.Drawing.Point(15, 372);
+            this.Lbl_Description.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Description.Name = "Lbl_Description";
             this.Lbl_Description.Size = new System.Drawing.Size(106, 20);
             this.Lbl_Description.TabIndex = 6;
@@ -443,7 +473,8 @@
             this.Lbl_TotalCredits.AutoSize = true;
             this.Lbl_TotalCredits.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_TotalCredits.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_TotalCredits.Location = new System.Drawing.Point(10, 176);
+            this.Lbl_TotalCredits.Location = new System.Drawing.Point(13, 217);
+            this.Lbl_TotalCredits.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_TotalCredits.Name = "Lbl_TotalCredits";
             this.Lbl_TotalCredits.Size = new System.Drawing.Size(162, 20);
             this.Lbl_TotalCredits.TabIndex = 4;
@@ -454,7 +485,8 @@
             this.Lbl_DurationYears.AutoSize = true;
             this.Lbl_DurationYears.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_DurationYears.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_DurationYears.Location = new System.Drawing.Point(10, 111);
+            this.Lbl_DurationYears.Location = new System.Drawing.Point(13, 137);
+            this.Lbl_DurationYears.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_DurationYears.Name = "Lbl_DurationYears";
             this.Lbl_DurationYears.Size = new System.Drawing.Size(147, 20);
             this.Lbl_DurationYears.TabIndex = 2;
@@ -465,7 +497,8 @@
             this.Lbl_Codigo.AutoSize = true;
             this.Lbl_Codigo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Lbl_Codigo.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Codigo.Location = new System.Drawing.Point(10, 45);
+            this.Lbl_Codigo.Location = new System.Drawing.Point(13, 55);
+            this.Lbl_Codigo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Codigo.Name = "Lbl_Codigo";
             this.Lbl_Codigo.Size = new System.Drawing.Size(78, 20);
             this.Lbl_Codigo.TabIndex = 1;
@@ -478,7 +511,8 @@
             this.Lbl_Subtitulo1.ForeColor = System.Drawing.Color.Black;
             this.Lbl_Subtitulo1.Image = global::SECRON.Properties.Resources.DescripcionItemBlanco25x25;
             this.Lbl_Subtitulo1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Lbl_Subtitulo1.Location = new System.Drawing.Point(10, 10);
+            this.Lbl_Subtitulo1.Location = new System.Drawing.Point(13, 12);
+            this.Lbl_Subtitulo1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Subtitulo1.Name = "Lbl_Subtitulo1";
             this.Lbl_Subtitulo1.Size = new System.Drawing.Size(222, 20);
             this.Lbl_Subtitulo1.TabIndex = 1;
@@ -490,7 +524,8 @@
             this.Lbl_TituloPanelIzquierdo.AutoSize = true;
             this.Lbl_TituloPanelIzquierdo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Lbl_TituloPanelIzquierdo.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_TituloPanelIzquierdo.Location = new System.Drawing.Point(12, 10);
+            this.Lbl_TituloPanelIzquierdo.Location = new System.Drawing.Point(16, 12);
+            this.Lbl_TituloPanelIzquierdo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_TituloPanelIzquierdo.Name = "Lbl_TituloPanelIzquierdo";
             this.Lbl_TituloPanelIzquierdo.Size = new System.Drawing.Size(247, 21);
             this.Lbl_TituloPanelIzquierdo.TabIndex = 51;
@@ -504,8 +539,9 @@
             this.Panel_Superior.Controls.Add(this.Lbl_Formulario);
             this.Panel_Superior.Dock = System.Windows.Forms.DockStyle.Top;
             this.Panel_Superior.Location = new System.Drawing.Point(0, 0);
+            this.Panel_Superior.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Panel_Superior.Name = "Panel_Superior";
-            this.Panel_Superior.Size = new System.Drawing.Size(1184, 55);
+            this.Panel_Superior.Size = new System.Drawing.Size(1579, 68);
             this.Panel_Superior.TabIndex = 9;
             // 
             // Btn_Import
@@ -515,9 +551,10 @@
             this.Btn_Import.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Import.Image = global::SECRON.Properties.Resources.ImportarExcelNegro25x25;
             this.Btn_Import.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Import.Location = new System.Drawing.Point(1053, 12);
+            this.Btn_Import.Location = new System.Drawing.Point(1404, 15);
+            this.Btn_Import.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Import.Name = "Btn_Import";
-            this.Btn_Import.Size = new System.Drawing.Size(119, 30);
+            this.Btn_Import.Size = new System.Drawing.Size(159, 37);
             this.Btn_Import.TabIndex = 53;
             this.Btn_Import.Text = "IMPORTAR";
             this.Btn_Import.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -531,9 +568,10 @@
             this.Btn_Export.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Export.Image = global::SECRON.Properties.Resources.ExportarExcelNegro25x25;
             this.Btn_Export.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Export.Location = new System.Drawing.Point(928, 13);
+            this.Btn_Export.Location = new System.Drawing.Point(1237, 16);
+            this.Btn_Export.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Btn_Export.Name = "Btn_Export";
-            this.Btn_Export.Size = new System.Drawing.Size(119, 30);
+            this.Btn_Export.Size = new System.Drawing.Size(159, 37);
             this.Btn_Export.TabIndex = 52;
             this.Btn_Export.Text = "EXPORTAR";
             this.Btn_Export.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -547,21 +585,23 @@
             this.Lbl_Formulario.AutoSize = true;
             this.Lbl_Formulario.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.Lbl_Formulario.ForeColor = System.Drawing.Color.Black;
-            this.Lbl_Formulario.Location = new System.Drawing.Point(8, 13);
+            this.Lbl_Formulario.Location = new System.Drawing.Point(11, 16);
+            this.Lbl_Formulario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Lbl_Formulario.Name = "Lbl_Formulario";
-            this.Lbl_Formulario.Size = new System.Drawing.Size(221, 25);
+            this.Lbl_Formulario.Size = new System.Drawing.Size(240, 25);
             this.Lbl_Formulario.TabIndex = 50;
-            this.Lbl_Formulario.Text = "PENSUM DE CARRERAS";
+            this.Lbl_Formulario.Text = "CATALOGO DE CARRERAS";
             // 
             // Frm_AcademicProcesses_CareerProgram
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 861);
+            this.ClientSize = new System.Drawing.Size(1579, 1060);
             this.Controls.Add(this.Panel_Derecho);
             this.Controls.Add(this.Panel_Izquierdo);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Frm_AcademicProcesses_CareerProgram";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SECRON - PENSUM DE CARRERAS";

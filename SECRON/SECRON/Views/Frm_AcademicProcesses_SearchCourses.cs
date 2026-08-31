@@ -125,6 +125,18 @@ namespace SECRON.Views
             Tabla.DefaultCellStyle.BackColor = Color.WhiteSmoke;
             Tabla.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
 
+            // Estilo distintivo tipo "textbox" para la única columna editable del grid
+            Tabla.Columns["PrecioCurso"].DefaultCellStyle.BackColor = Color.White;
+            Tabla.Columns["PrecioCurso"].DefaultCellStyle.SelectionBackColor = Color.FromArgb(224, 236, 255);
+            Tabla.Columns["PrecioCurso"].DefaultCellStyle.ForeColor = Color.FromArgb(33, 33, 33);
+            Tabla.Columns["PrecioCurso"].DefaultCellStyle.SelectionForeColor = Color.FromArgb(33, 33, 33);
+            Tabla.Columns["PrecioCurso"].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Tabla.Columns["PrecioCurso"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            Tabla.Columns["PrecioCurso"].DefaultCellStyle.Padding = new Padding(0, 0, 8, 0);
+
+            Tabla.EditMode = DataGridViewEditMode.EditOnEnter;
+            Tabla.CellPainting += Tabla_CellPainting_BordePrecio;
+
             Tabla.CellValidating += Tabla_CellValidating;
             Tabla.CellEndEdit += Tabla_CellEndEdit;
             Tabla.CellBeginEdit += (s, e) =>
@@ -132,6 +144,31 @@ namespace SECRON.Views
                 if (Tabla.Columns[e.ColumnIndex].Name != "PrecioCurso") e.Cancel = true;
             };
             Tabla.KeyDown += (s, e) => { if (e.KeyCode == Keys.Delete) e.Handled = true; };
+        }
+
+        // Dibuja la celda de PrecioCurso como un campo tipo "input": fondo sólido a ras de celda
+        // (blanco, o azul claro si está seleccionada) y un borde gris fino, controlado por nosotros
+        // para que no choque con el resaltado de selección nativo del grid.
+        private void Tabla_CellPainting_BordePrecio(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "PrecioCurso") return;
+
+            bool seleccionada = Tabla.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected;
+            Color fondo = seleccionada ? Color.FromArgb(224, 236, 255) : Color.White;
+
+            using (var fondoBrush = new SolidBrush(fondo))
+                e.Graphics.FillRectangle(fondoBrush, e.CellBounds);
+
+            e.PaintContent(e.CellBounds);
+
+            using (var pen = new Pen(Color.FromArgb(190, 190, 190), 1))
+            {
+                var rect = new Rectangle(e.CellBounds.X, e.CellBounds.Y, e.CellBounds.Width - 1, e.CellBounds.Height - 1);
+                e.Graphics.DrawRectangle(pen, rect);
+            }
+
+            e.Handled = true;
         }
 
         // Solo permite números con hasta 2 decimales

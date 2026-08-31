@@ -19,6 +19,21 @@ namespace SECRON.Views
 
         private HashSet<string> permisosUsuario = new HashSet<string>();
 
+        // Cursos del pensum seleccionado (grid inferior)
+        private List<Mdl_CareerCourses> _cursosPensumList = new List<Mdl_CareerCourses>();
+        private Dictionary<int, string> _prerequisitosPorCurso = new Dictionary<int, string>();
+
+        // Variables de paginación
+        private int paginaActual = 1;
+        private int registrosPorPagina = 100;
+        private int totalRegistros = 0;
+        private int totalPaginas = 0;
+
+        // ToolStrip de paginación
+        private ToolStrip toolStripPaginacion;
+        private ToolStripButton btnAnterior;
+        private ToolStripButton btnSiguiente;
+
         #endregion
 
         public Frm_AcademicProcesses_CareerPensum()
@@ -34,7 +49,11 @@ namespace SECRON.Views
 
                 ConfigurarCombos();
                 ConfigurarFiltros();
+                ConfigurarFiltrosCurso();
                 ConfigurarTabla();
+                ConfigurarTablaCursos();
+                CrearToolStripPaginacion();
+                paginaActual = 1;
                 CargarPensums();
 
                 if (UserData != null)
@@ -135,6 +154,16 @@ namespace SECRON.Views
             Filtro2.SelectedIndex = 0;
         }
 
+        private void ConfigurarFiltrosCurso()
+        {
+            FiltroCurso1.Items.Clear();
+            FiltroCurso1.Items.Add("TODOS");
+            FiltroCurso1.Items.Add("POR CURSO");
+            FiltroCurso1.Items.Add("POR CÓDIGO");
+            FiltroCurso1.Items.Add("POR SEMESTRE");
+            FiltroCurso1.SelectedIndex = 0;
+        }
+
         #endregion
 
         #region Grid
@@ -219,6 +248,21 @@ namespace SECRON.Views
                     p.IsCurrent ? "VIGENTE" : "NO VIGENTE"
                 );
             }
+
+            if (Tabla.Rows.Count > 0)
+            {
+                Tabla.ClearSelection();
+                Tabla.Rows[0].Selected = true;
+                Tabla_SelectionChanged(Tabla, EventArgs.Empty);
+            }
+            else
+            {
+                _pensumSeleccionado = null;
+                _cursosPensumList.Clear();
+                _prerequisitosPorCurso.Clear();
+                Lbl_AtributosHeader.Text = "CURSOS DEL PENSUM SELECCIONADO";
+                MostrarCursosEnTabla(new List<Mdl_CareerCourses>());
+            }
         }
 
         #endregion
@@ -233,12 +277,21 @@ namespace SECRON.Views
             if (Filtro2.SelectedItem?.ToString() == "ACTIVO") isActive = true;
             else if (Filtro2.SelectedItem?.ToString() == "INACTIVO") isActive = false;
 
-            _pensumsList = Ctrl_CareerPensums.MostrarPensums(Txt_ValorBuscado.Text, careerId, isActive);
+            _pensumsList = Ctrl_CareerPensums.MostrarPensums(
+                Txt_ValorBuscado.Text, careerId, isActive,
+                pageNumber: paginaActual, pageSize: registrosPorPagina);
+
             MostrarPensumsEnTabla(_pensumsList);
+
+            totalRegistros = Ctrl_CareerPensums.ContarTotalPensums(Txt_ValorBuscado.Text, careerId, isActive);
+            totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+
+            ActualizarInfoPaginacion();
         }
 
         private void Btn_Search_Click(object sender, EventArgs e)
         {
+            paginaActual = 1;
             CargarPensums();
         }
 
@@ -247,6 +300,7 @@ namespace SECRON.Views
             Txt_ValorBuscado.Text = "";
             Filtro1.SelectedIndex = 0;
             Filtro2.SelectedIndex = 0;
+            paginaActual = 1;
             CargarPensums();
         }
 
@@ -273,6 +327,10 @@ namespace SECRON.Views
             Cbx_EstadoPensum.SelectedIndex = _pensumSeleccionado.IsCurrent ? 1 : 0;
 
             Btn_IsActive.Text = _pensumSeleccionado.IsActive ? "INACTIVAR" : "ACTIVAR";
+
+            Lbl_AtributosHeader.Text = $"CURSOS DEL PENSUM {_pensumSeleccionado.PensumCode} ({_pensumSeleccionado.CareerName})";
+
+            CargarCursosDelPensum(_pensumSeleccionado.CareerPensumId);
         }
 
         #endregion
@@ -484,7 +542,7 @@ namespace SECRON.Views
         {
             try
             {
-                var listaExportar = Ctrl_CareerPensums.MostrarPensums("", null, null);
+                var listaExportar = Ctrl_CareerPensums.MostrarPensums("", null, null, pageNumber: 1, pageSize: int.MaxValue);
 
                 if (listaExportar == null || listaExportar.Count == 0)
                 {
@@ -572,6 +630,320 @@ namespace SECRON.Views
                 MessageBox.Show($"Error al exportar: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        #endregion
+
+        #region CursosDelPensum
+
+        private void TablaCursos_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (TablaCursos.Columns[e.ColumnIndex].Name != "ColEstadoCurso") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(TablaCursos.Font, FontStyle.Bold);
+        }
+
+        private void ConfigurarTablaCursos()
+        {
+            TablaCursos.Columns.Clear();
+            TablaCursos.AutoGenerateColumns = false;
+
+            var colEstado = new DataGridViewTextBoxColumn();
+            colEstado.Name = "ColEstadoCurso";
+            colEstado.HeaderText = "ESTADO";
+            colEstado.Width = 90;
+            colEstado.ReadOnly = true;
+            colEstado.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            TablaCursos.Columns.Add(colEstado);
+
+            TablaCursos.Columns.Add("CareerCourseId", "ID");
+            TablaCursos.Columns.Add("CourseCode", "CÓDIGO");
+            TablaCursos.Columns.Add("CourseName", "CURSO");
+            TablaCursos.Columns.Add("Semester", "SEMESTRE");
+            TablaCursos.Columns.Add("IsRequiredText", "TIPO");
+            TablaCursos.Columns.Add("StandardPriceText", "PRECIO");
+            TablaCursos.Columns.Add("PrerequisitesText", "PREREQUISITOS");
+
+            TablaCursos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            TablaCursos.MultiSelect = false;
+            TablaCursos.ReadOnly = true;
+            TablaCursos.AllowUserToAddRows = false;
+            TablaCursos.AllowUserToResizeRows = false;
+            TablaCursos.RowHeadersVisible = false;
+
+            TablaCursos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            TablaCursos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            TablaCursos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(51, 140, 255);
+            TablaCursos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+            TablaCursos.DefaultCellStyle.SelectionBackColor = Color.Azure;
+            TablaCursos.DefaultCellStyle.SelectionForeColor = Color.Black;
+            TablaCursos.DefaultCellStyle.BackColor = Color.WhiteSmoke;
+            TablaCursos.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+
+            TablaCursos.Columns["CareerCourseId"].Visible = false;
+
+            TablaCursos.Columns["CourseCode"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TablaCursos.Columns["CourseCode"].FillWeight = 10;
+            TablaCursos.Columns["CourseName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TablaCursos.Columns["CourseName"].FillWeight = 25;
+            TablaCursos.Columns["Semester"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TablaCursos.Columns["Semester"].FillWeight = 10;
+            TablaCursos.Columns["IsRequiredText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TablaCursos.Columns["IsRequiredText"].FillWeight = 12;
+            TablaCursos.Columns["StandardPriceText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TablaCursos.Columns["StandardPriceText"].FillWeight = 13;
+            TablaCursos.Columns["PrerequisitesText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TablaCursos.Columns["PrerequisitesText"].FillWeight = 30;
+
+            TablaCursos.CellFormatting -= TablaCursos_CellFormatting_Estado;
+            TablaCursos.CellFormatting += TablaCursos_CellFormatting_Estado;
+        }
+
+        private void MostrarCursosEnTabla(List<Mdl_CareerCourses> lista)
+        {
+            TablaCursos.Rows.Clear();
+
+            foreach (var c in lista)
+            {
+                string prerequisitos = _prerequisitosPorCurso.ContainsKey(c.CourseId)
+                    ? _prerequisitosPorCurso[c.CourseId]
+                    : "";
+
+                TablaCursos.Rows.Add(
+                    c.IsActive ? "ACTIVO" : "INACTIVO",
+                    c.CareerCourseId,
+                    c.CourseCode,
+                    c.CourseName,
+                    c.Semester,
+                    c.IsRequired ? "OBLIGATORIO" : "OPTATIVO",
+                    c.StandardPrice.ToString("C2"),
+                    prerequisitos
+                );
+            }
+        }
+
+        // Carga todos los cursos activos del pensum seleccionado en el grid superior,
+        // junto con sus prerequisitos (concatenados por curso), y aplica el filtro/búsqueda vigente.
+        private void CargarCursosDelPensum(int careerPensumId)
+        {
+            _cursosPensumList = Ctrl_CareerCourses.ObtenerCursosActivosPorPensum(careerPensumId);
+
+            var prerequisitosPares = Ctrl_CareerCoursePrerequisites.ObtenerPrerequisitosPorPensum(careerPensumId);
+            var nombrePorCourseId = _cursosPensumList.ToDictionary(c => c.CourseId, c => c.CourseName);
+
+            _prerequisitosPorCurso = prerequisitosPares
+                .Where(par => nombrePorCourseId.ContainsKey(par.PrerequisiteCourseId))
+                .GroupBy(par => par.CourseId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => string.Join(", ", g.Select(par => nombrePorCourseId[par.PrerequisiteCourseId]))
+                );
+
+            AplicarFiltroCursos();
+        }
+
+        private void AplicarFiltroCursos()
+        {
+            string valorBusqueda = (Txt_BuscarCurso.Text ?? "").Trim();
+            string tipoFiltro = FiltroCurso1.SelectedItem?.ToString() ?? "TODOS";
+
+            IEnumerable<Mdl_CareerCourses> filtrado = _cursosPensumList;
+
+            if (!string.IsNullOrWhiteSpace(valorBusqueda))
+            {
+                switch (tipoFiltro)
+                {
+                    case "POR CÓDIGO":
+                        filtrado = filtrado.Where(c =>
+                            c.CourseCode != null &&
+                            c.CourseCode.IndexOf(valorBusqueda, StringComparison.OrdinalIgnoreCase) >= 0);
+                        break;
+
+                    case "POR SEMESTRE":
+                        if (int.TryParse(valorBusqueda, out int semestreBuscado))
+                            filtrado = filtrado.Where(c => c.Semester == semestreBuscado);
+                        break;
+
+                    case "POR CURSO":
+                        filtrado = filtrado.Where(c =>
+                            c.CourseName != null &&
+                            c.CourseName.IndexOf(valorBusqueda, StringComparison.OrdinalIgnoreCase) >= 0);
+                        break;
+
+                    default: // TODOS: busca en código y nombre
+                        filtrado = filtrado.Where(c =>
+                            (c.CourseCode != null && c.CourseCode.IndexOf(valorBusqueda, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                            (c.CourseName != null && c.CourseName.IndexOf(valorBusqueda, StringComparison.OrdinalIgnoreCase) >= 0));
+                        break;
+                }
+            }
+
+            // El orden por semestre ya viene del query (ORDER BY cc.Semester, co.CourseName);
+            // se reafirma aquí para que se mantenga también tras filtrar en memoria.
+            var listaOrdenada = filtrado.OrderBy(c => c.Semester).ThenBy(c => c.CourseName).ToList();
+
+            MostrarCursosEnTabla(listaOrdenada);
+        }
+
+        private void Btn_SearchCurso_Click(object sender, EventArgs e)
+        {
+            AplicarFiltroCursos();
+        }
+
+        private void Btn_CleanSearchCurso_Click(object sender, EventArgs e)
+        {
+            Txt_BuscarCurso.Text = "";
+            FiltroCurso1.SelectedIndex = 0;
+            AplicarFiltroCursos();
+        }
+
+        private void Txt_BuscarCurso_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                AplicarFiltroCursos();
+            }
+        }
+
+        #endregion
+
+        #region Paginacion
+
+        private void CrearToolStripPaginacion()
+        {
+            if (toolStripPaginacion != null)
+                return;
+
+            toolStripPaginacion = new ToolStrip
+            {
+                Dock = DockStyle.None,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                GripStyle = ToolStripGripStyle.Hidden,
+                BackColor = Color.FromArgb(248, 249, 250),
+                Height = 35,
+                AutoSize = true,
+                Location = new Point(PanelToolStrip.Width - 260, 5)
+            };
+
+            btnAnterior = new ToolStripButton
+            {
+                Text = "❮ Anterior",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(51, 140, 255),
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                Margin = new Padding(2),
+                Padding = new Padding(8, 4, 8, 4)
+            };
+            btnAnterior.Click += (s, e) => CambiarPagina(paginaActual - 1);
+
+            btnSiguiente = new ToolStripButton
+            {
+                Text = "Siguiente ❯",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(238, 143, 109),
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                Margin = new Padding(2),
+                Padding = new Padding(8, 4, 8, 4)
+            };
+            btnSiguiente.Click += (s, e) => CambiarPagina(paginaActual + 1);
+
+            toolStripPaginacion.Items.Add(btnAnterior);
+            toolStripPaginacion.Items.Add(btnSiguiente);
+
+            PanelToolStrip.Controls.Add(toolStripPaginacion);
+            toolStripPaginacion.BringToFront();
+
+            PanelToolStrip.Resize += (s, e) =>
+            {
+                if (toolStripPaginacion != null)
+                    toolStripPaginacion.Location = new Point(PanelToolStrip.Width - 260, 5);
+            };
+        }
+
+        private void ActualizarBotonesNumerados()
+        {
+            if (toolStripPaginacion == null)
+                return;
+
+            var itemsToRemove = toolStripPaginacion.Items
+                .Cast<ToolStripItem>()
+                .Where(item => item.Tag?.ToString() == "PageButton")
+                .ToList();
+
+            foreach (var item in itemsToRemove)
+                toolStripPaginacion.Items.Remove(item);
+
+            if (totalPaginas <= 1)
+                return;
+
+            int inicioRango = Math.Max(1, paginaActual - 1);
+            int finRango = Math.Min(totalPaginas, paginaActual + 1);
+            int posicionInsertar = toolStripPaginacion.Items.IndexOf(btnSiguiente);
+
+            for (int i = inicioRango; i <= finRango; i++)
+            {
+                ToolStripButton btnPagina = new ToolStripButton
+                {
+                    Text = i.ToString(),
+                    Tag = "PageButton",
+                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                    Margin = new Padding(1),
+                    Padding = new Padding(6, 4, 6, 4)
+                };
+
+                if (i == paginaActual)
+                {
+                    btnPagina.BackColor = Color.FromArgb(238, 143, 109);
+                    btnPagina.ForeColor = Color.White;
+                }
+                else
+                {
+                    btnPagina.BackColor = Color.FromArgb(240, 240, 240);
+                    btnPagina.ForeColor = Color.FromArgb(51, 140, 255);
+                }
+
+                int numeroPagina = i;
+                btnPagina.Click += (s, e) => CambiarPagina(numeroPagina);
+
+                toolStripPaginacion.Items.Insert(posicionInsertar++, btnPagina);
+            }
+        }
+
+        private void CambiarPagina(int nuevaPagina)
+        {
+            if (nuevaPagina < 1 || nuevaPagina > totalPaginas)
+                return;
+
+            paginaActual = nuevaPagina;
+            CargarPensums();
+            Tabla.ClearSelection();
+        }
+
+        private void ActualizarInfoPaginacion()
+        {
+            if (btnAnterior != null)
+                btnAnterior.Enabled = paginaActual > 1;
+
+            if (btnSiguiente != null)
+                btnSiguiente.Enabled = paginaActual < totalPaginas;
+
+            ActualizarBotonesNumerados();
+
+            int inicioRango = totalRegistros == 0 ? 0 : ((paginaActual - 1) * registrosPorPagina) + 1;
+            int finRango = Math.Min(paginaActual * registrosPorPagina, totalRegistros);
+
+            if (totalRegistros == 0)
+                Lbl_Paginas.Text = "NO HAY PENSUMS PARA MOSTRAR";
+            else
+                Lbl_Paginas.Text = $"MOSTRANDO {inicioRango}-{finRango} DE {totalRegistros} PENSUMS";
         }
 
         #endregion
