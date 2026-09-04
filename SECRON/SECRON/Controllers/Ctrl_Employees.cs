@@ -136,21 +136,20 @@ namespace SECRON.Controllers
                 int offset = (pageNumber - 1) * pageSize;
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    // ⭐ SELECT EXPLÍCITO CON ORDEN CORRECTO
                     string query = @"SELECT EmployeeId, EmployeeCode, FirstName, LastName, FullName, 
-                        IdentificationNumber, Email, InstitutionalEmail, Phone, MobilePhone, Address, 
-                        BirthDate, HireDate, TerminationDate, DepartmentId, PositionId, DirectSupervisorId, 
-                        EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
-                        nominal_salary, base_salary, additional_bonus, legal_bonus,
-                        IGSS, ISR, net_salary, IGSS_MANUAL,
-                        IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
-                        FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
-                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
-                        FilePath_CV, FilePath_ContratoFirmado
-                        
-                        FROM Employees 
-                        ORDER BY IsActive DESC, LastName, FirstName 
-                        OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
+                IdentificationNumber, Email, InstitutionalEmail, Phone, MobilePhone, Address, 
+                BirthDate, HireDate, TerminationDate, DepartmentId, PositionId, DirectSupervisorId, 
+                EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
+                nominal_salary, base_salary, additional_bonus, legal_bonus,
+                IGSS, ISR, net_salary, IGSS_MANUAL,
+                IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
+                FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
+                FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
+                FilePath_CV, FilePath_ContratoFirmado, UserId
+                
+                FROM Employees 
+                ORDER BY IsActive DESC, LastName, FirstName 
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -175,15 +174,15 @@ namespace SECRON.Controllers
         }
 
         public static List<Mdl_Employees> BuscarEmpleados(
-    string textoBusqueda = "",
-    int? departmentId = null,
-    int? positionId = null,
-    int? employeeStatusId = null,
-    bool? isActive = null,
-    DateTime? fechaIngresoDesde = null,
-    DateTime? fechaIngresoHasta = null,
-    int pageNumber = 1,
-    int pageSize = 100)
+        string textoBusqueda = "",
+        int? departmentId = null,
+        int? positionId = null,
+        int? employeeStatusId = null,
+        bool? isActive = null,
+        DateTime? fechaIngresoDesde = null,
+        DateTime? fechaIngresoHasta = null,
+        int pageNumber = 1,
+        int pageSize = 100)
         {
             List<Mdl_Employees> lista = new List<Mdl_Employees>();
             try
@@ -192,17 +191,17 @@ namespace SECRON.Controllers
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
                     string query = @"SELECT EmployeeId, EmployeeCode, FirstName, LastName, FullName, 
-                        IdentificationNumber, Email, InstitutionalEmail, Phone, MobilePhone, Address, 
-                        BirthDate, HireDate, TerminationDate, DepartmentId, PositionId, DirectSupervisorId, 
-                        EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
-                        nominal_salary, base_salary, additional_bonus, legal_bonus,
-                        IGSS, ISR, net_salary, IGSS_MANUAL,
-                        IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
-                        FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
-                        FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
-                        FilePath_CV, FilePath_ContratoFirmado
-                        FROM Employees 
-                        WHERE 1 = 1";
+                IdentificationNumber, Email, InstitutionalEmail, Phone, MobilePhone, Address, 
+                BirthDate, HireDate, TerminationDate, DepartmentId, PositionId, DirectSupervisorId, 
+                EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
+                nominal_salary, base_salary, additional_bonus, legal_bonus,
+                IGSS, ISR, net_salary, IGSS_MANUAL,
+                IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
+                FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
+                FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
+                FilePath_CV, FilePath_ContratoFirmado, UserId
+                FROM Employees 
+                WHERE 1 = 1";
 
                     List<SqlParameter> parametros = new List<SqlParameter>();
 
@@ -215,8 +214,8 @@ namespace SECRON.Controllers
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
                         query += @" AND (EmployeeCode LIKE @texto OR FirstName LIKE @texto OR 
-                    LastName LIKE @texto OR IdentificationNumber LIKE @texto OR 
-                    Email LIKE @texto OR InstitutionalEmail LIKE @texto)";
+            LastName LIKE @texto OR IdentificationNumber LIKE @texto OR 
+            Email LIKE @texto OR InstitutionalEmail LIKE @texto)";
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 
@@ -383,18 +382,17 @@ namespace SECRON.Controllers
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    // ⭐ SELECT EXPLÍCITO CON ORDEN CORRECTO
                     string query = @"SELECT EmployeeId, EmployeeCode, FirstName, LastName, FullName, 
-                    IdentificationNumber, Email, InstitutionalEmail, Phone, MobilePhone, Address, 
-                    BirthDate, HireDate, TerminationDate, DepartmentId, PositionId, DirectSupervisorId, 
-                    EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
-                    nominal_salary, base_salary, additional_bonus, legal_bonus,
-                    IGSS, ISR, net_salary, IGSS_MANUAL,
-                    IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
-                    FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
-                    FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
-                        FilePath_CV, FilePath_ContratoFirmado
-                    FROM Employees WHERE EmployeeId = @EmployeeId";
+            IdentificationNumber, Email, InstitutionalEmail, Phone, MobilePhone, Address, 
+            BirthDate, HireDate, TerminationDate, DepartmentId, PositionId, DirectSupervisorId, 
+            EmployeeStatusId, EmergencyContactName, EmergencyContactPhone, EmergencyContactRelation, 
+            nominal_salary, base_salary, additional_bonus, legal_bonus,
+            IGSS, ISR, net_salary, IGSS_MANUAL,
+            IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy, LocationId, TipoContratacion,
+            FilePath_DPI, FilePath_Titulos, FilePath_RTU, FilePath_Colegiado,
+            FilePath_RENAS, FilePath_AntPoliciacos, FilePath_AntPenales,
+                FilePath_CV, FilePath_ContratoFirmado, UserId
+            FROM Employees WHERE EmployeeId = @EmployeeId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -466,7 +464,8 @@ namespace SECRON.Controllers
                 FilePath_AntPenales = reader[42] == DBNull.Value ? null : reader[42].ToString(),
 
                 FilePath_CV = reader["FilePath_CV"] == DBNull.Value ? null : reader["FilePath_CV"].ToString(),
-                FilePath_ContratoFirmado = reader["FilePath_ContratoFirmado"] == DBNull.Value ? null : reader["FilePath_ContratoFirmado"].ToString()
+                FilePath_ContratoFirmado = reader["FilePath_ContratoFirmado"] == DBNull.Value ? null : reader["FilePath_ContratoFirmado"].ToString(),
+                UserId = reader["UserId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["UserId"])
             };
         }
 
@@ -826,6 +825,53 @@ namespace SECRON.Controllers
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+        }
+        public static int VincularUsuario(int userId, int? employeeId, int modifiedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Employees_LinkUser", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)employeeId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL VINCULAR EMPLEADO: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+        public static Mdl_Employees ObtenerEmpleadoPorUserId(int userId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Employees_GetByUserId", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            return MapearEmpleado(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener empleado por usuario: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
         }
     }
 }

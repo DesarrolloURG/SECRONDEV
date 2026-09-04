@@ -16,7 +16,6 @@ namespace SECRON.Models
         public bool IsTemporaryPassword { get; set; }
         public DateTime? PasswordExpiryDate { get; set; }
         public string InstitutionalEmail { get; set; }
-        public int? EmployeeId { get; set; }
         public DateTime? LastLoginDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? LastPasswordChanged { get; set; }

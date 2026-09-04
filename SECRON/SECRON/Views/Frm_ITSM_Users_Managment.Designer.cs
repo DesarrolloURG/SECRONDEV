@@ -39,6 +39,7 @@
             this.Btn_Update = new System.Windows.Forms.Button();
             this.Btn_Save = new System.Windows.Forms.Button();
             this.Panel_Informacion = new System.Windows.Forms.Panel();
+            this.Btn_SeleccionarPersona = new System.Windows.Forms.Button();
             this.Btn_DesbloquearUsuario = new System.Windows.Forms.Button();
             this.Btn_ResetPassword = new System.Windows.Forms.Button();
             this.ComboBox_Bloqueado = new System.Windows.Forms.ComboBox();
@@ -206,6 +207,7 @@
             // Panel_Informacion
             // 
             this.Panel_Informacion.BackColor = System.Drawing.Color.White;
+            this.Panel_Informacion.Controls.Add(this.Btn_SeleccionarPersona);
             this.Panel_Informacion.Controls.Add(this.Btn_DesbloquearUsuario);
             this.Panel_Informacion.Controls.Add(this.Btn_ResetPassword);
             this.Panel_Informacion.Controls.Add(this.ComboBox_Bloqueado);
@@ -228,6 +230,19 @@
             this.Panel_Informacion.Name = "Panel_Informacion";
             this.Panel_Informacion.Size = new System.Drawing.Size(384, 639);
             this.Panel_Informacion.TabIndex = 52;
+            // 
+            // Btn_SeleccionarPersona
+            // 
+            this.Btn_SeleccionarPersona.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_SeleccionarPersona.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_SeleccionarPersona.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
+            this.Btn_SeleccionarPersona.Location = new System.Drawing.Point(335, 253);
+            this.Btn_SeleccionarPersona.Name = "Btn_SeleccionarPersona";
+            this.Btn_SeleccionarPersona.Size = new System.Drawing.Size(35, 45);
+            this.Btn_SeleccionarPersona.TabIndex = 80;
+            this.Btn_SeleccionarPersona.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_SeleccionarPersona.UseVisualStyleBackColor = true;
+            this.Btn_SeleccionarPersona.Click += new System.EventHandler(this.Btn_SeleccionarPersona_Click);
             // 
             // Btn_DesbloquearUsuario
             // 
@@ -297,11 +312,12 @@
             // 
             // Txt_Colaborador
             // 
+            this.Txt_Colaborador.Enabled = false;
             this.Txt_Colaborador.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.Txt_Colaborador.Location = new System.Drawing.Point(14, 271);
             this.Txt_Colaborador.MaxLength = 15;
             this.Txt_Colaborador.Name = "Txt_Colaborador";
-            this.Txt_Colaborador.Size = new System.Drawing.Size(356, 27);
+            this.Txt_Colaborador.Size = new System.Drawing.Size(317, 27);
             this.Txt_Colaborador.TabIndex = 72;
             // 
             // Lbl_Colaborador
@@ -311,9 +327,9 @@
             this.Lbl_Colaborador.ForeColor = System.Drawing.Color.Black;
             this.Lbl_Colaborador.Location = new System.Drawing.Point(10, 248);
             this.Lbl_Colaborador.Name = "Lbl_Colaborador";
-            this.Lbl_Colaborador.Size = new System.Drawing.Size(294, 20);
+            this.Lbl_Colaborador.Size = new System.Drawing.Size(177, 20);
             this.Lbl_Colaborador.TabIndex = 73;
-            this.Lbl_Colaborador.Text = "NOMBRE COLABORADOR VINCULADO *";
+            this.Lbl_Colaborador.Text = "NOMBRE VINCULADO *";
             // 
             // CheckBox_PasswordTemp
             // 
@@ -585,7 +601,7 @@
             this.Txt_ValorBuscado1.TabIndex = 59;
             this.Txt_ValorBuscado1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado1_KeyDown);
             // 
-            // Frm_Users_Managment
+            // Frm_ITSM_Users_Managment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -594,7 +610,7 @@
             this.Controls.Add(this.Panel_Izquierdo);
             this.Controls.Add(this.Panel_Superior);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Frm_Users_Managment";
+            this.Name = "Frm_ITSM_Users_Managment";
             this.Text = "SECRON - GESTIÓN DE USUARIOS";
             this.Load += new System.EventHandler(this.Frm_Users_Managment_Load);
             this.Panel_Superior.ResumeLayout(false);
@@ -659,5 +675,6 @@
         private System.Windows.Forms.Label Lbl_Bloqueado;
         private System.Windows.Forms.Button Btn_ResetPassword;
         private System.Windows.Forms.Button Btn_DesbloquearUsuario;
+        private System.Windows.Forms.Button Btn_SeleccionarPersona;
     }
 }

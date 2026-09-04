@@ -227,7 +227,6 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO AUXILIAR: Mapear proveedor
         private static Mdl_Suppliers MapearProveedor(SqlDataReader reader)
         {
             return new Mdl_Suppliers
@@ -250,8 +249,33 @@ namespace SECRON.Controllers
                 CreatedDate = reader.GetDateTime(15),
                 CreatedBy = reader[16] == DBNull.Value ? null : (int?)reader.GetInt32(16),
                 ModifiedDate = reader[17] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(17),
-                ModifiedBy = reader[18] == DBNull.Value ? null : (int?)reader.GetInt32(18)
+                ModifiedBy = reader[18] == DBNull.Value ? null : (int?)reader.GetInt32(18),
+                UserId = reader["UserId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["UserId"])
             };
+        }
+
+        public static int VincularUsuario(int userId, int? supplierId, int modifiedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Suppliers_LinkUser", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@SupplierId", (object)supplierId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al vincular proveedor: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
         }
 
         // MÉTODO PARA OBTENER PROVEEDORES PARA COMBOBOX
@@ -374,6 +398,30 @@ namespace SECRON.Controllers
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "ERROR";
             }
+        }
+        public static Mdl_Suppliers ObtenerProveedorPorUserId(int userId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT * FROM Suppliers WHERE UserId = @UserId";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                                return MapearProveedor(reader);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener proveedor por usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
         }
     }
 }

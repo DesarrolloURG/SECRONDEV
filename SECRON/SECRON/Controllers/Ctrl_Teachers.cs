@@ -130,29 +130,26 @@ namespace SECRON.Controllers
 
         // MÉTODO PRINCIPAL: Mostrar docentes activos
         // Obtiene lista de todos los docentes activos ordenados por nombre
-        public static List<Mdl_Teachers> MostrarDocentes()
+        public static List<Mdl_Teachers> MostrarDocentes(bool soloConUsuario = false)
         {
             List<Mdl_Teachers> lista = new List<Mdl_Teachers>();
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT * FROM Teachers WHERE IsActive = 1 ORDER BY FullName";
+                    string query = "SELECT * FROM Teachers WHERE IsActive = 1"
+                        + (soloConUsuario ? " AND UserId IS NOT NULL" : "")
+                        + " ORDER BY FullName";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                lista.Add(MapearDocente(reader));
-                            }
-                        }
+                        while (reader.Read()) lista.Add(MapearDocente(reader));
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al obtener docentes: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al mostrar docentes: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return lista;
         }
@@ -554,6 +551,52 @@ namespace SECRON.Controllers
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+        }
+        public static int VincularUsuario(int userId, int? teacherId, int modifiedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Teachers_LinkUser", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@TeacherId", (object)teacherId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al vincular docente: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+        public static Mdl_Teachers ObtenerDocentePorUserId(int userId)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT * FROM Teachers WHERE UserId = @UserId";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                                return MapearDocente(reader);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener docente por usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
         }
     }
 }

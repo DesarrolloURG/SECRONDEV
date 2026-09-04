@@ -2216,7 +2216,7 @@
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumDeCarreras);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumCursos);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumCarreras);
-            this.PanelTeachers.Location = new System.Drawing.Point(220, 1);
+            this.PanelTeachers.Location = new System.Drawing.Point(220, 150);
             this.PanelTeachers.Name = "PanelTeachers";
             this.PanelTeachers.Size = new System.Drawing.Size(300, 360);
             this.PanelTeachers.TabIndex = 20;

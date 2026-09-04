@@ -259,16 +259,16 @@ namespace SECRON.Controllers
         {
             string query = @"
             SELECT u.UserId, u.Username, u.FullName, u.RoleId, u.StatusId, 
-                   u.IsTemporaryPassword, u.PasswordExpiryDate, u.InstitutionalEmail,
-                   u.EmployeeId, u.LastLoginDate, u.CreatedDate, u.NotificationsEnabled,
-                   ISNULL(r.RoleName, '') AS RoleName, 
-                   ISNULL(s.StatusName, '') AS StatusName,
-                   u.LastPasswordChanged, u.PasswordNeverExpires,
-                   u.TwoFactorSecret, u.TwoFactorEnabledDate, u.TwoFactorExempt
-            FROM Users u
-            LEFT JOIN Roles r ON u.RoleId = r.RoleId
-            LEFT JOIN UserStatus s ON u.StatusId = s.StatusId
-            WHERE u.Username = @username";
+               u.IsTemporaryPassword, u.PasswordExpiryDate, u.InstitutionalEmail,
+               u.LastLoginDate, u.CreatedDate, u.NotificationsEnabled,
+               ISNULL(r.RoleName, '') AS RoleName, 
+               ISNULL(s.StatusName, '') AS StatusName,
+               u.LastPasswordChanged, u.PasswordNeverExpires,
+               u.TwoFactorSecret, u.TwoFactorEnabledDate, u.TwoFactorExempt
+                FROM Users u
+                LEFT JOIN Roles r ON u.RoleId = r.RoleId
+                LEFT JOIN UserStatus s ON u.StatusId = s.StatusId
+                WHERE u.Username = @username";
 
             try
             {
@@ -304,9 +304,6 @@ namespace SECRON.Controllers
 
                             try { userInfo.InstitutionalEmail = reader["InstitutionalEmail"] == DBNull.Value ? null : (string)reader["InstitutionalEmail"]; }
                             catch { userInfo.InstitutionalEmail = null; }
-
-                            try { userInfo.EmployeeId = reader["EmployeeId"] == DBNull.Value ? (int?)null : (int)reader["EmployeeId"]; }
-                            catch { userInfo.EmployeeId = null; }
 
                             try { userInfo.LastLoginDate = reader["LastLoginDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastLoginDate"]; }
                             catch { userInfo.LastLoginDate = null; }
@@ -658,7 +655,6 @@ namespace SECRON.Controllers
                                 try { userInfo.IsTemporaryPassword = reader.GetBoolean(reader.GetOrdinal("IsTemporaryPassword")); } catch { userInfo.IsTemporaryPassword = false; }
                                 try { userInfo.PasswordExpiryDate = reader["PasswordExpiryDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["PasswordExpiryDate"]; } catch { userInfo.PasswordExpiryDate = null; }
                                 try { userInfo.InstitutionalEmail = reader["InstitutionalEmail"] == DBNull.Value ? null : (string)reader["InstitutionalEmail"]; } catch { userInfo.InstitutionalEmail = null; }
-                                try { userInfo.EmployeeId = reader["EmployeeId"] == DBNull.Value ? (int?)null : (int)reader["EmployeeId"]; } catch { userInfo.EmployeeId = null; }
                                 try { userInfo.LastLoginDate = reader["LastLoginDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastLoginDate"]; } catch { userInfo.LastLoginDate = null; }
                                 try { userInfo.CreatedDate = (DateTime)reader["CreatedDate"]; } catch { userInfo.CreatedDate = DateTime.Now; }
                                 try { userInfo.NotificationsEnabled = reader.GetBoolean(reader.GetOrdinal("NotificationsEnabled")); } catch { userInfo.NotificationsEnabled = true; }

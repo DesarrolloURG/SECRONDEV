@@ -2035,7 +2035,15 @@ namespace SECRON.Views
         }
         private void BtnProcesosAcademicos_RevisoresAprobados_Click(object sender, EventArgs e)
         {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_AcademicProcesses_Reviser frm = new Frm_AcademicProcesses_Reviser();
+            frm.Text = "CONFIGURAR PERFIL DE REVISORES";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
 
+            AbrirFormularioConPestana(frm, "CONFIGURAR PERFIL DE REVISORES", "AcademicReviser");
         }
         private void BtnProcesosAcademicos_AprobacionDocentes_Click(object sender, EventArgs e)
         {

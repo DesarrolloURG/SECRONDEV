@@ -58,7 +58,6 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
                     cmd.Parameters.AddWithValue("@IsTemporaryPassword", usuario.IsTemporaryPassword);
                     cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@PasswordExpiryDate", (object)usuario.PasswordExpiryDate ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@CreatedBy", (object)usuario.CreatedBy ?? DBNull.Value);
 
@@ -190,7 +189,6 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
                     cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
                     cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ModifiedBy", (object)usuario.ModifiedBy ?? DBNull.Value);
 
                     object result = cmd.ExecuteScalar();
@@ -404,12 +402,6 @@ namespace SECRON.Controllers
         }
 
 
-        // MÉTODO AUXILIAR: Mapear SqlDataReader a Mdl_Users
-        // Orden de campos en SELECT: UserId(0), Username(1), PasswordHash(2), FullName(3), RoleId(4), 
-        // StatusId(5), NotificationsEnabled(6), LastConnectionDate(7), IsTemporaryPassword(8), 
-        // CreatedDate(9), CreatedBy(10), ModifiedDate(11), ModifiedBy(12), InstitutionalEmail(13), 
-        // EmployeeId(14), PasswordExpiryDate(15), FailedLoginAttempts(16), IsLocked(17), LastLoginDate(18),
-        // LastPasswordChanged, PasswordNeverExpires (leídos por nombre de columna, agregados al final de la tabla)
         private static Mdl_Users MapearUsuario(SqlDataReader reader)
         {
             return new Mdl_Users
@@ -428,11 +420,10 @@ namespace SECRON.Controllers
                 ModifiedDate = reader[11] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(11),
                 ModifiedBy = reader[12] == DBNull.Value ? null : (int?)reader.GetInt32(12),
                 InstitutionalEmail = reader[13] == DBNull.Value ? null : reader[13].ToString(),
-                EmployeeId = reader[14] == DBNull.Value ? null : (int?)reader.GetInt32(14),
-                PasswordExpiryDate = reader[15] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(15),
-                FailedLoginAttempts = reader.GetInt32(16),
-                IsLocked = reader.GetBoolean(17),
-                LastLoginDate = reader[18] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(18),
+                PasswordExpiryDate = reader[14] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(14),
+                FailedLoginAttempts = reader.GetInt32(15),
+                IsLocked = reader.GetBoolean(16),
+                LastLoginDate = reader[17] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(17),
                 LastPasswordChanged = reader["LastPasswordChanged"] == DBNull.Value ? null : (DateTime?)reader["LastPasswordChanged"],
                 PasswordNeverExpires = reader["PasswordNeverExpires"] != DBNull.Value && (bool)reader["PasswordNeverExpires"]
             };
@@ -505,40 +496,6 @@ namespace SECRON.Controllers
                 }
             }
             catch { return 0; }
-        }
-        // En Ctrl_Users.cs - CORREGIR ESTE MÉTODO
-        public static List<int> ObtenerEmpleadosConUsuario()
-        {
-            List<int> empleadosConUsuario = new List<int>();
-
-            try
-            {
-                using (SqlConnection connection = DatabaseConfig.StartConection()) // ⭐ USAR DatabaseConfig
-                {
-                    string query = @"
-                SELECT DISTINCT EmployeeId 
-                FROM Users 
-                WHERE EmployeeId IS NOT NULL"; // ⭐ QUITAR IsActive (no existe en Users)
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                empleadosConUsuario.Add(reader.GetInt32(0));
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al obtener empleados con usuario: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            return empleadosConUsuario;
         }
         public static Mdl_Users ObtenerUsuarioPorUsername(string username)
         {
@@ -666,6 +623,31 @@ namespace SECRON.Controllers
                 MessageBox.Show("Error al validar expiración de contraseña: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return false;
+        }
+
+        public static int VincularPersona(int userId, string personType, int? personId, int modifiedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Persons_LinkUser", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+                    cmd.Parameters.AddWithValue("@PersonType", (object)personType ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PersonId", (object)personId ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al vincular persona: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
         }
     }
 }

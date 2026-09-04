@@ -198,6 +198,33 @@ namespace SECRON.Controllers
             return null;
         }
 
+        public static Mdl_Roles ObtenerRolPorNombre(string roleName)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = "SELECT * FROM Roles WHERE RoleName = @RoleName";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@RoleName", roleName);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return MapearRol(reader);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener rol: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
         // MÉTODO AUXILIAR: Mapear SqlDataReader a Mdl_Roles
         // Orden de campos en SELECT: RoleId(0), RoleName(1), Description(2), IsActive(3), CreatedDate(4), CreatedBy(5)
         private static Mdl_Roles MapearRol(SqlDataReader reader)

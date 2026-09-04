@@ -71,6 +71,9 @@ namespace SECRON.Models
         public string FilePath_CV { get; set; }
         public string FilePath_ContratoFirmado { get; set; }
 
+        // Datos de Usuario
+        public int? UserId { get; set; }
+
         // Constructor vacío
         public Mdl_Employees()
         {

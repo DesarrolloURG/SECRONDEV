@@ -108,3 +108,26 @@ ALTER TABLE Users ADD TwoFactorExempt BIT NOT NULL DEFAULT 0;
 
 -- Inicializar con fecha actual para no forzar cambio a usuarios existentes
 UPDATE Users SET LastPasswordChanged = GETDATE() WHERE LastPasswordChanged IS NULL;
+
+--------------CORRECCIONES COLUMNA DE IdEmpleado Tabla Usuarios -----------------
+-- 1. Quitar el índice dependiente
+DROP INDEX IX_Users_Employee ON Users;
+
+-- 2. Quitar el FK si existe (por si acaso, ya lo intentamos antes)
+DECLARE @FKName NVARCHAR(200);
+SELECT @FKName = fk.name
+FROM sys.foreign_keys fk
+JOIN sys.foreign_key_columns fkc ON fk.object_id = fkc.constraint_object_id
+JOIN sys.columns c ON fkc.parent_object_id = c.object_id AND fkc.parent_column_id = c.column_id
+WHERE fk.parent_object_id = OBJECT_ID('Users') AND c.name = 'EmployeeId';
+
+IF @FKName IS NOT NULL
+    EXEC('ALTER TABLE Users DROP CONSTRAINT ' + @FKName);
+
+-- 3. Quitar la columna
+ALTER TABLE Users DROP COLUMN EmployeeId;
+GO
+
+-- 4. Regenerar el trigger de auditoría SIN la columna eliminada (OBLIGATORIO)
+EXEC dbo.usp_GenerateAuditTrigger 'Users';
+GO

@@ -119,8 +119,4 @@ ALTER TABLE Employees ADD
     FilePath_CV               VARCHAR(500) NULL,
     FilePath_ContratoFirmado  VARCHAR(500) NULL;
 GO
-
-SELECT * FROM Employees
-
-
 ------------------------------ Tabla de Trabajadores ---------------------------------------------

@@ -36,6 +36,7 @@ namespace SECRON.Models
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
+        public int? UserId { get; set; }
 
         // Constructor vacío
         public Mdl_Suppliers()

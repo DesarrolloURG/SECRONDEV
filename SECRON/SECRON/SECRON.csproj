@@ -107,6 +107,7 @@
     <Compile Include="Configuration\DatabaseConfig.cs" />
     <Compile Include="Configuration\NavegadorTabConfig .cs" />
     <Compile Include="Configuration\TabConfig.cs" />
+    <Compile Include="Controllers\Ctrl_AcademicProcesses_Revisers.cs" />
     <Compile Include="Controllers\Ctrl_AuditLogs.cs" />
     <Compile Include="Controllers\Ctrl_CareerCoursePrerequisites.cs" />
     <Compile Include="Controllers\Ctrl_CareerCourses.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Controllers\Ctrl_Courses.cs" />
     <Compile Include="Controllers\Ctrl_LocationCareers.cs" />
     <Compile Include="Controllers\Ctrl_ResponsibilityLetters.cs" />
+    <Compile Include="Models\Mdl_AcademicProcesses_Reviser.cs" />
     <Compile Include="Models\Mdl_AuditLog.cs" />
     <Compile Include="Models\Mdl_CareerCourses.cs" />
     <Compile Include="Models\Mdl_CareerPensums.cs" />
@@ -284,6 +286,24 @@
     <Compile Include="Utils\Cls_ActivityMessageFilter.cs" />
     <Compile Include="Utils\Cls_EmailEncryption.cs" />
     <Compile Include="Utils\Cls_EmailService.cs" />
+    <Compile Include="Views\Frm_AcademicProcesses_Reviser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_Reviser.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_Reviser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_Reviser_Locations.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_Reviser_Locations.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_Reviser_Locations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_Reviser_Permissions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_AcademicProcesses_Reviser_Permissions.Designer.cs">
+      <DependentUpon>Frm_AcademicProcesses_Reviser_Permissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_AcademicProcesses_SearchCourses.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -409,6 +429,12 @@
     </Compile>
     <Compile Include="Views\Frm_FixedAsset_ResponsabilityLetter.Designer.cs">
       <DependentUpon>Frm_FixedAsset_ResponsabilityLetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Frm_ITSM_Users_SelectPerson.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_ITSM_Users_SelectPerson.Designer.cs">
+      <DependentUpon>Frm_ITSM_Users_SelectPerson.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Frm_LocationStaffAssignments_SearchUsers.cs">
       <SubType>Form</SubType>
@@ -790,6 +816,9 @@
     <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.Designer.cs">
       <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\Frm_AcademicProcesses_Reviser.resx">
+      <DependentUpon>Frm_AcademicProcesses_Reviser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_AcademicProcesses_SearchCourses.resx">
       <DependentUpon>Frm_AcademicProcesses_SearchCourses.cs</DependentUpon>
     </EmbeddedResource>
@@ -852,6 +881,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FixedAsset_ResponsabilityLetter.resx">
       <DependentUpon>Frm_FixedAsset_ResponsabilityLetter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_ITSM_Users_SelectPerson.resx">
+      <DependentUpon>Frm_ITSM_Users_SelectPerson.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_LocationStaffAssignments_SearchUsers.resx">
       <DependentUpon>Frm_LocationStaffAssignments_SearchUsers.cs</DependentUpon>
@@ -1190,4 +1222,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>

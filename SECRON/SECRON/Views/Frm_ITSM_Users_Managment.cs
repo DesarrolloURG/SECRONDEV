@@ -28,9 +28,6 @@ namespace SECRON.Views
         // Usuario seleccionado para editar
         private Mdl_Users _usuarioSeleccionado = null;
 
-        // Colaborador seleccionado de Tabla2
-        private Mdl_Employees _colaboradorSeleccionado = null;
-
         // Listas para almacenar datos
         private List<Mdl_Users> usuariosList;
 
@@ -487,56 +484,78 @@ namespace SECRON.Views
 
                 if (_usuarioSeleccionado != null)
                 {
-                    // Cargar USERNAME
                     Txt_Usuario.Text = _usuarioSeleccionado.Username;
                     Txt_Usuario.ForeColor = Color.Black;
 
-                    // NO cargar contraseña (por seguridad)
                     Txt_Password.Text = "CONTRASEÑA";
                     Txt_Password.ForeColor = Color.Gray;
 
-                    // Cargar ROL
                     ComboBox_Rol.SelectedValue = _usuarioSeleccionado.RoleId;
-
-                    // Cargar ESTADO
                     ComboBox_UserStatus.SelectedValue = _usuarioSeleccionado.StatusId;
-
-                    // Cargar BLOQUEADO
                     ComboBox_Bloqueado.SelectedValue = _usuarioSeleccionado.IsLocked ? 1 : 0;
 
-                    // Cargar CORREO INSTITUCIONAL
                     if (!string.IsNullOrWhiteSpace(_usuarioSeleccionado.InstitutionalEmail))
                     {
                         Txt_CorreoInstitucional.Text = _usuarioSeleccionado.InstitutionalEmail;
                         Txt_CorreoInstitucional.ForeColor = Color.Black;
                     }
 
-                    // Cargar CHECKBOX de contraseña temporal
                     CheckBox_PasswordTemp.Checked = _usuarioSeleccionado.IsTemporaryPassword;
 
                     // Cargar COLABORADOR (si tiene)
-                    if (_usuarioSeleccionado.EmployeeId.HasValue)
-                    {
-                        var empleado = Ctrl_Employees.ObtenerEmpleadoPorId(_usuarioSeleccionado.EmployeeId.Value);
-                        if (empleado != null)
-                        {
-                            _colaboradorSeleccionado = empleado;
-                            Txt_Colaborador.Text = empleado.FullName;
-                            Txt_Colaborador.ForeColor = Color.Black;
-                        }
-                    }
-                    else
-                    {
-                        _colaboradorSeleccionado = null;
-                        Txt_Colaborador.Text = "SELECCIONE UN COLABORADOR DE LA TABLA";
-                        Txt_Colaborador.ForeColor = Color.Gray;
-                    }
+                    CargarPersonaVinculada(_usuarioSeleccionado.UserId);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar datos del usuario: {ex.Message}", "Error",
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void CargarPersonaVinculada(int userId)
+        {
+            var docente = Ctrl_Teachers.ObtenerDocentePorUserId(userId);
+            var trabajador = Ctrl_Employees.ObtenerEmpleadoPorUserId(userId);
+            var proveedor = Ctrl_Suppliers.ObtenerProveedorPorUserId(userId);
+            var coordinador = Ctrl_Coordinators.ObtenerCoordinadorPorUserId(userId);
+
+            if (docente != null)
+            {
+                Txt_Colaborador.Text = docente.FullName;
+                Txt_Colaborador.ForeColor = Color.Black;
+                _personTypeSeleccionado = "DOCENTE";
+                _personIdSeleccionado = docente.TeacherId;  
+            }
+            else if (trabajador != null)
+            {
+                Txt_Colaborador.Text = trabajador.FullName;
+                Txt_Colaborador.ForeColor = Color.Black;
+                _personTypeSeleccionado = "TRABAJADOR";
+                _personIdSeleccionado = trabajador.EmployeeId;
+            }
+            else if (proveedor != null)
+            {
+                Txt_Colaborador.Text = proveedor.SupplierName;
+                Txt_Colaborador.ForeColor = Color.Black;
+                _personTypeSeleccionado = "PROVEEDOR";
+                _personIdSeleccionado = proveedor.SupplierId;
+            }
+            else if (coordinador != null)
+            {
+                Txt_Colaborador.Text = coordinador.FullName;
+                Txt_Colaborador.ForeColor = Color.Black;
+                _personTypeSeleccionado = "COORDINADOR";
+                _personIdSeleccionado = coordinador.CoordinatorId;
+            }
+            else
+            {
+                // Sin vínculo real, pero el Usuario ya tiene un nombre guardado (modo texto libre)
+                Txt_Colaborador.Text = !string.IsNullOrWhiteSpace(_usuarioSeleccionado.FullName)
+                    ? _usuarioSeleccionado.FullName
+                    : "SELECCIONE UNA PERSONA";
+                Txt_Colaborador.ForeColor = Color.Black;
+                _personTypeSeleccionado = null;
+                _personIdSeleccionado = null;
             }
         }
 
@@ -849,20 +868,6 @@ namespace SECRON.Views
                 return false;
             }
 
-            // 6. Validar COLABORADOR* (opcional pero recomendado)
-            if (_colaboradorSeleccionado == null)
-            {
-                var confirmacion = MessageBox.Show(
-                    "No ha seleccionado un colaborador. ¿Desea continuar sin asignar colaborador?",
-                    "Advertencia",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
-
-                if (confirmacion != DialogResult.Yes)
-                    return false;
-            }
-
             return true;
         }
         #endregion ValidarCamposObligatorios
@@ -893,6 +898,16 @@ namespace SECRON.Views
                 if (!ValidarCamposObligatorios())
                     return;
 
+                if (_personIdSeleccionado == null)
+                {
+                    var confirmarSinPersona = MessageBox.Show(
+                        "No ha seleccionado una persona. ¿Desea continuar sin asignar vínculo?",
+                        "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (confirmarSinPersona != DialogResult.Yes)
+                        return;
+                }
+
                 var confirmacion = MessageBox.Show(
                     "¿Está seguro que desea registrar este usuario?",
                     "Confirmar Registro",
@@ -915,7 +930,6 @@ namespace SECRON.Views
                     NotificationsEnabled = true,
                     IsTemporaryPassword = CheckBox_PasswordTemp.Checked,
                     InstitutionalEmail = Txt_CorreoInstitucional.Text.Trim().ToUpper(),
-                    EmployeeId = _colaboradorSeleccionado?.EmployeeId,
                     PasswordExpiryDate = CheckBox_PasswordTemp.Checked ? DateTime.Now.AddDays(30) : (DateTime?)null,
                     CreatedBy = UserData?.UserId ?? 1
                 };
@@ -924,6 +938,10 @@ namespace SECRON.Views
 
                 if (resultado > 0)
                 {
+                    var usuarioCreado = Ctrl_Users.ObtenerUsuarioPorUsername(nuevoUsuario.Username);
+                    if (usuarioCreado != null)
+                        VincularPersonaAUsuario(usuarioCreado.UserId);
+
                     MessageBox.Show("Usuario registrado exitosamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
@@ -942,7 +960,6 @@ namespace SECRON.Views
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         // Evento para botón Actualizar
         private void Btn_Update_Click(object sender, EventArgs e)
         {
@@ -958,6 +975,16 @@ namespace SECRON.Views
                 if (!ValidarCamposObligatorios())
                     return;
 
+                if (_personIdSeleccionado == null)
+                {
+                    var confirmarSinPersona = MessageBox.Show(
+                        "No ha seleccionado una persona. ¿Desea continuar sin asignar vínculo?",
+                        "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (confirmarSinPersona != DialogResult.Yes)
+                        return;
+                }
+
                 var confirmacion = MessageBox.Show(
                     $"¿Está seguro que desea actualizar los datos del usuario {_usuarioSeleccionado.Username}?",
                     "Confirmar Actualización",
@@ -969,18 +996,19 @@ namespace SECRON.Views
                     return;
 
                 _usuarioSeleccionado.Username = Txt_Usuario.Text.Trim().ToUpper();
-                _usuarioSeleccionado.FullName = _colaboradorSeleccionado?.FullName?.ToUpper() ?? Txt_Usuario.Text.Trim().ToUpper();
+                _usuarioSeleccionado.FullName = Txt_Colaborador.Text.Trim().ToUpper();
                 _usuarioSeleccionado.RoleId = (int)ComboBox_Rol.SelectedValue;
                 _usuarioSeleccionado.StatusId = (int)ComboBox_UserStatus.SelectedValue;
                 _usuarioSeleccionado.IsLocked = (int)ComboBox_Bloqueado.SelectedValue == 1;
                 _usuarioSeleccionado.InstitutionalEmail = Txt_CorreoInstitucional.Text.Trim().ToUpper();
-                _usuarioSeleccionado.EmployeeId = _colaboradorSeleccionado?.EmployeeId;
                 _usuarioSeleccionado.ModifiedBy = UserData?.UserId ?? 1;
 
                 int resultado = Ctrl_Users.ActualizarUsuario(_usuarioSeleccionado);
 
                 if (resultado > 0)
                 {
+                    VincularPersonaAUsuario(_usuarioSeleccionado.UserId);
+
                     MessageBox.Show("Usuario actualizado exitosamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
@@ -1004,7 +1032,8 @@ namespace SECRON.Views
         private void LimpiarFormulario()
         {
             _usuarioSeleccionado = null;
-            _colaboradorSeleccionado = null;
+            _personTypeSeleccionado = null;
+            _personIdSeleccionado = null;
 
             ConfigurarPlaceHoldersTextbox();
 
@@ -1527,6 +1556,43 @@ namespace SECRON.Views
         }
 
         #endregion SistemaDePermisos
+        private void VincularPersonaAUsuario(int userId)
+        {
+            int modifiedBy = UserData?.UserId ?? 1;
+            int resultado = Ctrl_Users.VincularPersona(userId, _personTypeSeleccionado, _personIdSeleccionado, modifiedBy);
 
+            if (resultado <= 0)
+            {
+                MessageBox.Show(
+                    "El usuario se guardó, pero no se pudo vincular a la persona seleccionada. " +
+                    "Verifique que la persona exista y no esté ya vinculada a otro usuario.",
+                    "Advertencia de vinculación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void Btn_Search_Click(object sender, EventArgs e)
+        {
+
+        }
+        private string _personTypeSeleccionado;
+        private int? _personIdSeleccionado;
+
+        public void ActualizarPersonaSeleccionada(string nombre, string personType, int? personId, int? userIdExistente)
+        {
+            Txt_Colaborador.Text = nombre;
+            Txt_Colaborador.ForeColor = Color.Black;
+            _personTypeSeleccionado = personType;
+            _personIdSeleccionado = personId;
+        }
+
+        private void Btn_SeleccionarPersona_Click(object sender, EventArgs e)
+        {
+            int userIdEnEdicion = _usuarioSeleccionado?.UserId ?? 0;
+
+            using (Frm_ITSM_Users_SelectPerson frm = new Frm_ITSM_Users_SelectPerson(this, userIdEnEdicion))
+            {
+                frm.ShowDialog();
+            }
+        }
     }
 }
