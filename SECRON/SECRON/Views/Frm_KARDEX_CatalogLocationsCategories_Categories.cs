@@ -122,6 +122,13 @@ namespace SECRON.Views
             ComboBox_BuscarPor.Items.Add("POR CÓDIGO");
             ComboBox_BuscarPor.Items.Add("POR NOMBRE");
             ComboBox_BuscarPor.SelectedIndex = 0;
+
+            ComboBox_IsActive.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_IsActive.Items.Clear();
+            ComboBox_IsActive.Items.Add("TODOS");
+            ComboBox_IsActive.Items.Add("ACTIVOS");
+            ComboBox_IsActive.Items.Add("INACTIVOS");
+            ComboBox_IsActive.SelectedIndex = 1;
         }
 
         #endregion ConfigurarFiltros
@@ -188,7 +195,7 @@ namespace SECRON.Views
 
         private void RefrescarListado()
         {
-            _categoriasList = Ctrl_LocationCategories.MostrarCategorias();
+            _categoriasList = Ctrl_LocationCategories.MostrarCategorias(isActive: true);
             AsignarDataSource();
         }
 
@@ -348,8 +355,14 @@ namespace SECRON.Views
                 _ultimoFiltro1 = ComboBox_BuscarPor.SelectedItem?.ToString() ?? "TODOS";
                 paginaActual = 1;
 
+                bool? isActive = null;
+                string estado = ComboBox_IsActive.SelectedItem?.ToString();
+                if (estado == "ACTIVOS") isActive = true;
+                else if (estado == "INACTIVOS") isActive = false;
+
                 _categoriasList = Ctrl_LocationCategories.BuscarCategorias(
                     textoBusqueda: valorBusqueda,
+                    isActive: isActive,
                     pageNumber: paginaActual,
                     pageSize: registrosPorPagina
                 );
@@ -358,7 +371,7 @@ namespace SECRON.Views
                 ConfigurarTabla();
                 AjustarColumnas();
 
-                totalRegistros = Ctrl_LocationCategories.ContarTotalCategorias(valorBusqueda);
+                totalRegistros = Ctrl_LocationCategories.ContarTotalCategorias(valorBusqueda, isActive);
                 ActualizarInfoPaginacion();
 
                 this.Cursor = Cursors.Default;
@@ -385,6 +398,7 @@ namespace SECRON.Views
             Txt_ValorBuscado.Text = "BUSCAR POR CÓDIGO O NOMBRE...";
             Txt_ValorBuscado.ForeColor = Color.Gray;
             ComboBox_BuscarPor.SelectedIndex = 0;
+            ComboBox_IsActive.SelectedIndex = 1;
 
             _ultimoTextoBusqueda = "";
             _ultimoFiltro1 = "TODOS";

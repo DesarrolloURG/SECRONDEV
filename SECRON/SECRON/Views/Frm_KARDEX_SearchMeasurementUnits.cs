@@ -24,6 +24,8 @@ namespace SECRON.Views
         // Datos del usuario autenticado (para auditoría)
         public Mdl_Security_UserInfo UserData { get; set; }
 
+        private bool _selectedIsActive = true;
+
         public Frm_KARDEX_SearchMeasurementUnits()
         {
             InitializeComponent();
@@ -108,6 +110,14 @@ namespace SECRON.Views
 
             ComboBox_BuscarPor.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_BuscarPor.SelectedIndex = 0;
+
+            ComboBox_Estado.Items.Clear();
+            ComboBox_Estado.Items.Add("TODOS");
+            ComboBox_Estado.Items.Add("ACTIVOS");
+            ComboBox_Estado.Items.Add("INACTIVOS");
+
+            ComboBox_Estado.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Estado.SelectedIndex = 1;
         }
 
         private void ConfigurarPlaceHolders()
@@ -175,8 +185,8 @@ namespace SECRON.Views
         {
             try
             {
-                _unidades = Ctrl_MeasurementUnits.MostrarUnidades();
-                RefrescarTabla(_unidades);
+                _unidades = Ctrl_MeasurementUnits.MostrarUnidades(isActive: null);
+                AplicarFiltro();
             }
             catch (Exception ex)
             {
@@ -195,6 +205,16 @@ namespace SECRON.Views
                 foreach (DataGridViewColumn col in Tabla.Columns)
                 {
                     col.Visible = false;
+                }
+
+                if (Tabla.Columns.Contains("IsActiveText"))
+                {
+                    Tabla.Columns["IsActiveText"].Visible = true;
+                    Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                    Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                    Tabla.Columns["IsActiveText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    Tabla.Columns["IsActiveText"].Width = 90;
+                    Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
 
                 if (Tabla.Columns.Contains("UnitCode"))
@@ -218,52 +238,63 @@ namespace SECRON.Views
                     Tabla.Columns["Abbreviation"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 }
             }
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
 
         #endregion CargarYRefrescarDatos
         #region BuscarUnidades
 
-        private void Btn_Search_Click(object sender, EventArgs e)
+        // Filtro compartido: combina texto de búsqueda + ComboBox_Estado, ambos en memoria sobre _unidades
+        private void AplicarFiltro()
         {
             try
             {
                 string texto = Txt_ValorBuscado.Text;
-
-                if (string.IsNullOrWhiteSpace(texto) || texto == "BUSCAR UNIDAD DE MEDIDA...")
-                {
-                    RefrescarTabla(_unidades);
-                    return;
-                }
-
-                texto = texto.Trim().ToUpper();
-                string filtro = ComboBox_BuscarPor.SelectedItem.ToString();
+                bool hayTexto = !string.IsNullOrWhiteSpace(texto) && texto != "BUSCAR UNIDAD DE MEDIDA...";
 
                 IEnumerable<Mdl_MeasurementUnits> consulta = _unidades;
 
-                if (filtro == "CÓDIGO")
+                if (hayTexto)
                 {
-                    consulta = consulta.Where(u => (u.UnitCode ?? "").ToUpper().Contains(texto));
+                    texto = texto.Trim().ToUpper();
+                    string filtro = ComboBox_BuscarPor.SelectedItem?.ToString() ?? "TODOS";
+
+                    if (filtro == "CÓDIGO")
+                        consulta = consulta.Where(u => (u.UnitCode ?? "").ToUpper().Contains(texto));
+                    else if (filtro == "NOMBRE")
+                        consulta = consulta.Where(u => (u.UnitName ?? "").ToUpper().Contains(texto));
+                    else if (filtro == "ABREVIATURA")
+                        consulta = consulta.Where(u => (u.Abbreviation ?? "").ToUpper().Contains(texto));
+                    else // TODOS
+                        consulta = consulta.Where(u =>
+                            (u.UnitCode ?? "").ToUpper().Contains(texto) ||
+                            (u.UnitName ?? "").ToUpper().Contains(texto) ||
+                            (u.Abbreviation ?? "").ToUpper().Contains(texto));
                 }
-                else if (filtro == "NOMBRE")
-                {
-                    consulta = consulta.Where(u => (u.UnitName ?? "").ToUpper().Contains(texto));
-                }
-                else if (filtro == "ABREVIATURA")
-                {
-                    consulta = consulta.Where(u => (u.Abbreviation ?? "").ToUpper().Contains(texto));
-                }
-                else // TODOS
-                {
-                    consulta = consulta.Where(u =>
-                        (u.UnitCode ?? "").ToUpper().Contains(texto) ||
-                        (u.UnitName ?? "").ToUpper().Contains(texto) ||
-                        (u.Abbreviation ?? "").ToUpper().Contains(texto));
-                }
+
+                string estado = ComboBox_Estado.SelectedItem?.ToString() ?? "TODOS";
+                if (estado == "ACTIVOS")
+                    consulta = consulta.Where(u => u.IsActive);
+                else if (estado == "INACTIVOS")
+                    consulta = consulta.Where(u => !u.IsActive);
 
                 var resultados = consulta.ToList();
                 RefrescarTabla(resultados);
 
-                if (resultados.Count == 0)
+                if (hayTexto && resultados.Count == 0)
                 {
                     MessageBox.Show("No se encontraron resultados", "BÚSQUEDA",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -274,6 +305,11 @@ namespace SECRON.Views
                 MessageBox.Show($"ERROR EN BÚSQUEDA: {ex.Message}",
                                 "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Btn_Search_Click(object sender, EventArgs e)
+        {
+            AplicarFiltro();
         }
 
         private void Txt_ValorBuscado_KeyDown(object sender, KeyEventArgs e)
@@ -289,7 +325,9 @@ namespace SECRON.Views
         {
             Txt_ValorBuscado.Text = "BUSCAR UNIDAD DE MEDIDA...";
             Txt_ValorBuscado.ForeColor = Color.Gray;
-            RefrescarTabla(_unidades);
+            ComboBox_BuscarPor.SelectedIndex = 0;
+            ComboBox_Estado.SelectedIndex = 1;
+            AplicarFiltro();
         }
 
         #endregion BuscarUnidades
@@ -323,6 +361,9 @@ namespace SECRON.Views
                 Txt_Codigo.Text = unitCode;
                 Txt_UnitName.Text = unitName;
                 Txt_Abbreviation.Text = abbreviation;
+
+                _selectedIsActive = row.Cells["IsActive"].Value != null && Convert.ToBoolean(row.Cells["IsActive"].Value);
+                Btn_Inactive.Text = _selectedIsActive ? "INACTIVAR" : "ACTIVAR";
             }
         }
 
@@ -471,24 +512,27 @@ namespace SECRON.Views
             {
                 if (!SelectedUnitId.HasValue || SelectedUnitId.Value <= 0)
                 {
-                    MessageBox.Show("Debe seleccionar una unidad de la tabla para inactivar",
+                    MessageBox.Show("Debe seleccionar una unidad de la tabla",
                                     "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                var confirm = MessageBox.Show("¿Está seguro que desea INACTIVAR esta unidad?",
-                                              "CONFIRMAR INACTIVACIÓN",
+                bool nuevoEstado = !_selectedIsActive;
+                string accion = _selectedIsActive ? "INACTIVAR" : "ACTIVAR";
+
+                var confirm = MessageBox.Show($"¿Está seguro que desea {accion} esta unidad?",
+                                              $"CONFIRMAR {accion}CIÓN",
                                               MessageBoxButtons.YesNo,
                                               MessageBoxIcon.Warning);
 
                 if (confirm != DialogResult.Yes)
                     return;
 
-                int resultado = Ctrl_MeasurementUnits.InactivarUnidad(SelectedUnitId.Value, UserData.UserId);
+                int resultado = Ctrl_MeasurementUnits.CambiarEstadoUnidad(SelectedUnitId.Value, nuevoEstado, UserData.UserId);
 
                 if (resultado > 0)
                 {
-                    MessageBox.Show("Unidad inactivada correctamente", "ÉXITO",
+                    MessageBox.Show($"Unidad {(nuevoEstado ? "activada" : "inactivada")} correctamente", "ÉXITO",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarDetalle();
                     CargarUnidades();
@@ -496,13 +540,13 @@ namespace SECRON.Views
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo inactivar la unidad", "ERROR",
+                    MessageBox.Show($"No se pudo {accion.ToLower()} la unidad", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar unidad: " + ex.Message,
+                MessageBox.Show("Error al cambiar el estado: " + ex.Message,
                                 "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -530,6 +574,9 @@ namespace SECRON.Views
 
             Txt_Selected.Text = "UNIDAD DE MEDIDA SELECCIONADA";
             Txt_Selected.ForeColor = Color.Gray;
+
+            _selectedIsActive = true;
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
         }
 
         #endregion CRUD_Unidades

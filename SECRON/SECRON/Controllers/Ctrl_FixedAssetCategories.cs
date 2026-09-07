@@ -331,5 +331,32 @@ namespace SECRON.Controllers
             }
             return lista;
         }
+
+        // MÉTODO PRINCIPAL: Activar/Inactivar categoría (SP dedicado, sin los efectos secundarios de un update completo)
+        public static int CambiarEstadoCategoria(int assetCategoryId, bool isActive, int? modifiedBy = null)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_FixedAssetCategories_Delete", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@AssetCategoryId", assetCategoryId);
+                        cmd.Parameters.AddWithValue("@IsActive", isActive);
+                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+
+                        return (int)cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cambiar el estado de la categoría: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

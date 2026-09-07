@@ -439,5 +439,29 @@ namespace SECRON.Controllers
                 return -1;
             }
         }
+        // MÉTODO PRINCIPAL: Activar/Inactivar artículo (SP dedicado, sin los efectos secundarios de un update completo)
+        public static int CambiarEstadoArticulo(int itemId, bool isActive, int modifiedBy)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_Items_Delete", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@ItemId", itemId);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cambiar el estado del artículo: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
     }
 }

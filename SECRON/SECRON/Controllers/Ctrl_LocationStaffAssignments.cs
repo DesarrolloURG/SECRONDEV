@@ -152,6 +152,32 @@ public static class Ctrl_LocationStaffAssignments
         return result;
     }
 
+    // MÉTODO PRINCIPAL: Activar/Inactivar asignación (SP dedicado, sin los efectos secundarios de un update completo)
+    public static int CambiarEstadoAsignacion(int assignmentId, bool isActive, int? modifiedBy)
+    {
+        int result = 0;
+
+        using (SqlConnection conn = DatabaseConfig.StartConection())
+        {
+            using (SqlCommand cmd = new SqlCommand("SP_LocationStaffAssignments_Delete", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@AssignmentId", assignmentId);
+                cmd.Parameters.AddWithValue("@IsActive", isActive);
+                cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+
+                SqlParameter returnParam = cmd.Parameters.Add("@ReturnValue", SqlDbType.Int);
+                returnParam.Direction = ParameterDirection.ReturnValue;
+
+                cmd.ExecuteNonQuery();
+
+                result = (int)returnParam.Value;
+            }
+        }
+
+        return result;
+    }
 
     public static List<Mdl_LocationStaffAssignments> GetAvailableUsersForLocation(
         int locationId,

@@ -49,8 +49,8 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Mostrar proveedores con paginación
-        public static List<Mdl_Suppliers> MostrarProveedores(int pageNumber = 1, int pageSize = 100)
+        // MÉTODO PRINCIPAL: Mostrar proveedores con paginación (opcionalmente filtrados por estado)
+        public static List<Mdl_Suppliers> MostrarProveedores(int pageNumber = 1, int pageSize = 100, bool? isActive = null)
         {
             List<Mdl_Suppliers> lista = new List<Mdl_Suppliers>();
             try
@@ -58,12 +58,13 @@ namespace SECRON.Controllers
                 int offset = (pageNumber - 1) * pageSize;
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = @"SELECT * FROM Suppliers WHERE IsActive = 1 
+                    string query = @"SELECT * FROM Suppliers WHERE (@IsActive IS NULL OR IsActive = @IsActive)
                         ORDER BY SupplierName 
                         OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value);
                         cmd.Parameters.AddWithValue("@offset", offset);
                         cmd.Parameters.AddWithValue("@pageSize", pageSize);
 
@@ -89,6 +90,7 @@ namespace SECRON.Controllers
             string textoBusqueda = "",
             string filtro = "NOMBRE",
             string classification = "",
+            bool? isActive = null,
             int pageNumber = 1,
             int pageSize = 100)
         {
@@ -98,8 +100,9 @@ namespace SECRON.Controllers
                 int offset = (pageNumber - 1) * pageSize;
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT * FROM Suppliers WHERE IsActive = 1";
+                    string query = "SELECT * FROM Suppliers WHERE (@IsActive IS NULL OR IsActive = @IsActive)";
                     List<SqlParameter> parametros = new List<SqlParameter>();
+                    parametros.Add(new SqlParameter("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value));
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
@@ -116,7 +119,7 @@ namespace SECRON.Controllers
                             case "POR CLASIFICACIÓN":
                                 query += " AND Classification LIKE @texto";
                                 break;
-                            
+
                             case "POR ACTIVIDAD COMERCIAL":
                                 query += " AND CommercialActivity LIKE @texto";
                                 break;
@@ -203,17 +206,17 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Inactivar proveedor
-        public static int InactivarProveedor(int supplierId, int modifiedBy)
+        // MÉTODO PRINCIPAL: Activar/Inactivar proveedor (SP dedicado, sin efectos secundarios de un update completo)
+        public static int CambiarEstadoProveedor(int supplierId, bool isActive, int modifiedBy)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
-                using (SqlCommand cmd = new SqlCommand("SP_Suppliers_Update", connection))
+                using (SqlCommand cmd = new SqlCommand("SP_Suppliers_Delete", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@SupplierId", supplierId);
-                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
                     cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
@@ -222,7 +225,7 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar proveedor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cambiar el estado del proveedor: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
         }
@@ -306,15 +309,16 @@ namespace SECRON.Controllers
             return lista;
         }
 
-        // MÉTODO PARA CONTAR TOTAL
-        public static int ContarTotalProveedores(string textoBusqueda = "", string classification = "")
+        // MÉTODO PARA CONTAR TOTAL (opcionalmente filtrado por estado)
+        public static int ContarTotalProveedores(string textoBusqueda = "", string classification = "", bool? isActive = null)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT COUNT(*) FROM Suppliers WHERE IsActive = 1";
+                    string query = "SELECT COUNT(*) FROM Suppliers WHERE (@IsActive IS NULL OR IsActive = @IsActive)";
                     List<SqlParameter> parametros = new List<SqlParameter>();
+                    parametros.Add(new SqlParameter("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value));
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {

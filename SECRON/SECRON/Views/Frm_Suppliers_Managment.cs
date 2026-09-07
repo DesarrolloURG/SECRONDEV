@@ -17,6 +17,7 @@ namespace SECRON.Views
         private string _ultimoTextoBusqueda = "";
         private string _ultimaClasificacion = "";
         private string _ultimoFiltroBancario = "TODOS";
+        private bool? _ultimoIsActive = true;
         private List<Mdl_Suppliers> _listaCompletaFiltrada = null;
         public Mdl_Security_UserInfo UserData { get; set; }
         private Mdl_Suppliers _proveedorSeleccionado = null;
@@ -40,8 +41,6 @@ namespace SECRON.Views
                 ConfigurarPlaceHoldersTextbox();
                 ConfigurarMaxLengthTextBox();
                 ConfigurarComboBoxes();
-                InicializarScroll();
-                ConfigurarEventosScroll();
                 CrearToolStripPaginacion();
                 CargarProximoCodigoProveedor();
 
@@ -171,6 +170,7 @@ namespace SECRON.Views
             Filtro1.DropDownStyle = ComboBoxStyle.DropDownList;
             Filtro2.DropDownStyle = ComboBoxStyle.DropDownList;
             Filtro3.DropDownStyle = ComboBoxStyle.DropDownList;
+            Filtro4.DropDownStyle = ComboBoxStyle.DropDownList;
 
             CargarClasificaciones();
             CargarBancos();
@@ -308,6 +308,12 @@ namespace SECRON.Views
                 "SIN DATOS BANCARIOS"
             });
             Filtro3.SelectedIndex = 0;
+
+            Filtro4.Items.Clear();
+            Filtro4.Items.Add("TODOS");
+            Filtro4.Items.Add("ACTIVOS");
+            Filtro4.Items.Add("INACTIVOS");
+            Filtro4.SelectedIndex = 1;
         }
         #endregion Filtros
         #region Search
@@ -336,10 +342,16 @@ namespace SECRON.Views
 
                 string filtroBancario = Filtro3.SelectedItem?.ToString() ?? "TODOS";
 
+                bool? isActive = null;
+                string filtroEstado = Filtro4.SelectedItem?.ToString() ?? "TODOS";
+                if (filtroEstado == "ACTIVOS") isActive = true;
+                else if (filtroEstado == "INACTIVOS") isActive = false;
+
                 // Guardar filtros
                 _ultimoTextoBusqueda = valorBusqueda;
                 _ultimaClasificacion = clasificacion;
                 _ultimoFiltroBancario = filtroBancario;
+                _ultimoIsActive = isActive;
 
                 paginaActual = 1;
 
@@ -349,6 +361,7 @@ namespace SECRON.Views
                         textoBusqueda: valorBusqueda,
                         filtro: filtroBusqueda,
                         classification: clasificacion,
+                        isActive: isActive,
                         pageNumber: 1,
                         pageSize: int.MaxValue
                     );
@@ -385,13 +398,15 @@ namespace SECRON.Views
                         textoBusqueda: valorBusqueda,
                         filtro: filtroBusqueda,
                         classification: clasificacion,
+                        isActive: isActive,
                         pageNumber: paginaActual,
                         pageSize: registrosPorPagina
                     );
 
                     totalRegistros = Ctrl_Suppliers.ContarTotalProveedores(
                         textoBusqueda: valorBusqueda,
-                        classification: clasificacion
+                        classification: clasificacion,
+                        isActive: isActive
                     );
                 }
 
@@ -437,11 +452,13 @@ namespace SECRON.Views
             Filtro1.SelectedIndex = 0;
             Filtro2.SelectedIndex = 0;
             Filtro3.SelectedIndex = 0;
+            Filtro4.SelectedIndex = 1;
 
             // ⭐ LIMPIAR FILTROS GUARDADOS
             _ultimoTextoBusqueda = "";
             _ultimaClasificacion = "";
             _ultimoFiltroBancario = "TODOS";
+            _ultimoIsActive = true;
             _listaCompletaFiltrada = null;
 
             paginaActual = 1;
@@ -451,107 +468,6 @@ namespace SECRON.Views
             ActualizarInfoPaginacion();
         }
         #endregion Search
-        #region vScrollBar
-        private void Panel_Izquierdo_MouseEnter(object sender, EventArgs e)
-        {
-            Panel_Izquierdo.Focus();
-        }
-
-        private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            int scrollPosition = vScrollBar.Value;
-
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-
-                string[] parts = ctrl.Tag.ToString().Split(':');
-                int originalY = int.Parse(parts[1]);
-                ctrl.Top = originalY - scrollPosition;
-            }
-
-            Panel_Izquierdo.Invalidate();
-        }
-
-        private void Panel_Izquierdo_MouseWheel(object sender, MouseEventArgs e)
-        {
-            if (!vScrollBar.Visible) return;
-
-            int delta = e.Delta / 120;
-            int newValue = vScrollBar.Value - (delta * 30);
-
-            if (newValue < 0) newValue = 0;
-            if (newValue > vScrollBar.Maximum) newValue = vScrollBar.Maximum;
-
-            vScrollBar.Value = newValue;
-            MoverContenido(newValue);
-        }
-
-        private void MoverContenido(int scrollPosition)
-        {
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-                string[] parts = ctrl.Tag.ToString().Split(':');
-                int originalY = int.Parse(parts[1]);
-                ctrl.Top = originalY - scrollPosition;
-            }
-            Panel_Izquierdo.Invalidate();
-        }
-
-        private void ConfigurarEventosScroll()
-        {
-            Panel_Izquierdo.TabStop = true;
-            Panel_Izquierdo.MouseWheel += Panel_Izquierdo_MouseWheel;
-            Panel_Izquierdo.MouseEnter += Panel_Izquierdo_MouseEnter;
-
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                ctrl.MouseWheel += Panel_Izquierdo_MouseWheel;
-            }
-        }
-
-        private void InicializarScroll()
-        {
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-            }
-
-            int maxBottom = 0;
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                maxBottom = Math.Max(maxBottom, ctrl.Bottom);
-            }
-
-            int totalContentHeight = maxBottom + (Panel_Izquierdo.Height / 3);
-
-            if (totalContentHeight <= Panel_Izquierdo.Height)
-            {
-                vScrollBar.Visible = false;
-                return;
-            }
-
-            vScrollBar.Visible = true;
-            vScrollBar.Minimum = 0;
-            vScrollBar.Maximum = totalContentHeight - Panel_Izquierdo.Height;
-            vScrollBar.SmallChange = 30;
-            vScrollBar.LargeChange = Panel_Izquierdo.Height / 4;
-
-            vScrollBar.Scroll -= vScrollBar_Scroll;
-            vScrollBar.Scroll += vScrollBar_Scroll;
-            vScrollBar.Value = 0;
-        }
-        #endregion vScrollBar
         #region ConfiguracionesTabla
         private void CargarProveedores()
         {
@@ -569,7 +485,7 @@ namespace SECRON.Views
 
         public void RefrescarListado()
         {
-            proveedoresList = Ctrl_Suppliers.MostrarProveedores(paginaActual, registrosPorPagina);
+            proveedoresList = Ctrl_Suppliers.MostrarProveedores(paginaActual, registrosPorPagina, isActive: true);
             Tabla.DataSource = proveedoresList;
         }
 
@@ -597,6 +513,16 @@ namespace SECRON.Views
                 Tabla.Columns["CreatedBy"].Visible = false;
                 Tabla.Columns["ModifiedDate"].Visible = false;
                 Tabla.Columns["ModifiedBy"].Visible = false;
+
+                if (Tabla.Columns.Contains("IsActiveText"))
+                {
+                    Tabla.Columns["IsActiveText"].Visible = true;
+                    Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                    Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                    Tabla.Columns["IsActiveText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    Tabla.Columns["IsActiveText"].Width = 90;
+                    Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
             }
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -607,6 +533,20 @@ namespace SECRON.Views
 
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
 
         private void CargarDatosProveedorSeleccionado()
@@ -749,6 +689,8 @@ namespace SECRON.Views
                         Txt_BankAccountNumber.Text = "NÚMERO DE CUENTA BANCARIA";
                         Txt_BankAccountNumber.ForeColor = Color.Gray;
                     }
+
+                    Btn_Inactive.Text = _proveedorSeleccionado.IsActive ? "INACTIVAR" : "ACTIVAR";
                 }
             }
             catch (Exception ex)
@@ -874,11 +816,12 @@ namespace SECRON.Views
                     Tabla.DataSource = proveedoresList;
                 }
                 // ⭐ SI HAY OTROS FILTROS ACTIVOS (sin bancario), USAR BÚSQUEDA DE BD
-                else if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) || !string.IsNullOrEmpty(_ultimaClasificacion))
+                else if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) || !string.IsNullOrEmpty(_ultimaClasificacion) || _ultimoIsActive != true)
                 {
                     proveedoresList = Ctrl_Suppliers.BuscarProveedores(
                         textoBusqueda: _ultimoTextoBusqueda,
                         classification: _ultimaClasificacion,
+                        isActive: _ultimoIsActive,
                         pageNumber: paginaActual,
                         pageSize: registrosPorPagina
                     );
@@ -904,7 +847,7 @@ namespace SECRON.Views
                 _ultimoFiltroBancario == "TODOS" &&
                 totalRegistros == 0)
             {
-                totalRegistros = Ctrl_Suppliers.ContarTotalProveedores();
+                totalRegistros = Ctrl_Suppliers.ContarTotalProveedores(isActive: _ultimoIsActive);
             }
 
             totalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
@@ -1232,22 +1175,17 @@ namespace SECRON.Views
             {
                 if (_proveedorSeleccionado == null || _proveedorSeleccionado.SupplierId == 0)
                 {
-                    MessageBox.Show("Debe seleccionar un proveedor para inactivar", "Validación",
+                    MessageBox.Show("Debe seleccionar un proveedor", "Validación",
                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!_proveedorSeleccionado.IsActive)
-                {
-                    MessageBox.Show("Este proveedor ya se encuentra inactivo", "Información",
-                                   MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
+                bool estaActivo = _proveedorSeleccionado.IsActive;
+                string accion = estaActivo ? "inactivar" : "activar";
 
                 var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea INACTIVAR a {_proveedorSeleccionado.SupplierName}?\n\n" +
-                    "El proveedor no aparecerá en las listas activas pero sus datos se conservarán.",
-                    "Confirmar Inactivación",
+                    $"¿Está seguro que desea {accion} a {_proveedorSeleccionado.SupplierName}?",
+                    $"Confirmar {accion}ción",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning
                 );
@@ -1256,14 +1194,14 @@ namespace SECRON.Views
                     return;
 
                 int modifiedBy = UserData?.UserId ?? 1;
-                int resultado = Ctrl_Suppliers.InactivarProveedor(_proveedorSeleccionado.SupplierId, modifiedBy);
+                int resultado = Ctrl_Suppliers.CambiarEstadoProveedor(_proveedorSeleccionado.SupplierId, !estaActivo, modifiedBy);
 
                 if (resultado > 0)
                 {
-                    MessageBox.Show("Proveedor inactivado exitosamente", "Éxito",
+                    MessageBox.Show($"Proveedor {(estaActivo ? "inactivado" : "activado")} exitosamente", "Éxito",
                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
-                    RefrescarListado();
+                    CambiarPagina(paginaActual);
                     ActualizarInfoPaginacion();
 
                     // ⭐ Cargar el próximo código después de inactivar exitosamente
@@ -1271,13 +1209,13 @@ namespace SECRON.Views
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo inactivar el proveedor", "Error",
+                    MessageBox.Show($"No se pudo {accion} el proveedor", "Error",
                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al inactivar: {ex.Message}", "Error",
+                MessageBox.Show($"Error al cambiar el estado: {ex.Message}", "Error",
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1297,6 +1235,7 @@ namespace SECRON.Views
 
             // ⭐ RECARGAR EL PRÓXIMO CÓDIGO DE PROVEEDOR
             CargarProximoCodigoProveedor();
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
 
             Txt_TaxId.Focus(); // ⭐ Foco en el primer campo editable (NIT)
         }
@@ -1323,20 +1262,22 @@ namespace SECRON.Views
                     // Ya tenemos la lista filtrada en memoria (con filtro bancario)
                     todosLosProveedores = _listaCompletaFiltrada;
                 }
-                else if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) || !string.IsNullOrEmpty(_ultimaClasificacion))
+                else if (!string.IsNullOrEmpty(_ultimoTextoBusqueda) || !string.IsNullOrEmpty(_ultimaClasificacion) || _ultimoIsActive != true)
                 {
-                    // Hay filtros de BD activos (búsqueda o clasificación)
+                    // Hay filtros de BD activos (búsqueda, clasificación o estado)
                     todosLosProveedores = Ctrl_Suppliers.BuscarProveedores(
                         textoBusqueda: _ultimoTextoBusqueda,
                         classification: _ultimaClasificacion,
+                        isActive: _ultimoIsActive,
                         pageNumber: 1,
                         pageSize: int.MaxValue
                     );
                 }
                 else
                 {
-                    // Sin filtros: exportar todos los proveedores
+                    // Sin filtros: exportar todos los proveedores activos (por defecto)
                     todosLosProveedores = Ctrl_Suppliers.BuscarProveedores(
+                        isActive: true,
                         pageNumber: 1,
                         pageSize: int.MaxValue
                     );

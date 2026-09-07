@@ -21,6 +21,7 @@ namespace SECRON.Views
         public bool ModoSelector { get; set; } = false;
 
         private int _selectedClassificationId = 0;
+        private bool _selectedIsActive = true;
         private List<Mdl_FixedAssetClassificationCategory> _clasificacionesList;
 
         #endregion
@@ -128,18 +129,38 @@ namespace SECRON.Views
                 DataPropertyName = "Description",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
-            Tabla.Columns.Add(new DataGridViewCheckBoxColumn
+            Tabla.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colActivo",
-                HeaderText = "ACTIVO",
-                DataPropertyName = "IsActive",
-                Width = 70
+                HeaderText = "ESTADO",
+                DataPropertyName = "IsActiveText",
+                Width = 90,
+                ReadOnly = true,
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleCenter }
             });
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+
+            Tabla.SelectionChanged -= Tabla_SelectionChanged;
+            Tabla.SelectionChanged += Tabla_SelectionChanged;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "colActivo") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.Font, FontStyle.Bold);
         }
 
         private void EstadoInicial()
         {
             _selectedClassificationId = 0;
+            _selectedIsActive = true;
 
             Txt_Codigo.Clear();
             Txt_Name.Clear();
@@ -147,7 +168,8 @@ namespace SECRON.Views
 
             Btn_Save.Enabled = true;
             Btn_Update.Enabled = false;
-            Btn_Inactive.Enabled = false;
+            Btn_IsActive.Enabled = false;
+            Btn_IsActive.Text = "ACTIVAR/INACTIVAR";
             Btn_Yes.Enabled = false;
             Btn_No.Enabled = _parent != null || ModoSelector;
 
@@ -215,12 +237,23 @@ namespace SECRON.Views
         private void Tabla_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
+            ActualizarSeleccion(Tabla.Rows[e.RowIndex]);
+        }
 
-            DataGridViewRow row = Tabla.Rows[e.RowIndex];
+        private void Tabla_SelectionChanged(object sender, EventArgs e)
+        {
+            if (Tabla.SelectedRows.Count == 0) return;
+            ActualizarSeleccion(Tabla.SelectedRows[0]);
+        }
 
+        private void ActualizarSeleccion(DataGridViewRow row)
+        {
             _selectedClassificationId = Convert.ToInt32(row.Cells["colId"].Value);
             string nombre = row.Cells["colNombre"].Value?.ToString();
             string codigo = row.Cells["colCodigo"].Value?.ToString();
+
+            var clasificacion = _clasificacionesList?.Find(c => c.ClassificationId == _selectedClassificationId);
+            _selectedIsActive = clasificacion?.IsActive ?? true;
 
             Txt_Codigo.Text = codigo;
             Txt_Name.Text = nombre;
@@ -228,7 +261,8 @@ namespace SECRON.Views
 
             Btn_Save.Enabled = false;
             Btn_Update.Enabled = true;
-            Btn_Inactive.Enabled = true;
+            Btn_IsActive.Enabled = true;
+            Btn_IsActive.Text = _selectedIsActive ? "INACTIVAR" : "ACTIVAR";
             Btn_Yes.Enabled = _parent != null || ModoSelector;
         }
 
@@ -334,27 +368,32 @@ namespace SECRON.Views
             }
         }
 
-        private void Btn_Inactive_Click(object sender, EventArgs e)
+        private void Btn_IsActive_Click(object sender, EventArgs e)
         {
             if (_selectedClassificationId == 0) return;
 
             string nombre = Txt_Name.Text.Trim();
+            bool nuevoEstado = !_selectedIsActive;
+            string accion = _selectedIsActive ? "inactivar" : "activar";
 
-            DialogResult confirm = MessageBox.Show(
-                $"¿Está seguro de inactivar la clasificación \"{nombre}\"?\n\n" +
-                "Solo se puede inactivar si no tiene categorías activas asignadas.",
-                "Confirmar inactivación",
+            string mensaje = _selectedIsActive
+                ? $"¿Está seguro de inactivar la clasificación \"{nombre}\"?\n\n" +
+                  "Solo se puede inactivar si no tiene categorías activas asignadas."
+                : $"¿Está seguro de activar la clasificación \"{nombre}\"?";
+
+            DialogResult confirm = MessageBox.Show(mensaje,
+                $"Confirmar {accion}ción",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirm != DialogResult.Yes) return;
 
             int resultado = Ctrl_FixedAssetClassificationCategories
-                .InactivarClasificacion(_selectedClassificationId, UserData?.UserId);
+                .CambiarEstadoClasificacion(_selectedClassificationId, nuevoEstado, UserData?.UserId);
 
             switch (resultado)
             {
                 case 1:
-                    MessageBox.Show("Clasificación inactivada correctamente.", "Éxito",
+                    MessageBox.Show($"Clasificación {(nuevoEstado ? "activada" : "inactivada")} correctamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarClasificaciones(isActive: true);
                     EstadoInicial();
@@ -369,7 +408,7 @@ namespace SECRON.Views
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
                 default:
-                    MessageBox.Show("Error al inactivar la clasificación.", "Error",
+                    MessageBox.Show($"Error al {accion} la clasificación.", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }

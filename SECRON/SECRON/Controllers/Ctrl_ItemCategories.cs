@@ -39,17 +39,19 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Mostrar todas las categorías
-        public static List<Mdl_ItemCategories> MostrarCategorias()
+        // MÉTODO PRINCIPAL: Mostrar categorías (opcionalmente filtradas por estado)
+        public static List<Mdl_ItemCategories> MostrarCategorias(bool? isActive = null)
         {
             List<Mdl_ItemCategories> lista = new List<Mdl_ItemCategories>();
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT * FROM ItemCategories WHERE IsActive = 1 ORDER BY CategoryName";
+                    string query = "SELECT * FROM ItemCategories WHERE (@IsActive IS NULL OR IsActive = @IsActive) ORDER BY CategoryName";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value);
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -95,18 +97,18 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Inactivar categoría
-        public static int InactivarCategoria(int categoryId, int modifiedBy)
+        // MÉTODO PRINCIPAL: Activar/Inactivar categoría (SP dedicado, sin efectos secundarios de un update completo)
+        public static int CambiarEstadoCategoria(int categoryId, bool isActive, int modifiedBy)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
-                using (SqlCommand cmd = new SqlCommand("SP_ItemCategories_Update", connection))
+                using (SqlCommand cmd = new SqlCommand("SP_ItemCategories_Delete", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@CategoryId", categoryId);
-                    cmd.Parameters.AddWithValue("@IsInactivation", true);
-                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -114,7 +116,7 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar categoría: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cambiar el estado de la categoría: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
         }
@@ -130,7 +132,9 @@ namespace SECRON.Controllers
                 Description = reader[3] == DBNull.Value ? null : reader[3].ToString(),
                 IsActive = reader.GetBoolean(4),
                 CreatedDate = reader.GetDateTime(5),
-                CreatedBy = reader[6] == DBNull.Value ? null : (int?)reader.GetInt32(6)
+                CreatedBy = reader[6] == DBNull.Value ? null : (int?)reader.GetInt32(6),
+                ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["ModifiedDate"]),
+                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["ModifiedBy"])
             };
         }
 

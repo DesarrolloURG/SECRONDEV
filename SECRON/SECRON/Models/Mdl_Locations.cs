@@ -15,6 +15,7 @@ namespace SECRON.Models
         public string Address { get; set; }
         public string City { get; set; }   // Se mantiene temporalmente
         public bool IsActive { get; set; }
+        public string IsActiveText => IsActive ? "ACTIVO" : "INACTIVO";
 
         public int? LocationCategoryId { get; set; }
         public int? PrimaryWarehouseId { get; set; }

@@ -124,7 +124,7 @@ namespace SECRON.Views
             Txt_SubCategory.MaxLength = 200;
 
         }
-        
+
         private void ConfigurarComponentesDeshabilitados()
         {
             Txt_Codigo.Enabled = false;
@@ -304,6 +304,13 @@ namespace SECRON.Views
                 Tabla.Columns["CreatedBy"].Visible = false;
                 Tabla.Columns["ModifiedDate"].Visible = false;
                 Tabla.Columns["ModifiedBy"].Visible = false;
+
+                Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                Tabla.Columns["IsActiveText"].Visible = true;
+                Tabla.Columns["IsActiveText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                Tabla.Columns["IsActiveText"].Width = 90;
+                Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -314,6 +321,20 @@ namespace SECRON.Views
 
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
         public void AjustarColumnas()
         {
@@ -443,6 +464,8 @@ namespace SECRON.Views
                 _categoriaSeleccionadaId = _itemSeleccionado.CategoryId;
                 _unidadSeleccionadaId = _itemSeleccionado.UnitId;
                 _subCategoriaSeleccionadaId = _itemSeleccionado.SubCategoryId;
+
+                Btn_Inactive.Text = _itemSeleccionado.IsActive ? "INACTIVAR" : "ACTIVAR";
                 _subCategoriaSeleccionadaCode = _itemSeleccionado.SubCategoryName;
                 SetTextBoxFromValue(Txt_SubCategory, _itemSeleccionado.SubCategoryName, "SELECCIONAR SUBCATEGORÍA");
 
@@ -525,6 +548,7 @@ namespace SECRON.Views
                 i.HasLotControl,
                 i.HasExpiryDate,
                 i.IsActive,
+                IsActiveText = i.IsActive ? "ACTIVO" : "INACTIVO",
                 i.CreatedDate,
                 i.CreatedBy,
                 i.ModifiedDate,
@@ -1010,7 +1034,7 @@ namespace SECRON.Views
                     MessageBox.Show(
                         "No es posible cambiar la CATEGORÍA de un artículo existente.\n\n" +
                         "Si necesita asignarlo a una categoría diferente, deberá eliminar este artículo " +
-                        "y registrarlo nuevamente." ,
+                        "y registrarlo nuevamente.",
                         "Cambio de categoría no permitido",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -1091,22 +1115,22 @@ namespace SECRON.Views
             {
                 if (_itemSeleccionado == null || _itemSeleccionado.ItemId == 0)
                 {
-                    MessageBox.Show("Debe seleccionar un artículo para inactivar", "Validación",
+                    MessageBox.Show("Debe seleccionar un artículo", "Validación",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!_itemSeleccionado.IsActive)
-                {
-                    MessageBox.Show("Este artículo ya se encuentra inactivo", "Información",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
+                bool estaActivo = _itemSeleccionado.IsActive;
+                bool nuevoEstado = !estaActivo;
+                string accion = estaActivo ? "INACTIVAR" : "ACTIVAR";
 
-                var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea INACTIVAR el artículo {_itemSeleccionado.ItemName}?\n\n" +
-                    "El artículo no aparecerá en las listas activas pero sus datos se conservarán.",
-                    "Confirmar Inactivación",
+                string mensaje = estaActivo
+                    ? $"¿Está seguro que desea INACTIVAR el artículo {_itemSeleccionado.ItemName}?\n\n" +
+                      "El artículo no aparecerá en las listas activas pero sus datos se conservarán."
+                    : $"¿Está seguro que desea ACTIVAR el artículo {_itemSeleccionado.ItemName}?";
+
+                var confirmacion = MessageBox.Show(mensaje,
+                    $"Confirmar {accion.ToLower()}ción",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning
                 );
@@ -1115,11 +1139,11 @@ namespace SECRON.Views
                     return;
 
                 int modifiedBy = UserData?.UserId ?? 1;
-                int resultado = Ctrl_Items.InactivarArticulo(_itemSeleccionado.ItemId, modifiedBy);
+                int resultado = Ctrl_Items.CambiarEstadoArticulo(_itemSeleccionado.ItemId, nuevoEstado, modifiedBy);
 
                 if (resultado > 0)
                 {
-                    MessageBox.Show("Artículo inactivado exitosamente", "Éxito",
+                    MessageBox.Show($"Artículo {(nuevoEstado ? "activado" : "inactivado")} exitosamente", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
                     RefrescarListado();
@@ -1130,13 +1154,13 @@ namespace SECRON.Views
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo inactivar el artículo", "Error",
+                    MessageBox.Show($"No se pudo {accion.ToLower()} el artículo", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al inactivar: {ex.Message}", "Error",
+                MessageBox.Show($"Error al cambiar el estado: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1159,6 +1183,7 @@ namespace SECRON.Views
             _subCategoriaSeleccionadaId = null;
             _subCategoriaSeleccionadaCode = null;
             SetTextBoxFromValue(Txt_SubCategory, "", "SELECCIONAR SUBCATEGORÍA");
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
 
             Txt_Codigo.Focus();
         }

@@ -10,6 +10,8 @@ namespace SECRON.Models
         public string ClassificationName { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
+        public string IsActiveText => IsActive ? "ACTIVO" : "INACTIVO";
+
         public System.DateTime? CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public System.DateTime? ModifiedDate { get; set; }

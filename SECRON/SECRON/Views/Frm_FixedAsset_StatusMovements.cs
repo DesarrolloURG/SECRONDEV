@@ -127,6 +127,7 @@ namespace SECRON.Views
             // Botones dependientes de selección — siempre deshabilitados al limpiar
             Btn_Update.Enabled = false;
             Btn_Delete.Enabled = false;
+            Btn_Delete.Text = "ACTIVAR/INACTIVAR";
             Lbl_Beneficiario.Enabled = false;
 
             // Btn_Save y Btn_TransferStatusTransition respetan permisos ya cargados
@@ -250,6 +251,7 @@ namespace SECRON.Views
             Btn_Save.Enabled = TienePermiso("FA_MOVEMENTSSTATES_CREATE");
             Btn_Update.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
             Btn_Delete.Enabled = TienePermiso("FA_MOVEMENTSSTATES_INACTIVE");
+            Btn_Delete.Text = CheckBox_IsActive.Checked ? "INACTIVAR" : "ACTIVAR";
             Btn_TransferStatusTransition.Enabled = TienePermiso("FA_MOVEMENTSSTATES_UPDATE");
         }
 
@@ -338,21 +340,27 @@ namespace SECRON.Views
             if (_selectedStatusId == 0) return;
 
             string nombreEstado = Txt_StatusName.Text.Trim();
+            bool estaActivo = CheckBox_IsActive.Checked;
+            bool nuevoEstado = !estaActivo;
+            string accion = estaActivo ? "inactivar" : "activar";
 
-            DialogResult confirmacion = MessageBox.Show(
-                $"¿Está seguro de que desea inactivar el estado \"{nombreEstado}\"?\n\nEl estado dejará de estar disponible para nuevos traslados.",
-                "Confirmar inactivación",
+            string mensaje = estaActivo
+                ? $"¿Está seguro de que desea inactivar el estado \"{nombreEstado}\"?\n\nEl estado dejará de estar disponible para nuevos traslados."
+                : $"¿Está seguro de que desea activar el estado \"{nombreEstado}\"?";
+
+            DialogResult confirmacion = MessageBox.Show(mensaje,
+                $"Confirmar {accion}ción",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
             if (confirmacion != DialogResult.Yes) return;
 
-            int resultado = Ctrl_FixedAssetTransferStatus.InactivarEstado(_selectedStatusId, UserData?.UserId);
+            int resultado = Ctrl_FixedAssetTransferStatus.CambiarEstadoEstado(_selectedStatusId, nuevoEstado, UserData?.UserId);
 
             switch (resultado)
             {
                 case 1:
-                    MessageBox.Show("Estado inactivado correctamente.", "Éxito",
+                    MessageBox.Show($"Estado {(nuevoEstado ? "activado" : "inactivado")} correctamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarEstados();
                     EstadoInicial();
@@ -366,7 +374,7 @@ namespace SECRON.Views
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
                 default:
-                    MessageBox.Show("Ocurrió un error al inactivar el estado.", "Error",
+                    MessageBox.Show($"Ocurrió un error al {accion} el estado.", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
@@ -473,6 +481,6 @@ namespace SECRON.Views
 
         #endregion
 
-        
+
     }
 }

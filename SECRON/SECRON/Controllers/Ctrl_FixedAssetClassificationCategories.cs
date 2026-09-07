@@ -13,7 +13,7 @@ namespace SECRON.Controllers
 {
     internal class Ctrl_FixedAssetClassificationCategories
     {
-        
+
         public static List<Mdl_FixedAssetClassificationCategory> MostrarClasificaciones(
             string classificationCode = null,
             string classificationName = null,
@@ -154,7 +154,8 @@ namespace SECRON.Controllers
             }
         }
 
-        public static int InactivarClasificacion(int classificationId, int? modifiedBy = null)
+        // MÉTODO PRINCIPAL: Activar/Inactivar clasificación (mismo SP, ahora con @IsActive)
+        public static int CambiarEstadoClasificacion(int classificationId, bool isActive, int? modifiedBy = null)
         {
             try
             {
@@ -165,6 +166,7 @@ namespace SECRON.Controllers
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@ClassificationId", classificationId);
+                        cmd.Parameters.AddWithValue("@IsActive", isActive);
                         cmd.Parameters.AddWithValue("@ModifiedBy",
                             (object)modifiedBy ?? DBNull.Value);
 
@@ -174,13 +176,13 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar clasificación: " + ex.Message,
+                MessageBox.Show("Error al cambiar el estado de la clasificación: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
         }
 
-        
+
         private static Mdl_FixedAssetClassificationCategory Mapear(SqlDataReader reader)
         {
             return new Mdl_FixedAssetClassificationCategory

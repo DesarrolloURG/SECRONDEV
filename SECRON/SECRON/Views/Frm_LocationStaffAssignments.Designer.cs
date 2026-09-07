@@ -34,8 +34,11 @@
             this.Lbl_RoleType = new System.Windows.Forms.Label();
             this.CBX_RoleType = new System.Windows.Forms.ComboBox();
             this.Panel_Derecho = new System.Windows.Forms.Panel();
+            this.PanelToolStrip2 = new System.Windows.Forms.Panel();
+            this.Lbl_EmployeesPaging = new System.Windows.Forms.Label();
             this.Lbl_EmployeesHeader = new System.Windows.Forms.Label();
             this.Panel_GridEmployees = new System.Windows.Forms.Panel();
+            this.Grid_Employees = new System.Windows.Forms.DataGridView();
             this.Panel_SearchEmployees = new System.Windows.Forms.Panel();
             this.Txt_SearchEmployee = new System.Windows.Forms.TextBox();
             this.Btn_SearchGridEmployees = new System.Windows.Forms.Button();
@@ -51,22 +54,19 @@
             this.Btn_Search = new System.Windows.Forms.Button();
             this.Btn_CleanSearch = new System.Windows.Forms.Button();
             this.CBX_LocationStatus = new System.Windows.Forms.ComboBox();
-            this.PanelToolStrip2 = new System.Windows.Forms.Panel();
-            this.Lbl_EmployeesPaging = new System.Windows.Forms.Label();
-            this.Grid_Employees = new System.Windows.Forms.DataGridView();
             this.Panel_Superior.SuspendLayout();
             this.Panel_Izquierdo.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
             this.Panel_1.SuspendLayout();
             this.Panel_Derecho.SuspendLayout();
+            this.PanelToolStrip2.SuspendLayout();
             this.Panel_GridEmployees.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Grid_Employees)).BeginInit();
             this.Panel_SearchEmployees.SuspendLayout();
             this.PanelTabla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Grid_Locations)).BeginInit();
             this.PanelToolStrip.SuspendLayout();
             this.Panel_SearchLocations.SuspendLayout();
-            this.PanelToolStrip2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Grid_Employees)).BeginInit();
             this.SuspendLayout();
             // 
             // Panel_Superior
@@ -105,7 +105,7 @@
             this.Panel_Izquierdo.Location = new System.Drawing.Point(0, 68);
             this.Panel_Izquierdo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Panel_Izquierdo.Name = "Panel_Izquierdo";
-            this.Panel_Izquierdo.Size = new System.Drawing.Size(581, 987);
+            this.Panel_Izquierdo.Size = new System.Drawing.Size(643, 987);
             this.Panel_Izquierdo.TabIndex = 7;
             // 
             // Lbl_Titulo
@@ -121,21 +121,20 @@
             // Panel_CRUD
             // 
             this.Panel_CRUD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.Panel_CRUD.Controls.Add(this.Btn_Clear);
             this.Panel_CRUD.Controls.Add(this.Btn_Inactive);
             this.Panel_CRUD.Controls.Add(this.Btn_Update);
             this.Panel_CRUD.Controls.Add(this.Btn_Save);
             this.Panel_CRUD.Location = new System.Drawing.Point(7, 46);
             this.Panel_CRUD.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Panel_CRUD.Name = "Panel_CRUD";
-            this.Panel_CRUD.Size = new System.Drawing.Size(555, 58);
+            this.Panel_CRUD.Size = new System.Drawing.Size(630, 58);
             this.Panel_CRUD.TabIndex = 83;
             // 
             // Btn_Clear
             // 
             this.Btn_Clear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Clear.Image = global::SECRON.Properties.Resources.Clear25x25;
-            this.Btn_Clear.Location = new System.Drawing.Point(503, 6);
+            this.Btn_Clear.Location = new System.Drawing.Point(573, 9);
             this.Btn_Clear.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Btn_Clear.Name = "Btn_Clear";
             this.Btn_Clear.Size = new System.Drawing.Size(44, 46);
@@ -151,9 +150,9 @@
             this.Btn_Inactive.Location = new System.Drawing.Point(325, 6);
             this.Btn_Inactive.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Btn_Inactive.Name = "Btn_Inactive";
-            this.Btn_Inactive.Size = new System.Drawing.Size(165, 46);
+            this.Btn_Inactive.Size = new System.Drawing.Size(283, 46);
             this.Btn_Inactive.TabIndex = 1;
-            this.Btn_Inactive.Text = "INACTIVAR";
+            this.Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
             this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Inactive.UseVisualStyleBackColor = true;
             this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
@@ -191,6 +190,7 @@
             // Panel_1
             // 
             this.Panel_1.BackColor = System.Drawing.Color.White;
+            this.Panel_1.Controls.Add(this.Btn_Clear);
             this.Panel_1.Controls.Add(this.Btn_SearchEmployee);
             this.Panel_1.Controls.Add(this.Lbl_Location);
             this.Panel_1.Controls.Add(this.Txt_LocationName);
@@ -202,14 +202,14 @@
             this.Panel_1.Location = new System.Drawing.Point(7, 110);
             this.Panel_1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Panel_1.Name = "Panel_1";
-            this.Panel_1.Size = new System.Drawing.Size(555, 320);
+            this.Panel_1.Size = new System.Drawing.Size(630, 320);
             this.Panel_1.TabIndex = 81;
             // 
             // Btn_SearchEmployee
             // 
             this.Btn_SearchEmployee.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_SearchEmployee.Image = ((System.Drawing.Image)(resources.GetObject("Btn_SearchEmployee.Image")));
-            this.Btn_SearchEmployee.Location = new System.Drawing.Point(475, 155);
+            this.Btn_SearchEmployee.Location = new System.Drawing.Point(570, 153);
             this.Btn_SearchEmployee.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Btn_SearchEmployee.Name = "Btn_SearchEmployee";
             this.Btn_SearchEmployee.Size = new System.Drawing.Size(47, 46);
@@ -233,7 +233,7 @@
             this.Txt_LocationName.Location = new System.Drawing.Point(19, 87);
             this.Txt_LocationName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Txt_LocationName.Name = "Txt_LocationName";
-            this.Txt_LocationName.Size = new System.Drawing.Size(503, 27);
+            this.Txt_LocationName.Size = new System.Drawing.Size(545, 27);
             this.Txt_LocationName.TabIndex = 12;
             // 
             // Lbl_Subtitulo1
@@ -264,7 +264,7 @@
             this.Txt_EmployeeName.Location = new System.Drawing.Point(19, 164);
             this.Txt_EmployeeName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Txt_EmployeeName.Name = "Txt_EmployeeName";
-            this.Txt_EmployeeName.Size = new System.Drawing.Size(430, 27);
+            this.Txt_EmployeeName.Size = new System.Drawing.Size(545, 27);
             this.Txt_EmployeeName.TabIndex = 4;
             // 
             // Lbl_RoleType
@@ -284,7 +284,7 @@
             this.CBX_RoleType.Location = new System.Drawing.Point(19, 240);
             this.CBX_RoleType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CBX_RoleType.Name = "CBX_RoleType";
-            this.CBX_RoleType.Size = new System.Drawing.Size(503, 28);
+            this.CBX_RoleType.Size = new System.Drawing.Size(545, 28);
             this.CBX_RoleType.TabIndex = 10;
             // 
             // Panel_Derecho
@@ -299,11 +299,33 @@
             this.Panel_Derecho.Controls.Add(this.Panel_SearchLocations);
             this.Panel_Derecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Panel_Derecho.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Panel_Derecho.Location = new System.Drawing.Point(581, 68);
+            this.Panel_Derecho.Location = new System.Drawing.Point(643, 68);
             this.Panel_Derecho.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Panel_Derecho.Name = "Panel_Derecho";
-            this.Panel_Derecho.Size = new System.Drawing.Size(998, 987);
+            this.Panel_Derecho.Size = new System.Drawing.Size(936, 987);
             this.Panel_Derecho.TabIndex = 0;
+            // 
+            // PanelToolStrip2
+            // 
+            this.PanelToolStrip2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelToolStrip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.PanelToolStrip2.Controls.Add(this.Lbl_EmployeesPaging);
+            this.PanelToolStrip2.Location = new System.Drawing.Point(5, 568);
+            this.PanelToolStrip2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PanelToolStrip2.Name = "PanelToolStrip2";
+            this.PanelToolStrip2.Size = new System.Drawing.Size(920, 48);
+            this.PanelToolStrip2.TabIndex = 76;
+            // 
+            // Lbl_EmployeesPaging
+            // 
+            this.Lbl_EmployeesPaging.AutoSize = true;
+            this.Lbl_EmployeesPaging.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.Lbl_EmployeesPaging.Location = new System.Drawing.Point(16, 14);
+            this.Lbl_EmployeesPaging.Name = "Lbl_EmployeesPaging";
+            this.Lbl_EmployeesPaging.Size = new System.Drawing.Size(271, 20);
+            this.Lbl_EmployeesPaging.TabIndex = 0;
+            this.Lbl_EmployeesPaging.Text = "MOSTRANDO 1-20 DE 0 EMPLEADOS";
             // 
             // Lbl_EmployeesHeader
             // 
@@ -315,7 +337,7 @@
             this.Lbl_EmployeesHeader.Location = new System.Drawing.Point(5, 433);
             this.Lbl_EmployeesHeader.Name = "Lbl_EmployeesHeader";
             this.Lbl_EmployeesHeader.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.Lbl_EmployeesHeader.Size = new System.Drawing.Size(982, 28);
+            this.Lbl_EmployeesHeader.Size = new System.Drawing.Size(920, 28);
             this.Lbl_EmployeesHeader.TabIndex = 80;
             this.Lbl_EmployeesHeader.Text = "SELECCIONE UNA SEDE";
             this.Lbl_EmployeesHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -329,8 +351,20 @@
             this.Panel_GridEmployees.Location = new System.Drawing.Point(5, 620);
             this.Panel_GridEmployees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Panel_GridEmployees.Name = "Panel_GridEmployees";
-            this.Panel_GridEmployees.Size = new System.Drawing.Size(982, 344);
+            this.Panel_GridEmployees.Size = new System.Drawing.Size(920, 344);
             this.Panel_GridEmployees.TabIndex = 78;
+            // 
+            // Grid_Employees
+            // 
+            this.Grid_Employees.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Grid_Employees.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Grid_Employees.Location = new System.Drawing.Point(0, 0);
+            this.Grid_Employees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Grid_Employees.Name = "Grid_Employees";
+            this.Grid_Employees.RowHeadersWidth = 51;
+            this.Grid_Employees.RowTemplate.Height = 24;
+            this.Grid_Employees.Size = new System.Drawing.Size(920, 344);
+            this.Grid_Employees.TabIndex = 3;
             // 
             // Panel_SearchEmployees
             // 
@@ -345,7 +379,7 @@
             this.Panel_SearchEmployees.Location = new System.Drawing.Point(5, 464);
             this.Panel_SearchEmployees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Panel_SearchEmployees.Name = "Panel_SearchEmployees";
-            this.Panel_SearchEmployees.Size = new System.Drawing.Size(982, 100);
+            this.Panel_SearchEmployees.Size = new System.Drawing.Size(920, 100);
             this.Panel_SearchEmployees.TabIndex = 77;
             // 
             // Txt_SearchEmployee
@@ -356,7 +390,7 @@
             this.Txt_SearchEmployee.Location = new System.Drawing.Point(21, 18);
             this.Txt_SearchEmployee.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Txt_SearchEmployee.Name = "Txt_SearchEmployee";
-            this.Txt_SearchEmployee.Size = new System.Drawing.Size(698, 27);
+            this.Txt_SearchEmployee.Size = new System.Drawing.Size(636, 27);
             this.Txt_SearchEmployee.TabIndex = 0;
             this.Txt_SearchEmployee.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_SearchEmployee_KeyDown);
             // 
@@ -366,7 +400,7 @@
             this.Btn_SearchGridEmployees.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_SearchGridEmployees.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_SearchGridEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_SearchGridEmployees.Location = new System.Drawing.Point(729, 12);
+            this.Btn_SearchGridEmployees.Location = new System.Drawing.Point(667, 12);
             this.Btn_SearchGridEmployees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Btn_SearchGridEmployees.Name = "Btn_SearchGridEmployees";
             this.Btn_SearchGridEmployees.Size = new System.Drawing.Size(135, 38);
@@ -382,7 +416,7 @@
             this.Btn_CleanSearchGridEmployees.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearchGridEmployees.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearchGridEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearchGridEmployees.Location = new System.Drawing.Point(872, 12);
+            this.Btn_CleanSearchGridEmployees.Location = new System.Drawing.Point(810, 12);
             this.Btn_CleanSearchGridEmployees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Btn_CleanSearchGridEmployees.Name = "Btn_CleanSearchGridEmployees";
             this.Btn_CleanSearchGridEmployees.Size = new System.Drawing.Size(40, 38);
@@ -419,7 +453,7 @@
             this.PanelTabla.Location = new System.Drawing.Point(5, 210);
             this.PanelTabla.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PanelTabla.Name = "PanelTabla";
-            this.PanelTabla.Size = new System.Drawing.Size(982, 220);
+            this.PanelTabla.Size = new System.Drawing.Size(920, 220);
             this.PanelTabla.TabIndex = 76;
             // 
             // Grid_Locations
@@ -431,7 +465,7 @@
             this.Grid_Locations.Name = "Grid_Locations";
             this.Grid_Locations.RowHeadersWidth = 51;
             this.Grid_Locations.RowTemplate.Height = 24;
-            this.Grid_Locations.Size = new System.Drawing.Size(982, 220);
+            this.Grid_Locations.Size = new System.Drawing.Size(920, 220);
             this.Grid_Locations.TabIndex = 1;
             // 
             // PanelToolStrip
@@ -443,7 +477,7 @@
             this.PanelToolStrip.Location = new System.Drawing.Point(5, 158);
             this.PanelToolStrip.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PanelToolStrip.Name = "PanelToolStrip";
-            this.PanelToolStrip.Size = new System.Drawing.Size(982, 48);
+            this.PanelToolStrip.Size = new System.Drawing.Size(920, 48);
             this.PanelToolStrip.TabIndex = 75;
             // 
             // Lbl_LocationsPaging
@@ -468,7 +502,7 @@
             this.Panel_SearchLocations.Location = new System.Drawing.Point(5, 6);
             this.Panel_SearchLocations.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Panel_SearchLocations.Name = "Panel_SearchLocations";
-            this.Panel_SearchLocations.Size = new System.Drawing.Size(982, 148);
+            this.Panel_SearchLocations.Size = new System.Drawing.Size(920, 148);
             this.Panel_SearchLocations.TabIndex = 74;
             // 
             // Txt_ValorBuscado
@@ -479,7 +513,7 @@
             this.Txt_ValorBuscado.Location = new System.Drawing.Point(21, 28);
             this.Txt_ValorBuscado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Txt_ValorBuscado.Name = "Txt_ValorBuscado";
-            this.Txt_ValorBuscado.Size = new System.Drawing.Size(698, 27);
+            this.Txt_ValorBuscado.Size = new System.Drawing.Size(636, 27);
             this.Txt_ValorBuscado.TabIndex = 0;
             this.Txt_ValorBuscado.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Txt_ValorBuscado_KeyDown);
             // 
@@ -489,7 +523,7 @@
             this.Btn_Search.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Search.Image = global::SECRON.Properties.Resources.SearchNegro25x25;
             this.Btn_Search.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Search.Location = new System.Drawing.Point(725, 21);
+            this.Btn_Search.Location = new System.Drawing.Point(663, 21);
             this.Btn_Search.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Btn_Search.Name = "Btn_Search";
             this.Btn_Search.Size = new System.Drawing.Size(135, 38);
@@ -505,7 +539,7 @@
             this.Btn_CleanSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_CleanSearch.Image = global::SECRON.Properties.Resources.Clear25x25;
             this.Btn_CleanSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_CleanSearch.Location = new System.Drawing.Point(868, 21);
+            this.Btn_CleanSearch.Location = new System.Drawing.Point(806, 21);
             this.Btn_CleanSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Btn_CleanSearch.Name = "Btn_CleanSearch";
             this.Btn_CleanSearch.Size = new System.Drawing.Size(40, 38);
@@ -522,40 +556,6 @@
             this.CBX_LocationStatus.Name = "CBX_LocationStatus";
             this.CBX_LocationStatus.Size = new System.Drawing.Size(291, 28);
             this.CBX_LocationStatus.TabIndex = 3;
-            // 
-            // PanelToolStrip2
-            // 
-            this.PanelToolStrip2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PanelToolStrip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.PanelToolStrip2.Controls.Add(this.Lbl_EmployeesPaging);
-            this.PanelToolStrip2.Location = new System.Drawing.Point(5, 568);
-            this.PanelToolStrip2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.PanelToolStrip2.Name = "PanelToolStrip2";
-            this.PanelToolStrip2.Size = new System.Drawing.Size(982, 48);
-            this.PanelToolStrip2.TabIndex = 76;
-            // 
-            // Lbl_EmployeesPaging
-            // 
-            this.Lbl_EmployeesPaging.AutoSize = true;
-            this.Lbl_EmployeesPaging.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.Lbl_EmployeesPaging.Location = new System.Drawing.Point(16, 14);
-            this.Lbl_EmployeesPaging.Name = "Lbl_EmployeesPaging";
-            this.Lbl_EmployeesPaging.Size = new System.Drawing.Size(271, 20);
-            this.Lbl_EmployeesPaging.TabIndex = 0;
-            this.Lbl_EmployeesPaging.Text = "MOSTRANDO 1-20 DE 0 EMPLEADOS";
-            // 
-            // Grid_Employees
-            // 
-            this.Grid_Employees.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Grid_Employees.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Grid_Employees.Location = new System.Drawing.Point(0, 0);
-            this.Grid_Employees.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Grid_Employees.Name = "Grid_Employees";
-            this.Grid_Employees.RowHeadersWidth = 51;
-            this.Grid_Employees.RowTemplate.Height = 24;
-            this.Grid_Employees.Size = new System.Drawing.Size(982, 344);
-            this.Grid_Employees.TabIndex = 3;
             // 
             // Frm_LocationStaffAssignments
             // 
@@ -578,7 +578,10 @@
             this.Panel_1.ResumeLayout(false);
             this.Panel_1.PerformLayout();
             this.Panel_Derecho.ResumeLayout(false);
+            this.PanelToolStrip2.ResumeLayout(false);
+            this.PanelToolStrip2.PerformLayout();
             this.Panel_GridEmployees.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Grid_Employees)).EndInit();
             this.Panel_SearchEmployees.ResumeLayout(false);
             this.Panel_SearchEmployees.PerformLayout();
             this.PanelTabla.ResumeLayout(false);
@@ -587,9 +590,6 @@
             this.PanelToolStrip.PerformLayout();
             this.Panel_SearchLocations.ResumeLayout(false);
             this.Panel_SearchLocations.PerformLayout();
-            this.PanelToolStrip2.ResumeLayout(false);
-            this.PanelToolStrip2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Grid_Employees)).EndInit();
             this.ResumeLayout(false);
 
         }
