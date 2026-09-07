@@ -18,6 +18,7 @@ namespace SECRON.Views
         private List<Mdl_ItemSubCategories> _subCategorias = new List<Mdl_ItemSubCategories>();
 
         public int? SelectedSubCategoryId { get; private set; }
+        private bool _selectedIsActive = true;
         public string SelectedSubCategoryCode { get; private set; }
         public string SelectedSubCategoryName { get; private set; }
 
@@ -90,6 +91,13 @@ namespace SECRON.Views
             ComboBox_BuscarPor.Items.Add("NOMBRE");
             ComboBox_BuscarPor.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_BuscarPor.SelectedIndex = 0;
+
+            ComboBox_Estado.Items.Clear();
+            ComboBox_Estado.Items.Add("TODOS");
+            ComboBox_Estado.Items.Add("ACTIVOS");
+            ComboBox_Estado.Items.Add("INACTIVOS");
+            ComboBox_Estado.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Estado.SelectedIndex = 1;
         }
 
         private void ConfigurarPlaceHolders()
@@ -157,7 +165,8 @@ namespace SECRON.Views
         {
             try
             {
-                _subCategorias = Ctrl_ItemSubCategories.MostrarSubCategorias(_categoryId);
+                bool? isActive = ObtenerFiltroEstado();
+                _subCategorias = Ctrl_ItemSubCategories.MostrarSubCategorias(_categoryId, isActive: isActive);
                 RefrescarTabla(_subCategorias);
             }
             catch (Exception ex)
@@ -165,6 +174,14 @@ namespace SECRON.Views
                 MessageBox.Show("Error al obtener subcategorías: " + ex.Message,
                                 "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private bool? ObtenerFiltroEstado()
+        {
+            string estado = ComboBox_Estado.SelectedItem?.ToString() ?? "TODOS";
+            if (estado == "ACTIVOS") return true;
+            if (estado == "INACTIVOS") return false;
+            return null;
         }
 
         private void RefrescarTabla(List<Mdl_ItemSubCategories> lista)
@@ -176,6 +193,16 @@ namespace SECRON.Views
             {
                 foreach (DataGridViewColumn col in Tabla.Columns)
                     col.Visible = false;
+
+                if (Tabla.Columns.Contains("IsActiveText"))
+                {
+                    Tabla.Columns["IsActiveText"].Visible = true;
+                    Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                    Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                    Tabla.Columns["IsActiveText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    Tabla.Columns["IsActiveText"].Width = 90;
+                    Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
 
                 if (Tabla.Columns.Contains("SubCategoryCode"))
                 {
@@ -190,6 +217,20 @@ namespace SECRON.Views
                     Tabla.Columns["SubCategoryName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
             }
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
 
         private void Tabla_SelectionChanged(object sender, EventArgs e)
@@ -209,6 +250,9 @@ namespace SECRON.Views
             Txt_UnitName.ForeColor = Color.Black;
             Txt_Selected.Text = $"{sub.SubCategoryCode} - {sub.SubCategoryName}";
             Txt_Selected.ForeColor = Color.Black;
+
+            _selectedIsActive = sub.IsActive;
+            Btn_Inactive.Text = _selectedIsActive ? "INACTIVAR" : "ACTIVAR";
         }
 
         #endregion CargarYRefrescarDatos
@@ -219,7 +263,8 @@ namespace SECRON.Views
         {
             string texto = Txt_ValorBuscado.ForeColor == Color.Gray ? "" : Txt_ValorBuscado.Text.Trim();
             string buscarPor = ComboBox_BuscarPor.SelectedItem?.ToString() ?? "TODOS";
-            var resultado = Ctrl_ItemSubCategories.MostrarSubCategorias(_categoryId, texto, buscarPor);
+            bool? isActive = ObtenerFiltroEstado();
+            var resultado = Ctrl_ItemSubCategories.MostrarSubCategorias(_categoryId, texto, buscarPor, isActive);
             RefrescarTabla(resultado);
         }
 
@@ -233,6 +278,7 @@ namespace SECRON.Views
             Txt_ValorBuscado.Text = "BUSCAR SUBCATEGORÍA...";
             Txt_ValorBuscado.ForeColor = Color.Gray;
             ComboBox_BuscarPor.SelectedIndex = 0;
+            ComboBox_Estado.SelectedIndex = 1;
             CargarSubCategorias();
         }
 
@@ -372,32 +418,35 @@ namespace SECRON.Views
             {
                 if (!SelectedSubCategoryId.HasValue || SelectedSubCategoryId.Value <= 0)
                 {
-                    MessageBox.Show("Debe seleccionar una subcategoría de la tabla para inactivar.",
+                    MessageBox.Show("Debe seleccionar una subcategoría de la tabla.",
                                     "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (MessageBox.Show("¿Está seguro que desea INACTIVAR esta subcategoría?",
-                    "CONFIRMAR INACTIVACIÓN", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+                bool nuevoEstado = !_selectedIsActive;
+                string accion = _selectedIsActive ? "INACTIVAR" : "ACTIVAR";
 
-                int resultado = Ctrl_ItemSubCategories.InactivarSubCategoria(SelectedSubCategoryId.Value, UserId);
+                if (MessageBox.Show($"¿Está seguro que desea {accion} esta subcategoría?",
+                    $"CONFIRMAR {accion}CIÓN", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+
+                int resultado = Ctrl_ItemSubCategories.CambiarEstadoSubCategoria(SelectedSubCategoryId.Value, nuevoEstado, UserId);
 
                 if (resultado > 0)
                 {
-                    MessageBox.Show("Subcategoría inactivada correctamente.", "ÉXITO",
+                    MessageBox.Show($"Subcategoría {(nuevoEstado ? "activada" : "inactivada")} correctamente.", "ÉXITO",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarDetalle();
                     CargarSubCategorias();
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo inactivar la subcategoría.", "ERROR",
+                    MessageBox.Show($"No se pudo {accion.ToLower()} la subcategoría.", "ERROR",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar subcategoría: " + ex.Message,
+                MessageBox.Show("Error al cambiar el estado: " + ex.Message,
                                 "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -420,6 +469,9 @@ namespace SECRON.Views
             Txt_Codigo.ForeColor = Color.Gray;
             Txt_UnitName.ForeColor = Color.Gray;
             Txt_Selected.ForeColor = Color.Gray;
+
+            _selectedIsActive = true;
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
         }
 
         #endregion CRUD_SubCategorias

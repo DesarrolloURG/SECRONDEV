@@ -102,13 +102,13 @@ namespace SECRON.Views
                 Tabla.Columns["Address"].HeaderText = "DIRECCIÓN";
                 Tabla.Columns["PhoneNumber"].HeaderText = "TELÉFONO";
 
-                Tabla.Columns["WarehouseCode"].DisplayIndex = 0;
-                Tabla.Columns["WarehouseName"].DisplayIndex = 1;
-                Tabla.Columns["LocationCode"].DisplayIndex = 2;
-                Tabla.Columns["LocationName"].DisplayIndex = 3;
-                Tabla.Columns["WarehouseType"].DisplayIndex = 4;
-                Tabla.Columns["Address"].DisplayIndex = 5;
-                Tabla.Columns["PhoneNumber"].DisplayIndex = 6;
+                Tabla.Columns["WarehouseCode"].DisplayIndex = 1;
+                Tabla.Columns["WarehouseName"].DisplayIndex = 2;
+                Tabla.Columns["LocationCode"].DisplayIndex = 3;
+                Tabla.Columns["LocationName"].DisplayIndex = 4;
+                Tabla.Columns["WarehouseType"].DisplayIndex = 5;
+                Tabla.Columns["Address"].DisplayIndex = 6;
+                Tabla.Columns["PhoneNumber"].DisplayIndex = 7;
 
                 Tabla.Columns["WarehouseId"].Visible = false;
                 Tabla.Columns["Description"].Visible = false;
@@ -119,6 +119,16 @@ namespace SECRON.Views
                 Tabla.Columns["CreatedBy"].Visible = false;
                 Tabla.Columns["ModifiedDate"].Visible = false;
                 Tabla.Columns["ModifiedBy"].Visible = false;
+
+                if (Tabla.Columns.Contains("IsActiveText"))
+                {
+                    Tabla.Columns["IsActiveText"].Visible = true;
+                    Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                    Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                    Tabla.Columns["IsActiveText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    Tabla.Columns["IsActiveText"].Width = 90;
+                    Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
             }
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -132,6 +142,20 @@ namespace SECRON.Views
 
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
 
         private void Tabla_SelectionChanged(object sender, EventArgs e)
@@ -172,6 +196,8 @@ namespace SECRON.Views
 
                 // LocationId no es editable una vez creada la bodega
                 ComboBox_LocationId.Enabled = false;
+
+                Btn_Inactive.Text = _bodegaSeleccionada.IsActive ? "INACTIVAR" : "ACTIVAR";
             }
             catch (Exception ex)
             {
@@ -263,7 +289,6 @@ namespace SECRON.Views
             Panel_Busqueda.TabStop = false;
             Panel_CRUD.TabStop = false;
             Panel_Informacion.TabStop = false;
-            vScrollBar.TabStop = false;
 
             // Foco inicial
             Txt_ValorBuscado.Focus();
@@ -619,7 +644,7 @@ namespace SECRON.Views
                 if (_bodegaSeleccionada == null || _bodegaSeleccionada.WarehouseId == 0)
                 {
                     MessageBox.Show(
-                        "Debe seleccionar una bodega para inactivar.",
+                        "Debe seleccionar una bodega.",
                         "Validación",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning
@@ -627,9 +652,12 @@ namespace SECRON.Views
                     return;
                 }
 
+                bool estaActiva = _bodegaSeleccionada.IsActive;
+                string accion = estaActiva ? "inactivar" : "activar";
+
                 var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea inactivar la bodega {_bodegaSeleccionada.WarehouseName}?",
-                    "Confirmar inactivación",
+                    $"¿Está seguro que desea {accion} la bodega {_bodegaSeleccionada.WarehouseName}?",
+                    $"Confirmar {accion}ción",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
                 );
@@ -637,14 +665,13 @@ namespace SECRON.Views
                 if (confirmacion != DialogResult.Yes)
                     return;
 
-                _bodegaSeleccionada.ModifiedBy = UserData?.UserId ?? 1;
-
-                int resultado = Ctrl_Warehouses.Update(_bodegaSeleccionada, isInactivation: true);
+                int modifiedBy = UserData?.UserId ?? 1;
+                int resultado = Ctrl_Warehouses.CambiarEstadoBodega(_bodegaSeleccionada.WarehouseId, !estaActiva, modifiedBy);
 
                 if (resultado == 1)
                 {
                     MessageBox.Show(
-                        "Bodega inactivada exitosamente.",
+                        $"Bodega {(estaActiva ? "inactivada" : "activada")} exitosamente.",
                         "Éxito",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information
@@ -657,7 +684,7 @@ namespace SECRON.Views
                 else
                 {
                     MessageBox.Show(
-                        "No se pudo inactivar la bodega.",
+                        $"No se pudo {accion} la bodega.",
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
@@ -764,6 +791,8 @@ namespace SECRON.Views
 
                 if (ComboBox_WarehouseType.Items.Count > 0)
                     ComboBox_WarehouseType.SelectedIndex = 0;
+
+                Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
             }
             finally
             {

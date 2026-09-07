@@ -100,6 +100,33 @@ namespace SECRON.Controllers
             }
         }
 
+        // MÉTODO PRINCIPAL: Activar/Inactivar atributo (SP dedicado, sin los efectos secundarios de un update completo)
+        public static int CambiarEstadoAtributo(int attributeDefId, bool isActive, int? modifiedBy = null)
+        {
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_FixedAssetAttributeDefinitions_Delete", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@AttributeDefId", attributeDefId);
+                        cmd.Parameters.AddWithValue("@IsActive", isActive);
+                        cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+
+                        return (int)cmd.ExecuteScalar();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cambiar el estado del atributo: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
         private static Mdl_FixedAssetAttributeDefinition MapearAtributo(SqlDataReader reader)
         {
             return new Mdl_FixedAssetAttributeDefinition

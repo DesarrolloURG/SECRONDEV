@@ -107,7 +107,8 @@ namespace SECRON.Controllers
             }
         }
 
-        public static int InactivarUbicacion(int locationId, int? modifiedBy)
+        // MÉTODO PRINCIPAL: Activar/Inactivar sede (mismo SP, ahora con @IsActive)
+        public static int CambiarEstadoUbicacion(int locationId, bool isActive, int? modifiedBy)
         {
             try
             {
@@ -116,13 +117,14 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@LocationId", locationId);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
                     cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
                     int resultado = Convert.ToInt32(cmd.ExecuteScalar());
 
                     if (resultado == -1)
                     {
-                        MessageBox.Show("La sede ya se encuentra inactiva.",
+                        MessageBox.Show("La sede no fue encontrada.",
                             "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
 
@@ -131,7 +133,7 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar ubicación: " + ex.Message,
+                MessageBox.Show("Error al cambiar el estado de la ubicación: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
@@ -693,10 +695,7 @@ namespace SECRON.Controllers
                 whereClause += " AND l.IsActive = @IsActive";
                 parametros.Add(new SqlParameter("@IsActive", isActive.Value));
             }
-            else
-            {
-                whereClause += " AND l.IsActive = 1";
-            }
+            // Si isActive es null (TODOS), no se agrega ningún filtro de estado.
 
             if (!string.IsNullOrWhiteSpace(textoBusqueda))
             {

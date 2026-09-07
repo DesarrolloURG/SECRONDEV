@@ -10,7 +10,7 @@ namespace SECRON.Controllers
 {
     internal class Ctrl_ItemSubCategories
     {
-        public static List<Mdl_ItemSubCategories> MostrarSubCategorias(int categoryId, string textoBusqueda = "", string buscarPor = "TODOS")
+        public static List<Mdl_ItemSubCategories> MostrarSubCategorias(int categoryId, string textoBusqueda = "", string buscarPor = "TODOS", bool? isActive = null)
         {
             List<Mdl_ItemSubCategories> lista = new List<Mdl_ItemSubCategories>();
             try
@@ -22,7 +22,7 @@ namespace SECRON.Controllers
                                IsActive, CreatedDate, CreatedBy, ModifiedDate, ModifiedBy
                         FROM   ItemSubCategories
                         WHERE  CategoryId = @CategoryId
-                          AND  IsActive = 1";
+                          AND  (@IsActive IS NULL OR IsActive = @IsActive)";
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
@@ -45,6 +45,7 @@ namespace SECRON.Controllers
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                        cmd.Parameters.AddWithValue("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value);
                         if (!string.IsNullOrWhiteSpace(textoBusqueda))
                             cmd.Parameters.AddWithValue("@texto", "%" + textoBusqueda.Trim() + "%");
 
@@ -110,7 +111,8 @@ namespace SECRON.Controllers
             }
         }
 
-        public static int InactivarSubCategoria(int subCategoryId, int? modifiedBy = null)
+        // MÉTODO PRINCIPAL: Activar/Inactivar subcategoría (mismo SP, ahora con @IsActive)
+        public static int CambiarEstadoSubCategoria(int subCategoryId, bool isActive, int? modifiedBy = null)
         {
             try
             {
@@ -119,6 +121,7 @@ namespace SECRON.Controllers
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@SubCategoryId", subCategoryId);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
                     cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
                     object result = cmd.ExecuteScalar();
@@ -127,7 +130,7 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar subcategoría: " + ex.Message,
+                MessageBox.Show("Error al cambiar el estado de la subcategoría: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }

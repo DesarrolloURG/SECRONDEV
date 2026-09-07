@@ -115,6 +115,16 @@ namespace SECRON.Views
                 Tabla.Columns["LocationCategoryId"].Visible = false;
                 Tabla.Columns["PrimaryWarehouseId"].Visible = false;
                 Tabla.Columns["MunicipalityId"].Visible = false;
+
+                if (Tabla.Columns.Contains("IsActiveText"))
+                {
+                    Tabla.Columns["IsActiveText"].Visible = true;
+                    Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                    Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                    Tabla.Columns["IsActiveText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    Tabla.Columns["IsActiveText"].Width = 90;
+                    Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
             }
 
             Tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -128,6 +138,20 @@ namespace SECRON.Views
 
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
 
         private void Tabla_SelectionChanged(object sender, EventArgs e)
@@ -192,6 +216,8 @@ namespace SECRON.Views
 
                 Txt_City.Text = _ubicacionSeleccionada.City ?? "";
                 Txt_City.ForeColor = Color.Black;
+
+                Btn_Inactive.Text = _ubicacionSeleccionada.IsActive ? "INACTIVAR" : "ACTIVAR";
             }
             catch (Exception ex)
             {
@@ -857,7 +883,7 @@ namespace SECRON.Views
                 if (_ubicacionSeleccionada == null || _ubicacionSeleccionada.LocationId == 0)
                 {
                     MessageBox.Show(
-                        "Debe seleccionar una sede para inactivar.",
+                        "Debe seleccionar una sede.",
                         "Validación",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning
@@ -865,9 +891,13 @@ namespace SECRON.Views
                     return;
                 }
 
+                bool estaActiva = _ubicacionSeleccionada.IsActive;
+                bool nuevoEstado = !estaActiva;
+                string accion = estaActiva ? "inactivar" : "activar";
+
                 var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea inactivar la sede {_ubicacionSeleccionada.LocationName}?",
-                    "Confirmar inactivación",
+                    $"¿Está seguro que desea {accion} la sede {_ubicacionSeleccionada.LocationName}?",
+                    $"Confirmar {accion}ción",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
                 );
@@ -875,15 +905,16 @@ namespace SECRON.Views
                 if (confirmacion != DialogResult.Yes)
                     return;
 
-                int resultado = Ctrl_Locations.InactivarUbicacion(
+                int resultado = Ctrl_Locations.CambiarEstadoUbicacion(
                     _ubicacionSeleccionada.LocationId,
+                    nuevoEstado,
                     UserData?.UserId ?? 1
                 );
 
                 if (resultado > 0)
                 {
                     MessageBox.Show(
-                        "Sede inactivada exitosamente.",
+                        $"Sede {(nuevoEstado ? "activada" : "inactivada")} exitosamente.",
                         "Éxito",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information
@@ -895,7 +926,7 @@ namespace SECRON.Views
                 else
                 {
                     MessageBox.Show(
-                        "No se pudo inactivar la sede.",
+                        $"No se pudo {accion} la sede.",
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
@@ -905,7 +936,7 @@ namespace SECRON.Views
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"Error al inactivar la sede: {ex.Message}",
+                    $"Error al cambiar el estado de la sede: {ex.Message}",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -1057,6 +1088,7 @@ namespace SECRON.Views
                 ComboBox_LocationCategoryId.SelectedIndex = 0;
 
                 CargarBodegasPrimarias(null);
+                Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
             }
             finally
             {

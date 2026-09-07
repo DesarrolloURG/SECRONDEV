@@ -41,8 +41,6 @@ namespace SECRON.Views
                 ConfigurarPlaceHoldersTextbox();
                 ConfigurarMaxLengthTextBox();
                 ConfigurarComboBoxes();
-                InicializarScroll();
-                ConfigurarEventosScroll();
                 CrearToolStripPaginacion();
                 CargarProximoCodigoCoordinador();
 
@@ -446,8 +444,14 @@ namespace SECRON.Views
                 Tabla.Columns["ContractType"].HeaderText = "TIPO CONTRATO";
                 Tabla.Columns["ContractType"].Width = 150;
 
-                Tabla.Columns["IsActive"].HeaderText = "ACTIVO";
-                Tabla.Columns["IsActive"].Width = 80;
+                Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                Tabla.Columns["IsActiveText"].Width = 90;
+                Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                Tabla.Columns["IsActive"].Visible = false;
+
+                Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+                Tabla.CellFormatting += Tabla_CellFormatting_Estado;
 
                 Tabla.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
                 Tabla.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
@@ -546,6 +550,18 @@ namespace SECRON.Views
 
             Tabla.CellClick -= Tabla_CellClick_Archivos;
             Tabla.CellClick += Tabla_CellClick_Archivos;
+        }
+
+        // Colorea la columna ESTADO (activo/inactivo del coordinador), verde/rojo
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
 
         // Pinta el icono de ESTADO (verde si hay archivo) leyendo del modelo enlazado a la fila
@@ -706,95 +722,6 @@ namespace SECRON.Views
             ActualizarBotonesNumerados();
         }
         #endregion ToolStrip
-        #region ScrollBar
-        // Inicializa las propiedades del scroll vertical
-        private void InicializarScroll()
-        {
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-            }
-
-            int maxBottom = 0;
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                maxBottom = Math.Max(maxBottom, ctrl.Bottom);
-            }
-
-            int totalContentHeight = maxBottom + (Panel_Izquierdo.Height / 3);
-
-            if (totalContentHeight <= Panel_Izquierdo.Height)
-            {
-                vScrollBar.Visible = false;
-                return;
-            }
-
-            vScrollBar.Visible = true;
-            vScrollBar.Minimum = 0;
-            vScrollBar.Maximum = totalContentHeight - Panel_Izquierdo.Height;
-            vScrollBar.SmallChange = 30;
-            vScrollBar.LargeChange = Panel_Izquierdo.Height / 4;
-
-            vScrollBar.Scroll -= vScrollBar_Scroll;
-            vScrollBar.Scroll += vScrollBar_Scroll;
-            vScrollBar.Value = 0;
-        }
-
-        // Configura los eventos del scroll para sincronizarlo con el panel
-        private void ConfigurarEventosScroll()
-        {
-            Panel_Izquierdo.TabStop = true;
-            Panel_Izquierdo.MouseWheel += Panel_Izquierdo_MouseWheel;
-            Panel_Izquierdo.MouseEnter += Panel_Izquierdo_MouseEnter;
-
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                ctrl.MouseWheel += Panel_Izquierdo_MouseWheel;
-            }
-        }
-
-        private void Panel_Izquierdo_MouseEnter(object sender, EventArgs e)
-        {
-            Panel_Izquierdo.Focus();
-        }
-
-        private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            MoverContenido(e.NewValue);
-        }
-
-        private void Panel_Izquierdo_MouseWheel(object sender, MouseEventArgs e)
-        {
-            if (!vScrollBar.Visible) return;
-
-            int delta = e.Delta / 120;
-            int newValue = vScrollBar.Value - (delta * 30);
-
-            if (newValue < 0) newValue = 0;
-            if (newValue > vScrollBar.Maximum) newValue = vScrollBar.Maximum;
-
-            vScrollBar.Value = newValue;
-            MoverContenido(newValue);
-        }
-
-        private void MoverContenido(int scrollPosition)
-        {
-            foreach (Control ctrl in Panel_Izquierdo.Controls)
-            {
-                if (ctrl.Tag == null || !ctrl.Tag.ToString().StartsWith("OrigY:"))
-                {
-                    ctrl.Tag = "OrigY:" + ctrl.Top;
-                }
-                string[] parts = ctrl.Tag.ToString().Split(':');
-                int originalY = int.Parse(parts[1]);
-                ctrl.Top = originalY - scrollPosition;
-            }
-            Panel_Izquierdo.Invalidate();
-        }
-        #endregion ScrollBar
         #region Filtros
         // Carga las opciones disponibles en los ComboBox de filtros
         private void CargarFiltros()
@@ -945,6 +872,7 @@ namespace SECRON.Views
                         _coordinadorSeleccionado = coordinador;
                         CargarDatosEnFormulario(coordinador);
                         HabilitarBotonesEdicionEliminacion(true);
+                        Btn_Inactive.Text = coordinador.IsActive ? "INACTIVAR" : "ACTIVAR";
                     }
                 }
             }
@@ -1351,27 +1279,29 @@ namespace SECRON.Views
             {
                 if (_coordinadorSeleccionado == null)
                 {
-                    MessageBox.Show("Debe seleccionar un coordinador para inactivar.",
+                    MessageBox.Show("Debe seleccionar un coordinador.",
                                   "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                bool estaActivo = _coordinadorSeleccionado.IsActive;
+                string accion = estaActivo ? "inactivar" : "activar";
+
                 var confirmacion = MessageBox.Show(
-                    $"¿Está seguro que desea inactivar al coordinador {_coordinadorSeleccionado.FullName}?\n\n" +
-                    "Esta acción marcará el registro como inactivo.",
-                    "Confirmar inactivación",
+                    $"¿Está seguro que desea {accion} al coordinador {_coordinadorSeleccionado.FullName}?",
+                    $"Confirmar {accion}ción",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
                 if (confirmacion == DialogResult.Yes)
                 {
-                    int resultado = Ctrl_Coordinators.InactivarCoordinador(
-                        _coordinadorSeleccionado.CoordinatorId,
-                        UserData?.UserId ?? 0);
+                    int resultado = estaActivo
+                        ? Ctrl_Coordinators.InactivarCoordinador(_coordinadorSeleccionado.CoordinatorId, UserData?.UserId ?? 0)
+                        : Ctrl_Coordinators.ReactivarCoordinador(_coordinadorSeleccionado.CoordinatorId, UserData?.UserId ?? 0);
 
                     if (resultado > 0)
                     {
-                        MessageBox.Show("Coordinador inactivado correctamente.",
+                        MessageBox.Show($"Coordinador {(estaActivo ? "inactivado" : "activado")} correctamente.",
                                       "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LimpiarFormulario();
                         CargarCoordinadores();
@@ -1379,14 +1309,14 @@ namespace SECRON.Views
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo inactivar el coordinador.",
+                        MessageBox.Show($"No se pudo {accion} el coordinador.",
                                       "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al inactivar: {ex.Message}",
+                MessageBox.Show($"Error al cambiar el estado: {ex.Message}",
                               "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1429,6 +1359,7 @@ namespace SECRON.Views
             DTP_HireDate.Value = DateTime.Now;
 
             _coordinadorSeleccionado = null;
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
         }
 
         // Valida que los campos obligatorios esten completos

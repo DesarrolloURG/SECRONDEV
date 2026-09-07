@@ -23,6 +23,8 @@ namespace SECRON.Views
         public string SelectedDescription { get; private set; }
         public Mdl_Security_UserInfo UserData { get; set; }
 
+        private bool _selectedIsActive = true;
+
         public Frm_KARDEX_SearchCategory()
         {
             InitializeComponent();
@@ -110,6 +112,14 @@ namespace SECRON.Views
 
             ComboBox_BuscarPor.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_BuscarPor.SelectedIndex = 0;
+
+            ComboBox_Estado.Items.Clear();
+            ComboBox_Estado.Items.Add("TODOS");
+            ComboBox_Estado.Items.Add("ACTIVOS");
+            ComboBox_Estado.Items.Add("INACTIVOS");
+
+            ComboBox_Estado.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Estado.SelectedIndex = 1;
         }
 
         private void ConfigurarPlaceHolders()
@@ -177,8 +187,8 @@ namespace SECRON.Views
         {
             try
             {
-                _categorias = Ctrl_ItemCategories.MostrarCategorias();
-                RefrescarTabla(_categorias);
+                _categorias = Ctrl_ItemCategories.MostrarCategorias(isActive: null);
+                AplicarFiltro();
             }
             catch (Exception ex)
             {
@@ -197,6 +207,16 @@ namespace SECRON.Views
                 foreach (DataGridViewColumn col in Tabla.Columns)
                 {
                     col.Visible = false;
+                }
+
+                if (Tabla.Columns.Contains("IsActiveText"))
+                {
+                    Tabla.Columns["IsActiveText"].Visible = true;
+                    Tabla.Columns["IsActiveText"].HeaderText = "ESTADO";
+                    Tabla.Columns["IsActiveText"].DisplayIndex = 0;
+                    Tabla.Columns["IsActiveText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    Tabla.Columns["IsActiveText"].Width = 90;
+                    Tabla.Columns["IsActiveText"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
 
                 if (Tabla.Columns.Contains("CategoryCode"))
@@ -220,52 +240,63 @@ namespace SECRON.Views
                     Tabla.Columns["Description"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
             }
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font ?? Tabla.Font, FontStyle.Bold);
         }
 
         #endregion CargarYRefrescarDatos
         #region BuscarCategorias
 
-        private void Btn_Search_Click(object sender, EventArgs e)
+        // Filtro compartido: combina texto de búsqueda + ComboBox_Estado, ambos en memoria sobre _categorias
+        private void AplicarFiltro()
         {
             try
             {
                 string texto = Txt_ValorBuscado.Text;
-
-                if (string.IsNullOrWhiteSpace(texto) || texto == "BUSCAR CATEGORÍA...")
-                {
-                    RefrescarTabla(_categorias);
-                    return;
-                }
-
-                texto = texto.Trim().ToUpper();
-                string filtro = ComboBox_BuscarPor.SelectedItem.ToString();
+                bool hayTexto = !string.IsNullOrWhiteSpace(texto) && texto != "BUSCAR CATEGORÍA...";
 
                 IEnumerable<Mdl_ItemCategories> consulta = _categorias;
 
-                if (filtro == "CÓDIGO")
+                if (hayTexto)
                 {
-                    consulta = consulta.Where(c => (c.CategoryCode ?? "").ToUpper().Contains(texto));
+                    texto = texto.Trim().ToUpper();
+                    string filtro = ComboBox_BuscarPor.SelectedItem?.ToString() ?? "TODOS";
+
+                    if (filtro == "CÓDIGO")
+                        consulta = consulta.Where(c => (c.CategoryCode ?? "").ToUpper().Contains(texto));
+                    else if (filtro == "NOMBRE")
+                        consulta = consulta.Where(c => (c.CategoryName ?? "").ToUpper().Contains(texto));
+                    else if (filtro == "DESCRIPCIÓN")
+                        consulta = consulta.Where(c => (c.Description ?? "").ToUpper().Contains(texto));
+                    else // TODOS
+                        consulta = consulta.Where(c =>
+                            (c.CategoryCode ?? "").ToUpper().Contains(texto) ||
+                            (c.CategoryName ?? "").ToUpper().Contains(texto) ||
+                            (c.Description ?? "").ToUpper().Contains(texto));
                 }
-                else if (filtro == "NOMBRE")
-                {
-                    consulta = consulta.Where(c => (c.CategoryName ?? "").ToUpper().Contains(texto));
-                }
-                else if (filtro == "DESCRIPCIÓN")
-                {
-                    consulta = consulta.Where(c => (c.Description ?? "").ToUpper().Contains(texto));
-                }
-                else // TODOS
-                {
-                    consulta = consulta.Where(c =>
-                        (c.CategoryCode ?? "").ToUpper().Contains(texto) ||
-                        (c.CategoryName ?? "").ToUpper().Contains(texto) ||
-                        (c.Description ?? "").ToUpper().Contains(texto));
-                }
+
+                string estado = ComboBox_Estado.SelectedItem?.ToString() ?? "TODOS";
+                if (estado == "ACTIVOS")
+                    consulta = consulta.Where(c => c.IsActive);
+                else if (estado == "INACTIVOS")
+                    consulta = consulta.Where(c => !c.IsActive);
 
                 var resultados = consulta.ToList();
                 RefrescarTabla(resultados);
 
-                if (resultados.Count == 0)
+                if (hayTexto && resultados.Count == 0)
                 {
                     MessageBox.Show("No se encontraron resultados", "BÚSQUEDA",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -276,6 +307,11 @@ namespace SECRON.Views
                 MessageBox.Show($"ERROR EN BÚSQUEDA: {ex.Message}",
                                 "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Btn_Search_Click(object sender, EventArgs e)
+        {
+            AplicarFiltro();
         }
 
         private void Txt_ValorBuscado_KeyDown(object sender, KeyEventArgs e)
@@ -291,7 +327,9 @@ namespace SECRON.Views
         {
             Txt_ValorBuscado.Text = "BUSCAR CATEGORÍA...";
             Txt_ValorBuscado.ForeColor = Color.Gray;
-            RefrescarTabla(_categorias);
+            ComboBox_BuscarPor.SelectedIndex = 0;
+            ComboBox_Estado.SelectedIndex = 1;
+            AplicarFiltro();
         }
 
         #endregion BuscarCategorias
@@ -325,6 +363,9 @@ namespace SECRON.Views
                 Txt_Codigo.Text = categoryCode;
                 Txt_UnitName.Text = categoryName;
                 Txt_Description.Text = description;
+
+                _selectedIsActive = row.Cells["IsActive"].Value != null && Convert.ToBoolean(row.Cells["IsActive"].Value);
+                Btn_Inactive.Text = _selectedIsActive ? "INACTIVAR" : "ACTIVAR";
             }
         }
 
@@ -437,14 +478,14 @@ namespace SECRON.Views
                 if (confirm != DialogResult.Yes)
                     return;
 
-                if(SelectedCategoryCode != Txt_Codigo.Text.Trim().ToUpper())
+                if (SelectedCategoryCode != Txt_Codigo.Text.Trim().ToUpper())
                 {
                     MessageBox.Show("No se puede modificar el código de la categoría", "VALIDACIÓN",
                                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     Txt_Codigo.Focus();
                     return;
                 }
-            
+
                 var categoria = new Mdl_ItemCategories
                 {
                     CategoryId = SelectedCategoryId.Value,
@@ -483,24 +524,27 @@ namespace SECRON.Views
             {
                 if (!SelectedCategoryId.HasValue || SelectedCategoryId.Value <= 0)
                 {
-                    MessageBox.Show("Debe seleccionar una categoría de la tabla para inactivar",
+                    MessageBox.Show("Debe seleccionar una categoría de la tabla",
                                     "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                var confirm = MessageBox.Show("¿Está seguro que desea INACTIVAR esta categoría?",
-                                              "CONFIRMAR INACTIVACIÓN",
+                bool nuevoEstado = !_selectedIsActive;
+                string accion = _selectedIsActive ? "INACTIVAR" : "ACTIVAR";
+
+                var confirm = MessageBox.Show($"¿Está seguro que desea {accion} esta categoría?",
+                                              $"CONFIRMAR {accion}CIÓN",
                                               MessageBoxButtons.YesNo,
                                               MessageBoxIcon.Warning);
 
                 if (confirm != DialogResult.Yes)
                     return;
 
-                int resultado = Ctrl_ItemCategories.InactivarCategoria(SelectedCategoryId.Value, UserData.UserId);
+                int resultado = Ctrl_ItemCategories.CambiarEstadoCategoria(SelectedCategoryId.Value, nuevoEstado, UserData.UserId);
 
                 if (resultado > 0)
                 {
-                    MessageBox.Show("Categoría inactivada correctamente", "ÉXITO",
+                    MessageBox.Show($"Categoría {(nuevoEstado ? "activada" : "inactivada")} correctamente", "ÉXITO",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarDetalle();
                     CargarCategorias();
@@ -508,13 +552,13 @@ namespace SECRON.Views
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo inactivar la categoría", "ERROR",
+                    MessageBox.Show($"No se pudo {accion.ToLower()} la categoría", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar categoría: " + ex.Message,
+                MessageBox.Show("Error al cambiar el estado: " + ex.Message,
                                 "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -542,6 +586,9 @@ namespace SECRON.Views
 
             Txt_Selected.Text = "CATEGORÍA SELECCIONADA";
             Txt_Selected.ForeColor = Color.Gray;
+
+            _selectedIsActive = true;
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
         }
 
         #endregion CRUD_Categorias

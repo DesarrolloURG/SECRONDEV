@@ -221,12 +221,28 @@ namespace SECRON.Views
             MostrarColumna(Grid_Locations, "LocationCode", "CÓDIGO", 15);
             MostrarColumna(Grid_Locations, "LocationName", "NOMBRE DE SEDE", 40);
             MostrarColumna(Grid_Locations, "DepartmentName", "DEPARTAMENTO", 25);
-            MostrarColumna(Grid_Locations, "IsActive", "ESTADO", 20);
+            MostrarColumna(Grid_Locations, "IsActiveText", "ESTADO", 20);
 
             ConfigurarTablaSedes();
 
+            Grid_Locations.CellFormatting -= Grid_CellFormatting_Estado;
+            Grid_Locations.CellFormatting += Grid_CellFormatting_Estado;
+
             if (Grid_Locations.Rows.Count > 0)
                 Grid_Locations.Rows[0].Selected = true;
+        }
+
+        // Compartido entre Grid_Locations y Grid_Employees, ambos usan la misma columna IsActiveText
+        private void Grid_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            if (grid == null || e.RowIndex < 0) return;
+            if (grid.Columns[e.ColumnIndex].Name != "IsActiveText") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(grid.DefaultCellStyle.Font ?? grid.Font, FontStyle.Bold);
         }
 
         private void MostrarColumna(DataGridView grid, string col, string header, int weight)
@@ -285,9 +301,12 @@ namespace SECRON.Views
             MostrarColumna(Grid_Employees, "FullName", "NOMBRE", 30);
             MostrarColumna(Grid_Employees, "InstitutionalEmail", "CORREO INSTITUCIONAL", 25);
             MostrarColumna(Grid_Employees, "Phone", "TELÉFONO", 13);
-            MostrarColumna(Grid_Employees, "IsActive", "ESTADO", 20);
+            MostrarColumna(Grid_Employees, "IsActiveText", "ESTADO", 20);
 
             ConfigurarTablaEmpleados();
+
+            Grid_Employees.CellFormatting -= Grid_CellFormatting_Estado;
+            Grid_Employees.CellFormatting += Grid_CellFormatting_Estado;
         }
 
         #endregion ConfiguracionesTabla_Empleados
@@ -381,6 +400,8 @@ namespace SECRON.Views
 
             int idx = _rolesList.FindIndex(r => r.RoleTypeId == _asignacionSeleccionada.RoleTypeId);
             if (idx >= 0) CBX_RoleType.SelectedIndex = idx;
+
+            Btn_Inactive.Text = _asignacionSeleccionada.IsActive ? "INACTIVAR" : "ACTIVAR";
         }
 
         #endregion CargarEmpleados
@@ -804,31 +825,35 @@ namespace SECRON.Views
                 return;
             }
 
-            if (MessageBox.Show("¿Confirma inactivar esta asignación?", "Confirmación",
+            bool estaActiva = _asignacionSeleccionada.IsActive;
+            bool nuevoEstado = !estaActiva;
+            string accion = estaActiva ? "inactivar" : "activar";
+
+            if (MessageBox.Show($"¿Confirma {accion} esta asignación?", "Confirmación",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
-            var model = new Mdl_LocationStaffAssignments
-            {
-                AssignmentId = _asignacionSeleccionada.AssignmentId,
-                LocationId = _asignacionSeleccionada.LocationId,
-                UserId = _asignacionSeleccionada.UserId,
-                RoleTypeId = _asignacionSeleccionada.RoleTypeId,
-                ModifiedBy = UserData.UserId
-            };
-
-            int resultado = Ctrl_LocationStaffAssignments.Update(model, isInactivation: true);
+            int resultado = Ctrl_LocationStaffAssignments.CambiarEstadoAsignacion(
+                _asignacionSeleccionada.AssignmentId, nuevoEstado, UserData.UserId);
 
             switch (resultado)
             {
                 case 1:
-                    MessageBox.Show("Registro inactivado correctamente.", "SECRON",
+                    MessageBox.Show($"Registro {(nuevoEstado ? "activado" : "inactivado")} correctamente.", "SECRON",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarPanelIzquierdo(limpiarSede: false);
                     CargarEmpleadosDeLaSede();
                     break;
+                case -1:
+                    MessageBox.Show("El empleado ya tiene otra asignación activa en esta sede.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                case -2:
+                    MessageBox.Show("El registro no fue encontrado.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
                 default:
-                    MessageBox.Show("Ocurrió un error al inactivar el registro.", "Error",
+                    MessageBox.Show($"Ocurrió un error al {accion} el registro.", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
@@ -845,6 +870,7 @@ namespace SECRON.Views
             _userIdSeleccionado = 0;
             Txt_EmployeeName.Clear();
             if (CBX_RoleType.Items.Count > 0) CBX_RoleType.SelectedIndex = 0;
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
 
             if (limpiarSede)
             {

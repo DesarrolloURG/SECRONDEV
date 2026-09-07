@@ -59,6 +59,8 @@
             this.Txt_ValorBuscado = new System.Windows.Forms.TextBox();
             this.Panel_Superior = new System.Windows.Forms.Panel();
             this.Lbl_Formulario = new System.Windows.Forms.Label();
+            this.ComboBox_Estado = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.Panel_CRUD.SuspendLayout();
             this.Panel_1.SuspendLayout();
@@ -89,9 +91,9 @@
             this.Btn_Inactive.Location = new System.Drawing.Point(8, 4);
             this.Btn_Inactive.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_Inactive.Name = "Btn_Inactive";
-            this.Btn_Inactive.Size = new System.Drawing.Size(165, 46);
+            this.Btn_Inactive.Size = new System.Drawing.Size(326, 46);
             this.Btn_Inactive.TabIndex = 56;
-            this.Btn_Inactive.Text = "INACTIVAR";
+            this.Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
             this.Btn_Inactive.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Inactive.UseVisualStyleBackColor = true;
             this.Btn_Inactive.Click += new System.EventHandler(this.Btn_Inactive_Click);
@@ -354,6 +356,8 @@
             this.Panel_DetalleTabla.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_DetalleTabla.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.Panel_DetalleTabla.Controls.Add(this.ComboBox_Estado);
+            this.Panel_DetalleTabla.Controls.Add(this.label1);
             this.Panel_DetalleTabla.Controls.Add(this.ComboBox_BuscarPor);
             this.Panel_DetalleTabla.Controls.Add(this.Lbl_BuscarPor);
             this.Panel_DetalleTabla.Controls.Add(this.Btn_ClearSearch);
@@ -373,7 +377,7 @@
             this.ComboBox_BuscarPor.Location = new System.Drawing.Point(19, 43);
             this.ComboBox_BuscarPor.Margin = new System.Windows.Forms.Padding(4);
             this.ComboBox_BuscarPor.Name = "ComboBox_BuscarPor";
-            this.ComboBox_BuscarPor.Size = new System.Drawing.Size(741, 26);
+            this.ComboBox_BuscarPor.Size = new System.Drawing.Size(300, 26);
             this.ComboBox_BuscarPor.TabIndex = 71;
             // 
             // Lbl_BuscarPor
@@ -464,6 +468,28 @@
             this.Lbl_Formulario.TabIndex = 50;
             this.Lbl_Formulario.Text = "CATÁLOGO DE SUBCATEGORÍAS DE ARTÍCULOS";
             // 
+            // ComboBox_Estado
+            // 
+            this.ComboBox_Estado.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.ComboBox_Estado.FormattingEnabled = true;
+            this.ComboBox_Estado.Location = new System.Drawing.Point(378, 43);
+            this.ComboBox_Estado.Margin = new System.Windows.Forms.Padding(4);
+            this.ComboBox_Estado.Name = "ComboBox_Estado";
+            this.ComboBox_Estado.Size = new System.Drawing.Size(300, 26);
+            this.ComboBox_Estado.TabIndex = 75;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.Location = new System.Drawing.Point(372, 15);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(106, 20);
+            this.label1.TabIndex = 74;
+            this.label1.Text = "BUSCAR POR:";
+            // 
             // Frm_KARDEX_SearchSubCategory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -529,5 +555,7 @@
         private System.Windows.Forms.TextBox Txt_ValorBuscado;
         private System.Windows.Forms.Panel Panel_Superior;
         private System.Windows.Forms.Label Lbl_Formulario;
+        private System.Windows.Forms.ComboBox ComboBox_Estado;
+        private System.Windows.Forms.Label label1;
     }
 }

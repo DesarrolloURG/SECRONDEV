@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace SECRON.Controllers
-{   
+{
     internal class Ctrl_FixedAssetTransferStatus
     {
 
@@ -139,8 +139,8 @@ namespace SECRON.Controllers
             }
         }
 
-
-        public static int InactivarEstado(int transferStatusId, int? modifiedBy = null)
+        // MÉTODO PRINCIPAL: Activar/Inactivar estado (mismo SP, ahora con @IsActive)
+        public static int CambiarEstadoEstado(int transferStatusId, bool isActive, int? modifiedBy = null)
         {
             try
             {
@@ -151,6 +151,7 @@ namespace SECRON.Controllers
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@TransferStatusId", transferStatusId);
+                        cmd.Parameters.AddWithValue("@IsActive", isActive);
                         cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
 
                         return (int)cmd.ExecuteScalar();
@@ -159,7 +160,7 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar estado: " + ex.Message,
+                MessageBox.Show("Error al cambiar el estado: " + ex.Message,
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }

@@ -39,17 +39,19 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Mostrar todas las unidades
-        public static List<Mdl_MeasurementUnits> MostrarUnidades()
+        // MÉTODO PRINCIPAL: Mostrar unidades (opcionalmente filtradas por estado)
+        public static List<Mdl_MeasurementUnits> MostrarUnidades(bool? isActive = null)
         {
             List<Mdl_MeasurementUnits> lista = new List<Mdl_MeasurementUnits>();
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT * FROM MeasurementUnits WHERE IsActive = 1 ORDER BY UnitName";
+                    string query = "SELECT * FROM MeasurementUnits WHERE (@IsActive IS NULL OR IsActive = @IsActive) ORDER BY UnitName";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value);
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -94,17 +96,17 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Inactivar unidad
-        public static int InactivarUnidad(int unitId, int modifiedBy)
+        // MÉTODO PRINCIPAL: Activar/Inactivar unidad (SP dedicado, sin efectos secundarios de un update completo)
+        public static int CambiarEstadoUnidad(int unitId, bool isActive, int modifiedBy)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
-                using (SqlCommand cmd = new SqlCommand("SP_MeasurementUnits_Update", connection))
+                using (SqlCommand cmd = new SqlCommand("SP_MeasurementUnits_Delete", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UnitId", unitId);
-                    cmd.Parameters.AddWithValue("@IsInactivation", true);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
                     cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
 
                     object result = cmd.ExecuteScalar();
@@ -113,7 +115,7 @@ namespace SECRON.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al inactivar unidad: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al cambiar el estado de la unidad: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
         }
@@ -127,7 +129,11 @@ namespace SECRON.Controllers
                 UnitCode = reader[1].ToString(),
                 UnitName = reader[2].ToString(),
                 Abbreviation = reader[3].ToString(),
-                IsActive = reader.GetBoolean(4)
+                IsActive = reader.GetBoolean(4),
+                CreatedDate = reader["CreatedDate"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(reader["CreatedDate"]),
+                CreatedBy = reader["CreatedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["CreatedBy"]),
+                ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["ModifiedDate"]),
+                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["ModifiedBy"])
             };
         }
 

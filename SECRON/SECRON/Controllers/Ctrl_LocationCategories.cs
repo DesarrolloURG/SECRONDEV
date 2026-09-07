@@ -39,17 +39,19 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PRINCIPAL: Mostrar todas las categorías activas
-        public static List<Mdl_LocationCategories> MostrarCategorias()
+        // MÉTODO PRINCIPAL: Mostrar categorías (opcionalmente filtradas por estado)
+        public static List<Mdl_LocationCategories> MostrarCategorias(bool? isActive = null)
         {
             List<Mdl_LocationCategories> lista = new List<Mdl_LocationCategories>();
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT * FROM LocationCategories WHERE IsActive = 1 ORDER BY CategoryName";
+                    string query = "SELECT * FROM LocationCategories WHERE (@IsActive IS NULL OR IsActive = @IsActive) ORDER BY CategoryName";
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
+                        cmd.Parameters.AddWithValue("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value);
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -215,15 +217,16 @@ namespace SECRON.Controllers
             }
         }
 
-        // MÉTODO PARA CONTAR TOTAL DE CATEGORÍAS
-        public static int ContarTotalCategorias(string textoBusqueda = "")
+        // MÉTODO PARA CONTAR TOTAL DE CATEGORÍAS (opcionalmente filtradas por estado)
+        public static int ContarTotalCategorias(string textoBusqueda = "", bool? isActive = null)
         {
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT COUNT(*) FROM LocationCategories WHERE IsActive = 1";
+                    string query = "SELECT COUNT(*) FROM LocationCategories WHERE (@IsActive IS NULL OR IsActive = @IsActive)";
                     List<SqlParameter> parametros = new List<SqlParameter>();
+                    parametros.Add(new SqlParameter("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value));
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {
@@ -241,9 +244,10 @@ namespace SECRON.Controllers
             catch { return 0; }
         }
 
-        // MÉTODO PRINCIPAL: Buscar categorías con filtro y paginación
+        // MÉTODO PRINCIPAL: Buscar categorías con filtro, estado y paginación
         public static List<Mdl_LocationCategories> BuscarCategorias(
             string textoBusqueda = "",
+            bool? isActive = null,
             int pageNumber = 1,
             int pageSize = 100)
         {
@@ -253,8 +257,9 @@ namespace SECRON.Controllers
                 int offset = (pageNumber - 1) * pageSize;
                 using (SqlConnection connection = DatabaseConfig.StartConection())
                 {
-                    string query = "SELECT * FROM LocationCategories WHERE IsActive = 1";
+                    string query = "SELECT * FROM LocationCategories WHERE (@IsActive IS NULL OR IsActive = @IsActive)";
                     List<SqlParameter> parametros = new List<SqlParameter>();
+                    parametros.Add(new SqlParameter("@IsActive", isActive.HasValue ? (object)isActive.Value : DBNull.Value));
 
                     if (!string.IsNullOrWhiteSpace(textoBusqueda))
                     {

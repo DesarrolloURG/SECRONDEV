@@ -32,6 +32,8 @@ namespace SECRON.Models
 
         // Control
         public bool IsActive { get; set; }
+        public string IsActiveText => IsActive ? "ACTIVO" : "INACTIVO";
+
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

@@ -306,7 +306,7 @@ namespace SECRON.Views
                 Tabla.Columns["AccountAccumDepName"].HeaderText = "CTA. DEP. ACUM.";
                 Tabla.Columns["AccountExpenseName"].HeaderText = "CTA. GASTO DEP.";
                 Tabla.Columns["IsActive"].HeaderText = "ESTADO";
-                Tabla.Columns["IsActive"].DisplayIndex = Tabla.Columns.Count - 1;
+                Tabla.Columns["IsActive"].DisplayIndex = 0;
 
                 Tabla.Columns["AssetCategoryId"].Visible = false;
                 Tabla.Columns["AccountAccumDepId"].Visible = false;
@@ -341,6 +341,20 @@ namespace SECRON.Views
 
             Tabla.SelectionChanged -= Tabla_SelectionChanged;
             Tabla.SelectionChanged += Tabla_SelectionChanged;
+
+            Tabla.CellFormatting -= Tabla_CellFormatting_Estado;
+            Tabla.CellFormatting += Tabla_CellFormatting_Estado;
+        }
+
+        private void Tabla_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (Tabla.Columns[e.ColumnIndex].Name != "IsActive") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(Tabla.DefaultCellStyle.Font, FontStyle.Bold);
         }
 
         private void AjustarColumnas()
@@ -445,6 +459,8 @@ namespace SECRON.Views
 
                 CargarAtributosDeCategoriaSeleccionada(categoryId);
                 Lbl_AtributosHeader.Text = $"CARACTERÍSTICAS DE: {_categoriaSeleccionada.CategoryName.ToUpper()} — {_atributosList.Count} CARACTERÍSTICAS";
+
+                Btn_Inactive.Text = _categoriaSeleccionada.IsActive ? "INACTIVAR" : "ACTIVAR";
             }
             catch (Exception ex)
             {
@@ -503,6 +519,7 @@ namespace SECRON.Views
                 TablaAtributos.Columns["DataType"].HeaderText = "TIPO";
                 TablaAtributos.Columns["IsRequired"].HeaderText = "OBLIGATORIO";
                 TablaAtributos.Columns["IsActive"].HeaderText = "ESTADO";
+                TablaAtributos.Columns["IsActive"].DisplayIndex = 0;
 
                 TablaAtributos.Columns["AttributeDefId"].Visible = false;
                 TablaAtributos.Columns["AssetCategoryId"].Visible = false;
@@ -528,6 +545,20 @@ namespace SECRON.Views
 
             TablaAtributos.SelectionChanged -= TablaAtributos_SelectionChanged;
             TablaAtributos.SelectionChanged += TablaAtributos_SelectionChanged;
+
+            TablaAtributos.CellFormatting -= TablaAtributos_CellFormatting_Estado;
+            TablaAtributos.CellFormatting += TablaAtributos_CellFormatting_Estado;
+        }
+
+        private void TablaAtributos_CellFormatting_Estado(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (TablaAtributos.Columns[e.ColumnIndex].Name != "IsActive") return;
+            if (e.Value == null) return;
+
+            bool activo = e.Value.ToString() == "ACTIVO";
+            e.CellStyle.ForeColor = activo ? Color.FromArgb(0, 128, 0) : Color.FromArgb(200, 0, 0);
+            e.CellStyle.Font = new Font(TablaAtributos.DefaultCellStyle.Font, FontStyle.Bold);
         }
 
         private void AjustarColumnasAtributos()
@@ -563,6 +594,8 @@ namespace SECRON.Views
                 ComboBox_DataType.SelectedIndex = di >= 0 ? di : 0;
 
                 ComboBox_IsRequired.SelectedItem = _atributoSeleccionado.IsRequired ? "SI" : "NO";
+
+                Btn_InactiveAtributo.Text = _atributoSeleccionado.IsActive ? "INACTIVAR" : "ACTIVAR";
             }
             catch (Exception ex)
             {
@@ -578,6 +611,7 @@ namespace SECRON.Views
             SetTextBoxFromValue(Txt_AttributeLabel, "", "ETIQUETA DEL ATRIBUTO");
             ComboBox_DataType.SelectedIndex = 0;
             ComboBox_IsRequired.SelectedIndex = 0;
+            Btn_InactiveAtributo.Text = "ACTIVAR/INACTIVAR";
         }
 
         #endregion ConfiguracionesTabla_Atributos
@@ -996,7 +1030,7 @@ namespace SECRON.Views
                     DepreciationYears = depYears,
                     AccountAccumDepId = _accountAccumDepId ?? 0,
                     AccountExpenseId = _accountExpenseId ?? 0,
-                    ClassificationId = _classificationId,  
+                    ClassificationId = _classificationId,
                     IsActive = true,
                     CreatedDate = DateTime.Now,
                     CreatedBy = UserData?.UserId ?? 1
@@ -1100,28 +1134,28 @@ namespace SECRON.Views
             {
                 if (_categoriaSeleccionada == null || _categoriaSeleccionada.AssetCategoryId == 0)
                 {
-                    MessageBox.Show("Debe seleccionar una categoría para inactivar.", "Validación",
+                    MessageBox.Show("Debe seleccionar una categoría.", "Validación",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
                 }
-                if (!_categoriaSeleccionada.IsActive)
-                {
-                    MessageBox.Show("Esta categoría ya se encuentra inactiva.", "Información",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information); return;
-                }
-                if (MessageBox.Show(
-                    $"¿INACTIVAR la categoría {_categoriaSeleccionada.CategoryName}?\n\nLos activos asociados no podrán referenciarla.",
-                    "Confirmar Inactivación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
 
+                bool estaActiva = _categoriaSeleccionada.IsActive;
+                bool nuevoEstado = !estaActiva;
+                string accion = estaActiva ? "INACTIVAR" : "ACTIVAR";
 
-                _categoriaSeleccionada.IsActive = false;
-                _categoriaSeleccionada.ModifiedBy = UserData?.UserId ?? 1;
+                string mensaje = estaActiva
+                    ? $"¿INACTIVAR la categoría {_categoriaSeleccionada.CategoryName}?\n\nLos activos asociados no podrán referenciarla."
+                    : $"¿ACTIVAR la categoría {_categoriaSeleccionada.CategoryName}?";
 
-                int resultado = Ctrl_FixedAssetCategories.ActualizarCategoria(_categoriaSeleccionada);
+                if (MessageBox.Show(mensaje, $"Confirmar {accion.ToLower()}ción",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+
+                int resultado = Ctrl_FixedAssetCategories.CambiarEstadoCategoria(
+                    _categoriaSeleccionada.AssetCategoryId, nuevoEstado, UserData?.UserId ?? 1);
 
                 switch (resultado)
                 {
                     case 1:
-                        MessageBox.Show("Categoría inactivada exitosamente.", "Éxito",
+                        MessageBox.Show($"Categoría {(nuevoEstado ? "activada" : "inactivada")} exitosamente.", "Éxito",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LimpiarFormularioCategoria();
                         RefrescarListado();
@@ -1132,14 +1166,14 @@ namespace SECRON.Views
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     default:
-                        MessageBox.Show("No se pudo inactivar la categoría.", "Error",
+                        MessageBox.Show($"No se pudo {accion.ToLower()} la categoría.", "Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al inactivar: {ex.Message}", "Error",
+                MessageBox.Show($"Error al cambiar el estado: {ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1164,6 +1198,7 @@ namespace SECRON.Views
             TablaAtributos.DataSource = null;
             Lbl_AtributosHeader.Text = "CARACTERÍSTICAS — SELECCIONE UNA CATEGORÍA";
             LimpiarPanelAtributos();
+            Btn_Inactive.Text = "ACTIVAR/INACTIVAR";
 
             Txt_CategoryCode.Focus();
         }
@@ -1292,25 +1327,24 @@ namespace SECRON.Views
 
                 if (_atributoSeleccionado == null || _atributoSeleccionado.AttributeDefId == 0)
                 {
-                    MessageBox.Show("Debe seleccionar un atributo para inactivar.", "Validación",
+                    MessageBox.Show("Debe seleccionar un atributo.", "Validación",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
                 }
-                if (!_atributoSeleccionado.IsActive)
-                {
-                    MessageBox.Show("Este atributo ya se encuentra inactivo.", "Información",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information); return;
-                }
-                if (MessageBox.Show($"¿INACTIVAR el atributo {_atributoSeleccionado.AttributeLabel}?",
+
+                bool estaActivo = _atributoSeleccionado.IsActive;
+                bool nuevoEstado = !estaActivo;
+                string accion = estaActivo ? "INACTIVAR" : "ACTIVAR";
+
+                if (MessageBox.Show($"¿{accion} el atributo {_atributoSeleccionado.AttributeLabel}?",
                     "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
 
-                _atributoSeleccionado.IsActive = false;
-
-                int resultado = Ctrl_FixedAssetAttributeDefinitions.ActualizarAtributo(_atributoSeleccionado);
+                int resultado = Ctrl_FixedAssetAttributeDefinitions.CambiarEstadoAtributo(
+                    _atributoSeleccionado.AttributeDefId, nuevoEstado, UserData?.UserId ?? 1);
 
                 switch (resultado)
                 {
                     case 1:
-                        MessageBox.Show("Atributo inactivado exitosamente.", "Éxito",
+                        MessageBox.Show($"Atributo {(nuevoEstado ? "activado" : "inactivado")} exitosamente.", "Éxito",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LimpiarPanelAtributos();
                         CargarAtributosDeCategoriaSeleccionada(_categoriaSeleccionada.AssetCategoryId);
@@ -1320,7 +1354,7 @@ namespace SECRON.Views
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     default:
-                        MessageBox.Show("No se pudo inactivar el atributo.", "Error",
+                        MessageBox.Show($"No se pudo {accion.ToLower()} el atributo.", "Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }

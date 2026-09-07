@@ -416,6 +416,33 @@ namespace SECRON.Controllers
             return resultado;
         }
 
+        // MÉTODO PRINCIPAL: Activar/Inactivar bodega (SP dedicado, sin efectos secundarios de un update completo)
+        public static int CambiarEstadoBodega(int warehouseId, bool isActive, int modifiedBy)
+        {
+            int resultado = 0;
+
+            using (SqlConnection conn = DatabaseConfig.StartConection())
+            {
+                using (SqlCommand cmd = new SqlCommand("SP_Warehouses_Delete", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@WarehouseId", warehouseId);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
+                    cmd.Parameters.AddWithValue("@ModifiedBy", modifiedBy);
+
+                    SqlParameter returnParam = cmd.Parameters.Add("@ReturnValue", System.Data.SqlDbType.Int);
+                    returnParam.Direction = System.Data.ParameterDirection.ReturnValue;
+
+                    cmd.ExecuteNonQuery();
+
+                    resultado = (int)returnParam.Value;
+                }
+            }
+
+            return resultado;
+        }
+
         public static List<Mdl_Warehouse> BuscarBodegas(
             string textoBusqueda, string tipoFiltro, bool? isActive, int pageNumber, int pageSize)
         {
