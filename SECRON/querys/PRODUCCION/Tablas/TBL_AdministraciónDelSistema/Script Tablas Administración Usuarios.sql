@@ -81,6 +81,9 @@ VALUES ('ADMIN', '$2a$12$/EgBGkJshiVQ2XPyUnRppuJNeDTMHU3K.TeZdq1sqUwvhZeXrJhRa',
 INSERT INTO Users (Username, PasswordHash, FullName, RoleId, StatusId, IsTemporaryPassword, FailedLoginAttempts, IsLocked)
 VALUES ('SYS_CHECKS_SHARE', '$2a$12$/EgBGkJshiVQ2XPyUnRppuJNeDTMHU3K.TeZdq1sqUwvhZeXrJhRa', 'SYS_CHECKS_SHARE', 1, 1, 0, 0, 0); --Password test
 
+INSERT INTO Roles (RoleName, Description, IsActive, CreatedDate, CreatedBy)
+VALUES ('SIN ROL', 'ROL SIN PERMISOS - USUARIO SIN ROL ASIGNADO', 1, GETDATE(), 1);
+
 ------------------------- Tabla de Permisos por Usuarios  --------------------------------------------------------------------
 
 -- TABLA: UserPermissions (Permisos Específicos por Usuario - Sobrescribir rol)

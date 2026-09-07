@@ -15,6 +15,7 @@ namespace SECRON.Controllers
         public const int RESULTADO_ERROR = 0;
 
         private const string ROL_REVISOR_HORARIOS = "REVISOR DE HORARIOS";
+        private const string ROL_SIN_ROL = "SIN ROL";
 
         public static Mdl_AcademicProcesses_Reviser ObtenerPorUsuario(int userId)
         {
@@ -89,7 +90,15 @@ namespace SECRON.Controllers
                 if (existente != null && existente.IsActive)
                     return RESULTADO_YA_ES_REVISOR_ACTIVO;
 
-                if (!ActualizarRolARevisorDeHorarios(userId, assignedBy))
+                var rolRevisor = Ctrl_Roles.ObtenerRolPorNombre(ROL_REVISOR_HORARIOS);
+                if (rolRevisor == null)
+                {
+                    MessageBox.Show($"NO SE ENCONTRÓ EL ROL '{ROL_REVISOR_HORARIOS}' EN EL SISTEMA.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return RESULTADO_ERROR;
+                }
+
+                if (!ActualizarRolUsuario(userId, rolRevisor.RoleId, assignedBy))
                     return RESULTADO_ERROR;
 
                 if (existente != null && !existente.IsActive)
@@ -116,24 +125,16 @@ namespace SECRON.Controllers
             }
         }
 
-        // Sustituye el rol actual del usuario por "REVISOR DE HORARIOS" (mismo patrón que
+        // Sustituye el rol actual del usuario por el @roleId indicado (mismo patrón que
         // Frm_ITSM_Users_RolesPermissions: actualiza el usuario y limpia sus permisos específicos,
-        // ya que ahora aplican los del nuevo rol).
-        private static bool ActualizarRolARevisorDeHorarios(int userId, int modifiedBy)
+        // ya que ahora aplican los del nuevo rol). Reutilizado tanto al asignar como al remover revisor.
+        private static bool ActualizarRolUsuario(int userId, int roleId, int modifiedBy)
         {
-            var rolRevisor = Ctrl_Roles.ObtenerRolPorNombre(ROL_REVISOR_HORARIOS);
-            if (rolRevisor == null)
-            {
-                MessageBox.Show($"NO SE ENCONTRÓ EL ROL '{ROL_REVISOR_HORARIOS}' EN EL SISTEMA.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
             var usuario = Ctrl_Users.ObtenerUsuarioPorId(userId);
             if (usuario == null)
                 return false;
 
-            usuario.RoleId = rolRevisor.RoleId;
+            usuario.RoleId = roleId;
             usuario.ModifiedBy = modifiedBy;
 
             if (Ctrl_Users.ActualizarUsuario(usuario) <= 0)
@@ -145,7 +146,36 @@ namespace SECRON.Controllers
 
         public static int RemoverRevisor(int reviserId, int removedBy)
         {
-            return CambiarEstadoRevisor(reviserId, 1, removedBy);
+            try
+            {
+                Mdl_AcademicProcesses_Reviser revisor = ObtenerPorId(reviserId);
+                if (revisor == null)
+                    return RESULTADO_ERROR;
+
+                int resultado = CambiarEstadoRevisor(reviserId, 1, removedBy);
+
+                if (resultado > 0 && revisor.UserId.HasValue)
+                {
+                    var rolSinRol = Ctrl_Roles.ObtenerRolPorNombre(ROL_SIN_ROL);
+                    if (rolSinRol == null)
+                    {
+                        MessageBox.Show($"NO SE ENCONTRÓ EL ROL '{ROL_SIN_ROL}' EN EL SISTEMA. EL REGISTRO DE REVISOR SE REMOVIÓ, PERO EL ROL DEL USUARIO NO SE PUDO ACTUALIZAR.",
+                            "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        ActualizarRolUsuario(revisor.UserId.Value, rolSinRol.RoleId, removedBy);
+                    }
+                }
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL REMOVER REVISOR: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return RESULTADO_ERROR;
+            }
         }
 
         public static int ReactivarRevisor(int reviserId, int assignedBy)

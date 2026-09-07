@@ -2590,7 +2590,6 @@ namespace SECRON.Views
             Txt_ValorBuscadoUsuario.MaxLength = 150;
         }
         #endregion ConfigurarTextBox
-
         #region SistemaDePermisos
 
         private Ctrl_Security_Auth authController;
@@ -2664,7 +2663,6 @@ namespace SECRON.Views
         }
 
         #endregion SistemaDePermisos
-
         #region ConfiguracionInicialPestañaRoles
         private int _rolSeleccionadoId = 0;
 
@@ -2747,7 +2745,6 @@ namespace SECRON.Views
 
         }
         #endregion ConfiguracionInicialPestañaRoles
-
         #region CargaDatosRoles
 
         private void CargarRolesEnTablaRoles(string filtro = "")
@@ -2807,7 +2804,6 @@ namespace SECRON.Views
             Btn_InactiveRole.Enabled = false;
         }
         #endregion CargaDatosRoles
-
         #region EventosPestañaRoles
         private void Tabla_Roles_SelectionChanged(object sender, EventArgs e)
         {
