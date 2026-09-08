@@ -202,6 +202,7 @@
             this.Btn_AsignarSedes.Text = "ASIGNAR SEDES";
             this.Btn_AsignarSedes.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.Btn_AsignarSedes.UseVisualStyleBackColor = true;
+            this.Btn_AsignarSedes.Click += new System.EventHandler(this.Btn_AsignarSedes_Click);
             // 
             // Btn_Permisos
             // 
@@ -217,6 +218,7 @@
             this.Btn_Permisos.Text = "PERMISOS";
             this.Btn_Permisos.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             this.Btn_Permisos.UseVisualStyleBackColor = true;
+            this.Btn_Permisos.Click += new System.EventHandler(this.Btn_Permisos_Click);
             // 
             // Lbl_Formulario
             // 

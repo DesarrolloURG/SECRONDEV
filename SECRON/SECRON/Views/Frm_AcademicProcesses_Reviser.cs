@@ -420,5 +420,35 @@ namespace SECRON.Views
             }
         }
         #endregion Acciones
+
+        private void Btn_AsignarSedes_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Frm_AcademicProcesses_Reviser_Locations frm = new Frm_AcademicProcesses_Reviser_Locations();
+                frm.UserData = this.UserData;
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ABRIR ASIGNACIÓN DE SEDES: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Btn_Permisos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Frm_AcademicProcesses_Reviser_Permissions frm = new Frm_AcademicProcesses_Reviser_Permissions();
+                frm.UserData = this.UserData;
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR AL ABRIR PERMISOS DE REVISORES: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

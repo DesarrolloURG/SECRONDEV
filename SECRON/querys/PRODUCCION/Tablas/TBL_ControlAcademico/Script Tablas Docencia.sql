@@ -434,6 +434,29 @@ CREATE TABLE ScheduleDetails (
     CONSTRAINT CHK_ScheduleDetails_Time CHECK (EndTime > StartTime)
 );
 
+-- -----------------------------------------------------
+-- 12. TABLA: SEDES ASIGNADAS A REVISORES
+-- Las clases específicas dentro de un horario
+-- -----------------------------------------------------
+CREATE TABLE AcademicProcesses_ReviserLocations (
+    ReviserLocationId INT IDENTITY(1,1) PRIMARY KEY,
+    ReviserId INT NOT NULL,
+    LocationId INT NOT NULL,
+    IsActive BIT DEFAULT 1,
+    AssignedDate DATETIME DEFAULT GETDATE(),
+    AssignedBy INT NULL,
+    RemovedDate DATETIME NULL,
+    RemovedBy INT NULL,
+
+    CONSTRAINT FK_AcademicProcesses_ReviserLocations_Reviser FOREIGN KEY (ReviserId) REFERENCES AcademicProcesses_Revisers(ReviserId),
+    CONSTRAINT FK_AcademicProcesses_ReviserLocations_Location FOREIGN KEY (LocationId) REFERENCES Locations(LocationId),
+    CONSTRAINT FK_AcademicProcesses_ReviserLocations_AssignedBy FOREIGN KEY (AssignedBy) REFERENCES Users(UserId),
+    CONSTRAINT FK_AcademicProcesses_ReviserLocations_RemovedBy FOREIGN KEY (RemovedBy) REFERENCES Users(UserId),
+    CONSTRAINT UQ_AcademicProcesses_ReviserLocations UNIQUE (ReviserId, LocationId)
+);
+GO
+
+
 -- =====================================================
 -- ÍNDICES PARA OPTIMIZACIÓN DE BÚSQUEDAS
 -- =====================================================
