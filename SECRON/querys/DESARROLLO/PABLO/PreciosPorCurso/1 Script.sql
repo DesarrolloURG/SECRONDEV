@@ -154,6 +154,10 @@ BEGIN
     IF EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'UQ_CareerCourses')
         ALTER TABLE CareerCourses DROP CONSTRAINT UQ_CareerCourses;
 
+    -- Corrección: falta este DROP INDEX antes de poder borrar la columna
+    IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_CareerCourses_Career' AND object_id = OBJECT_ID('CareerCourses'))
+        DROP INDEX IX_CareerCourses_Career ON CareerCourses;
+
     ALTER TABLE CareerCourses DROP COLUMN CareerId;
 END
 GO
