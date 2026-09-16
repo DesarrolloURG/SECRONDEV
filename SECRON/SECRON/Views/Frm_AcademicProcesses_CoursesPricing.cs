@@ -51,7 +51,7 @@ namespace SECRON.Views
 
                 if (UserData != null)
                 {
-                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    await CargarPermisosUsuario(UserData.UserId, 0);
                     ConfigurarControlesPorPermisos();
                 }
 

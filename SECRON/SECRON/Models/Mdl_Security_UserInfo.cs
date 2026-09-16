@@ -11,7 +11,18 @@ namespace SECRON.Models
         public int UserId { get; set; }
         public string Username { get; set; }
         public string FullName { get; set; }
-        public int RoleId { get; set; }
+
+        // Roles del usuario (reemplaza el antiguo RoleId/RoleName único — un usuario puede tener varios roles)
+        public List<KeyValuePair<int, string>> Roles { get; set; } = new List<KeyValuePair<int, string>>();
+
+        // Lista de RoleId, útil para checks de permisos o comparaciones rápidas
+        public List<int> RoleIds => Roles?.Select(r => r.Key).ToList() ?? new List<int>();
+
+        // Texto para mostrar en pantalla: nombres de rol separados por coma
+        public string RoleNamesText => Roles != null && Roles.Count > 0
+            ? string.Join(", ", Roles.Select(r => r.Value))
+            : "";
+
         public int StatusId { get; set; }
         public bool IsTemporaryPassword { get; set; }
         public DateTime? PasswordExpiryDate { get; set; }
@@ -25,7 +36,6 @@ namespace SECRON.Models
         public bool TwoFactorExempt { get; set; }
 
         // Propiedades adicionales útiles
-        public string RoleName { get; set; }        // Se puede cargar con JOIN
         public string StatusName { get; set; }     // Se puede cargar con JOIN
         public bool NotificationsEnabled { get; set; }
 
@@ -35,12 +45,11 @@ namespace SECRON.Models
         }
 
         // Constructor con parámetros básicos
-        public Mdl_Security_UserInfo(int userId, string username, string fullName, int roleId)
+        public Mdl_Security_UserInfo(int userId, string username, string fullName)
         {
             UserId = userId;
             Username = username;
             FullName = fullName;
-            RoleId = roleId;
         }
 
         // Método para verificar si la contraseña ha expirado (por fecha de expiración explícita, ej. temporal)

@@ -18,6 +18,14 @@ namespace SECRON.Views
         #region Propiedades
         public Mdl_Security_UserInfo UserData { get; set; }
         private TabControl tabControl;
+
+        // Roles: catálogo completo y lista en construcción (los que se van a agregar/quitar
+        // a los usuarios marcados en Tabla1)
+        private List<KeyValuePair<int, string>> _todosLosRoles = new List<KeyValuePair<int, string>>();
+        private List<KeyValuePair<int, string>> _rolesStaging = new List<KeyValuePair<int, string>>();
+
+        // Caché en memoria de Tabla1 (evita re-consultar la BD por cada selección de fila)
+        private List<Mdl_Users> _usuariosTabla1Cache = new List<Mdl_Users>();
         #endregion
         #region Constructor
         private async void Frm_Users_RolesPermissions_Load(object sender, EventArgs e)
@@ -26,7 +34,7 @@ namespace SECRON.Views
 
             if (UserData != null)
             {
-                await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                await CargarPermisosUsuario(UserData.UserId, 0);
                 ConfigurarControlesPorPermisos();
             }
 
@@ -136,6 +144,7 @@ namespace SECRON.Views
             // Cargar datos
             CargarUsuariosEnTabla1();
             CargarRolesEnTabla2();
+            RedibujarListaRolesAsignar();
 
             // Asignar eventos
             AsignarEventosPestaña1();
@@ -198,34 +207,140 @@ namespace SECRON.Views
 
         private void ConfigurarTabla2()
         {
-            Tabla2.Columns.Clear();
+            // Tabla2 ya no se usa (reemplazada por ComboBox_Rol + Panel_RolesList).
+            // Se deja sin configurar/mostrar intencionalmente.
+        }
 
-            Tabla2.Columns.Add("RoleId", "ID");
-            Tabla2.Columns.Add("RoleName", "NOMBRE DEL ROL");
-            Tabla2.Columns.Add("Description", "DESCRIPCIÓN");
+        // Carga el catálogo completo de roles una sola vez, y refresca el combo
+        private void CargarRolesEnTabla2()
+        {
+            try
+            {
+                _todosLosRoles = Ctrl_Roles.ObtenerTodosLosRoles();
+                RefrescarComboRolesAsignar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR AL CARGAR ROLES: {ex.Message}",
+                    "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            Tabla2.Columns["RoleId"].Visible = false;
+        // Recarga el combo con los roles del catálogo que AÚN NO estén en la lista en construcción
+        private void RefrescarComboRolesAsignar()
+        {
+            var disponibles = _todosLosRoles
+                .Where(r => !_rolesStaging.Any(s => s.Key == r.Key))
+                .ToList();
 
-            Tabla2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            Tabla2.MultiSelect = false;
-            Tabla2.ReadOnly = true;
-            Tabla2.AllowUserToAddRows = false;
-            Tabla2.RowHeadersVisible = false;
-            Tabla2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            ComboBox_Rol.DataSource = new BindingSource(disponibles, null);
+            ComboBox_Rol.DisplayMember = "Value";
+            ComboBox_Rol.ValueMember = "Key";
 
-            // Estilos visuales
-            Tabla2.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(94, 53, 177);
-            Tabla2.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            Tabla2.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            Tabla2.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            if (ComboBox_Rol.Items.Count > 0)
+                ComboBox_Rol.SelectedIndex = 0;
+        }
 
-            Tabla2.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 143, 109);
-            Tabla2.DefaultCellStyle.SelectionForeColor = Color.White;
-            Tabla2.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
-            Tabla2.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+        // Botón "+": añade el rol seleccionado del combo a la lista en construcción
+        private void Btn_AddRol_Click(object sender, EventArgs e)
+        {
+            if (ComboBox_Rol.SelectedIndex < 0 || ComboBox_Rol.SelectedValue == null)
+            {
+                MessageBox.Show("No hay roles disponibles para añadir.", "Validación",
+                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            Tabla2.RowTemplate.Height = 35;
-            Tabla2.ColumnHeadersHeight = 40;
+            int roleId = (int)ComboBox_Rol.SelectedValue;
+            string roleName = ComboBox_Rol.Text;
+
+            _rolesStaging.Add(new KeyValuePair<int, string>(roleId, roleName));
+            RefrescarComboRolesAsignar();
+            RedibujarListaRolesAsignar();
+        }
+
+        // Botón "-" de cada chip: quita ese rol de la lista en construcción y lo regresa al combo
+        private void Btn_QuitarRolStaging_Click(object sender, EventArgs e)
+        {
+            if (!(sender is Control ctrl) || !(ctrl.Tag is int roleId)) return;
+
+            _rolesStaging.RemoveAll(r => r.Key == roleId);
+            RefrescarComboRolesAsignar();
+            RedibujarListaRolesAsignar();
+        }
+
+        // Repinta Panel_RolesList con un "chip" por cada rol en la lista en construcción
+        private void RedibujarListaRolesAsignar()
+        {
+            Panel_RolesList.SuspendLayout();
+            Panel_RolesList.Controls.Clear();
+            Panel_RolesList.AutoScroll = true;
+
+            const int alturaFila = 34;
+            const int margen = 6;
+            int y = margen;
+
+            foreach (var rol in _rolesStaging)
+            {
+                var fila = new Panel
+                {
+                    Location = new Point(margen, y),
+                    Size = new Size(Panel_RolesList.ClientSize.Width - (margen * 2) - 18, alturaFila - 4),
+                    BackColor = Color.White,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+                };
+
+                var lbl = new Label
+                {
+                    Text = rol.Value,
+                    Font = new Font("Segoe UI", 10F),
+                    ForeColor = Color.FromArgb(33, 37, 41),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Location = new Point(8, 0),
+                    Size = new Size(fila.Width - 40, fila.Height),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+                };
+
+                var btnQuitar = new Button
+                {
+                    Text = "-",
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    BackColor = Color.FromArgb(220, 53, 69),
+                    FlatStyle = FlatStyle.Flat,
+                    Size = new Size(24, 24),
+                    Location = new Point(fila.Width - 30, (fila.Height - 24) / 2),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    Tag = rol.Key,
+                    Cursor = Cursors.Hand
+                };
+                btnQuitar.FlatAppearance.BorderSize = 0;
+                btnQuitar.Click += Btn_QuitarRolStaging_Click;
+
+                fila.Controls.Add(lbl);
+                fila.Controls.Add(btnQuitar);
+                Panel_RolesList.Controls.Add(fila);
+
+                y += alturaFila;
+            }
+
+            Panel_RolesList.ResumeLayout();
+        }
+
+        // Obtiene los UserId marcados (checkbox) en Tabla1
+        private List<int> ObtenerUsuariosMarcados()
+        {
+            var lista = new List<int>();
+            foreach (DataGridViewRow row in Tabla1.Rows)
+            {
+                if (row.Cells["Seleccionar"].Value != null &&
+                    (bool)row.Cells["Seleccionar"].Value == true)
+                {
+                    lista.Add(Convert.ToInt32(row.Cells["UserId"].Value));
+                }
+            }
+            return lista;
         }
 
         private void AsignarEventosPestaña1()
@@ -241,6 +356,24 @@ namespace SECRON.Views
             // Eventos de controles
             CheckBox_All.CheckedChanged += CheckBox_All_CheckedChanged;
             Tabla1.CellContentClick += Tabla1_CellContentClick;
+            Tabla1.SelectionChanged += Tabla1_SelectionChanged;
+        }
+
+        // Al hacer click/seleccionar una fila, precarga el panel con los roles que ESE usuario ya tiene
+        // (sirve como punto de partida cómodo; el usuario puede seguir editando con +/- antes de aplicar)
+        private void Tabla1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (Tabla1.SelectedRows.Count == 0) return;
+
+            int userId = Convert.ToInt32(Tabla1.SelectedRows[0].Cells["UserId"].Value);
+
+            var usuario = _usuariosTabla1Cache.FirstOrDefault(u => u.UserId == userId);
+            _rolesStaging = usuario?.Roles != null
+                ? new List<KeyValuePair<int, string>>(usuario.Roles)
+                : new List<KeyValuePair<int, string>>();
+
+            RefrescarComboRolesAsignar();
+            RedibujarListaRolesAsignar();
         }
         #endregion
         #region CargaDatos
@@ -261,16 +394,12 @@ namespace SECRON.Views
                     usuarios = Ctrl_Users.BuscarUsuarios(filtro, null, null, null, 1, 500);
                 }
 
+                _usuariosTabla1Cache = usuarios;
+
                 // Llenar tabla
                 foreach (var usuario in usuarios)
                 {
-                    string roleName = "SIN ROL";
-
-                    if (usuario.RoleId > 0)
-                    {
-                        var rol = Ctrl_Roles.ObtenerRolPorId(usuario.RoleId);
-                        roleName = rol?.RoleName ?? "DESCONOCIDO";
-                    }
+                    string roleName = string.IsNullOrWhiteSpace(usuario.RoleNamesText) ? "SIN ROL" : usuario.RoleNamesText;
 
                     Tabla1.Rows.Add(
                         false,              // Checkbox desmarcado
@@ -286,28 +415,6 @@ namespace SECRON.Views
             catch (Exception ex)
             {
                 MessageBox.Show($"ERROR AL CARGAR USUARIOS: {ex.Message}",
-                    "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private void CargarRolesEnTabla2()
-        {
-            try
-            {
-                Tabla2.Rows.Clear();
-                var roles = Ctrl_Roles.MostrarRoles(1, 100);
-
-                foreach (var rol in roles)
-                {
-                    Tabla2.Rows.Add(
-                        rol.RoleId,
-                        rol.RoleName,
-                        rol.Description ?? "Sin descripción"
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"ERROR AL CARGAR ROLES: {ex.Message}",
                     "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -358,22 +465,15 @@ namespace SECRON.Views
             Lbl_Info3.Text = $"        Usuarios Seleccionados: {count}";
         }
 
+        // Sincroniza los roles de los usuarios marcados para que queden EXACTAMENTE con los roles
+        // que están en el panel (Panel_RolesList): agrega los que falten, quita los que sobren.
+        // Operación atómica: si el panel está vacío, no se ejecuta nada (ver validación abajo).
         private void Btn_Asignar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Obtener usuarios seleccionados
-                List<int> usuariosSeleccionados = new List<int>();
-                foreach (DataGridViewRow row in Tabla1.Rows)
-                {
-                    if (row.Cells["Seleccionar"].Value != null &&
-                        (bool)row.Cells["Seleccionar"].Value == true)
-                    {
-                        usuariosSeleccionados.Add(Convert.ToInt32(row.Cells["UserId"].Value));
-                    }
-                }
+                List<int> usuariosSeleccionados = ObtenerUsuariosMarcados();
 
-                // Validar usuarios seleccionados
                 if (usuariosSeleccionados.Count == 0)
                 {
                     MessageBox.Show("DEBE SELECCIONAR AL MENOS UN USUARIO",
@@ -381,25 +481,21 @@ namespace SECRON.Views
                     return;
                 }
 
-                // Validar rol seleccionado
-                if (Tabla2.SelectedRows.Count == 0)
+                if (_rolesStaging.Count == 0)
                 {
-                    MessageBox.Show("DEBE SELECCIONAR UN ROL DE LA TABLA",
+                    MessageBox.Show("DEBE DEJAR AL MENOS UN ROL EN LA LISTA (BOTÓN +) — " +
+                        "un usuario no puede quedar sin ningún rol.",
                         "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                int roleId = Convert.ToInt32(Tabla2.SelectedRows[0].Cells["RoleId"].Value);
-                string roleName = Tabla2.SelectedRows[0].Cells["RoleName"].Value.ToString();
+                string listaRoles = string.Join(", ", _rolesStaging.Select(r => r.Value));
 
-                // Confirmación
                 var confirmacion = MessageBox.Show(
-                    $"¿DESEA ASIGNAR EL ROL '{roleName}' A {usuariosSeleccionados.Count} USUARIO(S)?\n\n" +
-                    "Esta acción:\n" +
-                    "• Reemplazará el rol actual de todos los usuarios seleccionados\n" +
-                    "• Limpiará los permisos específicos del usuario\n" +
-                    "• Asignará automáticamente los permisos del nuevo rol",
-                    "CONFIRMAR ASIGNACIÓN",
+                    $"¿DESEA que {usuariosSeleccionados.Count} USUARIO(S) queden EXACTAMENTE con el/los rol(es) [{listaRoles}]?\n\n" +
+                    "Se agregarán los roles de la lista que no tengan, y se les quitará cualquier otro rol " +
+                    "que tuvieran y no esté en esta lista.",
+                    "CONFIRMAR MODIFICACIÓN DE ROLES",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
@@ -408,41 +504,35 @@ namespace SECRON.Views
 
                 this.Cursor = Cursors.WaitCursor;
 
-                // Asignar rol a cada usuario
-                int exitosos = 0;
-                foreach (int userId in usuariosSeleccionados)
-                {
-                    var usuario = Ctrl_Users.ObtenerUsuarioPorId(userId);
-                    if (usuario != null)
-                    {
-                        usuario.RoleId = roleId;
-                        usuario.ModifiedBy = UserData?.UserId;
-
-                        if (Ctrl_Users.ActualizarUsuario(usuario) > 0)
-                        {
-                            Ctrl_UserPermissions.EliminarTodosLosPermisosDeUsuario(userId, UserData.UserId);
-                            exitosos++;
-                        }
-                    }
-                }
+                List<int> rolesSeleccionados = _rolesStaging.Select(r => r.Key).ToList();
+                int resultado = Ctrl_Users.SincronizarRolesDeUsuarios(usuariosSeleccionados, rolesSeleccionados, UserData?.UserId);
 
                 this.Cursor = Cursors.Default;
 
-                MessageBox.Show(
-                    $"✓ OPERACIÓN COMPLETADA\n\n" +
-                    $"Se asignó el rol '{roleName}' a {exitosos} de {usuariosSeleccionados.Count} usuario(s).\n" +
-                    $"Los permisos del rol se aplicarán automáticamente.",
-                    "ÉXITO",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                if (resultado == 1)
+                {
+                    MessageBox.Show(
+                        $"✓ ROLES MODIFICADOS CORRECTAMENTE PARA {usuariosSeleccionados.Count} USUARIO(S)",
+                        "ÉXITO", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                CheckBox_All.Checked = false;
-                CargarUsuariosEnTabla1();
+                    CheckBox_All.Checked = false;
+                    CargarUsuariosEnTabla1();
+                }
+                else if (resultado == -1)
+                {
+                    MessageBox.Show("LA LISTA DE ROLES NO PUEDE ESTAR VACÍA. NO SE REALIZÓ NINGÚN CAMBIO.",
+                        "VALIDACIÓN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("NO SE PUDIERON MODIFICAR LOS ROLES.",
+                        "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (Exception ex)
             {
                 this.Cursor = Cursors.Default;
-                MessageBox.Show($"ERROR AL ASIGNAR ROL: {ex.Message}",
+                MessageBox.Show($"ERROR AL MODIFICAR ROLES: {ex.Message}",
                     "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -453,7 +543,7 @@ namespace SECRON.Views
             // Lbl_Info1 - Información general (azul)
             Lbl_Info1.AutoSize = false;
             Lbl_Info1.Size = new Size(850, 40);
-            Lbl_Info1.Text = "       Selecciona uno o varios usuarios y asigna UN ROL a todos los seleccionados. Cada usuario solo puede tener un rol activo.";
+            Lbl_Info1.Text = "       Selecciona uno o varios usuarios, arma la lista de roles con el botón + y presiona MODIFICAR ROLES. Los usuarios quedarán EXACTAMENTE con esos roles.";
             Lbl_Info1.BackColor = Color.FromArgb(217, 237, 247);
             Lbl_Info1.ForeColor = Color.FromArgb(31, 45, 61);
             Lbl_Info1.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
@@ -462,8 +552,8 @@ namespace SECRON.Views
 
             // Lbl_Info2 - Advertencia importante (rojo) - ANCHO DE TABLA2
             Lbl_Info2.AutoSize = false;
-            Lbl_Info2.Size = new Size(Tabla2.Width, 50);
-            Lbl_Info2.Text = "       IMPORTANTE: el rol seleccionado reemplazará el rol actual\n       de todos los usuarios";
+            Lbl_Info2.Size = new Size(Panel_RolesList.Width, 50);
+            Lbl_Info2.Text = "       IMPORTANTE: la lista de roles reemplazará por completo\n       los roles actuales de todos los usuarios seleccionados";
             Lbl_Info2.BackColor = Color.FromArgb(248, 215, 218);
             Lbl_Info2.ForeColor = Color.FromArgb(114, 28, 36);
             Lbl_Info2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -2009,7 +2099,7 @@ namespace SECRON.Views
 
                     if (roleId.HasValue && roleId.Value > 0)
                     {
-                        usuarios = usuarios.Where(u => u.RoleId == roleId.Value).ToList();
+                        usuarios = usuarios.Where(u => u.RoleIds.Contains(roleId.Value)).ToList();
                     }
                 }
                 else
@@ -2019,12 +2109,7 @@ namespace SECRON.Views
 
                 foreach (var usuario in usuarios)
                 {
-                    string roleName = "SIN ROL";
-                    if (usuario.RoleId > 0)
-                    {
-                        var rol = Ctrl_Roles.ObtenerRolPorId(usuario.RoleId);
-                        roleName = rol?.RoleName ?? "DESCONOCIDO";
-                    }
+                    string roleName = string.IsNullOrWhiteSpace(usuario.RoleNamesText) ? "SIN ROL" : usuario.RoleNamesText;
 
                     Tabla6.Rows.Add(
                         usuario.UserId,
@@ -2635,7 +2720,7 @@ namespace SECRON.Views
         {
             // Roles — asignación de rol a usuario
             AplicarEstadoBotonPorPermiso(Btn_Asignar, "FA_ITMS_TECH_ROLES_UPDATE");
-            
+
             // Permisos a roles
             AplicarEstadoBotonPorPermiso(Btn_Add1, "FA_ITMS_TECH_ROLES_UPDATE");
             AplicarEstadoBotonPorPermiso(Btn_AddAll1, "FA_ITMS_TECH_ROLES_UPDATE");

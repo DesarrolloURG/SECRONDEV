@@ -892,7 +892,7 @@ namespace SECRON.Views
         {
             // Valores iniciales - TODOS con ToUpper() por seguridad
             LblUsername.Text = userInfo.FullName?.ToUpper() ?? "";
-            LblRol.Text = "ROL: " + (userInfo.RoleName?.ToUpper() ?? "");
+            LblRol.Text = "ROL: " + (userInfo.RoleNamesText?.ToUpper() ?? "");
             LblUser.Text = "USUARIO: " + (userInfo.Username?.ToUpper() ?? ""); // ← Cambiado aquí
         }
         #endregion CargarDatosUsuario

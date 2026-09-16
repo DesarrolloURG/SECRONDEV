@@ -254,24 +254,46 @@ namespace SECRON.Controllers
                 return false;
             }
         }
+        // MÉTODO AUXILIAR: Carga los roles activos de un usuario (reemplaza el antiguo RoleId/RoleName único)
+        private async Task<List<KeyValuePair<int, string>>> GetUserRolesAsync(SqlConnection connection, int userId)
+        {
+            var roles = new List<KeyValuePair<int, string>>();
+            string query = @"
+                SELECT r.RoleId, r.RoleName
+                FROM UserRoles ur
+                INNER JOIN Roles r ON r.RoleId = ur.RoleId
+                WHERE ur.UserId = @UserId AND ur.IsActive = 1
+                ORDER BY r.RoleName";
+
+            using (var command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@UserId", userId);
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                        roles.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                }
+            }
+            return roles;
+        }
         //Obtener datos del usuario
         private async Task<Mdl_Security_UserInfo> GetUserInfoAsync(SqlConnection connection, string username)
         {
             string query = @"
-            SELECT u.UserId, u.Username, u.FullName, u.RoleId, u.StatusId, 
+            SELECT u.UserId, u.Username, u.FullName, u.StatusId, 
                u.IsTemporaryPassword, u.PasswordExpiryDate, u.InstitutionalEmail,
                u.LastLoginDate, u.CreatedDate, u.NotificationsEnabled,
-               ISNULL(r.RoleName, '') AS RoleName, 
                ISNULL(s.StatusName, '') AS StatusName,
                u.LastPasswordChanged, u.PasswordNeverExpires,
                u.TwoFactorSecret, u.TwoFactorEnabledDate, u.TwoFactorExempt
                 FROM Users u
-                LEFT JOIN Roles r ON u.RoleId = r.RoleId
                 LEFT JOIN UserStatus s ON u.StatusId = s.StatusId
                 WHERE u.Username = @username";
 
             try
             {
+                Mdl_Security_UserInfo userInfo = null;
+
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
@@ -279,7 +301,7 @@ namespace SECRON.Controllers
                     {
                         if (await reader.ReadAsync())
                         {
-                            var userInfo = new Mdl_Security_UserInfo();
+                            userInfo = new Mdl_Security_UserInfo();
 
                             try { userInfo.UserId = reader.GetInt32(reader.GetOrdinal("UserId")); }
                             catch { System.Diagnostics.Debug.WriteLine("Error leyendo UserId"); }
@@ -289,9 +311,6 @@ namespace SECRON.Controllers
 
                             try { userInfo.FullName = reader["FullName"] as string ?? ""; }
                             catch { userInfo.FullName = ""; }
-
-                            try { userInfo.RoleId = reader.GetInt32(reader.GetOrdinal("RoleId")); }
-                            catch { userInfo.RoleId = 0; }
 
                             try { userInfo.StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")); }
                             catch { userInfo.StatusId = 0; }
@@ -314,9 +333,6 @@ namespace SECRON.Controllers
                             try { userInfo.NotificationsEnabled = reader.GetBoolean(reader.GetOrdinal("NotificationsEnabled")); }
                             catch { userInfo.NotificationsEnabled = true; }
 
-                            try { userInfo.RoleName = reader["RoleName"] as string ?? ""; }
-                            catch { userInfo.RoleName = ""; }
-
                             try { userInfo.StatusName = reader["StatusName"] as string ?? ""; }
                             catch { userInfo.StatusName = ""; }
 
@@ -334,18 +350,23 @@ namespace SECRON.Controllers
 
                             try { userInfo.TwoFactorExempt = reader.GetBoolean(reader.GetOrdinal("TwoFactorExempt")); }
                             catch { userInfo.TwoFactorExempt = false; }
-
-                            return userInfo;
                         }
                     }
                 }
+
+                // Cargar los roles del usuario (fuera del reader anterior, ya cerrado)
+                if (userInfo != null)
+                {
+                    userInfo.Roles = await GetUserRolesAsync(connection, userInfo.UserId);
+                }
+
+                return userInfo;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error en GetUserInfoAsync: {ex.Message}");
                 throw;
             }
-            return null;
         }
         // Método público para ser llamado desde el formulario
         public async Task<Mdl_Security_UserInfo> ObtenerDatosUsuarioAsync(string username)
@@ -500,7 +521,9 @@ namespace SECRON.Controllers
         }
         #endregion MetodosPrivados
         #region MetodosPermisos
-        /// Obtiene todos los permisos efectivos de un usuario (Rol + Específicos)
+        /// Obtiene todos los permisos efectivos de un usuario (todos sus roles activos + Específicos)
+        /// El parámetro roleId se conserva por compatibilidad con las llamadas existentes en los formularios,
+        /// pero ya no se usa: los roles del usuario ahora se resuelven internamente desde UserRoles.
         public async Task<List<string>> ObtenerPermisosUsuarioAsync(int userId, int roleId)
         {
             List<string> permisos = new List<string>();
@@ -511,11 +534,11 @@ namespace SECRON.Controllers
                     await connection.OpenAsync();
 
                     string query = @"
-                -- Permisos del rol del usuario
+                -- Permisos de TODOS los roles activos del usuario
                 SELECT DISTINCT p.PermissionName
                 FROM RolePermissions rp
                 INNER JOIN Permissions p ON rp.PermissionId = p.PermissionId
-                WHERE rp.RoleId = @RoleId 
+                WHERE rp.RoleId IN (SELECT RoleId FROM UserRoles WHERE UserId = @UserId AND IsActive = 1)
                   AND rp.IsGranted = 1 
                   AND p.IsActive = 1
                   AND p.PermissionId NOT IN (
@@ -539,7 +562,6 @@ namespace SECRON.Controllers
                     using (var command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@UserId", userId);
-                        command.Parameters.AddWithValue("@RoleId", roleId);
 
                         using (var reader = await command.ExecuteReaderAsync())
                         {
@@ -623,8 +645,8 @@ namespace SECRON.Controllers
         }
         #endregion DobleFactorAutenticacion
         #region CargaInicialConsolidada
-        // Carga en una sola llamada: datos de usuario, permisos y parámetro de sesión.
-        // Reduce a 1 round-trip lo que antes eran 3 llamadas secuenciales (crítico en VPN).
+        // Carga en una sola llamada: datos de usuario, roles, permisos y parámetro de sesión.
+        // Reduce a 1 round-trip lo que antes eran varias llamadas secuenciales (crítico en VPN).
         public async Task<(Mdl_Security_UserInfo UserInfo, List<string> Permisos, int TiempoSesionMinutos)> CargarDatosInicialesAsync(string username)
         {
             Mdl_Security_UserInfo userInfo = null;
@@ -643,14 +665,13 @@ namespace SECRON.Controllers
 
                         using (var reader = await command.ExecuteReaderAsync())
                         {
-                            // Result Set 1: Usuario
+                            // Result Set 1: Usuario (ya sin RoleId/RoleName)
                             if (await reader.ReadAsync())
                             {
                                 userInfo = new Mdl_Security_UserInfo();
                                 try { userInfo.UserId = reader.GetInt32(reader.GetOrdinal("UserId")); } catch { }
                                 try { userInfo.Username = reader["Username"] as string ?? ""; } catch { userInfo.Username = ""; }
                                 try { userInfo.FullName = reader["FullName"] as string ?? ""; } catch { userInfo.FullName = ""; }
-                                try { userInfo.RoleId = reader.GetInt32(reader.GetOrdinal("RoleId")); } catch { userInfo.RoleId = 0; }
                                 try { userInfo.StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")); } catch { userInfo.StatusId = 0; }
                                 try { userInfo.IsTemporaryPassword = reader.GetBoolean(reader.GetOrdinal("IsTemporaryPassword")); } catch { userInfo.IsTemporaryPassword = false; }
                                 try { userInfo.PasswordExpiryDate = reader["PasswordExpiryDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["PasswordExpiryDate"]; } catch { userInfo.PasswordExpiryDate = null; }
@@ -658,7 +679,6 @@ namespace SECRON.Controllers
                                 try { userInfo.LastLoginDate = reader["LastLoginDate"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastLoginDate"]; } catch { userInfo.LastLoginDate = null; }
                                 try { userInfo.CreatedDate = (DateTime)reader["CreatedDate"]; } catch { userInfo.CreatedDate = DateTime.Now; }
                                 try { userInfo.NotificationsEnabled = reader.GetBoolean(reader.GetOrdinal("NotificationsEnabled")); } catch { userInfo.NotificationsEnabled = true; }
-                                try { userInfo.RoleName = reader["RoleName"] as string ?? ""; } catch { userInfo.RoleName = ""; }
                                 try { userInfo.StatusName = reader["StatusName"] as string ?? ""; } catch { userInfo.StatusName = ""; }
                                 try { userInfo.LastPasswordChanged = reader["LastPasswordChanged"] == DBNull.Value ? (DateTime?)null : (DateTime)reader["LastPasswordChanged"]; } catch { userInfo.LastPasswordChanged = null; }
                                 try { userInfo.PasswordNeverExpires = reader.GetBoolean(reader.GetOrdinal("PasswordNeverExpires")); } catch { userInfo.PasswordNeverExpires = false; }
@@ -667,7 +687,18 @@ namespace SECRON.Controllers
                                 try { userInfo.TwoFactorExempt = reader.GetBoolean(reader.GetOrdinal("TwoFactorExempt")); } catch { userInfo.TwoFactorExempt = false; }
                             }
 
-                            // Result Set 2: Permisos
+                            // Result Set 2 (NUEVO): Roles del usuario
+                            if (await reader.NextResultAsync())
+                            {
+                                var roles = new List<KeyValuePair<int, string>>();
+                                while (await reader.ReadAsync())
+                                {
+                                    roles.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                                }
+                                if (userInfo != null) userInfo.Roles = roles;
+                            }
+
+                            // Result Set 3: Permisos
                             if (await reader.NextResultAsync())
                             {
                                 while (await reader.ReadAsync())
@@ -676,7 +707,7 @@ namespace SECRON.Controllers
                                 }
                             }
 
-                            // Result Set 3: Parámetro de sesión
+                            // Result Set 4: Parámetro de sesión
                             if (await reader.NextResultAsync())
                             {
                                 if (await reader.ReadAsync())
@@ -685,7 +716,7 @@ namespace SECRON.Controllers
                                 }
                             }
 
-                            // Result Set 4: Configuración SMTP (llena Cls_EmailConfigCache directamente)
+                            // Result Set 5: Configuración SMTP (llena Cls_EmailConfigCache directamente)
                             if (await reader.NextResultAsync())
                             {
                                 while (await reader.ReadAsync())

@@ -13,7 +13,14 @@ namespace SECRON.Models
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string FullName { get; set; }
-        public int RoleId { get; set; }
+
+        // Roles del usuario (reemplaza el antiguo RoleId único — un usuario puede tener varios roles)
+        public List<KeyValuePair<int, string>> Roles { get; set; } = new List<KeyValuePair<int, string>>();
+        public List<int> RoleIds => Roles?.Select(r => r.Key).ToList() ?? new List<int>();
+        public string RoleNamesText => Roles != null && Roles.Count > 0
+            ? string.Join(", ", Roles.Select(r => r.Value))
+            : "";
+
         public int StatusId { get; set; }
         public bool NotificationsEnabled { get; set; }
         public DateTime? LastConnectionDate { get; set; }
@@ -46,12 +53,11 @@ namespace SECRON.Models
         }
 
         // Constructor con parámetros principales
-        public Mdl_Users(string username, string passwordHash, string fullName, int roleId, int statusId)
+        public Mdl_Users(string username, string passwordHash, string fullName, int statusId)
         {
             this.Username = username;
             this.PasswordHash = passwordHash;
             this.FullName = fullName;
-            this.RoleId = roleId;
             this.StatusId = statusId;
             this.NotificationsEnabled = true;
             this.IsTemporaryPassword = false;
