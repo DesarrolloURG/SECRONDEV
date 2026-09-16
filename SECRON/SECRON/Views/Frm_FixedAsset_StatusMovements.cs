@@ -69,7 +69,7 @@ namespace SECRON.Views
 
             // Permisos — se cargan una sola vez; nunca se vuelven a tocar
             authController = new Ctrl_Security_Auth();
-            await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+            await CargarPermisosUsuario(UserData.UserId, 0);
             ConfigurarBotonesPorPermisos();
         }
 

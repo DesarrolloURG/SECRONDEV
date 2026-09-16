@@ -42,8 +42,16 @@ namespace SECRON.Controllers
         #endregion BCRYPT ENCRIPTACION
         #region CRUD
         // MÉTODO PRINCIPAL: Registrar usuario
-        public static int RegistrarUsuario(Mdl_Users usuario, string password)
+        // MÉTODO PRINCIPAL: Registrar usuario (con sus roles — mínimo 1 requerido)
+        public static int RegistrarUsuario(Mdl_Users usuario, string password, List<int> roleIds)
         {
+            if (roleIds == null || roleIds.Count == 0)
+            {
+                MessageBox.Show("Debe asignar al menos un rol al usuario.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return 0;
+            }
+
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
@@ -53,13 +61,13 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@Username", usuario.Username ?? "");
                     cmd.Parameters.AddWithValue("@PasswordHash", GenerarHashPassword(password));
                     cmd.Parameters.AddWithValue("@FullName", usuario.FullName ?? "");
-                    cmd.Parameters.AddWithValue("@RoleId", usuario.RoleId);
                     cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
                     cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
                     cmd.Parameters.AddWithValue("@IsTemporaryPassword", usuario.IsTemporaryPassword);
                     cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@PasswordExpiryDate", (object)usuario.PasswordExpiryDate ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@CreatedBy", (object)usuario.CreatedBy ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@RoleIds", "[" + string.Join(",", roleIds) + "]");
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -70,6 +78,70 @@ namespace SECRON.Controllers
                 MessageBox.Show("Error al registrar usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 0;
             }
+        }
+
+        // MÉTODO AUXILIAR: Asignar (o reactivar) un rol a un usuario — utilidad suelta, no usada por el flujo principal de guardado
+        // MÉTODO PRINCIPAL: Asignar N roles a M usuarios, en una sola transacción (producto cartesiano usuario×rol)
+        // MÉTODO PRINCIPAL: Sincroniza los roles de N usuarios para que queden EXACTAMENTE con los
+        // roles indicados (agrega los que falten, quita los que sobren), en una sola transacción
+        // atómica para todos los usuarios. Si roleIds viene vacío, no se ejecuta nada (devuelve -1).
+        public static int SincronizarRolesDeUsuarios(List<int> userIds, List<int> roleIds, int? modifiedBy)
+        {
+            if (userIds == null || userIds.Count == 0)
+                return 0;
+
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                using (SqlCommand cmd = new SqlCommand("SP_UserRoles_Sync", connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserIds", "[" + string.Join(",", userIds) + "]");
+                    cmd.Parameters.AddWithValue("@RoleIds", "[" + string.Join(",", roleIds ?? new List<int>()) + "]");
+                    cmd.Parameters.AddWithValue("@ModifiedBy", (object)modifiedBy ?? DBNull.Value);
+
+                    object result = cmd.ExecuteScalar();
+                    return result == null ? 0 : Convert.ToInt32(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al modificar roles: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
+            }
+        }
+
+        // MÉTODO AUXILIAR: Obtener los roles activos de un usuario (para precargar el selector al editar)
+        public static List<KeyValuePair<int, string>> ObtenerRolesDeUsuario(int userId)
+        {
+            List<KeyValuePair<int, string>> lista = new List<KeyValuePair<int, string>>();
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string query = @"
+                        SELECT r.RoleId, r.RoleName
+                        FROM UserRoles ur
+                        INNER JOIN Roles r ON r.RoleId = ur.RoleId
+                        WHERE ur.UserId = @UserId AND ur.IsActive = 1
+                        ORDER BY r.RoleName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                lista.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener roles del usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return lista;
         }
 
         // MÉTODO PRINCIPAL: Mostrar todos los usuarios con paginación
@@ -104,6 +176,7 @@ namespace SECRON.Controllers
             {
                 MessageBox.Show("Error al obtener usuarios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            CargarRolesEnLista(lista);
             return lista;
         }
         #endregion CRUD
@@ -128,10 +201,10 @@ namespace SECRON.Controllers
                         parametros.Add(new SqlParameter("@texto", "%" + textoBusqueda.Trim() + "%"));
                     }
 
-                    // Filtro por rol
+                    // Filtro por rol (ahora vive en UserRoles, un usuario puede tener varios)
                     if (roleId.HasValue && roleId > 0)
                     {
-                        query += " AND RoleId = @roleId";
+                        query += " AND UserId IN (SELECT UserId FROM UserRoles WHERE RoleId = @roleId AND IsActive = 1)";
                         parametros.Add(new SqlParameter("@roleId", roleId.Value));
                     }
 
@@ -170,12 +243,20 @@ namespace SECRON.Controllers
             {
                 MessageBox.Show("Error en búsqueda: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            CargarRolesEnLista(lista);
             return lista;
         }
 
-        // MÉTODO PRINCIPAL: Actualizar usuario
-        public static int ActualizarUsuario(Mdl_Users usuario)
+        // MÉTODO PRINCIPAL: Actualizar usuario (con sincronización de sus roles — mínimo 1 requerido)
+        public static int ActualizarUsuario(Mdl_Users usuario, List<int> roleIds)
         {
+            if (roleIds == null || roleIds.Count == 0)
+            {
+                MessageBox.Show("Debe asignar al menos un rol al usuario.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return 0;
+            }
+
             try
             {
                 using (SqlConnection connection = DatabaseConfig.StartConection())
@@ -185,11 +266,12 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@UserId", usuario.UserId);
                     cmd.Parameters.AddWithValue("@Username", usuario.Username ?? "");
                     cmd.Parameters.AddWithValue("@FullName", usuario.FullName ?? "");
-                    cmd.Parameters.AddWithValue("@RoleId", usuario.RoleId);
                     cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
                     cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
                     cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ModifiedBy", (object)usuario.ModifiedBy ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@RoleIds", "[" + string.Join(",", roleIds) + "]");
 
                     object result = cmd.ExecuteScalar();
                     return result == null ? 0 : Convert.ToInt32(result);
@@ -282,7 +364,9 @@ namespace SECRON.Controllers
                                 if (BCrypt.Net.BCrypt.Verify(password, storedHash))
                                 {
                                     // Mapear y retornar el usuario
-                                    return MapearUsuario(reader);
+                                    var usuario = MapearUsuario(reader);
+                                    CargarRolesEnLista(new List<Mdl_Users> { usuario });
+                                    return usuario;
                                 }
                             }
                         }
@@ -369,7 +453,9 @@ namespace SECRON.Controllers
                         {
                             if (reader.Read())
                             {
-                                return MapearUsuario(reader);
+                                var usuario = MapearUsuario(reader);
+                                CargarRolesEnLista(new List<Mdl_Users> { usuario });
+                                return usuario;
                             }
                         }
                     }
@@ -406,27 +492,71 @@ namespace SECRON.Controllers
         {
             return new Mdl_Users
             {
-                UserId = reader.GetInt32(0),
-                Username = reader[1].ToString(),
-                PasswordHash = reader[2].ToString(),
-                FullName = reader[3].ToString(),
-                RoleId = reader.GetInt32(4),
-                StatusId = reader.GetInt32(5),
-                NotificationsEnabled = reader.GetBoolean(6),
-                LastConnectionDate = reader[7] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(7),
-                IsTemporaryPassword = reader.GetBoolean(8),
-                CreatedDate = reader.GetDateTime(9),
-                CreatedBy = reader[10] == DBNull.Value ? null : (int?)reader.GetInt32(10),
-                ModifiedDate = reader[11] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(11),
-                ModifiedBy = reader[12] == DBNull.Value ? null : (int?)reader.GetInt32(12),
-                InstitutionalEmail = reader[13] == DBNull.Value ? null : reader[13].ToString(),
-                PasswordExpiryDate = reader[14] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(14),
-                FailedLoginAttempts = reader.GetInt32(15),
-                IsLocked = reader.GetBoolean(16),
-                LastLoginDate = reader[17] == DBNull.Value ? null : (DateTime?)reader.GetDateTime(17),
-                LastPasswordChanged = reader["LastPasswordChanged"] == DBNull.Value ? null : (DateTime?)reader["LastPasswordChanged"],
-                PasswordNeverExpires = reader["PasswordNeverExpires"] != DBNull.Value && (bool)reader["PasswordNeverExpires"]
+                UserId = Convert.ToInt32(reader["UserId"]),
+                Username = reader["Username"].ToString(),
+                PasswordHash = reader["PasswordHash"].ToString(),
+                FullName = reader["FullName"].ToString(),
+                StatusId = reader["StatusId"] == DBNull.Value ? 0 : Convert.ToInt32(reader["StatusId"]),
+                NotificationsEnabled = reader["NotificationsEnabled"] != DBNull.Value && Convert.ToBoolean(reader["NotificationsEnabled"]),
+                LastConnectionDate = reader["LastConnectionDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["LastConnectionDate"]),
+                IsTemporaryPassword = reader["IsTemporaryPassword"] != DBNull.Value && Convert.ToBoolean(reader["IsTemporaryPassword"]),
+                CreatedDate = reader["CreatedDate"] == DBNull.Value ? DateTime.Now : Convert.ToDateTime(reader["CreatedDate"]),
+                CreatedBy = reader["CreatedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["CreatedBy"]),
+                ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["ModifiedDate"]),
+                ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["ModifiedBy"]),
+                InstitutionalEmail = reader["InstitutionalEmail"] == DBNull.Value ? null : reader["InstitutionalEmail"].ToString(),
+                EmployeeId = reader["EmployeeId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["EmployeeId"]),
+                PasswordExpiryDate = reader["PasswordExpiryDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["PasswordExpiryDate"]),
+                FailedLoginAttempts = reader["FailedLoginAttempts"] == DBNull.Value ? 0 : Convert.ToInt32(reader["FailedLoginAttempts"]),
+                IsLocked = reader["IsLocked"] != DBNull.Value && Convert.ToBoolean(reader["IsLocked"]),
+                LastLoginDate = reader["LastLoginDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["LastLoginDate"]),
+                LastPasswordChanged = reader["LastPasswordChanged"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["LastPasswordChanged"]),
+                PasswordNeverExpires = reader["PasswordNeverExpires"] != DBNull.Value && Convert.ToBoolean(reader["PasswordNeverExpires"])
             };
+        }
+
+        // MÉTODO AUXILIAR: Cargar los roles de cada usuario de una lista, en un solo viaje a BD (evita N+1 queries)
+        private static void CargarRolesEnLista(List<Mdl_Users> usuarios)
+        {
+            if (usuarios == null || usuarios.Count == 0) return;
+
+            try
+            {
+                using (SqlConnection connection = DatabaseConfig.StartConection())
+                {
+                    string idsCsv = string.Join(",", usuarios.Select(u => u.UserId));
+                    string query = $@"
+                        SELECT ur.UserId, r.RoleId, r.RoleName
+                        FROM UserRoles ur
+                        INNER JOIN Roles r ON r.RoleId = ur.RoleId
+                        WHERE ur.IsActive = 1 AND ur.UserId IN ({idsCsv})
+                        ORDER BY r.RoleName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var rolesPorUsuario = new Dictionary<int, List<KeyValuePair<int, string>>>();
+                        while (reader.Read())
+                        {
+                            int userId = reader.GetInt32(0);
+                            if (!rolesPorUsuario.ContainsKey(userId))
+                                rolesPorUsuario[userId] = new List<KeyValuePair<int, string>>();
+                            rolesPorUsuario[userId].Add(new KeyValuePair<int, string>(reader.GetInt32(1), reader.GetString(2)));
+                        }
+
+                        foreach (var usuario in usuarios)
+                        {
+                            usuario.Roles = rolesPorUsuario.ContainsKey(usuario.UserId)
+                                ? rolesPorUsuario[usuario.UserId]
+                                : new List<KeyValuePair<int, string>>();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar roles de usuarios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // MÉTODOS DE VALIDACIÓN
@@ -472,7 +602,7 @@ namespace SECRON.Controllers
 
                     if (roleId.HasValue && roleId > 0)
                     {
-                        query += " AND RoleId = @roleId";
+                        query += " AND UserId IN (SELECT UserId FROM UserRoles WHERE RoleId = @roleId AND IsActive = 1)";
                         parametros.Add(new SqlParameter("@roleId", roleId.Value));
                     }
 
@@ -511,7 +641,9 @@ namespace SECRON.Controllers
                         {
                             if (reader.Read())
                             {
-                                return MapearUsuario(reader);
+                                var usuario = MapearUsuario(reader);
+                                CargarRolesEnLista(new List<Mdl_Users> { usuario });
+                                return usuario;
                             }
                         }
                     }
@@ -534,7 +666,8 @@ namespace SECRON.Controllers
                     string query = @"
                 SELECT DISTINCT u.* 
                 FROM Users u
-                INNER JOIN Roles r ON u.RoleId = r.RoleId
+                INNER JOIN UserRoles ur ON u.UserId = ur.UserId AND ur.IsActive = 1
+                INNER JOIN Roles r ON ur.RoleId = r.RoleId
                 INNER JOIN RolePermissions rp ON r.RoleId = rp.RoleId
                 INNER JOIN Permissions p ON rp.PermissionId = p.PermissionId
                 WHERE p.PermissionCode = @PermissionCode 
@@ -570,6 +703,7 @@ namespace SECRON.Controllers
             {
                 MessageBox.Show("Error al obtener usuarios con permiso: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            CargarRolesEnLista(lista);
             return lista;
         }
         // Este metodo actualiza SOLO los campos relacionados con el bloqueo

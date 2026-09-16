@@ -35,6 +35,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.Tabla2 = new System.Windows.Forms.DataGridView();
+            this.ComboBox_Rol = new System.Windows.Forms.ComboBox();
+            this.Btn_AddRol = new System.Windows.Forms.Button();
+            this.Panel_RolesList = new System.Windows.Forms.Panel();
             this.Lbl_Info2 = new System.Windows.Forms.Label();
             this.Lbl_Subtitulo2 = new System.Windows.Forms.Label();
             this.Panel_Izquierdo = new System.Windows.Forms.Panel();
@@ -245,20 +248,49 @@
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panel3.Controls.Add(this.Tabla2);
+            this.panel3.Controls.Add(this.Panel_RolesList);
+            this.panel3.Controls.Add(this.Btn_AddRol);
+            this.panel3.Controls.Add(this.ComboBox_Rol);
             this.panel3.Location = new System.Drawing.Point(21, 152);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(546, 567);
             this.panel3.TabIndex = 83;
             // 
-            // Tabla2
+            // ComboBox_Rol
             // 
-            this.Tabla2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Tabla2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Tabla2.Location = new System.Drawing.Point(0, 0);
-            this.Tabla2.Name = "Tabla2";
-            this.Tabla2.Size = new System.Drawing.Size(546, 567);
-            this.Tabla2.TabIndex = 1;
+            this.ComboBox_Rol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
+            this.ComboBox_Rol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_Rol.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.ComboBox_Rol.Location = new System.Drawing.Point(10, 10);
+            this.ComboBox_Rol.Name = "ComboBox_Rol";
+            this.ComboBox_Rol.Size = new System.Drawing.Size(430, 28);
+            this.ComboBox_Rol.TabIndex = 1;
+            // 
+            // Btn_AddRol
+            // 
+            this.Btn_AddRol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Btn_AddRol.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.Btn_AddRol.Image = global::SECRON.Properties.Resources.AddNegro25x25;
+            this.Btn_AddRol.Location = new System.Drawing.Point(479, 4);
+            this.Btn_AddRol.Margin = new System.Windows.Forms.Padding(4);
+            this.Btn_AddRol.Name = "Btn_AddRol";
+            this.Btn_AddRol.Size = new System.Drawing.Size(47, 55);
+            this.Btn_AddRol.TabIndex = 2;
+            this.Btn_AddRol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Btn_AddRol.UseVisualStyleBackColor = true;
+            this.Btn_AddRol.Click += new System.EventHandler(this.Btn_AddRol_Click);
+            // 
+            // Panel_RolesList
+            // 
+            this.Panel_RolesList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_RolesList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(239)))), ((int)(((byte)(240)))));
+            this.Panel_RolesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Panel_RolesList.Location = new System.Drawing.Point(10, 64);
+            this.Panel_RolesList.Name = "Panel_RolesList";
+            this.Panel_RolesList.Size = new System.Drawing.Size(526, 493);
+            this.Panel_RolesList.TabIndex = 3;
             // 
             // Lbl_Info2
             // 
@@ -271,8 +303,8 @@
             this.Lbl_Info2.Name = "Lbl_Info2";
             this.Lbl_Info2.Size = new System.Drawing.Size(651, 19);
             this.Lbl_Info2.TabIndex = 82;
-            this.Lbl_Info2.Text = "       IMPORTANTE: el rol seleccionado reemplazará el rol actual de todos los usu" +
-    "arios marcados.";
+            this.Lbl_Info2.Text = "       Arme la lista de roles y use AGREGAR ROL(ES) o QUITAR ROL(ES) sobre los u" +
+    "suarios marcados.";
             this.Lbl_Info2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Lbl_Subtitulo2
@@ -286,7 +318,7 @@
             this.Lbl_Subtitulo2.Name = "Lbl_Subtitulo2";
             this.Lbl_Subtitulo2.Size = new System.Drawing.Size(256, 20);
             this.Lbl_Subtitulo2.TabIndex = 1;
-            this.Lbl_Subtitulo2.Text = "       SELECCIONAR ROL A ASIGNAR";
+            this.Lbl_Subtitulo2.Text = "       ROLES A APLICAR";
             this.Lbl_Subtitulo2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // Panel_Izquierdo
@@ -423,11 +455,11 @@
             this.Btn_Asignar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.Btn_Asignar.Image = global::SECRON.Properties.Resources.ProfileNegro25x25;
             this.Btn_Asignar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Btn_Asignar.Location = new System.Drawing.Point(1001, 13);
+            this.Btn_Asignar.Location = new System.Drawing.Point(931, 7);
             this.Btn_Asignar.Name = "Btn_Asignar";
-            this.Btn_Asignar.Size = new System.Drawing.Size(150, 30);
+            this.Btn_Asignar.Size = new System.Drawing.Size(220, 46);
             this.Btn_Asignar.TabIndex = 54;
-            this.Btn_Asignar.Text = "ASIGNAR ROL";
+            this.Btn_Asignar.Text = "MODIFICAR ROLES";
             this.Btn_Asignar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.Btn_Asignar.UseVisualStyleBackColor = true;
             this.Btn_Asignar.Click += new System.EventHandler(this.Btn_Asignar_Click);
@@ -2099,6 +2131,9 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView Tabla2;
+        private System.Windows.Forms.ComboBox ComboBox_Rol;
+        private System.Windows.Forms.Button Btn_AddRol;
+        private System.Windows.Forms.Panel Panel_RolesList;
         private System.Windows.Forms.Label Lbl_Info2;
         private System.Windows.Forms.Label Lbl_Subtitulo2;
         private System.Windows.Forms.Panel Panel_Izquierdo;

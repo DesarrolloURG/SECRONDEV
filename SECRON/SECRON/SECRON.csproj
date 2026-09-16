@@ -434,6 +434,12 @@
     <Compile Include="Views\Frm_FixedAsset_ResponsabilityLetter.Designer.cs">
       <DependentUpon>Frm_FixedAsset_ResponsabilityLetter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.Designer.cs">
+      <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Frm_ITSM_Users_SelectPerson.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -814,12 +820,6 @@
     <Compile Include="Views\Frm_ITSM_Users_Managment.Designer.cs">
       <DependentUpon>Frm_ITSM_Users_Managment.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Frm_ITSM_Users_RolesPermissions.Designer.cs">
-      <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Views\Frm_AcademicProcesses_Reviser.resx">
       <DependentUpon>Frm_AcademicProcesses_Reviser.cs</DependentUpon>
     </EmbeddedResource>
@@ -891,6 +891,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_FixedAsset_ResponsabilityLetter.resx">
       <DependentUpon>Frm_FixedAsset_ResponsabilityLetter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Frm_ITSM_Users_RolesPermissions.resx">
+      <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_ITSM_Users_SelectPerson.resx">
       <DependentUpon>Frm_ITSM_Users_SelectPerson.cs</DependentUpon>
@@ -1085,9 +1088,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Frm_ITSM_Users_Managment.resx">
       <DependentUpon>Frm_ITSM_Users_Managment.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Frm_ITSM_Users_RolesPermissions.resx">
-      <DependentUpon>Frm_ITSM_Users_RolesPermissions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

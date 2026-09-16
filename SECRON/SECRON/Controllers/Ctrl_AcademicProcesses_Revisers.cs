@@ -125,19 +125,20 @@ namespace SECRON.Controllers
             }
         }
 
-        // Sustituye el rol actual del usuario por el @roleId indicado (mismo patrón que
-        // Frm_ITSM_Users_RolesPermissions: actualiza el usuario y limpia sus permisos específicos,
-        // ya que ahora aplican los del nuevo rol). Reutilizado tanto al asignar como al remover revisor.
+        // Sustituye el rol actual del usuario por el @roleId indicado (deja a ese rol como ÚNICO rol
+        // activo del usuario) y limpia sus permisos específicos, ya que ahora aplican los del nuevo rol.
+        // Reutilizado tanto al asignar como al remover revisor.
         private static bool ActualizarRolUsuario(int userId, int roleId, int modifiedBy)
         {
             var usuario = Ctrl_Users.ObtenerUsuarioPorId(userId);
             if (usuario == null)
                 return false;
 
-            usuario.RoleId = roleId;
             usuario.ModifiedBy = modifiedBy;
 
-            if (Ctrl_Users.ActualizarUsuario(usuario) <= 0)
+            // El único rol deseado tras esta operación es roleId — ActualizarUsuario sincroniza
+            // UserRoles a partir de esta lista (agrega el que falte, quita los que sobren).
+            if (Ctrl_Users.ActualizarUsuario(usuario, new List<int> { roleId }) <= 0)
                 return false;
 
             Ctrl_UserPermissions.EliminarTodosLosPermisosDeUsuario(userId, modifiedBy);

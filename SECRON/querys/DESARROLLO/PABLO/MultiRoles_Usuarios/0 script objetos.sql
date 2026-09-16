@@ -1,0 +1,30 @@
+CREATE TABLE UserRoles (
+    UserRoleId   INT IDENTITY PRIMARY KEY,
+    UserId       INT NOT NULL FOREIGN KEY REFERENCES Users(UserId),
+    RoleId       INT NOT NULL FOREIGN KEY REFERENCES Roles(RoleId),
+    IsActive     BIT NOT NULL DEFAULT 1,
+    CreatedDate  DATETIME NOT NULL DEFAULT GETDATE(),
+    CreatedBy    INT NULL,
+    ModifiedDate DATETIME NULL,
+    ModifiedBy   INT NULL,
+    CONSTRAINT UQ_UserRoles_UserId_RoleId UNIQUE (UserId, RoleId)
+);
+
+INSERT INTO UserRoles (UserId, RoleId, IsActive, CreatedDate)
+SELECT UserId, RoleId, 1, GETDATE()
+FROM Users
+WHERE RoleId IS NOT NULL;
+
+ALTER TABLE Users DROP CONSTRAINT FK_Users_Role;
+DROP INDEX IX_Users_Role ON Users;
+ALTER TABLE Users DROP COLUMN RoleId;
+
+
+
+---REVISAR SI EN PRODUCCIÓN ESTOS EXISTEN, SINO BORRAR EL CODIGO
+DROP PROCEDURE IF EXISTS SP_UserRoles_Insert;
+DROP PROCEDURE IF EXISTS SP_UserRoles_Delete;
+DROP PROCEDURE IF EXISTS SP_UserRoles_BulkInsert;
+DROP PROCEDURE IF EXISTS SP_UserRoles_BulkDelete;
+
+EXEC dbo.usp_GenerateAllAuditTriggers;

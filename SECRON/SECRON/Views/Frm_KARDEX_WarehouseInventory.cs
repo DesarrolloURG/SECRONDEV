@@ -72,7 +72,7 @@ namespace SECRON.Views
                 // CARGAR PERMISOS DEL USUARIO (rol global) - debe ir ANTES del combo de bodegas
                 if (UserData != null)
                 {
-                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    await CargarPermisosUsuario(UserData.UserId, 0);
 
                     ConfigurarControlesPorPermisos();
                 }

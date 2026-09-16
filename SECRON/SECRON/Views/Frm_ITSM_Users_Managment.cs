@@ -28,6 +28,10 @@ namespace SECRON.Views
         // Usuario seleccionado para editar
         private Mdl_Users _usuarioSeleccionado = null;
 
+        // Roles: catálogo completo, y los que el usuario en edición ya tiene añadidos (mínimo 1 al guardar)
+        private List<KeyValuePair<int, string>> _todosLosRoles = new List<KeyValuePair<int, string>>();
+        private List<KeyValuePair<int, string>> _rolesAsignados = new List<KeyValuePair<int, string>>();
+
         // Listas para almacenar datos
         private List<Mdl_Users> usuariosList;
 
@@ -82,7 +86,7 @@ namespace SECRON.Views
 
                 if (UserData != null)
                 {
-                    await CargarPermisosUsuario(UserData.UserId, UserData.RoleId);
+                    await CargarPermisosUsuario(UserData.UserId, 0);
                     ConfigurarControlesPorPermisos();
                 }
 
@@ -196,20 +200,116 @@ namespace SECRON.Views
         {
             try
             {
-                var roles = Ctrl_Roles.ObtenerTodosLosRoles();
-
-                ComboBox_Rol.DataSource = new BindingSource(roles, null);
-                ComboBox_Rol.DisplayMember = "Value"; // El nombre del rol
-                ComboBox_Rol.ValueMember = "Key";     // El ID del rol
-
-                if (ComboBox_Rol.Items.Count > 0)
-                    ComboBox_Rol.SelectedIndex = 0;
+                _todosLosRoles = Ctrl_Roles.ObtenerTodosLosRoles();
+                RefrescarComboRoles();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar roles: {ex.Message}", "Error",
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Recarga el combo con los roles del catálogo que AÚN NO estén en la lista de asignados (evita duplicados)
+        private void RefrescarComboRoles()
+        {
+            var disponibles = _todosLosRoles
+                .Where(r => !_rolesAsignados.Any(a => a.Key == r.Key))
+                .ToList();
+
+            ComboBox_Rol.DataSource = new BindingSource(disponibles, null);
+            ComboBox_Rol.DisplayMember = "Value";
+            ComboBox_Rol.ValueMember = "Key";
+
+            if (ComboBox_Rol.Items.Count > 0)
+                ComboBox_Rol.SelectedIndex = 0;
+        }
+
+        // Botón "+": añade el rol seleccionado del combo a la lista de asignados
+        private void Btn_AddRol_Click(object sender, EventArgs e)
+        {
+            if (ComboBox_Rol.SelectedIndex < 0 || ComboBox_Rol.SelectedValue == null)
+            {
+                MessageBox.Show("No hay roles disponibles para añadir.", "Validación",
+                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int roleId = (int)ComboBox_Rol.SelectedValue;
+            string roleName = ComboBox_Rol.Text;
+
+            _rolesAsignados.Add(new KeyValuePair<int, string>(roleId, roleName));
+            RefrescarComboRoles();
+            RedibujarListaRoles();
+        }
+
+        // Botón "-" de cada chip: quita ese rol de la lista de asignados y lo regresa al combo
+        private void Btn_QuitarRol_Click(object sender, EventArgs e)
+        {
+            if (!(sender is Control ctrl) || !(ctrl.Tag is int roleId)) return;
+
+            _rolesAsignados.RemoveAll(r => r.Key == roleId);
+            RefrescarComboRoles();
+            RedibujarListaRoles();
+        }
+
+        // Repinta Panel_RolesList con un "chip" por cada rol asignado: nombre + botón "-"
+        private void RedibujarListaRoles()
+        {
+            Panel_RolesList.SuspendLayout();
+            Panel_RolesList.Controls.Clear();
+            Panel_RolesList.AutoScroll = true;
+
+            const int alturaFila = 34;
+            const int margen = 6;
+            int y = margen;
+
+            foreach (var rol in _rolesAsignados)
+            {
+                var fila = new Panel
+                {
+                    Location = new Point(margen, y),
+                    Size = new Size(Panel_RolesList.ClientSize.Width - (margen * 2) - 18, alturaFila - 4),
+                    BackColor = Color.White,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+                };
+
+                var lbl = new Label
+                {
+                    Text = rol.Value,
+                    Font = new Font("Segoe UI", 10F),
+                    ForeColor = Color.FromArgb(33, 37, 41),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Location = new Point(8, 0),
+                    Size = new Size(fila.Width - 40, fila.Height),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+                };
+
+                var btnQuitar = new Button
+                {
+                    Text = "-",
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    BackColor = Color.FromArgb(220, 53, 69),
+                    FlatStyle = FlatStyle.Flat,
+                    Size = new Size(24, 24),
+                    Location = new Point(fila.Width - 30, (fila.Height - 24) / 2),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    Tag = rol.Key,
+                    Cursor = Cursors.Hand
+                };
+                btnQuitar.FlatAppearance.BorderSize = 0;
+                btnQuitar.Click += Btn_QuitarRol_Click;
+
+                fila.Controls.Add(lbl);
+                fila.Controls.Add(btnQuitar);
+                Panel_RolesList.Controls.Add(fila);
+
+                y += alturaFila;
+            }
+
+            Panel_RolesList.ResumeLayout();
         }
 
         // Cargar Estados de Usuario desde Ctrl_UserStatus
@@ -437,10 +537,17 @@ namespace SECRON.Views
                 Tabla1.Columns["LastLoginDate"].HeaderText = "ÚLTIMO LOGIN";
                 Tabla1.Columns["IsLocked"].HeaderText = "BLOQUEADO";
 
+                if (Tabla1.Columns.Contains("RoleNamesText"))
+                {
+                    Tabla1.Columns["RoleNamesText"].HeaderText = "ROLES";
+                    Tabla1.Columns["RoleNamesText"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
                 // Ocultar columnas no necesarias
                 Tabla1.Columns["UserId"].Visible = false;
                 Tabla1.Columns["PasswordHash"].Visible = false;
-                Tabla1.Columns["RoleId"].Visible = false;
+                if (Tabla1.Columns.Contains("Roles")) Tabla1.Columns["Roles"].Visible = false;
+                if (Tabla1.Columns.Contains("RoleIds")) Tabla1.Columns["RoleIds"].Visible = false;
                 Tabla1.Columns["StatusId"].Visible = false;
                 Tabla1.Columns["NotificationsEnabled"].Visible = false;
                 Tabla1.Columns["LastConnectionDate"].Visible = false;
@@ -480,7 +587,10 @@ namespace SECRON.Views
                 DataGridViewRow fila = Tabla1.SelectedRows[0];
                 int userId = Convert.ToInt32(fila.Cells["UserId"].Value);
 
-                _usuarioSeleccionado = Ctrl_Users.ObtenerUsuarioPorId(userId);
+                // Usamos la lista ya cargada en memoria (usuariosList), que ya trae .Roles
+                // poblado desde MostrarUsuarios/BuscarUsuarios — evita 2 consultas extra a BD
+                // por cada clic en el grid.
+                _usuarioSeleccionado = usuariosList?.FirstOrDefault(u => u.UserId == userId);
 
                 if (_usuarioSeleccionado != null)
                 {
@@ -490,7 +600,12 @@ namespace SECRON.Views
                     Txt_Password.Text = "CONTRASEÑA";
                     Txt_Password.ForeColor = Color.Gray;
 
-                    ComboBox_Rol.SelectedValue = _usuarioSeleccionado.RoleId;
+                    _rolesAsignados = _usuarioSeleccionado.Roles != null
+                        ? new List<KeyValuePair<int, string>>(_usuarioSeleccionado.Roles)
+                        : new List<KeyValuePair<int, string>>();
+                    RefrescarComboRoles();
+                    RedibujarListaRoles();
+
                     ComboBox_UserStatus.SelectedValue = _usuarioSeleccionado.StatusId;
                     ComboBox_Bloqueado.SelectedValue = _usuarioSeleccionado.IsLocked ? 1 : 0;
 
@@ -524,7 +639,7 @@ namespace SECRON.Views
                 Txt_Colaborador.Text = docente.FullName;
                 Txt_Colaborador.ForeColor = Color.Black;
                 _personTypeSeleccionado = "DOCENTE";
-                _personIdSeleccionado = docente.TeacherId;  
+                _personIdSeleccionado = docente.TeacherId;
             }
             else if (trabajador != null)
             {
@@ -833,10 +948,10 @@ namespace SECRON.Views
                 return false;
             }
 
-            // 3. Validar ROL*
-            if (ComboBox_Rol.SelectedIndex < 0 || ComboBox_Rol.SelectedValue == null)
+            // 3. Validar ROL* (al menos uno debe estar en la lista de asignados)
+            if (_rolesAsignados == null || _rolesAsignados.Count == 0)
             {
-                MessageBox.Show("Debe seleccionar un ROL", "Validación",
+                MessageBox.Show("Debe asignar al menos un ROL", "Validación",
                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 ComboBox_Rol.Focus();
                 return false;
@@ -924,7 +1039,6 @@ namespace SECRON.Views
                 {
                     Username = Txt_Usuario.Text.Trim().ToUpper(),
                     FullName = Txt_Colaborador.Text.Trim().ToUpper(),
-                    RoleId = (int)ComboBox_Rol.SelectedValue,
                     StatusId = (int)ComboBox_UserStatus.SelectedValue,
                     IsLocked = (int)ComboBox_Bloqueado.SelectedValue == 1,
                     NotificationsEnabled = true,
@@ -934,7 +1048,8 @@ namespace SECRON.Views
                     CreatedBy = UserData?.UserId ?? 1
                 };
 
-                int resultado = Ctrl_Users.RegistrarUsuario(nuevoUsuario, passwordPlainText);
+                int resultado = Ctrl_Users.RegistrarUsuario(nuevoUsuario, passwordPlainText,
+                    _rolesAsignados.Select(r => r.Key).ToList());
 
                 if (resultado > 0)
                 {
@@ -997,13 +1112,13 @@ namespace SECRON.Views
 
                 _usuarioSeleccionado.Username = Txt_Usuario.Text.Trim().ToUpper();
                 _usuarioSeleccionado.FullName = Txt_Colaborador.Text.Trim().ToUpper();
-                _usuarioSeleccionado.RoleId = (int)ComboBox_Rol.SelectedValue;
                 _usuarioSeleccionado.StatusId = (int)ComboBox_UserStatus.SelectedValue;
                 _usuarioSeleccionado.IsLocked = (int)ComboBox_Bloqueado.SelectedValue == 1;
                 _usuarioSeleccionado.InstitutionalEmail = Txt_CorreoInstitucional.Text.Trim().ToUpper();
                 _usuarioSeleccionado.ModifiedBy = UserData?.UserId ?? 1;
 
-                int resultado = Ctrl_Users.ActualizarUsuario(_usuarioSeleccionado);
+                int resultado = Ctrl_Users.ActualizarUsuario(_usuarioSeleccionado,
+                    _rolesAsignados.Select(r => r.Key).ToList());
 
                 if (resultado > 0)
                 {
@@ -1037,13 +1152,14 @@ namespace SECRON.Views
 
             ConfigurarPlaceHoldersTextbox();
 
-            if (ComboBox_Rol.Items.Count > 0)
-                ComboBox_Rol.SelectedIndex = 0;
+            _rolesAsignados = new List<KeyValuePair<int, string>>();
+            RefrescarComboRoles();
+            RedibujarListaRoles();
 
             if (ComboBox_UserStatus.Items.Count > 0)
                 ComboBox_UserStatus.SelectedIndex = 0;
 
-            if (ComboBox_Bloqueado.Items.Count > 0) 
+            if (ComboBox_Bloqueado.Items.Count > 0)
                 ComboBox_Bloqueado.SelectedIndex = 0;
 
             CheckBox_PasswordTemp.Checked = true;
