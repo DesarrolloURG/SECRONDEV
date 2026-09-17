@@ -555,7 +555,6 @@ namespace SECRON.Views
                 Tabla1.Columns["CreatedBy"].Visible = false;
                 Tabla1.Columns["ModifiedDate"].Visible = false;
                 Tabla1.Columns["ModifiedBy"].Visible = false;
-                Tabla1.Columns["EmployeeId"].Visible = false;
                 Tabla1.Columns["PasswordExpiryDate"].Visible = false;
                 Tabla1.Columns["FailedLoginAttempts"].Visible = false;
             }
@@ -936,6 +935,15 @@ namespace SECRON.Views
                 MessageBox.Show("El USERNAME ya existe en el sistema", "Validación",
                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 Txt_Usuario.Focus();
+                return false;
+            }
+
+            // Validar NOMBRE VINCULADO (no puede quedar vacío, venga o no de un vínculo real)
+            if (TienePlaceholder(Txt_Colaborador, "SELECCIONE UN COLABORADOR DE LA TABLA"))
+            {
+                MessageBox.Show("El campo NOMBRE VINCULADO es obligatorio", "Validación",
+                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Txt_Colaborador.Focus();
                 return false;
             }
 
@@ -1675,16 +1683,7 @@ namespace SECRON.Views
         private void VincularPersonaAUsuario(int userId)
         {
             int modifiedBy = UserData?.UserId ?? 1;
-            int resultado = Ctrl_Users.VincularPersona(userId, _personTypeSeleccionado, _personIdSeleccionado, modifiedBy);
-
-            if (resultado <= 0)
-            {
-                MessageBox.Show(
-                    "El usuario se guardó, pero no se pudo vincular a la persona seleccionada. " +
-                    "Verifique que la persona exista y no esté ya vinculada a otro usuario.",
-                    "Advertencia de vinculación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            Ctrl_Users.VincularPersona(userId, _personTypeSeleccionado, _personIdSeleccionado, modifiedBy);
         }
         private void Btn_Search_Click(object sender, EventArgs e)
         {

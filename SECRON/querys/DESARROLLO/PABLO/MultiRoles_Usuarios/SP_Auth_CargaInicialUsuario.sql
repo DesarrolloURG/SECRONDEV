@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE SP_Auth_CargaInicialUsuario
+CREATE OR ALTER   PROCEDURE SP_Auth_CargaInicialUsuario
     @Username VARCHAR(50)
 AS
 BEGIN
@@ -7,7 +7,7 @@ BEGIN
     -- Result Set 1: Datos del usuario (ya sin RoleId/RoleName)
     SELECT u.UserId, u.Username, u.FullName, u.StatusId, 
            u.IsTemporaryPassword, u.PasswordExpiryDate, u.InstitutionalEmail,
-           u.EmployeeId, u.LastLoginDate, u.CreatedDate, u.NotificationsEnabled,
+           u.LastLoginDate, u.CreatedDate, u.NotificationsEnabled,
            ISNULL(s.StatusName, '') AS StatusName,
            u.LastPasswordChanged, u.PasswordNeverExpires,
            u.TwoFactorSecret, u.TwoFactorEnabledDate, u.TwoFactorExempt

@@ -34,7 +34,6 @@ namespace SECRON.Models
 
         // Campos adicionales
         public string InstitutionalEmail { get; set; }
-        public int? EmployeeId { get; set; }
         public DateTime? PasswordExpiryDate { get; set; }
         public int FailedLoginAttempts { get; set; }
         public bool IsLocked { get; set; }
