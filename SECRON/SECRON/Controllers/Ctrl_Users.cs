@@ -269,7 +269,6 @@ namespace SECRON.Controllers
                     cmd.Parameters.AddWithValue("@StatusId", usuario.StatusId);
                     cmd.Parameters.AddWithValue("@NotificationsEnabled", usuario.NotificationsEnabled);
                     cmd.Parameters.AddWithValue("@InstitutionalEmail", (object)usuario.InstitutionalEmail ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@EmployeeId", (object)usuario.EmployeeId ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@ModifiedBy", (object)usuario.ModifiedBy ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@RoleIds", "[" + string.Join(",", roleIds) + "]");
 
@@ -505,7 +504,6 @@ namespace SECRON.Controllers
                 ModifiedDate = reader["ModifiedDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["ModifiedDate"]),
                 ModifiedBy = reader["ModifiedBy"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["ModifiedBy"]),
                 InstitutionalEmail = reader["InstitutionalEmail"] == DBNull.Value ? null : reader["InstitutionalEmail"].ToString(),
-                EmployeeId = reader["EmployeeId"] == DBNull.Value ? null : (int?)Convert.ToInt32(reader["EmployeeId"]),
                 PasswordExpiryDate = reader["PasswordExpiryDate"] == DBNull.Value ? null : (DateTime?)Convert.ToDateTime(reader["PasswordExpiryDate"]),
                 FailedLoginAttempts = reader["FailedLoginAttempts"] == DBNull.Value ? 0 : Convert.ToInt32(reader["FailedLoginAttempts"]),
                 IsLocked = reader["IsLocked"] != DBNull.Value && Convert.ToBoolean(reader["IsLocked"]),

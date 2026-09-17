@@ -1,9 +1,9 @@
 CREATE OR ALTER PROCEDURE SP_Users_Insert
     @Username VARCHAR(50), @PasswordHash VARCHAR(255), @FullName VARCHAR(150),
     @StatusId INT, @NotificationsEnabled BIT, @IsTemporaryPassword BIT,
-    @InstitutionalEmail VARCHAR(150) = NULL, @EmployeeId INT = NULL,
+    @InstitutionalEmail VARCHAR(150) = NULL,
     @PasswordExpiryDate DATETIME = NULL, @CreatedBy INT = NULL,
-    @RoleIds NVARCHAR(MAX)   -- JSON array de RoleId, ej: '[1,3,5]'. Obligatorio, mínimo 1 rol.
+    @RoleIds NVARCHAR(MAX)
 AS
 BEGIN
     SET NOCOUNT ON; SET XACT_ABORT ON;
@@ -12,16 +12,16 @@ BEGIN
 
     IF (SELECT COUNT(*) FROM OPENJSON(@RoleIds)) < 1
     BEGIN
-        SELECT -2; RETURN; -- Debe traer al menos un rol
+        SELECT -2; RETURN;
     END
 
     BEGIN TRANSACTION
     BEGIN TRY
         INSERT INTO Users (Username, PasswordHash, FullName, StatusId,
-            NotificationsEnabled, IsTemporaryPassword, InstitutionalEmail, EmployeeId,
+            NotificationsEnabled, IsTemporaryPassword, InstitutionalEmail,
             PasswordExpiryDate, CreatedBy)
         VALUES (@Username, @PasswordHash, @FullName, @StatusId,
-            @NotificationsEnabled, @IsTemporaryPassword, @InstitutionalEmail, @EmployeeId,
+            @NotificationsEnabled, @IsTemporaryPassword, @InstitutionalEmail,
             @PasswordExpiryDate, @CreatedBy);
 
         DECLARE @NewUserId INT = SCOPE_IDENTITY();
