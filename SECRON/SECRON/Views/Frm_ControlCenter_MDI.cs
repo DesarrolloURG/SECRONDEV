@@ -278,6 +278,9 @@ namespace SECRON.Views
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_RevisionAsignaciones);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_HorariosOficiales);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_CalendariosAcademicos);
+            ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_Jornadas);
+            ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_Sections);
+            ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_Salones);
             // Panel de Navegación Submenú Teachers - Opciones
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumCarreras);
             ConfigurarBotonSubmenuNavegacion(BtnProcesosAcademicos_PensumCursos);
@@ -1069,7 +1072,9 @@ namespace SECRON.Views
             BtnProcesosAcademicos_RevisionAsignaciones.Visible = TienePermiso("TEACHERS_REPORTS");
             BtnProcesosAcademicos_HorariosOficiales.Visible = TienePermiso("TEACHERS_REPORTS");
             BtnProcesosAcademicos_CalendariosAcademicos.Visible = TienePermiso("TEACHERS_REPORTS");
-
+            BtnProcesosAcademicos_Jornadas.Visible = TienePermiso("ACADEMICPROCESSES_SCHEDULETYPES_TAB");
+            BtnProcesosAcademicos_Sections.Visible = TienePermiso("ACADEMICPROCESSES_SCHEDULETYPES_TAB");
+            BtnProcesosAcademicos_Salones.Visible = TienePermiso("ACADEMICPROCESSES_SCHEDULETYPES_TAB");
 
             // ========== TRANSFERENCIAS ==========
             BtnTransfersReports.Visible = TienePermiso("TRANSFERS_REPORTS");
@@ -1180,7 +1185,7 @@ namespace SECRON.Views
                 { Btn_Inventory, (PanelInventory, new Size(300, 200)) },
                 { BtnBills, (PanelBills, new Size(300, 240)) },
                 { BtnLocations, (PanelLocations, new Size(300, 200)) },
-                { BtnProcesosAcademicos, (PanelTeachers, new Size(300, 360)) },
+                { BtnProcesosAcademicos, (PanelTeachers, new Size(300, 480)) },
             };
 
             // Verificar si el boton existe en la configuracion
@@ -1292,6 +1297,9 @@ namespace SECRON.Views
                 { BtnProcesosAcademicos_RevisionAsignaciones, PanelTeachers },
                 { BtnProcesosAcademicos_HorariosOficiales, PanelTeachers },
                 { BtnProcesosAcademicos_CalendariosAcademicos, PanelTeachers },
+                { BtnProcesosAcademicos_Jornadas, PanelTeachers },
+                { BtnProcesosAcademicos_Sections, PanelTeachers },
+                { BtnProcesosAcademicos_Salones, PanelTeachers },
 
                 //ORDERS
                 { BtnSuppliers, PanelOrders },
@@ -1373,7 +1381,7 @@ namespace SECRON.Views
                 { BtnLocations, (PanelLocations, new Size(300, 200)) },
                 { BtnInvStaticItems, (PanelStaticItems, new Size(300, 280)) },
                 { BtnInvWarehouse, (PanelWarehouses, new Size(300, 80)) },
-                { BtnProcesosAcademicos, (PanelTeachers, new Size(300, 360)) }
+                { BtnProcesosAcademicos, (PanelTeachers, new Size(300, 480)) }
             };
 
             // Verificar si el botón existe en la configuración
@@ -2567,6 +2575,29 @@ namespace SECRON.Views
                     "ERROR SECRON", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             CerrarTodosLosPaneles();
+        }
+
+        private void BtnProcesosAcademicos_Jornadas_Click(object sender, EventArgs e)
+        {
+            CerrarTodosLosPaneles();
+            // Crear tu formulario específico (reemplaza con el formulario real)
+            Frm_AcademicProcesses_ScheduleTypes frm = new Frm_AcademicProcesses_ScheduleTypes();
+            frm.Text = "Jornadas De Estudio";
+            frm.BackColor = Color.White;
+            //Pasamos los datos del usuario
+            frm.UserData = this.UserData;
+
+            AbrirFormularioConPestana(frm, "Jornadas De Estudio", "ScheduleTypes");
+        }
+
+        private void BtnProcesosAcademicos_Sections_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnProcesosAcademicos_Salones_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

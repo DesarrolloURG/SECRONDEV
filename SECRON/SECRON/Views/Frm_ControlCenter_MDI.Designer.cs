@@ -143,6 +143,9 @@
             this.BtnRRHH_Docencia_FichaCoordinador = new System.Windows.Forms.Button();
             this.BtnRRHH_Docencia_FichaDocente = new System.Windows.Forms.Button();
             this.PanelTeachers = new System.Windows.Forms.Panel();
+            this.BtnProcesosAcademicos_Salones = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_Sections = new System.Windows.Forms.Button();
+            this.BtnProcesosAcademicos_Jornadas = new System.Windows.Forms.Button();
             this.BtnProcesosAcademicos_CalendariosAcademicos = new System.Windows.Forms.Button();
             this.BtnProcesosAcademicos_HorariosOficiales = new System.Windows.Forms.Button();
             this.BtnProcesosAcademicos_RevisionAsignaciones = new System.Windows.Forms.Button();
@@ -2206,6 +2209,9 @@
             // PanelTeachers
             // 
             this.PanelTeachers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_Salones);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_Sections);
+            this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_Jornadas);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_CalendariosAcademicos);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_HorariosOficiales);
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_RevisionAsignaciones);
@@ -2218,9 +2224,69 @@
             this.PanelTeachers.Controls.Add(this.BtnProcesosAcademicos_PensumCarreras);
             this.PanelTeachers.Location = new System.Drawing.Point(220, 150);
             this.PanelTeachers.Name = "PanelTeachers";
-            this.PanelTeachers.Size = new System.Drawing.Size(300, 360);
+            this.PanelTeachers.Size = new System.Drawing.Size(300, 480);
             this.PanelTeachers.TabIndex = 20;
             this.PanelTeachers.Visible = false;
+            // 
+            // BtnProcesosAcademicos_Salones
+            // 
+            this.BtnProcesosAcademicos_Salones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_Salones.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_Salones.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_Salones.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_Salones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_Salones.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_Salones.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_Salones.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_Salones.Location = new System.Drawing.Point(0, 420);
+            this.BtnProcesosAcademicos_Salones.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_Salones.Name = "BtnProcesosAcademicos_Salones";
+            this.BtnProcesosAcademicos_Salones.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_Salones.TabIndex = 64;
+            this.BtnProcesosAcademicos_Salones.Text = "SALONES POR SEDES";
+            this.BtnProcesosAcademicos_Salones.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_Salones.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_Salones.Click += new System.EventHandler(this.BtnProcesosAcademicos_Salones_Click);
+            // 
+            // BtnProcesosAcademicos_Sections
+            // 
+            this.BtnProcesosAcademicos_Sections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_Sections.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_Sections.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_Sections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_Sections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_Sections.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_Sections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_Sections.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_Sections.Location = new System.Drawing.Point(0, 385);
+            this.BtnProcesosAcademicos_Sections.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_Sections.Name = "BtnProcesosAcademicos_Sections";
+            this.BtnProcesosAcademicos_Sections.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_Sections.TabIndex = 63;
+            this.BtnProcesosAcademicos_Sections.Text = "SECCIONES ESTUDIANTILES";
+            this.BtnProcesosAcademicos_Sections.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_Sections.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_Sections.Click += new System.EventHandler(this.BtnProcesosAcademicos_Sections_Click);
+            // 
+            // BtnProcesosAcademicos_Jornadas
+            // 
+            this.BtnProcesosAcademicos_Jornadas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(224)))), ((int)(((byte)(222)))));
+            this.BtnProcesosAcademicos_Jornadas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProcesosAcademicos_Jornadas.FlatAppearance.BorderSize = 0;
+            this.BtnProcesosAcademicos_Jornadas.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(143)))), ((int)(((byte)(109)))));
+            this.BtnProcesosAcademicos_Jornadas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProcesosAcademicos_Jornadas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.BtnProcesosAcademicos_Jornadas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BtnProcesosAcademicos_Jornadas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_Jornadas.Location = new System.Drawing.Point(0, 350);
+            this.BtnProcesosAcademicos_Jornadas.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnProcesosAcademicos_Jornadas.Name = "BtnProcesosAcademicos_Jornadas";
+            this.BtnProcesosAcademicos_Jornadas.Size = new System.Drawing.Size(300, 35);
+            this.BtnProcesosAcademicos_Jornadas.TabIndex = 62;
+            this.BtnProcesosAcademicos_Jornadas.Text = "JORNADAS DE ESTUDIO";
+            this.BtnProcesosAcademicos_Jornadas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnProcesosAcademicos_Jornadas.UseVisualStyleBackColor = false;
+            this.BtnProcesosAcademicos_Jornadas.Click += new System.EventHandler(this.BtnProcesosAcademicos_Jornadas_Click);
             // 
             // BtnProcesosAcademicos_CalendariosAcademicos
             // 
@@ -2615,5 +2681,8 @@
         private System.Windows.Forms.Button BtnProcesosAcademicos_PensumDeCarreras;
         private System.Windows.Forms.Button BtnLogout;
         private System.Windows.Forms.Button BtnRRHH_Docencia_GenerarContrato;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_Jornadas;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_Salones;
+        private System.Windows.Forms.Button BtnProcesosAcademicos_Sections;
     }
 }
